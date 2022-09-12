@@ -1,0 +1,67 @@
+// <script>
+// import contactComposables from "../composables/contacts";
+// import toDoComposables from "../composables/todos";
+// import { onMounted } from "vue";
+// import GoBack from "../utils/GoBack.vue";
+// import { useRoute } from "vue-router";
+
+// export default {
+//     props: {
+//         id: {
+//             required: true,
+//             type: String,
+//         },
+//     },
+//     setup(props) {
+//         // const errors = ref('')
+
+//         const {
+//             errors,
+//             getUsers,
+//             users,
+//             getContacts,
+//             contacts,
+//             getStatuses,
+//             statuses,
+//             getCategories,
+//             categories,
+//             getTypes,
+//             types,
+//         } = contactComposables();
+
+//         const { getTasks, tasks, updateToDo, getToDo, todo } =
+//             toDoComposables();
+
+//         const route = useRoute();
+
+//         onMounted(getToDo(props.id));
+//         onMounted(getUsers);
+//         onMounted(getStatuses);
+//         onMounted(getTypes);
+//         onMounted(getContacts);
+//         onMounted(getTasks);
+//         onMounted(getCategories);
+
+//         const editToDo = async () => {
+//             await updateToDo(props.id);
+//         };
+
+//         return {
+//             todo,
+//             // errors,
+//             editToDo,
+//             contacts,
+
+//             tasks,
+//             users,
+//             statuses,
+//             categories,
+//             types,
+//         };
+//     },
+
+//     components: {
+//         GoBack,
+//     },
+// };
+// </script>
