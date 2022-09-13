@@ -17,6 +17,12 @@
     >
         Follow Up</router-link
     >
+    <router-link
+        to="/forecasts/index"
+        class="inline-block items-center px-2 py-1 bg-purple-400 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
+    >
+        Forecast</router-link
+    >
     <h1
         class="items-center text-center text-6xl text-white font-extrabold bg-slate-600 rounded-md"
     >

@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Resources\Resource;
+namespace App\Http\Resources\Forecast;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class ForecastResource extends JsonResource
+class ForecastProductResource extends JsonResource
 {
     /**
      * Transform the resource into an array.

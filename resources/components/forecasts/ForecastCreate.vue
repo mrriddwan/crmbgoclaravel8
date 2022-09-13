@@ -26,7 +26,7 @@
             </p>
 
             <form
-                @submit.prevent="createPIC"
+                @submit.prevent="createForecast"
                 ref="inchargeForm"
                 class="inline-block align-middle"
             >
@@ -34,7 +34,7 @@
                     <div class="grid grid-cols-2 w-auto items-center">
                         <div>
                             <label class="ml-7"
-                                >Name
+                                >Product
                                 <p class="inline text-red-600 text-lg">
                                     *
                                 </p></label
@@ -44,40 +44,40 @@
                             <input
                                 type="text"
                                 class="items-left rounded-md border-gray-500 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                                v-model="form.name"
+                                v-model="form.product_id"
                             />
                         </div>
                     </div>
                     <div class="grid grid-cols-2 w-auto items-center">
                         <label class="ml-7"
-                            >Email
+                            >Amount
                             <p class="inline text-red-600 text-lg">*</p></label
                         >
                         <input
                             type="email"
                             class="items-left mt-1 rounded-md border-gray-500 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                            v-model="form.email"
+                            v-model="form.amount"
                         />
                     </div>
 
                     <div class="grid grid-cols-2 w-auto items-center">
                         <label class="ml-7"
-                            >Phone No.(Mobile)
+                            >Type
                             <p class="inline text-red-600 text-lg">*</p>
                         </label>
                         <input
                             type="text"
                             class="items-left mt-1 rounded-md border-gray-500 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                            v-model="form.phone_mobile"
+                            v-model="form.type_id"
                         />
                     </div>
 
                     <div class="grid grid-cols-2 items-center">
-                        <label class="ml-7">Phone No.(Office)</label>
+                        <label class="ml-7">Forecast Date</label>
                         <input
                             type="text"
                             class="items-left mt-1 rounded-md border-gray-500 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                            v-model="form.phone_office"
+                            v-model="form.forecast_date"
                         />
                     </div>
                 </div>
@@ -97,22 +97,22 @@
         </div>
 
         <div class="m-4">
-            <span v-if="info.incharge.length !== 0">
+            <span v-if="info.forecast.length !== 0">
                 <span
-                    v-for="pic in info.incharge"
-                    :key="info.incharge.id"
+                    v-for="forecast in info.forecast"
+                    :key="forecast.forecast.id"
                     class="grid grid-cols-2 border-2 m-4 p-4"
                 >
                     <tr class="grid grid-cols-2">
                         <td
                             class="px-1 py-1 text-s leading-5 text-gray-900 whitespace-no-wrap"
                         >
-                            Name
+                            Product
                         </td>
                         <td
                             class="px-1 py-1 text-s leading-5 font-bold text-gray-900 whitespace-no-wrap"
                         >
-                            {{ pic.name }}
+                            {{ forecast.product.name }}
                         </td>
                     </tr>
 
@@ -120,44 +120,44 @@
                         <td
                             class="px-1 py-1 text-s leading-5 text-gray-900 whitespace-no-wrap"
                         >
-                            Email
+                            Amount (RM)
                         </td>
                         <td
                             class="px-1 py-1 text-s leading-5 font-bold text-gray-900 whitespace-no-wrap"
                         >
-                            {{ pic.email }}
+                            {{ forecast.amount }}
                         </td>
                     </tr>
                     <tr class="grid grid-cols-2">
                         <td
                             class="px-1 py-1 text-s leading-5 text-gray-900 whitespace-no-wrap"
                         >
-                            Phone No. (Mobile)
+                            Type
                         </td>
                         <td
                             class="px-1 py-1 text-s leading-5 font-bold text-gray-900 whitespace-no-wrap"
                         >
-                            {{ pic.phone_mobile }}
+                            {{ forecast.type.name }}
                         </td>
                     </tr>
                     <tr class="grid grid-cols-2">
                         <td
                             class="px-1 py-1 text-s leading-5 text-gray-900 whitespace-no-wrap"
                         >
-                            Phone No. (Office)
+                            Date
                         </td>
                         <td
                             class="px-1 py-1 text-s leading-5 font-bold text-gray-900 whitespace-no-wrap"
                         >
-                            {{ pic.phone_office }}
+                            {{ forecast.forecast_date }}
                         </td>
                     </tr>
 
                     <tr>
                         <router-link
                             :to="{
-                                name: 'incharge_edit',
-                                params: { id: pic.id },
+                                name: 'forecast_edit',
+                                params: { id: forecast_info.id },
                             }"
                             class="mr-2 mb-2 inline-flex items-center px-2 py-1 bg-yellow-400 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
                         >
@@ -165,7 +165,7 @@
                         /></router-link>
                         <button
                             class="mr-2 mb-2 inline-flex items-center px-2 py-1 bg-red-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
-                            @click="deletePIC(pic.id)"
+                            @click="deletePIC(forecast_info.id)"
                         >
                             <TrashIcon class="h-3 w-3" />
                         </button>
@@ -177,7 +177,7 @@
                 <div
                     class="uppercase text-center font-extrabold text-5xl bg-slate-400 rounded-md py-3 px-3"
                 >
-                    <h1><strong>No PIC data</strong></h1>
+                    <h1><strong>No Forecast Data</strong></h1>
                 </div>
             </span>
         </div>
@@ -203,34 +203,34 @@ export default {
             contact_infos: [],
             form: {
                 contact_id: "",
-                name: "",
-                email: "",
-                phone_mobile: "",
-                phone_office: "",
+                product_id: "",
+                amount: "",
+                type_id: "",
+                forecast_date: "",
             },
             errors: "",
         };
     },
     mounted() {
-        this.showIncharge();
+        this.showForecast();
     },
     methods: {
-        showIncharge() {
+        showForecast() {
             axios
-                .get("/api/contacts/info/" + this.$route.params.id)
+                .get("/api/forecasts/info/" + this.$route.params.id)
                 .then((res) => {
-                    this.contact_infos = res.data.data;
+                    this.forecast_infos = res.data.data;
                 })
                 .catch((error) => {
                     console.log(error);
                 });
         },
 
-        async createPIC() {
+        async createForecast() {
             const contact = this.contact_infos;
             // const form = document.getElementById('inchargeForm');
             try {
-                await axios.post("/api/incharges/store", {
+                await axios.post("/api/forecast/store", {
                     contact_id: contact[0].id,
                     name: this.form.name,
                     email: this.form.email,

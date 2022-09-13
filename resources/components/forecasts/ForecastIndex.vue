@@ -79,12 +79,7 @@
                     <tr>
                         <th class="py-3">
                             <div class="text-sm text-center h-6">
-                                <a
-                                    href="#"
-                                    @click.prevent=""
-                                >
-                                    #
-                                </a>
+                                <a href="#" @click.prevent=""> # </a>
                                 <span
                                     v-if="
                                         sort_direction == 'desc' &&
@@ -105,7 +100,9 @@
                             <div class="text-sm text-center h-6">
                                 <a
                                     href="#"
-                                    @click.prevent="change_sort('forecast_updatedate')"
+                                    @click.prevent="
+                                        change_sort('forecast_updatedate')
+                                    "
                                 >
                                     Last Update
                                 </a>
@@ -215,22 +212,22 @@
                                     "
                                     >&darr;</span
                                 >
-                            </div>
-                            <!-- <div class="text-sm text-center h-6">
-                                <select
-                                    v-model="selectedStatus"
-                                    class="form-control form-control-sm"
-                                >
-                                    <option value="">All</option>
-                                    <option
-                                        v-for="status in statuses.data"
-                                        :key="status.id"
-                                        :value="status.id"
+                                <div class="text-sm text-center h-6">
+                                    <select
+                                        v-model="selectedProduct"
+                                        class="form-control form-control-sm"
                                     >
-                                        {{ status.name }}
-                                    </option>
-                                </select>
-                            </div> -->
+                                        <option value="">All</option>
+                                        <option
+                                            v-for="product in products.data"
+                                            :key="product.id"
+                                            :value="product.id"
+                                        >
+                                            {{ product.name }}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
                         </th>
                         <th class="py-3">
                             <div class="text-sm text-center h-6">
@@ -480,7 +477,12 @@
 <script>
 import LaravelVuePagination from "laravel-vue-pagination";
 import axios from "axios";
-import { PencilSquareIcon, TrashIcon, PlusIcon } from "@heroicons/vue/24/solid";
+import {
+    PencilSquareIcon,
+    TrashIcon,
+    PlusIcon,
+    UserPlusIcon,
+} from "@heroicons/vue/24/solid";
 
 export default {
     components: {
@@ -488,6 +490,7 @@ export default {
         PencilSquareIcon,
         TrashIcon,
         PlusIcon,
+        UserPlusIcon,
     },
 
     mounted() {

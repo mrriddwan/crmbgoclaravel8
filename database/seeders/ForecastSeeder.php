@@ -2,11 +2,11 @@
 
 namespace Database\Seeders;
 
-use App\Models\FollowUp;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Forecast\Forecast;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
-class FollowUpSeeder extends Seeder
+class ForecastSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -15,6 +15,6 @@ class FollowUpSeeder extends Seeder
      */
     public function run()
     {
-        FollowUp::factory(100)->create();
+        Forecast::factory(10)->create();
     }
 }

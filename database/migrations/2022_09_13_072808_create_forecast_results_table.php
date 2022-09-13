@@ -13,7 +13,7 @@ class CreateForecastResultsTable extends Migration
      */
     public function up()
     {
-        Schema::create('forecast_products', function (Blueprint $table) {
+        Schema::create('forecast_results', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
             $table->timestamps();

@@ -16,13 +16,12 @@ class CreateForecastsTable extends Migration
         Schema::create('forecasts', function (Blueprint $table) {
             $table->id();
             $table->date('forecast_updatedate');
-            $table->integer('amount');
+            $table->decimal('amount', $precision = 8, $scale = 2);
             $table->date('forecast_date');
-            // $table->date('forecast_result_id');
             $table->unsignedBigInteger('forecast_result_id')->nullable()->constrained();
             $table->foreign('forecast_result_id')
                 ->references('id')
-                ->on('forecast_result')
+                ->on('forecast_results')
                 ->onDelete('cascade');
             $table->unsignedBigInteger('user_id')->nullable()->constrained();
             $table->foreign('user_id')
@@ -44,6 +43,7 @@ class CreateForecastsTable extends Migration
                 ->references('id')
                 ->on('contact_types')
                 ->onDelete('cascade');
+            $table->timestamps();
         });
     }
 
