@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers\Api\Forecast;
 
-use App\Forecast\Models\Forecast;
+
 use App\Http\Controllers\Controller;
 use App\Http\ForecastResources\Resource\ForecastResource;
 use App\Http\Requests\Forecast\ForecastRequest;
+use App\Models\Forecast\Forecast;
 use Illuminate\Http\Request;
 
 class ForecastController extends Controller
@@ -57,7 +58,7 @@ class ForecastController extends Controller
     public function store(ForecastRequest $request)
     {
 
-        $forecast = forecast::create([
+        $forecast = Forecast::create([
             'forecast_date' => $request->forecast_date,        
             // 'forecast_updatedate' => $request->forecast_updatedate,
             'amount' => $request->amount,
@@ -76,7 +77,7 @@ class ForecastController extends Controller
     }
     public function show($id)
     {   
-        $forecast = forecast::find($id);
+        $forecast = Forecast::find($id);
         return response()->json(["data"=> $forecast]);
     }
 
