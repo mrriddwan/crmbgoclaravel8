@@ -143,7 +143,7 @@ export default {
             tasks: [],
             users: [],
             contact: [],
-            errors: ""
+            errors: "",
         };
     },
 
@@ -168,10 +168,12 @@ export default {
                     todo_remark: this.form.todo_remark,
                     source_id: 1,
                 });
-
+                console.log(this.form.todo_created)
                 await this.$router.push({
                     name: "todo_index",
-                    params: { id: this.$route.params.id },
+                    params: {
+                        selectedDate: this.form.todo_created,
+                    },
                 });
             } catch (e) {
                 {

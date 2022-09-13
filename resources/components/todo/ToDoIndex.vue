@@ -18,7 +18,7 @@
         Follow Up</router-link
     >
     <h1
-        class="items-center text-center text-6xl text-white font-extrabold bg-slate-400 rounded-md"
+        class="items-center text-center text-6xl text-white font-extrabold bg-slate-600 rounded-md"
     >
         To Do Index
     </h1>

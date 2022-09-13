@@ -25367,29 +25367,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 });
 
               case 4:
-                if (!window.confirm("Continue to add incharge?")) {
-                  _context.next = 9;
-                  break;
-                }
-
-                _context.next = 7;
-                return _this2.$router.push({
-                  name: "incharge_create",
-                  params: {
-                    id: _this2.$route.params.id
-                  }
-                });
-
-              case 7:
-                _context.next = 10;
-                break;
-
-              case 9:
-                _this2.$router.push({
-                  name: "contact_index"
-                });
-
-              case 10:
+                // if (window.confirm("Continue to add incharge?")) {
+                //     await this.$router.push({
+                //         name: "incharge_create",
+                //         params: { id: this.$route.params.id },
+                //     });
+                // } else {
+                //     this.$router.push({ name: "contact_index" });
+                // }
                 _this2.form.contact_id = "";
                 _this2.form.name = "";
                 _this2.form.email = "";
@@ -25399,23 +25384,23 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
                 _this2.showIncharge();
 
-                _context.next = 22;
+                _context.next = 16;
                 break;
 
-              case 19:
-                _context.prev = 19;
+              case 13:
+                _context.prev = 13;
                 _context.t0 = _context["catch"](1);
 
                 if (_context.t0.response.status === 422) {
                   _this2.errors = _context.t0.response.data.errors;
                 }
 
-              case 22:
+              case 16:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, null, [[1, 19]]);
+        }, _callee, null, [[1, 13]]);
       }))();
     },
     deletePIC: function deletePIC(id) {
@@ -27039,32 +27024,33 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 });
 
               case 4:
-                _context.next = 6;
+                console.log(_this.form.todo_created);
+                _context.next = 7;
                 return _this.$router.push({
                   name: "todo_index",
                   params: {
-                    id: _this.$route.params.id
+                    selectedDate: _this.form.todo_created
                   }
                 });
 
-              case 6:
-                _context.next = 11;
+              case 7:
+                _context.next = 12;
                 break;
 
-              case 8:
-                _context.prev = 8;
+              case 9:
+                _context.prev = 9;
                 _context.t0 = _context["catch"](1);
 
                 if (_context.t0.response.status === 422) {
                   _this.errors = _context.t0.response.data.errors;
                 }
 
-              case 11:
+              case 12:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, null, [[1, 8]]);
+        }, _callee, null, [[1, 9]]);
       }))();
     },
     showContact: function showContact() {
@@ -30975,7 +30961,7 @@ var _hoisted_3 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNod
 
 var _hoisted_4 = /*#__PURE__*/_withScopeId(function () {
   return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h1", {
-    "class": "items-center text-center text-6xl text-white font-extrabold bg-slate-400 rounded-md"
+    "class": "items-center text-center text-6xl text-white font-extrabold bg-slate-600 rounded-md"
   }, " To Do Index ", -1
   /* HOISTED */
   );
