@@ -4,7 +4,8 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
-use App\Models\ToDoSource;
+use Database\Forecast\Seeders\ForecastSeeder;
+use Database\Seeders\Forecast\ForecastProductSeeder;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -29,6 +30,8 @@ class DatabaseSeeder extends Seeder
             TextColorSeeder::class,
             ActionSeeder::class,
             ToDoSourceSeeder::class,
+            // ForecastSeeder::class,
+            ForecastProductSeeder::class,
             // ToDoSeeder::class,
             // FollowUpSeeder::class,
 

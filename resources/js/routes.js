@@ -11,34 +11,31 @@ import ContactInfo from "../components/contacts/ContactInfo.vue";
 import InchargeCreate from "../components/contacts/InchargeCreate.vue";
 import InchargeEdit from "../components/contacts/InchargeEdit.vue";
 
-/**Forecast Imports */
-import ForecastIndex from "../components/forecasts/ForecastIndex.vue";
-import ForecastEdit from "../components/forecasts/ForecastEdit.vue";
-import ForecastCreateInfo from "../components/forecasts/ForecastCreateInfo.vue";
-
 /**ToDo Imports */
 import ToDoIndex from "../components/todo/ToDoIndex.vue";
 import ToDoCreate from "../components/todo/ToDoCreate.vue";
 import ToDoEdit from "../components/todo/ToDoEdit.vue";
 import ToDoInsert from "../components/todo/ToDoInsert.vue";
 
-/**ToDo Imports */
+/**Follow Up Imports */
 import FollowUpIndex from "../components/followups/FollowUpIndex.vue";
 import FollowUpCreate from "../components/followups/FollowUpCreate.vue";
 
-const routes = [
+/**Forecast Imports */
+import ForecastIndex from "../components/forecasts/ForecastIndex.vue";
+import ForecastCreate from "../components/forecasts/ForecastCreate.vue";
+import ForecastEdit from "../components/forecasts/ForecastEdit.vue";
 
+const routes = [
     /*                      
         test Routes                      
     */
 
-        // {
-        //     path: "/testpage",
-        //     name: "TestQueryString",
-        //     component: TestQueryString,
-        // },
-
-
+    // {
+    //     path: "/testpage",
+    //     name: "TestQueryString",
+    //     component: TestQueryString,
+    // },
 
     /*                      
         Contact Routes                      
@@ -87,27 +84,6 @@ const routes = [
     },
 
     /*                                                  
-            Forecast Routes 
-    */
-
-    {
-        path: "/forecasts/index",
-        name: "forecast_index",
-        component: ForecastIndex,
-    },
-
-    {
-        path: "/forecasts/createinfo",
-        name: "forecast_createinfo",
-        component: ForecastCreateInfo,
-    },
-
-    {
-        path: "/forecast_edit/:id",
-        name: "forecast_edit",
-        component: ForecastEdit,
-    },
-    /*                                                  
             To Do Routes 
     */
 
@@ -139,7 +115,7 @@ const routes = [
     },
 
     /*                                                  
-            To Do Routes 
+            Follow Up Routes 
     */
 
     {
@@ -152,6 +128,27 @@ const routes = [
         path: "/followup/:id/create",
         name: "followup_create",
         component: FollowUpCreate,
+    },
+    /*                                                  
+            Forecast Routes 
+    */
+
+    {
+        path: "/forecasts/index",
+        name: "forecast_index",
+        component: ForecastIndex,
+    },
+
+    {
+        path: "/forecasts/createinfo",
+        name: "forecast_createinfo",
+        component: ForecastCreate,
+    },
+
+    {
+        path: "/forecast/:id/edit",
+        name: "forecast_edit",
+        component: ForecastEdit,
     },
 ];
 

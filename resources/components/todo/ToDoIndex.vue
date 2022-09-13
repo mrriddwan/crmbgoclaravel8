@@ -205,7 +205,7 @@
                             href="#"
                             @click.prevent="change_sort('todo_created')"
                         >
-                            Date Created
+                            Date of Todo
                         </a>
                         <span
                             v-if="
