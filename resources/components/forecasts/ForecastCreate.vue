@@ -18,21 +18,27 @@
         <h1
             class="items-center text-center text-white font-extrabold bg-slate-600 px-2 py-2 rounded-md"
         >
-            Create PIC
+            Create Forecast
         </h1>
-        <div class="text-left">
-            <p class="m-1 font-extrabold text-xl text-center uppercase">
-                {{ info.name }}
-            </p>
 
+        <div
+            class="items-center text-center text-black font-extrabold px-1 py-3 rounded-md w-max mx-auto"
+        >
+            <h2
+                class="px-2 py-1 text-4xl bg-amber-300 rounded-lg uppercase font-semibold"
+            >
+                {{ info.name }}
+            </h2>
+        </div>
+        <div class="text-center">
             <form
                 @submit.prevent="createForecast"
                 ref="inchargeForm"
                 class="inline-block align-middle"
             >
-                <div class="grid grid-cols-2 items-center">
-                    <div class="grid grid-cols-2 w-auto items-center">
-                        <div>
+                <div class="grid grid-cols-1 items-center text-center">
+                    <div class="grid grid-cols-2 w-auto items-center py-2">
+                        <div class="">
                             <label class="ml-7"
                                 >Product
                                 <p class="inline text-red-600 text-lg">
@@ -40,42 +46,73 @@
                                 </p></label
                             >
                         </div>
-                        <div>
-                            <input
-                                type="text"
-                                class="items-left rounded-md border-gray-500 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                        <div class="">
+                            <select
                                 v-model="form.product_id"
-                            />
+                                class="form-control form-control-sm"
+                            >
+                                <option disabled value="">
+                                    Please select product
+                                </option>
+                                <option
+                                    v-for="product in products"
+                                    :key="product.id"
+                                    :value="product.id"
+                                >
+                                    {{ product.name }}
+                                </option>
+                            </select>
                         </div>
                     </div>
-                    <div class="grid grid-cols-2 w-auto items-center">
+                    <div class="grid grid-cols-2 w-auto items-center py-2">
                         <label class="ml-7"
                             >Amount
                             <p class="inline text-red-600 text-lg">*</p></label
                         >
-                        <input
-                            type="email"
-                            class="items-left mt-1 rounded-md border-gray-500 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                            v-model="form.amount"
-                        />
+                        <div>
+                            <span
+                                class="bg-slate-600 px-2 py-1 inline-block rounded-md text-white"
+                                >RM</span
+                            >
+                            <input
+                                type="number"
+                                class="inline-block items-left mt-1 rounded-md border-gray-500 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                v-model="form.amount"
+                            />
+                        </div>
                     </div>
 
-                    <div class="grid grid-cols-2 w-auto items-center">
+                    <div class="grid grid-cols-2 w-auto items-center py-2">
                         <label class="ml-7"
                             >Type
                             <p class="inline text-red-600 text-lg">*</p>
                         </label>
-                        <input
-                            type="text"
-                            class="items-left mt-1 rounded-md border-gray-500 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                            v-model="form.type_id"
-                        />
+                        <div>
+                            <select
+                                v-model="form.type_id"
+                                class="form-control form-control-sm"
+                            >
+                                <option disabled value="">
+                                    Please select type
+                                </option>
+                                <option
+                                    v-for="forecast_type in types"
+                                    :key="forecast_type.id"
+                                    :value="forecast_type.id"
+                                >
+                                    {{ forecast_type.name }}
+                                </option>
+                            </select>
+                        </div>
                     </div>
 
                     <div class="grid grid-cols-2 items-center">
-                        <label class="ml-7">Forecast Date</label>
+                        <label class="ml-7"
+                            >Forecast Date
+                            <p class="inline text-red-600 text-lg">*</p></label
+                        >
                         <input
-                            type="text"
+                            type="date"
                             class="items-left mt-1 rounded-md border-gray-500 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                             v-model="form.forecast_date"
                         />
@@ -97,11 +134,11 @@
         </div>
 
         <div class="m-4">
-            <span v-if="info.forecast.length !== 0">
+            <span v-if="info.forecast">
                 <span
-                    v-for="forecast in info.forecast"
-                    :key="forecast.forecast.id"
-                    class="grid grid-cols-2 border-2 m-4 p-4"
+                    v-for="forecast_info in info.forecast"
+                    :key="forecast_info.id"
+                    class="grid grid-cols-2 border-2 p-1"
                 >
                     <tr class="grid grid-cols-2">
                         <td
@@ -112,7 +149,7 @@
                         <td
                             class="px-1 py-1 text-s leading-5 font-bold text-gray-900 whitespace-no-wrap"
                         >
-                            {{ forecast.product.name }}
+                            {{ forecast_info.product.name }}
                         </td>
                     </tr>
 
@@ -125,7 +162,7 @@
                         <td
                             class="px-1 py-1 text-s leading-5 font-bold text-gray-900 whitespace-no-wrap"
                         >
-                            {{ forecast.amount }}
+                            {{ forecast_info.amount.toLocaleString("en-US") }}
                         </td>
                     </tr>
                     <tr class="grid grid-cols-2">
@@ -137,7 +174,7 @@
                         <td
                             class="px-1 py-1 text-s leading-5 font-bold text-gray-900 whitespace-no-wrap"
                         >
-                            {{ forecast.type.name }}
+                            {{ forecast_info.type.name }}
                         </td>
                     </tr>
                     <tr class="grid grid-cols-2">
@@ -149,22 +186,22 @@
                         <td
                             class="px-1 py-1 text-s leading-5 font-bold text-gray-900 whitespace-no-wrap"
                         >
-                            {{ forecast.forecast_date }}
+                            {{ forecast_info.forecast_date }}
                         </td>
                     </tr>
 
-                    <tr>
+                    <tr class="text-center col-span-2">
                         <router-link
                             :to="{
                                 name: 'forecast_edit',
                                 params: { id: forecast_info.id },
                             }"
-                            class="mr-2 mb-2 inline-flex items-center px-2 py-1 bg-yellow-400 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
+                            class="mr-2 inline-flex items-center px-2 py-1 bg-yellow-400 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
                         >
                             <PencilSquareIcon class="h-3 w-3"
                         /></router-link>
                         <button
-                            class="mr-2 mb-2 inline-flex items-center px-2 py-1 bg-red-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
+                            class="mr-2 inline-flex items-center px-2 py-1 bg-red-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
                             @click="deletePIC(forecast_info.id)"
                         >
                             <TrashIcon class="h-3 w-3" />
@@ -209,17 +246,21 @@ export default {
                 forecast_date: "",
             },
             errors: "",
+            products: [],
+            types: [],
         };
     },
     mounted() {
         this.showForecast();
+        this.getProducts();
+        this.getTypes();
     },
     methods: {
         showForecast() {
             axios
-                .get("/api/forecasts/info/" + this.$route.params.id)
+                .get("/api/contacts/info/" + this.$route.params.id)
                 .then((res) => {
-                    this.forecast_infos = res.data.data;
+                    this.contact_infos = res.data.data;
                 })
                 .catch((error) => {
                     console.log(error);
@@ -230,29 +271,31 @@ export default {
             const contact = this.contact_infos;
             // const form = document.getElementById('inchargeForm');
             try {
-                await axios.post("/api/forecast/store", {
+                await axios.post("/api/forecasts/store", {
+                    forecast_date: this.form.forecast_date,
+                    amount: this.form.amount,
                     contact_id: contact[0].id,
-                    name: this.form.name,
-                    email: this.form.email,
-                    phone_mobile: this.form.phone_mobile,
-                    phone_office: this.form.phone_office,
+                    user_id: 1, //replace with current user id later
+                    product_id: this.form.product_id,
+                    type_id: this.form.type_id,
                 });
-                // if (window.confirm("Continue to add incharge?")) {
-                //     await this.$router.push({
-                //         name: "incharge_create",
-                //         params: { id: this.$route.params.id },
-                //     });
-                // } else {
-                //     this.$router.push({ name: "contact_index" });
-                // }
+                if (window.confirm("Finish adding forecast?")) {
+                    await this.$router.push({
+                        name: "forecast_index",
+                    });
+                } else {
+                    this.$router.push({
+                        name: "forecast_create",
+                        params: { id: this.$route.params.id },
+                    });
+                }
 
-                this.form.contact_id = "";
-                this.form.name = "";
-                this.form.email = "";
-                this.form.phone_mobile = "";
-                this.form.phone_office = "";
+                this.form.product_id = "";
+                this.form.type_id = "";
+                this.form.amount = "";
+                this.form.forecast_date = "";
                 this.errors = "";
-                this.showIncharge();
+                this.showForecast();
             } catch (e) {
                 {
                     if (e.response.status === 422) {
@@ -261,14 +304,35 @@ export default {
                 }
             }
         },
+        async getTypes() {
+            await axios
+                .get("/api/contacttypes/index")
+                .then((res) => {
+                    this.types = res.data.data;
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        },
+
+        async getProducts() {
+            await axios
+                .get("/api/forecastproducts/index")
+                .then((res) => {
+                    this.products = res.data.data;
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        },
 
         deletePIC(id) {
             if (!window.confirm("Are you sure?")) {
                 return;
             }
-            axios.delete("/api/incharges/delete/" + id);
+            axios.delete("/api/forecasts/delete/" + id);
             this.$router.push({
-                name: "incharge_create",
+                name: "forecast_create",
                 params: { id: this.$route.params.id },
             });
             this.showIncharge();

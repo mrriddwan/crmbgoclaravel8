@@ -8,4 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class ForecastResult extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'name'
+    ];
+
+    public function forecast(){
+        return $this->belongsTo(Forecast::class);
+    }
 }

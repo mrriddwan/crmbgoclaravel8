@@ -140,7 +140,7 @@ const routes = [
     },
 
     {
-        path: "/forecasts/create",
+        path: "/forecasts/:id/create",
         name: "forecast_create",
         component: ForecastCreate,
     },

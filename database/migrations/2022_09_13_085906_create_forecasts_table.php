@@ -16,10 +16,10 @@ class CreateForecastsTable extends Migration
         Schema::create('forecasts', function (Blueprint $table) {
             $table->id();
             $table->date('forecast_updatedate');
-            $table->decimal('amount', $precision = 8, $scale = 2);
+            $table->integer('amount');
             $table->date('forecast_date');
-            $table->unsignedBigInteger('forecast_result_id')->nullable()->constrained();
-            $table->foreign('forecast_result_id')
+            $table->unsignedBigInteger('result_id')->nullable()->constrained();
+            $table->foreign('result_id')
                 ->references('id')
                 ->on('forecast_results')
                 ->onDelete('cascade');

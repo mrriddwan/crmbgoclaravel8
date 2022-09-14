@@ -18,7 +18,6 @@ class ContactResource extends JsonResource
             'created_at' => $this -> created_at -> toDateString(),
             'user' => $this-> user -> only('id', 'name'),
             'id' => $this -> id,
-            'date' => $this -> created_at -> toDateString(),
             'name' => $this -> name,
             'industry' => $this -> industry,
             'status' => $this -> status -> only('id', 'name'),

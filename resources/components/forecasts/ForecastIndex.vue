@@ -29,15 +29,28 @@
         Forecast List
     </h1>
 
-    <router-link
-        to="/forecasts/create"
-        class="ml-1 inline-block items-center px-2 py-1 bg-gray-800 border border-transparent rounded-md font-semibold text-sm text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
-    >
-        <UserPlusIcon class="h-6 w-6 inline" /> forecast</router-link
-    >
-
     <div class="">
-        <div class="grid grid-cols-2 items-center">
+        <div class="grid grid-cols-3 items-center">
+            <div class="text-sm text-center grid grid-cols-2 grid-rows-1 h-6">
+                <div>
+                    <p class="items-left m-2 w-max">Type</p>
+                </div>
+                <div>
+                    <select
+                        v-model="selectedType"
+                        class="form-control form-control-sm w-max"
+                    >
+                        <option value="">All</option>
+                        <option
+                            v-for="forecast_type in types.data"
+                            :key="forecast_type.id"
+                            :value="forecast_type.id"
+                        >
+                            {{ forecast_type.name }}
+                        </option>
+                    </select>
+                </div>
+            </div>
             <div class="grid grid-cols-2 items-left m-2">
                 <label for="paginate" class="">Per Page</label>
                 <select v-model="paginate" class="form-control">
@@ -60,7 +73,7 @@
         <div class="py-1">
             <Pagination
                 :data="forecasts"
-                @pagination-change-page="getforecasts"
+                @pagination-change-page="getForecasts"
                 :size="'small'"
                 :align="'center'"
                 class="pagination"
@@ -74,7 +87,7 @@
         <div
             class="table-wrp block max-h-screen overflow-y-auto overflow-x-auto"
         >
-            <table class="table table-hover table-bordered w-full">
+            <table class="table table-hover w-full">
                 <thead class="bg-slate-400 border-b sticky top-0">
                     <tr>
                         <th class="py-3">
@@ -96,7 +109,7 @@
                                 >
                             </div>
                         </th>
-                        <th class="py-3">
+                        <th class="py-3 grid-flow-row">
                             <div class="text-sm text-center h-6">
                                 <a
                                     href="#"
@@ -121,8 +134,9 @@
                                     >&darr;</span
                                 >
                             </div>
+                            <div>-</div>
                         </th>
-                        <th class="py-3">
+                        <th class="grid py-3 col-span-2">
                             <div class="text-sm text-center h-6">
                                 <a
                                     href="#"
@@ -146,8 +160,6 @@
                                     "
                                     >&darr;</span
                                 >
-                            </div>
-                            <div class="text-sm text-center h-6">
                                 <div class="text-sm text-center h-6">
                                     <input
                                         v-model.lazy="search"
@@ -157,15 +169,11 @@
                                     />
                                 </div>
                             </div>
+                            <div class="text-sm text-center h-6"></div>
                         </th>
                         <th class="py-3">
                             <div class="text-sm text-center h-6">
-                                <a
-                                    href="#"
-                                    @click.prevent="change_sort('user_name')"
-                                >
-                                    CS
-                                </a>
+                                <a href="#" @click.prevent=""> CS </a>
                                 <span
                                     v-if="
                                         sort_direction == 'desc' &&
@@ -181,52 +189,54 @@
                                     >&darr;</span
                                 >
                             </div>
-                            <div class="text-sm text-center h-6">
-                                <input
-                                    v-model.lazy="search"
-                                    type="search"
-                                    class="w-16 placeholder:text-xs placeholder:text-center h-8"
-                                    placeholder="Search user"
-                                />
-                            </div>
-                        </th>
-                        <th class="py-3">
-                            <div class="text-sm text-center h-6">
-                                <a
-                                    href="#"
-                                    @click.prevent="change_sort('Product')"
+                            <div class="text-xs text-center h-6">
+                                <select
+                                    v-model="selectedUser"
+                                    class="form-control form-control-sm text-xs"
                                 >
-                                    Product
-                                </a>
-                                <span
-                                    v-if="
-                                        sort_direction == 'desc' &&
-                                        sort_field == 'product_name'
-                                    "
-                                    >&uarr;</span
-                                >
-                                <span
-                                    v-if="
-                                        sort_direction == 'asc' &&
-                                        sort_field == 'product_name'
-                                    "
-                                    >&darr;</span
-                                >
-                                <div class="text-sm text-center h-6">
-                                    <select
-                                        v-model="selectedProduct"
-                                        class="form-control form-control-sm"
+                                    <option value="">All</option>
+                                    <option
+                                        v-for="user in users.data"
+                                        :key="user.id"
+                                        :value="user.id"
                                     >
-                                        <option value="">All</option>
-                                        <option
-                                            v-for="product in products.data"
-                                            :key="product.id"
-                                            :value="product.id"
-                                        >
-                                            {{ product.name }}
-                                        </option>
-                                    </select>
-                                </div>
+                                        {{ user.name }}
+                                    </option>
+                                </select>
+                            </div>
+                        </th>
+                        <th class="py-3">
+                            <div class="text-sm text-center h-6">
+                                <a href="#" @click.prevent=""> Product </a>
+                                <span
+                                    v-if="
+                                        sort_direction == 'desc' &&
+                                        sort_field == 'product_name'
+                                    "
+                                    >&uarr;</span
+                                >
+                                <span
+                                    v-if="
+                                        sort_direction == 'asc' &&
+                                        sort_field == 'product_name'
+                                    "
+                                    >&darr;</span
+                                >
+                            </div>
+                            <div class="text-sm text-center h-6">
+                                <select
+                                    v-model="selectedProduct"
+                                    class="form-control form-control-sm"
+                                >
+                                    <option value="">All</option>
+                                    <option
+                                        v-for="product in products.data"
+                                        :key="product.id"
+                                        :value="product.id"
+                                    >
+                                        {{ product.name }}
+                                    </option>
+                                </select>
                             </div>
                         </th>
                         <th class="py-3">
@@ -358,16 +368,6 @@
                                     >&darr;</span
                                 >
                             </div>
-                            <!-- <div class="text-sm text-center h-6">
-                                <div class="text-sm text-center h-6">
-                                    <input
-                                        v-model.lazy="search"
-                                        type="search"
-                                        class="w-16 placeholder:text-xs placeholder:text-center h-8"
-                                        placeholder="Search address"
-                                    />
-                                </div>
-                            </div> -->
                         </th>
                         <th class="py-3">
                             <div class="text-sm text-center h-6">
@@ -394,45 +394,53 @@
                                     >&darr;</span
                                 >
                             </div>
-                            <!-- <div class="text-sm text-center h-6">
-                                <div class="text-sm text-center h-6">
-                                    <input
-                                        v-model.lazy="search"
-                                        type="search"
-                                        class="w-16 placeholder:text-xs placeholder:text-center h-8"
-                                        placeholder="Search address"
-                                    />
-                                </div>
-                            </div> -->
                         </th>
                         <th class="py-3">
                             <div class="text-sm text-center h-6"></div>
                         </th>
                     </tr>
                 </thead>
-                <!-- <tbody class="mt-2">
-                    <tr v-for="forecast in forecasts.data" :key="forecast.id">
-                        <td class="text-xs">{{ forecast.forecast_updatedate }}</td>
+                <tbody class="mt-2">
+                    <tr
+                        v-for="(forecast, index) in forecasts.data"
+                        :key="forecast.id"
+                    >
+                        <td>{{ index + 1 }}</td>
                         <td class="text-xs">
-                            <router-link
-                                :to="`/forecasts/${forecast.id}/info`"
-                                custom
-                                v-slot="{ navigate, href }"
-                            >
-                                <a :href="href" @click.stop="navigate">{{
-                                    forecast.contact.name
-                                }}</a>
-                            </router-link>
+                            {{ forecast.forecast_updatedate }}
+                        </td>
+                        <td class="text-xs grid grid-cols-2">
+                            <div>
+                                <router-link
+                                    class=""
+                                    :to="`/contacts/${forecast.contact.id}/info`"
+                                    custom
+                                    v-slot="{ navigate, href }"
+                                >
+                                    <a :href="href" @click.stop="navigate">{{
+                                        forecast.contact.name
+                                    }}</a>
+                                </router-link>
+                            </div>
+                            <div>
+                                <router-link
+                                    :to="`/forecasts/${forecast.contact.id}/create`"
+                                    class="px-2 items-center bg-gray-400 border text-xs rounded-lg"
+                                >
+                                    <PlusIcon class="h-3 w-3 inline" />
+                                    Forecast</router-link
+                                >
+                            </div>
                         </td>
                         <td class="text-xs">{{ forecast.user.name }}</td>
                         <td class="text-xs">{{ forecast.product.name }}</td>
                         <td class="text-xs">{{ forecast.amount }}</td>
-                        <td class="text-xs">{{ forecast.forecast_date }}</td>                        
+                        <td class="text-xs">{{ forecast.forecast_date }}</td>
                         <td class="text-xs">{{ forecast.type.name }}</td>
-                        <td class="text-xs">{{ forecast_result_id }}</td>
-                        <td class="text-xs">{{ forecast.forecast_result_id }}</td>
+                        <td class="text-xs">{{ forecast.result }}</td>
+                        <td class="text-xs">{{ forecast.result }}</td>
                         <td class="text-xs">
-                            <router-link
+                            <!-- <router-link
                                 :to="{
                                     name: 'forecasts_edit',
                                     params: { id: forecast.id },
@@ -440,32 +448,13 @@
                                 class="mr-2 mb-2 inline-flex items-center px-2 py-1 bg-yellow-400 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
                             >
                             <PencilSquareIcon class="h-3 w-3"/></router-link
-                            >
+                            > -->
                             <button
                                 class="mr-2 mb-2 inline-flex items-center px-2 py-1 bg-red-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
                                 @click="deleteForecast(forecast.id)"
                             >
-                                <TrashIcon class="h-3 w-3"/>
+                                <TrashIcon class="h-3 w-3" />
                             </button>
-                        </td>
-                    </tr>
-                </tbody> -->
-                <tbody class="mt-2">
-                    <tr>
-                        <td class="text-xs">1</td>
-                        <td class="text-xs">updatedate</td>
-                        <td class="text-xs">
-                            <a> ContactName </a>
-                        </td>
-                        <td class="text-xs">User Name</td>
-                        <td class="text-xs">Product</td>
-                        <td class="text-xs">Amount</td>
-                        <td class="text-xs">Forecast Date</td>
-                        <td class="text-xs">Type</td>
-                        <td class="text-xs">Checkbox confirm</td>
-                        <td class="text-xs">Checkbox reject</td>
-                        <td class="text-xs">
-                            Edit forecast button and Delete Forecast Button
                         </td>
                     </tr>
                 </tbody>
@@ -496,17 +485,23 @@ export default {
     mounted() {
         this.getForecasts();
         this.getUsers();
+        this.getProducts();
+        this.getTypes();
     },
     data() {
         return {
             forecasts: [],
+            products: [],
+            types: [],
             paginate: 50,
 
             search: "",
-            selectedStatus: "",
+            selectedProduct: "",
+            selectedType: "",
+            selectedUser: "",
 
             sort_direction: "desc",
-            sort_field: "created_at",
+            sort_field: "forecast_date",
             users: "",
         };
     },
@@ -532,8 +527,10 @@ export default {
                     "/api/forecasts/index?" +
                         "q=" +
                         this.search +
-                        "&selectedUsers=" +
-                        this.selectedUsers +
+                        "&selectedType=" +
+                        this.selectedType +
+                        "&selectedProduct=" +
+                        this.selectedProduct +
                         "&paginate=" +
                         this.paginate +
                         "&page=" +
@@ -555,6 +552,28 @@ export default {
                 .get("/api/users/index")
                 .then((res) => {
                     this.users = res.data;
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        },
+
+        getTypes() {
+            axios
+                .get("/api/contacttypes/index")
+                .then((res) => {
+                    this.types = res.data;
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        },
+
+        getProducts() {
+            axios
+                .get("/api/forecastproducts/index")
+                .then((res) => {
+                    this.products = res.data;
                 })
                 .catch((error) => {
                     console.log(error);

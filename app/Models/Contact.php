@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Forecast\Forecast;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -46,6 +47,10 @@ class Contact extends Model
 
     public function incharge(){
         return $this -> hasMany(ContactIncharge::class);
+    }
+
+    public function forecast(){
+        return $this->hasMany(Forecast::class)->with('product', 'type')->orderBy('forecast_date', 'desc');
     }
     
     public function scopeSearch($query, $term)

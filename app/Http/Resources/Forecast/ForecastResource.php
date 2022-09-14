@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Forecast\Resource;
+namespace App\Http\Resources\Forecast;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -14,6 +14,15 @@ class ForecastResource extends JsonResource
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        return [
+            'id' => $this -> id,
+            'forecast_updatedate' => $this -> forecast_updatedate,
+            'amount' => $this -> amount,
+            'forecast_date' => $this->forecast_date,
+            'user' => $this-> user -> only('id', 'name'),
+            'type' => $this -> type -> only('id', 'name'),
+            'contact' => $this -> contact -> only('id', 'name'),
+            'product' => $this -> product -> only('id', 'name'),
+        ];
     }
 }

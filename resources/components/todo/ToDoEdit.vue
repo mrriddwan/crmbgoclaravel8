@@ -312,7 +312,7 @@ export default {
 
         async getType() {
             await axios
-                .get("/api/contacttype/index")
+                .get("/api/contacttypes/index")
                 .then((res) => {
                     this.types = res.data.data;
                 })

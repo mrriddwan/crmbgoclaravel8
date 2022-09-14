@@ -9,6 +9,9 @@ use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\ContactInchargeController;
 use App\Http\Controllers\Api\ContactIndustryController;
 use App\Http\Controllers\Api\FollowUpController;
+use App\Http\Controllers\Api\Forecast\ForecastController;
+use App\Http\Controllers\Api\Forecast\ForecastProductController;
+use App\Http\Controllers\Api\Forecast\ForecastResultController;
 use App\Http\Controllers\Api\TaskController;
 use App\Http\Controllers\Api\ToDoController;
 use App\Models\ContactIndustry;
@@ -41,7 +44,7 @@ Route::get('/contacts/info/{contact}', [ContactController::class, 'info'])->name
 
 /*Sub-Contact API*/
 Route::get('/contactcategory/index', [ContactCategoryController::class, 'index'])->name('category:index');
-Route::get('/contacttype/index', [ContactTypeController::class, 'index'])->name('type:index');
+Route::get('/contacttypes/index', [ContactTypeController::class, 'index'])->name('type:index');
 Route::get('/contactstatus/index', [ContactStatusController::class, 'index'])->name('status:index');
 Route::get('/contactindustry/index', [ContactIndustryController::class, 'index'])->name('industry:index');
 // Route::get('/contactstatus/dropdown', [ContactStatusController::class, 'dropdown'])->name('status:dropdown');
@@ -75,6 +78,19 @@ Route::get('/actions/index', [ActionController::class, 'index'])->name('action:i
 Route::get('/followups/index', [FollowUpController::class, 'index'])->name('followup:index');
 Route::post('/followups/store', [FollowUpController::class, 'store'])->name('followup:store');
 Route::delete('/followups/delete/{followup}', [FollowUpController::class, 'delete'])->name('followup:delete');
+
+/*Forecast API*/
+Route::get('/forecasts/index', [ForecastController::class, 'index'])->name('forecast:index');
+// Route::get('/forecasts/list', [ForecastController::class, 'list'])->name('forecast:list');
+Route::post('/forecasts/store', [ForecastController::class, 'store'])->name('forecast:store');
+Route::get('/forecasts/show/{forecast}', [ForecastController::class, 'show'])->name('forecast:show');
+Route::put('/forecasts/update/{forecast}', [ForecastController::class, 'update'])->name('forecast:update');
+Route::delete('/forecasts/delete/{forecast}', [ForecastController::class, 'delete'])->name('forecast:delete');
+Route::get('/forecasts/info/{forecast}', [ForecastController::class, 'info'])->name('forecast:info');
+
+/*Sub-Forecast API*/
+Route::get('/forecastproducts/index', [ForecastProductController::class, 'index'])->name('forecastproduct:index');
+Route::get('/forecastresults/index', [ForecastResultController::class, 'index'])->name('forecastresult:index');
 
 
 

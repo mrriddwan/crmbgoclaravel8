@@ -45,4 +45,8 @@ class User extends Authenticatable
     public function contact(){
         return $this -> hasOne(Contact::class);
     }
+
+    public function forecast(){
+        return $this->belongsTo(Forecast::class);
+    }
 }
