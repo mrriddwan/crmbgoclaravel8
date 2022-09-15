@@ -422,7 +422,9 @@
                             class="block align-middle font-extrabold uppercase text-white bg-green-500 rounded-md py-1 px-2 text-center text-sm"
                         >
                             {{ todo.action.name }}
-                            <!-- <select
+                        </span>
+                        <!-- <span
+                            ><select
                                 disabled
                                 id="selectAction"
                                 class="form-control form-control-sm"
@@ -435,8 +437,8 @@
                                 >
                                     {{ action.id }}
                                 </option>
-                            </select> -->
-                        </span>
+                            </select></span
+                        > -->
                         <span v-else>
                             <select
                                 id="selectAction"

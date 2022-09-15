@@ -202,7 +202,7 @@
                         /></router-link>
                         <button
                             class="mr-2 inline-flex items-center px-2 py-1 bg-red-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
-                            @click="deletePIC(forecast_info.id)"
+                            @click="deleteForecast(forecast_info.id)"
                         >
                             <TrashIcon class="h-3 w-3" />
                         </button>
@@ -326,7 +326,7 @@ export default {
                 });
         },
 
-        deletePIC(id) {
+        deleteForecast(id) {
             if (!window.confirm("Are you sure?")) {
                 return;
             }

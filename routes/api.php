@@ -87,6 +87,7 @@ Route::get('/forecasts/show/{forecast}', [ForecastController::class, 'show'])->n
 Route::put('/forecasts/update/{forecast}', [ForecastController::class, 'update'])->name('forecast:update');
 Route::delete('/forecasts/delete/{forecast}', [ForecastController::class, 'delete'])->name('forecast:delete');
 Route::get('/forecasts/info/{forecast}', [ForecastController::class, 'info'])->name('forecast:info');
+Route::put('/forecasts/resultSelected/{forecast}', [ForecastController::class, 'resultSelected'])->name('forecast:resultSelected');
 
 /*Sub-Forecast API*/
 Route::get('/forecastproducts/index', [ForecastProductController::class, 'index'])->name('forecastproduct:index');

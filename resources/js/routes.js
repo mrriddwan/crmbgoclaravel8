@@ -146,7 +146,7 @@ const routes = [
     },
 
     {
-        path: "/forecast/:id/edit",
+        path: "/forecasts/:id/edit",
         name: "forecast_edit",
         component: ForecastEdit,
     },

@@ -19,6 +19,8 @@ class ForecastResource extends JsonResource
             'forecast_updatedate' => $this -> forecast_updatedate,
             'amount' => $this -> amount,
             'forecast_date' => $this->forecast_date,
+            'result_id' => $this->result_id,
+            'result' => $this-> result,
             'user' => $this-> user -> only('id', 'name'),
             'type' => $this -> type -> only('id', 'name'),
             'contact' => $this -> contact -> only('id', 'name'),
