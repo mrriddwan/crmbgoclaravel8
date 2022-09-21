@@ -33,12 +33,35 @@
                             :key="history.id"
                             class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 text-gray-900 font-bold"
                         >
-                            <td class="py-4 px-6">{{ history.todo_created }}</td>
+                            <td class="py-4 px-6">
+                                {{ history.todo_created }}
+                            </td>
                             <td class="py-4 px-6">{{ history.user.name }}</td>
                             <td class="py-4 px-6">{{ history.task.name }}</td>
-                            <td class="py-4 px-6">Action</td>
-                            <td class="py-4 px-6">{{ history.remark }}</td>
-                            <td class="py-4 px-6">View in To Do</td>
+                            <td class="py-4 px-6">
+                                <span v-if="history.action">
+                                    {{ history.action.name }}
+                                </span>
+                                <span v-else> No action yet </span>
+                            </td>
+                            <td class="py-4 px-6">{{ history.todo_remark }}</td>
+                            <td class="py-4 px-6">
+                                <router-link
+                                    :to="{
+                                        name: 'todo_index',
+                                        params: {
+                                            selectedDate:
+                                            history.todo_created,
+                                        },
+                                    }"
+                                    class="mr-2 mb-2 inline-flex items-center px-2 py-1 bg-blue-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
+                                >
+                                    <i class="fa-solid fa-pen-to-square"></i
+                                    ><EyeIcon
+                                        class="h-4 w-4 mr-1"
+                                    />Todo</router-link
+                                >
+                            </td>
                         </tr>
                     </tbody>
                 </table>
@@ -55,10 +78,14 @@
 </template>
 
 <script>
+import { EyeIcon } from "@heroicons/vue/24/solid";
 import GoBack from "../utils/GoBack.vue";
 
 export default {
-    components: { GoBack },
+    components: { 
+        GoBack,
+        EyeIcon
+     },
 
     data() {
         return {

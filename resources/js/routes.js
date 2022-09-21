@@ -26,6 +26,11 @@ import ForecastIndex from "../components/forecasts/ForecastIndex.vue";
 import ForecastCreate from "../components/forecasts/ForecastCreate.vue";
 import ForecastEdit from "../components/forecasts/ForecastEdit.vue";
 
+/**Project Imports */
+import ProjectIndex from "../components/projects/ProjectIndex.vue";
+import ProjectCreate from "../components/projects/ProjectCreate.vue";
+import ProjectEdit from "../components/projects/ProjectEdit.vue";
+
 const routes = [
     /*                      
         test Routes                      
@@ -150,6 +155,28 @@ const routes = [
         name: "forecast_edit",
         component: ForecastEdit,
     },
+
+    /*                                                  
+            Project Routes 
+    */
+
+            {
+                path: "/projects/index",
+                name: "project_index",
+                component: ProjectIndex,
+            },
+        
+            {
+                path: "/projects/create",
+                name: "project_create",
+                component: ProjectCreate,
+            },
+        
+            {
+                path: "/projects/:id/edit",
+                name: "project_edit",
+                component: ProjectEdit,
+            },
 ];
 
 export default createRouter({

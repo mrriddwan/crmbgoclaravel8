@@ -33,7 +33,7 @@ class ToDoInternalRequest extends FormRequest
             'status_id' => ['required', 'int'],
             'type_id' => ['required', 'int'],
             'todo_remark' => ['nullable', 'string'],
-            'color_id' => ['nullable', 'int'],
+            'color_id' => ['required', 'int'],
             'source_id' => ['required', 'int'],
         ];
     }

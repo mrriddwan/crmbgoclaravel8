@@ -28,7 +28,13 @@ export default function toDoComposables () {
         errors.value = ''
         try {
             await axios.post('/api/todos/store', data)
-            await router.push({name: 'todo_index'})
+            console.log(data)
+            await router.push({
+                name: "todo_index",
+                params: {
+                    selectedDate: data.todo_created,
+                },
+            });
         } catch (e) {
             if (e.response.status === 422) {
                 errors.value = e.response.data.errors

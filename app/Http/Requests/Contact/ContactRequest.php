@@ -32,7 +32,7 @@ class ContactRequest extends FormRequest
             'type_id' =>  ['required', 'int'],
             'category_id' =>  ['required', 'int'],
             'user_id' =>  ['required', 'int'],
-            'remark' =>  ['nullable', 'int'],
+            'remark' =>  ['nullable', 'string'],
         ];
     }
 }

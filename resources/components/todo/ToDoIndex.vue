@@ -23,6 +23,12 @@
     >
         Forecast</router-link
     >
+    <router-link
+        to="/projects/index"
+        class="inline-block items-center px-2 py-1 bg-cyan-400 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
+    >
+        Project</router-link
+    >
     <h1
         class="items-center text-center text-6xl text-white font-extrabold bg-slate-600 rounded-md"
     >
@@ -416,29 +422,25 @@
                     <td class="text-sm">{{ todo.user.name }}</td>
                     <td class="text-sm">{{ todo.task.name }}</td>
                     <td class="text-sm">{{ todo.todo_remark }}</td>
-                    <td class="text-center text-sm align-middle">
-                        <span
-                            v-if="todo.action"
-                            class="block align-middle font-extrabold uppercase text-white bg-green-500 rounded-md py-1 px-2 text-center text-sm"
-                        >
-                            {{ todo.action.name }}
-                        </span>
-                        <!-- <span
-                            ><select
-                                disabled
-                                id="selectAction"
-                                class="form-control form-control-sm"
-                                v-model="todo.action_id"
+                    <td class="text-center align-middle">
+                        <span v-if="todo.action"
+                            ><span
+                                class="inline-block text-xs align-middle w-max font-extrabold uppercase text-white bg-green-500 rounded-md py-1 px-1 text-center"
+                                >{{ todo.action.name }}</span
                             >
-                                <option
-                                    v-for="action in actions.data"
-                                    :key="action.id"
-                                    :value="action.id"
-                                >
-                                    {{ action.id }}
-                                </option>
-                            </select></span
-                        > -->
+                            <!-- params: { id: contactId, todoId: toDoId } -->
+                            <router-link
+                                class="inline-block"
+                                :to="{
+                                    name: 'followup_create',
+                                    params: {
+                                        id: todo.contact.id,
+                                        todo_id: todo.id,
+                                    },
+                                }"
+                                >Update</router-link
+                            >
+                        </span>
                         <span v-else>
                             <select
                                 id="selectAction"
@@ -917,9 +919,9 @@ export default {
             if (!window.confirm("Update task?")) {
                 return;
             }
-            console.log(action);
-            console.log(toDoId);
-            console.log(contactId);
+            console.log("this is is the action ID: "+ action);
+            console.log("this is is the todo ID: "+ toDoId);
+            console.log("this is is the contact ID: "+ contactId);
             axios.put("/api/todos/action/" + toDoId, {
                 action_id: action,
             });

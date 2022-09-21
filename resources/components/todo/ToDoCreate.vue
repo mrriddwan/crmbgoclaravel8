@@ -197,6 +197,7 @@ import { ref } from "vue";
 export default {
     setup() {
         let priority_id = ref(2);
+        // let color_id = ref(3);
 
         const form = reactive({
             priority_id: "",
@@ -208,6 +209,7 @@ export default {
             todo_deadline: "",
             task_id: "",
             todo_remark: "",
+            color_id: 1,
             source_id: 3,
         });
 
@@ -234,7 +236,7 @@ export default {
         onMounted(getCategories);
 
         const createToDo = async () => {
-            await storeToDo({ ...form });
+            await storeToDo({ ...form  });
         };
 
         return {

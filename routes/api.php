@@ -1,20 +1,20 @@
 <?php
 
-use App\Http\Controllers\Api\ActionController;
-use App\Http\Controllers\Api\ContactCategoryController;
-use App\Http\Controllers\Api\ContactController;
-use App\Http\Controllers\Api\ContactStatusController;
-use App\Http\Controllers\Api\ContactTypeController;
 use App\Http\Controllers\Api\UserController;
-use App\Http\Controllers\Api\ContactInchargeController;
-use App\Http\Controllers\Api\ContactIndustryController;
-use App\Http\Controllers\Api\FollowUpController;
+use App\Http\Controllers\Api\Contact\ContactCategoryController;
+use App\Http\Controllers\Api\Contact\ContactController;
+use App\Http\Controllers\Api\Contact\ContactStatusController;
+use App\Http\Controllers\Api\Contact\ContactTypeController;
+use App\Http\Controllers\Api\Contact\ContactInchargeController;
+use App\Http\Controllers\Api\Contact\ContactIndustryController;
+use App\Http\Controllers\Api\FollowUp\ActionController;
+use App\Http\Controllers\Api\FollowUp\FollowUpController;
 use App\Http\Controllers\Api\Forecast\ForecastController;
 use App\Http\Controllers\Api\Forecast\ForecastProductController;
 use App\Http\Controllers\Api\Forecast\ForecastResultController;
-use App\Http\Controllers\Api\TaskController;
-use App\Http\Controllers\Api\ToDoController;
-use App\Models\ContactIndustry;
+use App\Http\Controllers\Api\Project\ProjectController;
+use App\Http\Controllers\Api\ToDo\TaskController;
+use App\Http\Controllers\Api\ToDo\ToDoController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -44,7 +44,7 @@ Route::get('/contacts/info/{contact}', [ContactController::class, 'info'])->name
 
 /*Sub-Contact API*/
 Route::get('/contactcategory/index', [ContactCategoryController::class, 'index'])->name('category:index');
-Route::get('/contacttypes/index', [ContactTypeController::class, 'index'])->name('type:index');
+Route::get('/contacttype/index', [ContactTypeController::class, 'index'])->name('type:index');
 Route::get('/contactstatus/index', [ContactStatusController::class, 'index'])->name('status:index');
 Route::get('/contactindustry/index', [ContactIndustryController::class, 'index'])->name('industry:index');
 // Route::get('/contactstatus/dropdown', [ContactStatusController::class, 'dropdown'])->name('status:dropdown');
@@ -93,5 +93,9 @@ Route::put('/forecasts/resultSelected/{forecast}', [ForecastController::class, '
 Route::get('/forecastproducts/index', [ForecastProductController::class, 'index'])->name('forecastproduct:index');
 Route::get('/forecastresults/index', [ForecastResultController::class, 'index'])->name('forecastresult:index');
 
-
+/*Forecast API*/
+Route::get('/projects/index', [ProjectController::class, 'index'])->name('project:index');
+Route::post('/projects/store', [ProjectController::class, 'store'])->name('project:store');
+Route::get('/projects/show/{project}', [ProjectController::class, 'show'])->name('project:show');
+Route::put('/projects/update/{project}', [ProjectController::class, 'update'])->name('project:update');
 

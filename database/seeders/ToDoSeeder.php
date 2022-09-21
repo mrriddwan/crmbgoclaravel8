@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\ToDo;
+use App\Models\ToDo\ToDo;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;

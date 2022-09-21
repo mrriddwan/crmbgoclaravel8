@@ -78,6 +78,7 @@
                         <label>Time</label>
                         <input
                             type="time"
+                            step="1"
                             class="block mt-1 w-max rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                             v-model="form.followup_time"
                         />
@@ -128,6 +129,7 @@
 <script>
 import GoBack from "../utils/GoBack.vue";
 import axios from "axios";
+import moment from "moment";
 
 export default {
     data() {
@@ -149,6 +151,7 @@ export default {
             users: [],
             contact: [],
             errors: "",
+            todoId: ""
         };
     },
 
@@ -156,6 +159,8 @@ export default {
         this.getTasks();
         this.getUsers();
         this.showContact();
+        this.todoId = this.$route.params.todoId
+        console.log("this is the todoID: "+ this.todoID)
     },
 
     methods: {
@@ -163,18 +168,15 @@ export default {
         async createFollowUp() {
             // const form = document.getElementById('inchargeForm');
             const contact = this.contact.data;
+            
             try {
                 await axios.post("/api/followups/store", {
                     priority_id: this.form.priority_id === "" ? 2 : 1,
                     followup_created: this.form.followup_created,
-                    followup_time: (this.form.time = ""
-                        ? "No time set"
-                        : this.form.time),
+                    followup_time: moment(this.form.followup_time).format('LTS'),
                     task_id: this.form.task_id,
-                    followup_remark: (this.form.followup_remark = " "
-                        ? "No remark"
-                        : this.form.followup_remark),
-                    todo_id: this.$route.params.todoId,
+                    followup_remark: this.form.followup_remark,
+                    todo_id: this.todoId,
                     contact_id: contact.id,
                     user_id: contact.user_id,
                     status_id: contact.status_id,

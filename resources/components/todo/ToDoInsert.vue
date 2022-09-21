@@ -11,6 +11,17 @@
         >
             <h1 class="px-2 py-3 bg-black-50">Create To Do (Contact)</h1>
         </div>
+
+        <div
+            class="items-center text-center text-black font-extrabold px-1 py-3 rounded-md w-max mx-auto"
+        >
+            <h2
+                class="px-2 py-1 text-4xl bg-amber-300"
+            >
+                {{ contact.name }}
+            </h2>
+        </div>
+
         <div v-if="errors">
             <div v-for="(v, k) in errors" :key="k">
                 <p

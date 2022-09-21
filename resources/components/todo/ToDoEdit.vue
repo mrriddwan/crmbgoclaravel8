@@ -176,8 +176,8 @@ export default {
             todo: {
                 priority_id: "",
                 user_id: "",
-                date_created: "",
-                date_deadline: "",
+                todo_created: "",
+                todo_deadline: "",
                 status_id: "",
                 type_id: "",
                 contact_id: "",
@@ -200,10 +200,10 @@ export default {
         this.getUser();
         this.getType();
     },
-    
-         // <p class="inline text-red-600 text-lg">*</p></label>
-         
-        // async createPIC() {
+
+    // <p class="inline text-red-600 text-lg">*</p></label>
+
+    // async createPIC() {
     //         const contact = this.contact_infos;
     //         // const form = document.getElementById('inchargeForm');
     //         try {
@@ -231,7 +231,7 @@ export default {
     //                 if (e.response.status === 422){
     //                     this.errors = e.response.data.errors;
     //                 }
-                    
+
     //             }
     //         }
     //     },
@@ -242,7 +242,8 @@ export default {
                 .put("/api/todos/update/" + this.$route.params.id, {
                     priority_id: this.todo.priority_id,
                     user_id: this.todo.user_id,
-                    date_created: this.todo.date_created,
+                    todo_created: this.todo.todo_created,
+                    todo_deadline: this.todo.todo_deadline,
                     status_id: this.todo.status_id,
                     type_id: this.todo.type_id,
                     contact_id: this.todo.contact_id,
@@ -251,7 +252,12 @@ export default {
                     //need to add color id later
                 })
                 .then((res) => {
-                    this.$router.push({ name: "todo_index" });
+                    this.$router.push({
+                        name: "todo_index",
+                        params: {
+                            selectedDate: this.todo.todo_created,
+                        },
+                    });
                 });
         },
 
@@ -312,7 +318,7 @@ export default {
 
         async getType() {
             await axios
-                .get("/api/contacttypes/index")
+                .get("/api/contacttype/index")
                 .then((res) => {
                     this.types = res.data.data;
                 })

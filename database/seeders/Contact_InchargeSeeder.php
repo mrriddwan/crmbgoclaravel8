@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\ContactIncharge;
+use App\Models\Contact\ContactIncharge;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -15,6 +15,6 @@ class Contact_InchargeSeeder extends Seeder
      */
     public function run()
     {
-        ContactIncharge::factory(1)->create();
+        ContactIncharge::factory(20)->create();
     }
 }

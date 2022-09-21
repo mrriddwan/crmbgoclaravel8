@@ -2,9 +2,9 @@
 
 namespace App\Models\Forecast;
 
-use App\Models\Contact;
-use App\Models\ContactType;
-use App\Models\ForecastProduct;
+use App\Models\Contact\Contact;
+use App\Models\Contact\ContactType;
+use App\Models\Forecast\ForecastProduct;
 use App\Models\Forecast\ForecastResult;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
