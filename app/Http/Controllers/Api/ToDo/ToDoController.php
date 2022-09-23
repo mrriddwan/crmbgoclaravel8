@@ -21,7 +21,7 @@ class ToDoController extends Controller
 
         $selectedSource = request('selectedSource');
         $selectedStatus = request('selectedStatus');
-        $selectedContact = request('selectedContact');
+        // $selectedContact = request('selectedContact');
         $selectedUser = request('selectedUser');
         $selectedTask = request('selectedTask');
         $selectedType = request('selectedType');
@@ -52,9 +52,9 @@ class ToDoController extends Controller
             ->when($selectedStatus, function ($query) use ($selectedStatus) {
                 $query->where('to_dos.status_id', $selectedStatus);
             })
-            ->when($selectedContact, function ($query) use ($selectedContact) {
-                $query->where('to_dos.contact_id', $selectedContact);
-            })
+            // ->when($selectedContact, function ($query) use ($selectedContact) {
+            //     $query->where('to_dos.contact_id', $selectedContact);
+            // })
             ->when($selectedSource, function ($query) use ($selectedSource) {
                 $query->where('to_dos.source_id', $selectedSource);
             })
@@ -87,7 +87,6 @@ class ToDoController extends Controller
 
         $selectedSource = request('selectedSource');
         $selectedStatus = request('selectedStatus');
-        $selectedContact = request('selectedContact');
         $selectedUser = request('selectedUser');
         $selectedTask = request('selectedTask');
         $selectedType = request('selectedType');
@@ -118,9 +117,6 @@ class ToDoController extends Controller
             ->leftJoin('actions', 'to_dos.action_id', '=', 'actions.id')
             ->when($selectedStatus, function ($query) use ($selectedStatus) {
                 $query->where('to_dos.status_id', $selectedStatus);
-            })
-            ->when($selectedContact, function ($query) use ($selectedContact) {
-                $query->where('to_dos.contact_id', $selectedContact);
             })
             ->when($selectedSource, function ($query) use ($selectedSource) {
                 $query->where('to_dos.source_id', $selectedSource);
@@ -158,7 +154,6 @@ class ToDoController extends Controller
 
         $selectedSource = request('selectedSource');
         $selectedStatus = request('selectedStatus');
-        $selectedContact = request('selectedContact');
         $selectedUser = request('selectedUser');
         $selectedTask = request('selectedTask');
         $selectedType = request('selectedType');
@@ -189,9 +184,6 @@ class ToDoController extends Controller
             ->leftJoin('actions', 'to_dos.action_id', '=', 'actions.id')
             ->when($selectedStatus, function ($query) use ($selectedStatus) {
                 $query->where('to_dos.status_id', $selectedStatus);
-            })
-            ->when($selectedContact, function ($query) use ($selectedContact) {
-                $query->where('to_dos.contact_id', $selectedContact);
             })
             ->when($selectedSource, function ($query) use ($selectedSource) {
                 $query->where('to_dos.source_id', $selectedSource);

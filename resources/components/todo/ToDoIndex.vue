@@ -211,6 +211,19 @@
                             "
                             >&darr;</span
                         >
+                        <select
+                            v-model="selectedSource"
+                            class="form-control form-control-sm"
+                        >
+                            <option value="">All</option>
+                            <option
+                                v-for="source in sources.data"
+                                :key="source.id"
+                                :value="source.id"
+                            >
+                                {{ source.name }}
+                            </option>
+                        </select>
                     </th>
                     <th class="text-sm text-center">
                         <a href="#" @click.prevent="change_sort('todo_date')">
@@ -303,6 +316,23 @@
                             "
                             >&darr;</span
                         >
+                        <div class="text-sm text-center h-6">
+                            <div class="text-sm text-center h-6">
+                                <select
+                                    v-model="selectedType"
+                                    class="form-control form-control-sm w-max"
+                                >
+                                    <option value="">All</option>
+                                    <option
+                                        v-for="contact_types in types.data"
+                                        :key="contact_types.id"
+                                        :value="contact_types.id"
+                                    >
+                                        {{ contact_types.name }}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
                     </th>
                     <th class="text-sm text-center">
                         <a
@@ -363,6 +393,23 @@
                             "
                             >&darr;</span
                         >
+                        <div class="text-sm text-center h-6">
+                            <div class="text-sm text-center h-6">
+                                <select
+                                    v-model="selectedTask"
+                                    class="form-control form-control-sm w-max"
+                                >
+                                    <option value="">All</option>
+                                    <option
+                                        v-for="task in tasks.data"
+                                        :key="task.id"
+                                        :value="task.id"
+                                    >
+                                        {{ task.name }}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
                     </th>
                     <th class="text-sm text-center">
                         <a href="#" @click.prevent="change_sort('todo_remark')">
@@ -384,7 +431,7 @@
                         >
                     </th>
                     <th class="text-sm text-center w-max">Action</th>
-                    <th> </th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -422,36 +469,38 @@
                     <td class="text-center align-middle w-20">
                         <div class="container">
                             <span v-if="todo.action"
-                            ><div
-                                class="text-xs break-words align-middle font-extrabold uppercase text-white bg-green-500 rounded-md py-1 px-1 text-center"
-                                >{{ todo.action.name }}</div
-                            >
-                        </span>
-                        <span v-else>
-                            <select
-                                id="selectAction"
-                                class="form-control form-control-sm"
-                                @change="
-                                    actionSelected(
-                                        this.todo_action.action_id,
-                                        todo.id,
-                                        todo.contact.id
-                                    )
-                                "
-                                v-model="todo_action.action_id"
-                            >
-                                <option disabled value="">Select Action</option>
-                                <option
-                                    v-for="action in actions.data"
-                                    :key="action.id"
-                                    :value="action.id"
+                                ><div
+                                    class="text-xs break-words align-middle font-extrabold uppercase text-white bg-green-500 rounded-md py-1 px-1 text-center"
                                 >
-                                    {{ action.name }}
-                                </option>
-                            </select>
-                        </span>
+                                    {{ todo.action.name }}
+                                </div>
+                            </span>
+                            <span v-else>
+                                <select
+                                    id="selectAction"
+                                    class="form-control form-control-sm"
+                                    @change="
+                                        actionSelected(
+                                            this.todo_action.action_id,
+                                            todo.id,
+                                            todo.contact.id
+                                        )
+                                    "
+                                    v-model="todo_action.action_id"
+                                >
+                                    <option disabled value="">
+                                        Select Action
+                                    </option>
+                                    <option
+                                        v-for="action in actions.data"
+                                        :key="action.id"
+                                        :value="action.id"
+                                    >
+                                        {{ action.name }}
+                                    </option>
+                                </select>
+                            </span>
                         </div>
-                        
                     </td>
                     <td>
                         <!-- params: { id: contactId, todoId: toDoId } -->
@@ -522,13 +571,16 @@ export default {
         this.getStatus();
         this.getActions();
         this.getUsers();
+        this.getSources();
+        this.getTasks();
+        this.getTypes();
         if (!this.$route.params.selectedDate) {
             this.currentDate = this.getCurrentDate();
             this.selectedDate = this.currentDate;
-            this.getToDos();
+            this.getToDosSelectDate();
         } else {
             this.selectedDate = this.$route.params.selectedDate;
-            this.getToDos();
+            this.getToDosSelectDate();
         }
         //initial date selection
         console.log(
@@ -562,17 +614,22 @@ export default {
 
     data() {
         return {
-            moment: moment,
+
             todos: [],
+            statuses: [],
+            tasks: [],
+            sources: [],
+            users: [],
+            types: [],
+
             paginate: 10,
             viewType: "day",
-            
+            moment: moment,
+
             search: "",
             todo: "",
-            statuses: "",
-            users: "",
 
-            selectedUser: 1,
+            selectedUser: "",
             selectedSource: "",
             selectedStatus: "",
             selectedType: "",
@@ -738,53 +795,53 @@ export default {
     },
 
     methods: {
-        getToDos(page = 1) {
-            if (typeof page === "undefined") {
-                page = 1;
-            }
-            axios
-                .get(
-                    "/api/todos/index?" +
-                        "q=" +
-                        this.search +
-                        "&selectedDate=" +
-                        this.selectedDate +
-                        "&selectedDateStart=" +
-                        this.selectedDateStart +
-                        "&selectedDateEnd=" +
-                        this.selectedDateEnd +
-                        "&selectedMonth=" +
-                        this.selectedMonth +
-                        "&selectedYear=" +
-                        this.selectedYear +
-                        "&selectedUser=" +
-                        this.selectedUser +
-                        "&selectedSource=" +
-                        this.selectedSource +
-                        "&selectedType=" +
-                        this.selectedType +
-                        "&selectedContact=" +
-                        this.selectedContact +
-                        "&selectedTask=" +
-                        this.selectedTask +
-                        "&selectedStatus=" +
-                        this.selectedStatus +
-                        "&paginate=" +
-                        this.paginate +
-                        "&page=" +
-                        page +
-                        "&sort_direction=" +
-                        this.sort_direction +
-                        "&sort_field=" +
-                        this.sort_field
-                )
-                .then((res) => {
-                    this.todos = res.data;
-                })
-                .catch((error) => {
-                    console.log(error);
-                });
-        },
+        // getToDos(page = 1) {
+        //     if (typeof page === "undefined") {
+        //         page = 1;
+        //     }
+        //     axios
+        //         .get(
+        //             "/api/todos/index?" +
+        //                 "q=" +
+        //                 this.search +
+        //                 "&selectedDate=" +
+        //                 this.selectedDate +
+        //                 "&selectedDateStart=" +
+        //                 this.selectedDateStart +
+        //                 "&selectedDateEnd=" +
+        //                 this.selectedDateEnd +
+        //                 "&selectedMonth=" +
+        //                 this.selectedMonth +
+        //                 "&selectedYear=" +
+        //                 this.selectedYear +
+        //                 "&selectedUser=" +
+        //                 this.selectedUser +
+        //                 "&selectedSource=" +
+        //                 this.selectedSource +
+        //                 "&selectedType=" +
+        //                 this.selectedType +
+        //                 "&selectedContact=" +
+        //                 this.selectedContact +
+        //                 "&selectedTask=" +
+        //                 this.selectedTask +
+        //                 "&selectedStatus=" +
+        //                 this.selectedStatus +
+        //                 "&paginate=" +
+        //                 this.paginate +
+        //                 "&page=" +
+        //                 page +
+        //                 "&sort_direction=" +
+        //                 this.sort_direction +
+        //                 "&sort_field=" +
+        //                 this.sort_field
+        //         )
+        //         .then((res) => {
+        //             this.todos = res.data;
+        //         })
+        //         .catch((error) => {
+        //             console.log(error);
+        //         });
+        // },
 
         getToDosSelectDate(page = 1) {
             if (typeof page === "undefined") {
@@ -911,6 +968,39 @@ export default {
                 });
         },
 
+        getSources() {
+            axios
+                .get("/api/sources/index")
+                .then((res) => {
+                    this.sources = res.data;
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        },
+
+        getTasks() {
+            axios
+                .get("/api/tasks/index")
+                .then((res) => {
+                    this.tasks = res.data;
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        },
+
+        getTypes() {
+            axios
+                .get("/api/contacttype/index")
+                .then((res) => {
+                    this.types = res.data;
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        },
+
         getStatus() {
             axios
                 .get("/api/contactstatus/index")
@@ -940,7 +1030,7 @@ export default {
                 } else {
                     this.sort_field = field;
                 }
-                this.getToDos();
+                this.getToDosSelectDate();
             } else if (this.viewType === "month") {
                 if (this.sort_field == field) {
                     this.sort_direction =
@@ -1013,7 +1103,7 @@ export default {
                 return;
             }
             axios.delete("/api/todos/delete/" + id);
-            this.getToDos();
+            this.getToDosSelectDate();
         },
 
         actionSelected(action, toDoId, contactId) {
@@ -1029,7 +1119,7 @@ export default {
             alert("Task updated");
             this.$router.push({
                 name: "followup_create",
-                params: { id: contactId, todoId: toDoId },
+                params: { id: contactId, todo_id: toDoId },
             });
         },
 

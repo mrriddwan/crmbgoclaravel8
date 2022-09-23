@@ -15,6 +15,7 @@ use App\Http\Controllers\Api\Forecast\ForecastResultController;
 use App\Http\Controllers\Api\Project\ProjectController;
 use App\Http\Controllers\Api\ToDo\TaskController;
 use App\Http\Controllers\Api\ToDo\ToDoController;
+use App\Http\Controllers\Api\ToDo\ToDoSourceController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -77,6 +78,7 @@ Route::get('/todos/info/{todo}', [ToDoController::class, 'info'])->name('todo:in
 /*Sub-To Do API*/
 Route::get('/tasks/index', [TaskController::class, 'index'])->name('task:index');
 Route::get('/actions/index', [ActionController::class, 'index'])->name('action:index');
+Route::get('/sources/index', [ToDoSourceController::class, 'index'])->name('source:index');
 
 /*Follow Up API*/
 Route::get('/followups/index', [FollowUpController::class, 'index'])->name('followup:index');

@@ -26,7 +26,7 @@ class FollowUpRequest extends FormRequest
         return [
             'priority_id' => ['nullable', 'int'],
             'followup_date' => ['required', 'date'],
-            'followup_time'=> ['required', 'date_format:H:i'],
+            'followup_time'=> ['required', 'date_format:H:i:s'],
             'task_id'=> ['required', 'int'],
             'followup_remark'=> ['nullable', 'string'],
             'contact_id' => ['required', 'int'],

@@ -7,6 +7,7 @@ use App\Http\Requests\ToDo\FollowUpRequest;
 use App\Http\Resources\FollowUp\FollowUpResource;
 use App\Models\FollowUp\FollowUp;
 use App\Models\ToDo;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class FollowUpController extends Controller
@@ -36,7 +37,7 @@ class FollowUpController extends Controller
             'tasks.name as task_name',
             'priorities.name as priority_name',
             'contacts.name as contact_name',
-        ])  
+        ])
             ->join('contacts', 'follow_ups.contact_id', '=', 'contacts.id')
             ->join('contact_statuses', 'follow_ups.status_id', '=', 'contact_statuses.id')
             ->join('contact_types', 'follow_ups.type_id', '=', 'contact_types.id')
@@ -67,15 +68,77 @@ class FollowUpController extends Controller
     }
     // whereDate('created_at', '=', date('Y-m-d'))
 
-    public function store(FollowUpRequest $request)
+    public function store(Request $request)
     {
-        $followup = FollowUp::create($request->validated());
+        // $followupTime = strtotime($request->followup_time);
+        $followupTime = Carbon::parse($request->followup_time)->format('H:i:s');
+
+        echo("this is the follow up time: " . $followupTime);
+
+        $request->validate([
+            'priority_id' => ['nullable', 'int'],
+            'followup_date' => ['required', 'date'],
+            'followup_time' => ['required', 'date_format:H:i:s'],
+            'task_id' => ['required', 'int'],
+            'followup_remark' => ['nullable', 'string'],
+            'contact_id' => ['required', 'int'],
+            'user_id' => ['required', 'int'],
+            'status_id' => ['required', 'int'],
+            'type_id' => ['required', 'int'],
+            'todo_id' => ['required', 'int'],
+        ], [
+            'followup_date.required' => 'The start date is required',
+            'task_id.required' => 'Please select the task',
+        ]);
+
+        $followup = FollowUp::create([
+                'priority_id' => $request->priority_id,
+                'followup_date' => $request->followup_date,
+                'followup_time' => $followupTime ,
+                'followup_remark' => $request->followup_remark,
+                'contact_id' => $request->contact_id,
+                'user_id' => $request->user_id,
+                'task_id' => $request->task_id,
+                'status_id' => $request->status_id,
+                'type_id' => $request->type_id,
+                'todo_id' => $request->todo_id,
+            ]);
 
         return response()->json([
             'data' => $followup,
             'status' => true,
-            'message' => 'Successfully store new follow up',
+            'message' => 'Successfully store new follow up time:'.$followupTime,
         ]);
+
+        // $request->validate([
+        //     'todo_date' => 'required', 'date',
+        //     'contact_id' => 'required', 'int',
+        //     'user_id' => 'required', 'int',
+        //     'task_id' => 'required', 'int',
+        // ], [
+        //     'todo_date.required' => 'The date is required',
+        //     'task_id.required' => 'The task is required.'
+        // ]);
+
+        // $todo = ToDo::create([
+        //     'priority_id' => $request->priority_id,
+        //     'todo_date' => $request->todo_date,
+        //     'todo_deadline' => $request->todo_deadline ?? '2000-01-01',
+        //     'contact_id' => $request->contact_id,
+        //     'user_id' => $request->user_id,
+        //     'task_id' => $request->task_id,
+        //     'status_id' => $request->status_id,
+        //     'type_id' => $request->type_id,
+        //     'todo_remark' => $request->todo_remark ?? "None",
+        //     'color_id' => $request->color_id ?? '1',
+        //     'source_id' => $request->source_id
+        // ]);
+
+        // return response()->json([
+        //     'data' => $todo,
+        //     'status' => true,
+        //     'message' => 'Successfully store employee',
+        // ]);
     }
 
     public function update(Request $request, followup $followup)
@@ -100,7 +163,7 @@ class FollowUpController extends Controller
             'data' => $followup,
         ]);
     }
-    
+
     public function action(Request $request, FollowUp $followup)
     {
         $followup->update([

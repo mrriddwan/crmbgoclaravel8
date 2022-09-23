@@ -177,7 +177,7 @@
                                 >
                             </div>
                         </th>
-                        <th class="py-3">
+                        <th class="py-3 align-middle text-center">
                             <div class="text-sm text-center h-6">
                                 <a
                                     href="#"
@@ -203,8 +203,8 @@
                                 >
                             </div>
                         </th>
-                        <th class="py-3 col-span-2 w-max">
-                            <div class="text-sm text-center h-6 w-full">
+                        <th class="py-3 w-max">
+                            <div class="text-sm text-center h-6 w-max">
                                 <a
                                     href="#"
                                     @click.prevent="change_sort('contact_name')"
@@ -225,16 +225,7 @@
                                     "
                                     >&darr;</span
                                 >
-                                <div class="text-sm text-center h-6">
-                                    <input
-                                        v-model.lazy="search"
-                                        type="search"
-                                        class="w-full placeholder:text-xs placeholder:text-center mt-1 h-8"
-                                        placeholder="Search company"
-                                    />
-                                </div>
                             </div>
-                            <div class="text-sm text-center h-6"></div>
                         </th>
                         <th class="py-3">
                             <div class="text-sm text-center h-6">
@@ -335,16 +326,6 @@
                                     >&darr;</span
                                 >
                             </div>
-                            <!-- <div class="text-sm text-center h-6">
-                                <div class="text-sm text-center h-6">
-                                    <input
-                                        v-model.lazy="search"
-                                        type="search"
-                                        class="w-16 placeholder:text-xs placeholder:text-center h-8"
-                                        placeholder="Search type"
-                                    />
-                                </div>
-                            </div> -->
                         </th>
                         <th class="py-3">
                             <div class="text-sm text-center h-6">
@@ -372,16 +353,6 @@
                                     >&darr;</span
                                 >
                             </div>
-                            <!-- <div class="text-sm text-center h-6">
-                                <div class="text-sm text-center h-6">
-                                    <input
-                                        v-model.lazy="search"
-                                        type="search"
-                                        class="w-16 placeholder:text-xs placeholder:text-center h-8"
-                                        placeholder="Search industry"
-                                    />
-                                </div>
-                            </div> -->
                         </th>
                         <th class="py-3">
                             <div class="text-sm text-center h-6">

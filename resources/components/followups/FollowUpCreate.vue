@@ -150,7 +150,6 @@ export default {
             users: [],
             contact: [],
             errors: "",
-            todoId: ""
         };
     },
 
@@ -158,24 +157,25 @@ export default {
         this.getTasks();
         this.getUsers();
         this.showContact();
-        this.todoId = this.$route.params.todoId
-        console.log("this is the todoID: "+ this.todoID)
+        console.log("this is the route todo_id: " + this.$route.params.todo_id);
     },
 
     methods: {
-
         async createFollowUp() {
             // const form = document.getElementById('inchargeForm');
             const contact = this.contact.data;
-            
+            // const toDoID = this.$route.params.data;
             try {
                 await axios.post("/api/followups/store", {
                     priority_id: this.form.priority_id === "" ? 2 : 1,
                     followup_date: this.form.followup_date,
-                    followup_time: moment(this.form.followup_time).format('LTS'),
+                    followup_time: this.form.followup_time + ":00",
+                    // followup_time: this.formatTime(this.form.followup_time),
                     task_id: this.form.task_id,
-                    followup_remark: this.form.followup_remark,
-                    todo_id: this.todoId,
+                    followup_remark: this.form.followup_remark
+                        ? this.form.followup_remark
+                        : "No remark",
+                    todo_id: Number(this.$route.params.todo_id),
                     contact_id: contact.id,
                     user_id: contact.user_id,
                     status_id: contact.status_id,
@@ -192,25 +192,36 @@ export default {
                         type_id: contact.type_id,
                         contact_id: contact.id,
                         task_id: this.form.task_id,
-                        todo_remark: (this.form.followup_remark = ""
-                            ? "No remark"
-                            : this.form.followup_remark),
+                        todo_remark: this.form.followup_remark
+                            ? this.form.followup_remark
+                            : "No remark",
                         source_id: 2,
                     })
+
                     .then((res) => {
-                        this.$router.push({ name: "followup_index" });
+                        this.$router.push({
+                            name: "followup_index",
+                            params: {
+                                selectedMonth: this.getSelectedMonth(this.form.todo_date),
+                                selectedYear: this.getSelectedYear(this.form.todo_date),
+                            },
+                        })
+                        
                     });
             } catch (e) {
                 {
                     if (e.response.status === 422) {
                         this.errors = e.response.data.errors;
+                    } else {
+                        console.log(this.errors = e.response.data.errors)
                     }
                 }
             }
         },
 
         async showContact() {
-            await axios.get("/api/contacts/show/" + this.$route.params.id)
+            await axios
+                .get("/api/contacts/show/" + this.$route.params.id)
                 .then((res) => {
                     this.contact = res.data;
                 })
@@ -220,7 +231,8 @@ export default {
         },
 
         async getTasks() {
-            await axios.get("/api/tasks/index")
+            await axios
+                .get("/api/tasks/index")
                 .then((res) => {
                     this.tasks = res.data.data;
                 })
@@ -230,7 +242,8 @@ export default {
         },
 
         async getUsers() {
-            await axios.get("/api/users/index")
+            await axios
+                .get("/api/users/index")
                 .then((res) => {
                     this.users = res.data.data;
                 })
@@ -238,6 +251,21 @@ export default {
                     console.log(error);
                 });
         },
+
+        getSelectedMonth(date) {
+            this.selectedMonth = moment(date).format("MM");
+            return this.selectedMonth;
+        },
+
+        getSelectedYear(date) {
+            this.selectedYear = moment(date).format("YYYY");
+            return this.selectedYear;
+        },
+
+        formatTime(time){
+            let followuptime = moment(time, ).format("hh:mm:ss");
+            return followuptime;
+        }
     },
     components: { GoBack },
 };

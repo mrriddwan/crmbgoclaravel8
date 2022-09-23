@@ -48,6 +48,12 @@ const routes = [
     */
 
     {
+        path: "/",
+        name: "home",
+        component: ContactIndex,
+    },
+
+    {
         path: "/contact/index",
         name: "contact_index",
         component: ContactIndex,
@@ -137,9 +143,10 @@ const routes = [
     },
 
     {
-        path: "/followup/:id/create",
+        path: "/followup/:id/:todo_id/create",
         name: "followup_create",
         component: FollowUpCreate,
+        props: true
     },
     /*                                                  
             Forecast Routes 
@@ -152,9 +159,10 @@ const routes = [
     },
 
     {
-        path: "/forecast/:id/create",
+        path: "/forecast/:id/create/",
         name: "forecast_create",
         component: ForecastCreate,
+        props: true
     },
 
     {

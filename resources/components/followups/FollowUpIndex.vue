@@ -160,7 +160,7 @@
                             href="#"
                             @click.prevent="change_sort('followup_date')"
                         >
-                            Date Created
+                            Date of Follow Up
                         </a>
                         <span
                             v-if="
@@ -176,6 +176,7 @@
                             "
                             >&darr;</span
                         >
+                        <div></div>
                     </th>
                     <th>
                         <a
@@ -368,8 +369,13 @@ export default {
         this.getStatus();
         this.getActions();
         this.getUsers();
+        console.log("this is the route params from follow up, month?:" + this.$route.params.selectedMonth);
+        console.log("this is the route params from follow up, year?:" + this.$route.params.selectedYear);
+
         this.$route.params.length !== 0
-            ? (this.currentDate = this.$route.params.selectedDate)
+            ? // ? (this.currentDate = this.$route.params.selectedDate)
+              (this.selectedMonth = this.$route.params.selectedMonth) &&
+              (this.selectedYear = this.$route.params.selectedYear)
             : (this.currentDate = this.getCurrentDate());
         //initial date selection
         console.log(
@@ -681,7 +687,7 @@ export default {
             alert("Task updated");
             this.$router.push({
                 name: "followup_create",
-                params: { id: contactId, todoId: toDoId },
+                params: { id: contactId, todo_id: toDoId },
             });
         },
 
