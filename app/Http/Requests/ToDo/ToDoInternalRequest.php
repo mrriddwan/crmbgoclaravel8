@@ -25,7 +25,7 @@ class ToDoInternalRequest extends FormRequest
     {
         return [
             'priority_id' => ['required', 'int'],
-            'todo_created' => ['required', 'date'],
+            'todo_date' => ['required', 'date'],
             'todo_deadline' => ['required', 'date'],
             'contact_id' => ['required', 'int'],
             'user_id' => ['required', 'int'],
@@ -42,7 +42,7 @@ class ToDoInternalRequest extends FormRequest
     {
         return [
             'user_id.required' => 'Please select the user',
-            'todo_created.required' => 'The start date is required',
+            'todo_date.required' => 'The start date is required',
             'todo_deadline.required' => 'The end date is required',
             'status_id.required' => 'Please select the contact status',
             'contact_id.required' => 'Please select the contact name',

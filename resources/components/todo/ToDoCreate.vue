@@ -68,7 +68,7 @@
                         <input
                             type="date"
                             class="block mt-1 w-max rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                            v-model="form.todo_created"
+                            v-model="form.todo_date"
                         />
                     </div>
                     <div class="form-group">
@@ -205,7 +205,7 @@ export default {
             contact_id: "",
             type_id: "",
             status_id: "",
-            todo_created: "",
+            todo_date: "",
             todo_deadline: "",
             task_id: "",
             todo_remark: "",

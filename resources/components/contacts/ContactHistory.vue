@@ -34,7 +34,7 @@
                             class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 text-gray-900 font-bold"
                         >
                             <td class="py-4 px-6">
-                                {{ history.todo_created }}
+                                {{ history.todo_date }}
                             </td>
                             <td class="py-4 px-6">{{ history.user.name }}</td>
                             <td class="py-4 px-6">{{ history.task.name }}</td>
@@ -51,7 +51,7 @@
                                         name: 'todo_index',
                                         params: {
                                             selectedDate:
-                                            history.todo_created,
+                                            history.todo_date,
                                         },
                                     }"
                                     class="mr-2 mb-2 inline-flex items-center px-2 py-1 bg-blue-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"

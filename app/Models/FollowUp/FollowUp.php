@@ -8,6 +8,7 @@ use App\Models\Contact\ContactType;
 use App\Models\ToDo\Priority;
 use App\Models\ToDo\Task;
 use App\Models\ToDo\ToDo;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -16,7 +17,7 @@ class FollowUp extends Model
     use HasFactory;
 
     protected $fillable = [
-        'followup_created',
+        'followup_date',
         'followup_deadline',
         'contact_id',
         'user_id',
@@ -62,7 +63,7 @@ class FollowUp extends Model
         $term = "%$term%";
 
         $query->where(function($query) use ($term){
-            $query->where('followup_created', 'like', $term)
+            $query->where('followup_date', 'like', $term)
                 ->orWhere('followup_time', 'like', $term)
                 ->orWhere('follow_ups.followup_remark', 'like', $term)
                 ->orWhereHas('user', function ($query) use ($term) {

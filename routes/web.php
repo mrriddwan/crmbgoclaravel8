@@ -12,18 +12,45 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-require __DIR__.'/auth.php';
+
+require __DIR__ . '/auth.php';
+
+// Route::get('/', function () {
+//     return view('welcome');
+// });
 
 Route::get('/', function () {
-    return view('welcome');
+        return view('contact');
 });
 
-Route::view('/{any}', 'dashboard')
+Route::get('/', function () {
+    return view('contact');
+})->middleware(['auth'])->name('contact');
+
+Route::view('/{any}', 'contact')
     ->middleware(['auth'])
     ->where('any', '.*');
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
+// Route::get('/dashboard', function () {
+//     return view('dashboard');
+// })->middleware(['auth'])->name('dashboard');
 
+Route::get('/contact/index', function () {
+    return view('contact');
+})->middleware(['auth'])->name('contact');
 
+Route::get('/todo/index', function () {
+    return view('todo');
+})->middleware(['auth'])->name('todo');
+
+Route::get('/followup/index', function () {
+    return view('followup');
+})->middleware(['auth'])->name('followup');
+
+Route::get('/forecast/index', function () {
+    return view('forecast');
+})->middleware(['auth'])->name('forecast');
+
+Route::get('/project/index', function () {
+    return view('project');
+})->middleware(['auth'])->name('project');

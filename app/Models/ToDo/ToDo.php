@@ -15,7 +15,7 @@ class ToDo extends Model
     use HasFactory;
 
     protected $fillable = [
-        'todo_created',
+        'todo_date',
         'todo_deadline',
         'contact_id',
         'user_id',
@@ -65,14 +65,12 @@ class ToDo extends Model
         return $this -> belongsTo(ToDoSource::class);
     }
 
-
-
     public function scopeSearch($query, $term)
     {   
         $term = "%$term%";
 
         $query->where(function($query) use ($term){
-            $query->where('todo_created', 'like', $term)
+            $query->where('todo_date', 'like', $term)
                 ->orWhere('todo_deadline', 'like', $term)
                 ->orWhere('to_dos.todo_remark', 'like', $term)
                 ->orWhereHas('user', function ($query) use ($term) {

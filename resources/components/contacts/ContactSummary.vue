@@ -1,5 +1,5 @@
 <template>
-    <!-- <router-link
+    <router-link
         to="/dashboard"
         class="inline-block items-center px-2 py-1 bg-gray-400 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
     >
@@ -28,29 +28,12 @@
         class="inline-block items-center px-2 py-1 bg-cyan-400 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
     >
         Project</router-link
-    > -->
-    <h1
-        class="items-center text-center text-6xl text-white font-extrabold bg-slate-400 px-2 rounded-md"
     >
-        Contact List
+    <h1
+        class="items-center text-center text-4xl text-white font-extrabold bg-slate-400 px-2 rounded-md"
+    >
+        Contact Summary
     </h1>
-
-    <div class="flex">
-        <router-link
-            to="/contact/create"
-            class="inline-block items-center px-2 py-1 bg-gray-800 border border-transparent rounded-md font-semibold text-sm text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
-        >
-            <UserPlusIcon class="h-6 w-6 inline" /> contact</router-link
-        >
-
-        <div class="py-2 ml-3 inline-block">
-            <router-link
-                to="/contact/summary"
-                class="inline-block items-center px-2 py-1 bg-slate-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
-                >Contact Summary</router-link
-            >
-        </div>
-    </div>
 
     <div class="">
         <div class="grid grid-cols-2 items-center">
@@ -89,13 +72,14 @@
             <table class="table table-hover table-bordered w-full">
                 <thead class="bg-slate-400 border-b sticky top-0">
                     <tr>
-                        <th class="py-3">
-                            <div class="text-sm text-center h-6">
+                        <th>No.</th>
+                        <!-- <th class="py-3">
+                            <div class="text-xs text-center h-6">
                                 <a
                                     href="#"
                                     @click.prevent="change_sort('created_at')"
                                 >
-                                    Date Created
+                                    Date<br />Created
                                 </a>
                                 <span
                                     v-if="
@@ -112,18 +96,9 @@
                                     >&darr;</span
                                 >
                             </div>
-
-                            <div class="text-sm text-center h-6">
-                                <input
-                                    v-model.lazy="search"
-                                    type="search"
-                                    class="w-16 placeholder:text-xs placeholder:text-center h-8"
-                                    placeholder="Search date"
-                                />
-                            </div>
-                        </th>
+                        </th> -->
                         <th class="py-3">
-                            <div class="text-sm text-center h-6">
+                            <div class="text-xs text-center h-6">
                                 <a
                                     href="#"
                                     @click.prevent="change_sort('user_name')"
@@ -145,17 +120,29 @@
                                     >&darr;</span
                                 >
                             </div>
-                            <div class="text-sm text-center h-6">
-                                <input
-                                    v-model.lazy="search"
-                                    type="search"
-                                    class="w-16 placeholder:text-xs placeholder:text-center h-8"
-                                    placeholder="Search user"
-                                />
+                            <div
+                                class="items-center text-xs text-center h-6 w-24"
+                            >
+                                <select
+                                    v-model="selectedUser"
+                                    class="form-control form-control-sm text-xs"
+                                >
+                                    <option class="text-xs" value="">
+                                        All
+                                    </option>
+                                    <option
+                                        class="text-xs"
+                                        v-for="user in users.data"
+                                        :key="user.id"
+                                        :value="user.id"
+                                    >
+                                        {{ user.name }}
+                                    </option>
+                                </select>
                             </div>
                         </th>
                         <th class="py-3">
-                            <div class="text-sm text-center h-6">
+                            <div class="text-xs text-center h-6">
                                 <a
                                     href="#"
                                     @click.prevent="change_sort('status_name')"
@@ -177,7 +164,7 @@
                                     >&darr;</span
                                 >
                             </div>
-                            <div class="text-sm text-center h-6">
+                            <div class="text-xs text-center h-6">
                                 <select
                                     v-model="selectedStatus"
                                     class="form-control form-control-sm"
@@ -194,7 +181,7 @@
                             </div>
                         </th>
                         <th class="py-3">
-                            <div class="text-sm text-center h-6">
+                            <div class="text-xs text-center h-6">
                                 <a
                                     href="#"
                                     @click.prevent="change_sort('type_name')"
@@ -216,53 +203,71 @@
                                     >&darr;</span
                                 >
                             </div>
-                            <div class="text-sm text-center h-6">
-                                <div class="text-sm text-center h-6">
-                                    <input
-                                        v-model.lazy="search"
-                                        type="search"
-                                        class="w-16 placeholder:text-xs placeholder:text-center h-8"
-                                        placeholder="Search type"
-                                    />
+                            <div class="text-xs text-center h-6">
+                                <div class="text-xs text-center h-6">
+                                    <select
+                                        v-model="selectedType"
+                                        class="form-control form-control-sm w-max"
+                                    >
+                                        <option value="">All</option>
+                                        <option
+                                            v-for="contact_type in types.data"
+                                            :key="contact_type.id"
+                                            :value="contact_type.id"
+                                        >
+                                            {{ contact_type.name }}
+                                        </option>
+                                    </select>
                                 </div>
                             </div>
                         </th>
+
                         <th class="py-3">
-                            <div class="text-sm text-center h-6">
+                            <div class="text-xs text-center h-6">
                                 <a
                                     href="#"
-                                    @click.prevent="change_sort('industry')"
+                                    @click.prevent="
+                                        change_sort('category_name')
+                                    "
                                 >
-                                    Industry
+                                    Category
                                 </a>
                                 <span
                                     v-if="
                                         sort_direction == 'desc' &&
-                                        sort_field == 'industry'
+                                        sort_field == 'type_name'
                                     "
                                     >&uarr;</span
                                 >
                                 <span
                                     v-if="
                                         sort_direction == 'asc' &&
-                                        sort_field == 'industry'
+                                        sort_field == 'type_name'
                                     "
                                     >&darr;</span
                                 >
                             </div>
-                            <div class="text-sm text-center h-6">
-                                <div class="text-sm text-center h-6">
-                                    <input
-                                        v-model.lazy="search"
-                                        type="search"
-                                        class="w-16 placeholder:text-xs placeholder:text-center h-8"
-                                        placeholder="Search industry"
-                                    />
+                            <div class="text-xs text-center h-6">
+                                <div class="text-xs text-center h-6">
+                                    <select
+                                        v-model="selectedCategory"
+                                        class="form-control form-control-sm w-max"
+                                    >
+                                        <option value="">All</option>
+                                        <option
+                                            v-for="category in categories.data"
+                                            :key="category.id"
+                                            :value="category.id"
+                                        >
+                                            {{ category.name }}
+                                        </option>
+                                    </select>
                                 </div>
                             </div>
                         </th>
+
                         <th class="py-3">
-                            <div class="text-sm text-center h-6">
+                            <div class="text-xs text-center h-6">
                                 <a
                                     href="#"
                                     @click.prevent="change_sort('name')"
@@ -284,8 +289,8 @@
                                     >&darr;</span
                                 >
                             </div>
-                            <div class="text-sm text-center h-6">
-                                <div class="text-sm text-center h-6">
+                            <!-- <div class="text-xs text-center h-6">
+                                <div class="text-xs text-center h-6">
                                     <input
                                         v-model.lazy="search"
                                         type="search"
@@ -293,127 +298,60 @@
                                         placeholder="Search contact"
                                     />
                                 </div>
-                            </div>
+                            </div> -->
                         </th>
                         <th class="py-3">
-                            <div class="text-sm text-center h-6">
-                                <a
-                                    href="#"
-                                    @click.prevent="
-                                        change_sort('category_name')
-                                    "
-                                >
-                                    Category
-                                </a>
-                                <span
-                                    v-if="
-                                        sort_direction == 'desc' &&
-                                        sort_field == 'category_name'
-                                    "
-                                    >&uarr;</span
-                                >
-                                <span
-                                    v-if="
-                                        sort_direction == 'asc' &&
-                                        sort_field == 'category_name'
-                                    "
-                                    >&darr;</span
-                                >
-                            </div>
-                            <div class="text-sm text-center h-6">
-                                <div class="text-sm text-center h-6">
-                                    <input
-                                        v-model.lazy="search"
-                                        type="search"
-                                        class="w-16 placeholder:text-xs placeholder:text-center h-8"
-                                        placeholder="Search category"
-                                    />
-                                </div>
-                            </div>
+                            <div class="text-xs text-center">Jan</div>
                         </th>
                         <th class="py-3">
-                            <div class="text-sm text-center h-6">
-                                <a
-                                    href="#"
-                                    @click.prevent="change_sort('address')"
-                                >
-                                    Address
-                                </a>
-                                <span
-                                    v-if="
-                                        sort_direction == 'desc' &&
-                                        sort_field == 'address'
-                                    "
-                                    >&uarr;</span
-                                >
-                                <span
-                                    v-if="
-                                        sort_direction == 'asc' &&
-                                        sort_field == 'address'
-                                    "
-                                    >&darr;</span
-                                >
-                            </div>
-                            <div class="text-sm text-center h-6">
-                                <div class="text-sm text-center h-6">
-                                    <input
-                                        v-model.lazy="search"
-                                        type="search"
-                                        class="w-16 placeholder:text-xs placeholder:text-center h-8"
-                                        placeholder="Search address"
-                                    />
-                                </div>
-                            </div>
+                            <div class="text-xs text-center">Feb</div>
                         </th>
                         <th class="py-3">
-                            <div class="text-sm text-center h-6">
-                                <a
-                                    href="#"
-                                    @click.prevent="change_sort('remark')"
-                                >
-                                    Remark
-                                </a>
-                                <span
-                                    v-if="
-                                        sort_direction == 'desc' &&
-                                        sort_field == 'remark'
-                                    "
-                                    >&uarr;</span
-                                >
-                                <span
-                                    v-if="
-                                        sort_direction == 'asc' &&
-                                        sort_field == 'remark'
-                                    "
-                                    >&darr;</span
-                                >
-                            </div>
-                            <div class="text-sm text-center h-6">
-                                <div class="text-sm text-center h-6">
-                                    <input
-                                        v-model.lazy="search"
-                                        type="search"
-                                        class="w-16 placeholder:text-xs placeholder:text-center h-8"
-                                        placeholder="Search remark"
-                                    />
-                                </div>
-                            </div>
+                            <div class="text-xs text-center">Mar</div>
                         </th>
                         <th class="py-3">
-                            <div class="text-sm text-center h-6">Action</div>
-                            <div class="text-sm text-center h-6"></div>
+                            <div class="text-xs text-center">Apr</div>
+                        </th>
+                        <th class="py-3">
+                            <div class="text-xs text-center">May</div>
+                        </th>
+                        <th class="py-3">
+                            <div class="text-xs text-center">June</div>
+                        </th>
+                        <th class="py-3">
+                            <div class="text-xs text-center">July</div>
+                        </th>
+                        <th class="py-3">
+                            <div class="text-xs text-center">Aug</div>
+                        </th>
+                        <th class="py-3">
+                            <div class="text-xs text-center">Sept</div>
+                        </th>
+                        <th class="py-3">
+                            <div class="text-xs text-center">Oct</div>
+                        </th>
+                        <th class="py-3">
+                            <div class="text-xs text-center">Nov</div>
+                        </th>
+                        <th class="py-3">
+                            <div class="text-xs text-center">Dec</div>
                         </th>
                     </tr>
                 </thead>
                 <tbody class="mt-2">
-                    <tr v-for="contact in contacts.data" :key="contact.id">
-                        <td class="text-xs">{{ contact.created_at }}</td>
-                        <td class="text-xs">{{ contact.user.name }}</td>
-                        <td class="text-xs">{{ contact.status.name }}</td>
-                        <td class="text-xs">{{ contact.type.name }}</td>
-                        <td class="text-xs">{{ contact.industry.name }}</td>
+                    <tr
+                        v-for="(contact, index) in contacts.data"
+                        :key="contact.id"
+                    >
+                        <td class="text-xs">{{ index + 1 }}</td>
+                        <!-- <td class="text-xs">{{ contact.created_at }}</td> -->
+                        <td class="text-xs">{{ contact.user_name }}</td>
+                        <td class="text-xs">{{ contact.status_name }}</td>
+                        <td class="text-xs">{{ contact.type_name }}</td>
+                        <td class="text-xs">{{ contact.category_name }}</td>
                         <td class="text-xs">
                             <router-link
+                                class="mr-2"
                                 :to="`/contact/${contact.id}/info`"
                                 custom
                                 v-slot="{ navigate, href }"
@@ -423,36 +361,36 @@
                                 }}</a>
                             </router-link>
                         </td>
-                        <td class="text-xs">{{ contact.category.name }}</td>
-                        <td class="text-xs">{{ contact.address }}</td>
-                        <td class="text-xs">{{ contact.remark }}</td>
+                        <!-- <td class="text-xs">{{ contact.summary.todo_date }}</td> -->
+                        <!-- <tr> -->
+                        <!-- <td class="text-xs">1</td> -->
+                        <!-- <td class="text-xs">Date</td> -->
+                        <!-- <td class="text-xs">User</td>
+                        <td class="text-xs">Status</td>
+                        <td class="text-xs">Type</td>
+                        <td class="text-xs">Category</td>
+                        <td class="text-xs">Company</td> -->
                         <td class="text-xs">
-                            <router-link
-                                :to="{
-                                    name: 'todo_insert',
-                                    params: { id: contact.id },
-                                }"
-                                class="mr-2 mb-2 inline-flex items-center px-2 py-1 bg-green-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
-                            >
-                                <PlusIcon class="h-5 w-5 mr-1" /> To
-                                Do</router-link
-                            >
-                            <router-link
-                                :to="{
-                                    name: 'contacts_edit',
-                                    params: { id: contact.id },
-                                }"
-                                class="mr-2 mb-2 inline-flex items-center px-2 py-1 bg-yellow-400 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
-                            >
-                                <PencilSquareIcon class="h-3 w-3"
-                            /></router-link>
-                            <button
-                                class="mr-2 mb-2 inline-flex items-center px-2 py-1 bg-red-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
-                                @click="deletecontact(contact.id)"
-                            >
-                                <TrashIcon class="h-3 w-3" />
-                            </button>
+                            Jan
+                            <span></span>
                         </td>
+                        <td class="text-xs">
+                            <span
+                                v-for="summary_info in contact.summary"
+                                :key="summary_info.id"
+                                >{{ summary_info.todo_date }} <br/></span
+                            >
+                        </td>
+                        <td class="text-xs">Mar</td>
+                        <td class="text-xs">Apr</td>
+                        <td class="text-xs">May</td>
+                        <td class="text-xs">June</td>
+                        <td class="text-xs">July</td>
+                        <td class="text-xs">Aug</td>
+                        <td class="text-xs">Sep</td>
+                        <td class="text-xs">Oct</td>
+                        <td class="text-xs">Nov</td>
+                        <td class="text-xs">Dec</td>
                     </tr>
                 </tbody>
             </table>
@@ -482,23 +420,27 @@ export default {
     mounted() {
         this.getContacts();
         this.getStatus();
-
+        this.getTypes();
+        this.getUsers();
+        this.getCategories();
     },
     data() {
         return {
             contacts: [],
-            types: [],
+            statuses: [],
             users: [],
-            status: [],
-
+            types: [],
+            categories: [],
             paginate: 50,
 
             search: "",
             selectedStatus: "",
+            selectedUser: "",
+            selectedType: "",
+            selectedCategory: "",
 
-            sort_direction: "desc",
-            sort_field: "created_at",
-            statuses: "",
+            sort_direction: "asc",
+            sort_field: "id",
         };
     },
     watch: {
@@ -511,20 +453,32 @@ export default {
         selectedStatus: function (value) {
             this.getContacts();
         },
+        selectedUser: function (value) {
+            this.getContacts();
+        },
+        selectedType: function (value) {
+            this.getContacts();
+        },
     },
 
     methods: {
-        getContacts(page = 1) {
+        async getContacts(page = 1) {
             if (typeof page === "undefined") {
                 page = 1;
             }
-            axios
+            await axios
                 .get(
-                    "/api/contacts/index?" +
+                    "/api/contacts/summary?" +
                         "q=" +
                         this.search +
                         "&selectedStatus=" +
                         this.selectedStatus +
+                        "&selectedUser=" +
+                        this.selectedUser +
+                        "&selectedType=" +
+                        this.selectedType +
+                        "&selectedCategory=" +
+                        this.selectedCategory +
                         "&paginate=" +
                         this.paginate +
                         "&page=" +
@@ -541,8 +495,31 @@ export default {
                     console.log(error);
                 });
         },
-        getStatus() {
-            axios
+
+        async getUsers() {
+            await axios
+                .get("/api/users/index")
+                .then((res) => {
+                    this.users = res.data;
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        },
+
+        async getTypes() {
+            await axios
+                .get("/api/contacttype/index")
+                .then((res) => {
+                    this.types = res.data;
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        },
+
+        async getStatus() {
+            await axios
                 .get("/api/contactstatus/index")
                 .then((res) => {
                     this.statuses = res.data;
@@ -552,24 +529,25 @@ export default {
                 });
         },
 
-        change_sort(field) {
+        async getCategories() {
+            await axios
+                .get("/api/contactcategory/index")
+                .then((res) => {
+                    this.categories = res.data;
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        },
+
+        async change_sort(field) {
             if (this.sort_field == field) {
                 this.sort_direction =
                     this.sort_direction == "asc" ? "desc" : "asc";
             } else {
                 this.sort_field = field;
             }
-            this.getContacts();
-        },
-
-        searchType() {},
-
-        deletecontact(id) {
-            if (!window.confirm("Are you sure?")) {
-                return;
-            }
-            axios.delete("/api/contacts/delete/" + id);
-            this.getContacts();
+            await this.getContacts();
         },
     },
 };

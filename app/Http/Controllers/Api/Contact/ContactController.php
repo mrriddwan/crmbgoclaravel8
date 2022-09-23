@@ -7,9 +7,10 @@ use App\Http\Requests\Contact\ContactRequest;
 use App\Http\Resources\Contact\ContactResource;
 use App\Models\Contact\Contact;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-
+use Illuminate\Support\Facades\DB;
 
 class ContactController extends Controller
 {
@@ -35,7 +36,7 @@ class ContactController extends Controller
             'users.name as user_name',
             'contact_categories.name as category_name',
             'contact_industries.name as industry_name'
-        ])          
+        ])
             ->join('contact_statuses', 'contacts.status_id', '=', 'contact_statuses.id')
             ->join('contact_types', 'contacts.type_id', '=', 'contact_types.id')
             ->join('contact_categories', 'contacts.category_id', '=', 'contact_categories.id')
@@ -43,7 +44,7 @@ class ContactController extends Controller
             ->join('users', 'contacts.user_id', '=', 'users.id')
             ->when($selectedStatus, function ($query) use ($selectedStatus) {
                 $query->where('contacts.status_id', $selectedStatus);
-            })                       
+            })
             ->orderBy($sort_field, $sort_direction)
             ->search(trim($search_term))
             ->distinct()
@@ -52,7 +53,8 @@ class ContactController extends Controller
         return ContactResource::collection($contact);
     }
 
-    public function list (){
+    public function list()
+    {
         $contact = Contact::select('id', 'name')->orderBy('name')->get();
 
         return response()->json([
@@ -83,13 +85,13 @@ class ContactController extends Controller
         ]);
     }
     public function show($id)
-    {   
+    {
         $contact = Contact::find($id);
-        return response()->json(["data"=> $contact]);
+        return response()->json(["data" => $contact]);
     }
 
     public function update(Request $request, Contact $contact)
-    {   
+    {
         $contact->update([
             'user_id' => $request->user_id,
             'status_id' => $request->status_id,
@@ -117,10 +119,10 @@ class ContactController extends Controller
     }
 
     public function info(Contact $contact)
-    {   
+    {
         $contact = Contact::with('category', 'type', 'status', 'incharge', 'user', 'todo', 'industry', 'forecast')
-                ->where('id', $contact->id)
-                ->get();
+            ->where('id', $contact->id)
+            ->get();
 
         $data = $contact->toArray();
 
@@ -131,4 +133,123 @@ class ContactController extends Controller
         ]);
     }
 
+    public function summary()
+    {
+        $paginate = request('paginate');
+        $search_term = request('q', '');
+
+        $sort_direction = request('sort_direction');
+        $sort_field = request('sort_field');
+
+        $selectedStatus = request('selectedStatus');
+        $selectedType = request('selectedType');
+        $selectedUser = request('selectedUser');
+        $selectedCategory = request('selectedCategory');
+
+
+        // Post::with('user:id,username,team_id')
+
+        //     $data
+        //         ->selectRaw("
+        //     count(id) AS data, 
+        //     DATE_FORMAT(created_at, '%Y-%m') AS new_date, 
+        //     YEAR(created_at) AS year, 
+        //     MONTH(created_at) AS month
+        //      ")
+        //         ->groupBy('new_date')
+        //         ->get();
+
+
+        $contact = Contact::with(['summary' => function ($query) {
+            $query->select(['id', 'contact_id', 'todo_date as todo_date', 'action_id'])
+                ->orderBy('todo_date', 'asc')
+                ->get();
+        }])
+
+            // ->join('contact_statuses', 'contacts.status_id', '=', 'contact_statuses.id')
+            // ->join('contact_types', 'contacts.type_id', '=', 'contact_types.id')
+            // ->join('contact_categories', 'contacts.category_id', '=', 'contact_categories.id')
+            // ->join('users', 'contacts.user_id', '=', 'users.id')
+
+            // ->leftJoin('to_dos', 'contacts.id', '=', 'to_dos.contact_id')
+
+            ->select([
+                'contacts.id',
+                'contacts.name',
+                'contacts.created_at',
+                // 'contacts.*',
+                // 'contact_statuses.name as status_name',
+                // 'contact_types.name as type_name',
+                // 'users.name as user_name',
+                // 'contact_categories.name as category_name',
+
+            ])
+            ->orderBy($sort_field, $sort_direction)
+            ->search(trim($search_term))
+
+            ->paginate($paginate);
+
+        // ->when($selectedStatus, function ($query) use ($selectedStatus) {
+        //     $query->where('contacts.status_id', $selectedStatus);
+        // })
+        // ->when($selectedType, function ($query) use ($selectedType) {
+        //     $query->where('contacts.type_id', $selectedType);
+        // })
+        // ->when($selectedUser, function ($query) use ($selectedUser) {
+        //     $query->where('contacts.user_id', $selectedUser);
+        // })
+        // ->when($selectedCategory, function ($query) use ($selectedCategory) {
+        //     $query->where('contacts.category_id', $selectedCategory);
+        // })
+        // ->distinct()
+
+
+        return $contact;
+    }
+
+
+    public function test()
+    {
+        // $contact = Contact::whereMonth('created_at', Carbon::now()->month)
+        //     ->select(DB::raw("MONTH(created_at) month"), DB::raw("count('month') as total_per_month"))
+        //     ->groupby('month')
+        //     ->get();
+
+        // return $contact;
+
+        // ->select(DB::raw('count(id) as `data`'), DB::raw("DATE_FORMAT(created_at, '%m-%Y') new_date"),  DB::raw('YEAR(created_at) year, MONTH(created_at) month'))
+        // ->groupby('year','month')
+        // ->get();
+
+        // $res = ModelName::where('someColumn', 'test')
+        //     ->get()
+        //     ->groupBy(function ($val) {
+        //         return Carbon::parse($val->created_at)->format('Y');
+        //     });
+
+        $contact = Contact::with(['summary' => function ($query) {
+            $query->select(['id', 'contact_id', 'todo_date', 'action_id'])
+                ->groupBy(function ($val) {
+                    return Carbon::parse($val->todo_date)->format('Y');
+                })
+                ->orderBy('todo_date', 'ASC')
+                ->get();
+        }])
+
+            ->select([
+                'contacts.id',
+                'contacts.name',
+                'contacts.created_at',
+            ])
+            ->paginate(20);
+        return $contact;
+
+        // $todo =  DB::table("to_dos")
+        //     ->select("id", DB::raw("(COUNT(*)) as total_click"))
+        //     ->orderBy('created_at')
+        //     ->groupBy(DB::raw("MONTH(created_at)"))
+        //     ->get();
+
+        // return $todo;
+    }
 }

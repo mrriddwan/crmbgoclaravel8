@@ -1,34 +1,4 @@
 <template>
-    <router-link
-        to="/dashboard"
-        class="inline-block items-center px-2 py-1 bg-gray-400 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
-    >
-        Contacts</router-link
-    >
-    <router-link
-        to="/todo/index"
-        class="inline-block items-center px-2 py-1 bg-blue-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
-    >
-        To Do</router-link
-    >
-    <router-link
-        to="/followup/index"
-        class="inline-block items-center px-2 py-1 bg-green-400 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
-    >
-        Follow Up</router-link
-    >
-    <router-link
-        to="/forecasts/index"
-        class="inline-block items-center px-2 py-1 bg-purple-400 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
-    >
-        Forecast</router-link
-    >
-    <router-link
-        to="/projects/index"
-        class="inline-block items-center px-2 py-1 bg-cyan-400 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
-    >
-        Project</router-link
-    >
     <h1
         class="items-center text-center text-6xl text-white font-extrabold bg-slate-400 px-2 rounded-md"
     >
@@ -514,7 +484,7 @@
                         <td class="text-xs grid-cols-2 w-max">
                             <router-link
                                 class="mr-2"
-                                :to="`/contacts/${forecast.contact.id}/info`"
+                                :to="`/contact/${forecast.contact.id}/info`"
                                 custom
                                 v-slot="{ navigate, href }"
                             >

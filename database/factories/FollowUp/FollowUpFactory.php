@@ -25,7 +25,7 @@ class FollowUpFactory extends Factory
     public function definition()
     {
         return [
-            'followup_created' => $this->faker ->dateTimeThisYear('+2 month'),
+            'followup_date' => $this->faker ->dateTimeThisYear('+12 month'),
             'followup_time' => $this->faker ->time($format = 'H:i', $max = 'now'),
             'followup_remark' => $this->faker ->realText($maxNbChars = 50),
             'todo_id' => random_int(1, 150),

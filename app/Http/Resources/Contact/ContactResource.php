@@ -15,7 +15,7 @@ class ContactResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'created_at' => $this -> created_at -> toDateString(),
+            'created_at' => $this -> created_at -> format('d-m-Y'),
             'user' => $this-> user -> only('id', 'name'),
             'id' => $this -> id,
             'name' => $this -> name,

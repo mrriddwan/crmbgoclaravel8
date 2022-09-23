@@ -16,7 +16,7 @@ class FollowUpResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'followup_created' => $this->followup_created,
+            'followup_date' => $this->followup_date,
             'followup_time' => $this->followup_time,
             'followup_remark' => substr($this->followup_remark, 0, 20) . '...',
             'contact' => $this->contact->only('id', 'name'),

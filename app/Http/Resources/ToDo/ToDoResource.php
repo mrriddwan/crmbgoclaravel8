@@ -16,7 +16,7 @@ class ToDoResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'todo_created' => $this->todo_created,
+            'todo_date' => $this->todo_date,
             'todo_deadline' => $this->todo_deadline,
             'todo_remark' => substr($this->todo_remark, 0, 20) . '...',
             'contact' => $this->contact->only('id', 'name'),

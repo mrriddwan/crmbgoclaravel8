@@ -14,8 +14,8 @@ return new class extends Migration
     public function up()
     {
         Schema::create('to_dos', function (Blueprint $table) {
-            $table->bigIncrements('id');        
-            $table->date('todo_created');
+            $table->bigIncrements('id');
+            $table->date('todo_date');
             $table->date('todo_deadline')->nullable();
             $table->string('todo_remark');
             $table->unsignedBigInteger('contact_id')->nullable()->constrained();

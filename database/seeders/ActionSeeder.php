@@ -26,7 +26,7 @@ class ActionSeeder extends Seeder
             ],
             [
                 'id' => 3,
-                'name' => 'Newspaper'
+                'name' => 'Attended'
             ],
             [
                 'id' => 4,

@@ -155,21 +155,21 @@
                     <th>
                         <a
                             href="#"
-                            @click.prevent="change_sort('followup_created')"
+                            @click.prevent="change_sort('followup_date')"
                         >
                             Date Created
                         </a>
                         <span
                             v-if="
                                 sort_direction == 'desc' &&
-                                sort_field == 'followup_created'
+                                sort_field == 'followup_date'
                             "
                             >&uarr;</span
                         >
                         <span
                             v-if="
                                 sort_direction == 'asc' &&
-                                sort_field == 'followup_created'
+                                sort_field == 'followup_date'
                             "
                             >&darr;</span
                         >
@@ -287,7 +287,7 @@
                     :key="followup.id"
                 >
                     <td>{{ index + 1 }}</td>
-                    <td>{{ followup.followup_created }}</td>
+                    <td>{{ followup.followup_date }}</td>
                     <td>
                         <span v-if="followup.followup_time">
                             {{ followup.followup_time }}
@@ -320,7 +320,7 @@
                             :to="{
                                 name: 'todo_index',
                                 params: {
-                                    selectedDate: followup.followup_created,
+                                    selectedDate: followup.followup_date,
                                 },
                             }"
                             class="mr-2 mb-2 inline-flex items-center px-2 py-1 bg-blue-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
@@ -394,7 +394,7 @@ export default {
             selectedDateEnd: "",
 
             sort_direction: "desc",
-            sort_field: "followup_created",
+            sort_field: "followup_date",
             actions: "",
         };
     },

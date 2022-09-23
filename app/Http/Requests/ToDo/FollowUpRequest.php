@@ -25,7 +25,7 @@ class FollowUpRequest extends FormRequest
     {
         return [
             'priority_id' => ['nullable', 'int'],
-            'followup_created' => ['required', 'date'],
+            'followup_date' => ['required', 'date'],
             'followup_time'=> ['required', 'date_format:H:i'],
             'task_id'=> ['required', 'int'],
             'followup_remark'=> ['nullable', 'string'],
@@ -41,7 +41,7 @@ class FollowUpRequest extends FormRequest
     public function messages()
     {
         return [
-            'followup_created.required' => 'The start date is required',
+            'followup_date.required' => 'The start date is required',
             'task_id.required' => 'Please select the task',
         ];
     }

@@ -47,16 +47,16 @@ class FollowUpController extends Controller
                 $query->where('follow_ups.status_id', $selectedStatus);
             })
             ->when($selectedDate, function ($query) use ($selectedDate) {
-                $query->whereDate('follow_ups.followup_created', ('='), ($selectedDate));
+                $query->whereDate('follow_ups.followup_date', ('='), ($selectedDate));
             })
             ->when($selectedMonth, function ($query) use ($selectedMonth) {
-                $query->whereMonth('follow_ups.followup_created', ('='), ($selectedMonth));
+                $query->whereMonth('follow_ups.followup_date', ('='), ($selectedMonth));
             })
             ->when($selectedYear, function ($query) use ($selectedYear) {
-                $query->whereYear('follow_ups.followup_created', ('='), ($selectedYear));
+                $query->whereYear('follow_ups.followup_date', ('='), ($selectedYear));
             })
             ->when($selectedDateStart && $selectedDateEnd, function ($query) use ($selectedDateStart, $selectedDateEnd) {
-                $query->whereBetween('follow_ups.followup_created', [$selectedDateStart, $selectedDateEnd]);
+                $query->whereBetween('follow_ups.followup_date', [$selectedDateStart, $selectedDateEnd]);
             })
 
             ->orderBy($sort_field, $sort_direction)

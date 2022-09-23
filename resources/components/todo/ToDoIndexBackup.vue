@@ -203,21 +203,21 @@
                     <th>
                         <a
                             href="#"
-                            @click.prevent="change_sort('todo_created')"
+                            @click.prevent="change_sort('todo_date')"
                         >
                             Date Created
                         </a>
                         <span
                             v-if="
                                 sort_direction == 'desc' &&
-                                sort_field == 'todo_created'
+                                sort_field == 'todo_date'
                             "
                             >&uarr;</span
                         >
                         <span
                             v-if="
                                 sort_direction == 'asc' &&
-                                sort_field == 'todo_created'
+                                sort_field == 'todo_date'
                             "
                             >&darr;</span
                         >
@@ -382,7 +382,7 @@
                 <tr v-for="(todo, index) in todos.data" :key="todo.id">
                     <td class="text-sm">{{ index + 1 }}</td>
                     <td class="text-sm">{{ todo.source.name }}</td>
-                    <td class="text-sm">{{ todo.todo_created }}</td>
+                    <td class="text-sm">{{ todo.todo_date }}</td>
                     <td class="text-sm">
                         <span v-if="todo.todo_deadline === '2000-01-01'">
                             None
@@ -570,7 +570,7 @@ export default {
             selectedDateEnd: "",
 
             sort_direction: "desc",
-            sort_field: "todo_created",
+            sort_field: "todo_date",
             actions: "",
             todo_action: {
                 action_id: "",

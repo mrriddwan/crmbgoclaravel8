@@ -70,7 +70,7 @@
                         <input
                             type="date"
                             class="block mt-1 w-max rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                            v-model="form.followup_created"
+                            v-model="form.followup_date"
                         />
                     </div>
 
@@ -78,7 +78,6 @@
                         <label>Time</label>
                         <input
                             type="time"
-                            step="1"
                             class="block mt-1 w-max rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                             v-model="form.followup_time"
                         />
@@ -137,7 +136,7 @@ export default {
             checkedPriority: [],
             form: {
                 priority_id: "",
-                followup_created: "",
+                followup_date: "",
                 followup_time: "",
                 task_id: "",
                 followup_remark: "",
@@ -172,7 +171,7 @@ export default {
             try {
                 await axios.post("/api/followups/store", {
                     priority_id: this.form.priority_id === "" ? 2 : 1,
-                    followup_created: this.form.followup_created,
+                    followup_date: this.form.followup_date,
                     followup_time: moment(this.form.followup_time).format('LTS'),
                     task_id: this.form.task_id,
                     followup_remark: this.form.followup_remark,
@@ -187,7 +186,7 @@ export default {
                     .post("/api/todos/insert/" + this.$route.params.id, {
                         priority_id: this.form.priority_id === "" ? 2 : 1,
                         user_id: contact.user_id,
-                        todo_created: this.form.followup_created,
+                        todo_date: this.form.followup_date,
                         // todo_deadline: "2000-01-01",
                         status_id: contact.status_id,
                         type_id: contact.type_id,
@@ -264,7 +263,7 @@ export default {
             contact_id: "",
             type_id: "",
             status_id: "",
-            todo_created: "",
+            todo_date: "",
             task_id: "",
             remark: "",
         });

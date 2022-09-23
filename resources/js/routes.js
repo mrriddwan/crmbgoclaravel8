@@ -7,6 +7,7 @@ import ContactCreate from "../components/contacts/ContactCreate.vue";
 import ContactEdit from "../components/contacts/ContactEdit.vue";
 import ContactHistory from "../components/contacts/ContactHistory.vue";
 import ContactInfo from "../components/contacts/ContactInfo.vue";
+import ContactSummary from "../components/contacts/ContactSummary.vue";
 
 import InchargeCreate from "../components/contacts/InchargeCreate.vue";
 import InchargeEdit from "../components/contacts/InchargeEdit.vue";
@@ -47,43 +48,49 @@ const routes = [
     */
 
     {
-        path: "/dashboard",
+        path: "/contact/index",
         name: "contact_index",
         component: ContactIndex,
     },
 
     {
-        path: "/contacts/create",
+        path: "/contact/summary",
+        name: "contact_summary",
+        component: ContactSummary,
+    },
+
+    {
+        path: "/contact/create",
         name: "contacts_create",
         component: ContactCreate,
     },
 
     {
-        path: "/contacts/:id/edit",
+        path: "/contact/:id/edit",
         name: "contacts_edit",
         component: ContactEdit,
     },
 
     {
-        path: "/contacts/:id/info",
+        path: "/contact/:id/info",
         name: "contacts_info",
         component: ContactInfo,
     },
 
     {
-        path: "/contacts/:id/history",
+        path: "/contact/:id/history",
         name: "contacts_history",
         component: ContactHistory,
     },
 
     {
-        path: "/incharges/:id/create",
+        path: "/incharge/:id/create",
         name: "incharge_create",
         component: InchargeCreate,
     },
 
     {
-        path: "/incharges/:id/edit",
+        path: "/incharge/:id/edit",
         name: "incharge_edit",
         component: InchargeEdit,
     },
@@ -139,19 +146,19 @@ const routes = [
     */
 
     {
-        path: "/forecasts/index",
+        path: "/forecast/index",
         name: "forecast_index",
         component: ForecastIndex,
     },
 
     {
-        path: "/forecasts/:id/create",
+        path: "/forecast/:id/create",
         name: "forecast_create",
         component: ForecastCreate,
     },
 
     {
-        path: "/forecasts/:id/edit",
+        path: "/forecast/:id/edit",
         name: "forecast_edit",
         component: ForecastEdit,
     },
@@ -160,23 +167,23 @@ const routes = [
             Project Routes 
     */
 
-            {
-                path: "/projects/index",
-                name: "project_index",
-                component: ProjectIndex,
-            },
-        
-            {
-                path: "/projects/create",
-                name: "project_create",
-                component: ProjectCreate,
-            },
-        
-            {
-                path: "/projects/:id/edit",
-                name: "project_edit",
-                component: ProjectEdit,
-            },
+    {
+        path: "/project/index",
+        name: "project_index",
+        component: ProjectIndex,
+    },
+
+    {
+        path: "/project/create",
+        name: "project_create",
+        component: ProjectCreate,
+    },
+
+    {
+        path: "/project/:id/edit",
+        name: "project_edit",
+        component: ProjectEdit,
+    },
 ];
 
 export default createRouter({

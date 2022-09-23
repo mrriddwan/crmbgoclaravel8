@@ -24,7 +24,7 @@ class ToDoContactRequest extends FormRequest
     public function rules()
     {
         return [
-            'todo_created' => ['required', 'date'],
+            'todo_date' => ['required', 'date'],
             'contact_id'=> ['required', 'int'],
             'user_id' => ['required', 'int'],
             'task_id'=> ['required', 'int'],
@@ -35,7 +35,7 @@ class ToDoContactRequest extends FormRequest
     {
         return [
             'user_id.required' => 'Please select the user',
-            'todo_created.required' => 'The start date is required',
+            'todo_date.required' => 'The start date is required',
             'contact_id.required' => 'Please select the contact name',
             'task_id.required' => 'Please select the task',
         ];

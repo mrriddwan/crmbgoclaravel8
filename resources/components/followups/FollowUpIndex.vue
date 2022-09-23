@@ -1,34 +1,4 @@
 <template>
-    <router-link
-        to="/dashboard"
-        class="inline-block items-center px-2 py-1 bg-gray-400 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
-    >
-        Contact</router-link
-    >
-    <router-link
-        to="/todo/index"
-        class="inline-block items-center px-2 py-1 bg-blue-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
-    >
-        To Do</router-link
-    >
-    <router-link
-        to="/followup/index"
-        class="inline-block items-center px-2 py-1 bg-green-400 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
-    >
-        Follow Up</router-link
-    >
-    <router-link
-        to="/forecasts/index"
-        class="inline-block items-center px-2 py-1 bg-purple-400 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
-    >
-        Forecast</router-link
-    >
-    <router-link
-        to="/forecasts/index"
-        class="inline-block items-center px-2 py-1 bg-cyan-400 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
-    >
-        Project</router-link
-    >
     <h1
         class="items-center text-center text-6xl text-white font-extrabold bg-slate-400 px-2 rounded-md"
     >
@@ -188,21 +158,21 @@
                     <th>
                         <a
                             href="#"
-                            @click.prevent="change_sort('followup_created')"
+                            @click.prevent="change_sort('followup_date')"
                         >
                             Date Created
                         </a>
                         <span
                             v-if="
                                 sort_direction == 'desc' &&
-                                sort_field == 'followup_created'
+                                sort_field == 'followup_date'
                             "
                             >&uarr;</span
                         >
                         <span
                             v-if="
                                 sort_direction == 'asc' &&
-                                sort_field == 'followup_created'
+                                sort_field == 'followup_date'
                             "
                             >&darr;</span
                         >
@@ -320,7 +290,7 @@
                     :key="followup.id"
                 >
                     <td>{{ index + 1 }}</td>
-                    <td>{{ followup.followup_created }}</td>
+                    <td>{{ followup.followup_date }}</td>
                     <td>
                         <span v-if="followup.followup_time">
                             {{ followup.followup_time }}
@@ -329,7 +299,7 @@
                     </td>
                     <td>
                         <router-link
-                            :to="`/contacts/${followup.contact.id}/info`"
+                            :to="`/contact/${followup.contact.id}/info`"
                             custom
                             v-slot="{ navigate, href }"
                         >
@@ -353,7 +323,7 @@
                             :to="{
                                 name: 'todo_index',
                                 params: {
-                                    selectedDate: followup.followup_created,
+                                    selectedDate: followup.followup_date,
                                 },
                             }"
                             class="mr-2 mb-2 inline-flex items-center px-2 py-1 bg-blue-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
@@ -459,7 +429,7 @@ export default {
             selectedDateEnd: "",
 
             sort_direction: "desc",
-            sort_field: "followup_created",
+            sort_field: "followup_date",
             actions: "",
         };
     },

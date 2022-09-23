@@ -19,11 +19,149 @@ class ToDoController extends Controller
         $sort_direction = request('sort_direction');
         $sort_field = request('sort_field');
 
+        $selectedSource = request('selectedSource');
         $selectedStatus = request('selectedStatus');
+        $selectedContact = request('selectedContact');
+        $selectedUser = request('selectedUser');
+        $selectedTask = request('selectedTask');
+        $selectedType = request('selectedType');
 
         $selectedDate = request('selectedDate');
+
+        $todo = ToDo::select([
+            'to_dos.*',
+            'contact_statuses.name as status_name',
+            'contact_types.name as type_name',
+            'users.name as user_name',
+            'tasks.name as task_name',
+            'priorities.name as priority_name',
+            'text_colors.color_code as color_name',
+            'contacts.name as contact_name',
+            'to_do_sources.name as source_name',
+            'actions.name as action_name',
+        ])
+            ->join('contacts', 'to_dos.contact_id', '=', 'contacts.id')
+            ->join('contact_statuses', 'to_dos.status_id', '=', 'contact_statuses.id')
+            ->join('contact_types', 'to_dos.type_id', '=', 'contact_types.id')
+            ->join('tasks', 'to_dos.task_id', '=', 'tasks.id')
+            ->join('priorities', 'to_dos.priority_id', '=', 'priorities.id')
+            ->join('users', 'to_dos.user_id', '=', 'users.id')
+            ->join('text_colors', 'to_dos.color_id', '=', 'text_colors.id')
+            ->leftJoin('to_do_sources', 'to_dos.source_id', '=', 'to_do_sources.id')
+            ->leftJoin('actions', 'to_dos.action_id', '=', 'actions.id')
+            ->when($selectedStatus, function ($query) use ($selectedStatus) {
+                $query->where('to_dos.status_id', $selectedStatus);
+            })
+            ->when($selectedContact, function ($query) use ($selectedContact) {
+                $query->where('to_dos.contact_id', $selectedContact);
+            })
+            ->when($selectedSource, function ($query) use ($selectedSource) {
+                $query->where('to_dos.source_id', $selectedSource);
+            })
+            ->when($selectedTask, function ($query) use ($selectedTask) {
+                $query->where('to_dos.task_id', $selectedTask);
+            })
+            ->when($selectedType, function ($query) use ($selectedType) {
+                $query->where('to_dos.type_id', $selectedType);
+            })
+            ->when($selectedUser, function ($query) use ($selectedUser) {
+                $query->where('to_dos.user_id', $selectedUser);
+            })
+            ->when($selectedDate, function ($query) use ($selectedDate) {
+                $query->whereDate('to_dos.todo_date', ('='), ($selectedDate));
+            })
+            ->orderBy($sort_field, $sort_direction)
+            ->search(trim($search_term))
+            ->paginate($paginate);
+
+        return ToDoResource::collection($todo);
+    }
+
+    public function monthrange()
+    {
+        $paginate = request('paginate');
+        $search_term = request('q', '');
+
+        $sort_direction = request('sort_direction');
+        $sort_field = request('sort_field');
+
+        $selectedSource = request('selectedSource');
+        $selectedStatus = request('selectedStatus');
+        $selectedContact = request('selectedContact');
+        $selectedUser = request('selectedUser');
+        $selectedTask = request('selectedTask');
+        $selectedType = request('selectedType');
+
         $selectedMonth = request('selectedMonth');
         $selectedYear = request('selectedYear');
+
+        $todo = ToDo::select([
+            'to_dos.*',
+            'contact_statuses.name as status_name',
+            'contact_types.name as type_name',
+            'users.name as user_name',
+            'tasks.name as task_name',
+            'priorities.name as priority_name',
+            'text_colors.color_code as color_name',
+            'contacts.name as contact_name',
+            'to_do_sources.name as source_name',
+            'actions.name as action_name',
+        ])
+            ->join('contacts', 'to_dos.contact_id', '=', 'contacts.id')
+            ->join('contact_statuses', 'to_dos.status_id', '=', 'contact_statuses.id')
+            ->join('contact_types', 'to_dos.type_id', '=', 'contact_types.id')
+            ->join('tasks', 'to_dos.task_id', '=', 'tasks.id')
+            ->join('priorities', 'to_dos.priority_id', '=', 'priorities.id')
+            ->join('users', 'to_dos.user_id', '=', 'users.id')
+            ->join('text_colors', 'to_dos.color_id', '=', 'text_colors.id')
+            ->leftJoin('to_do_sources', 'to_dos.source_id', '=', 'to_do_sources.id')
+            ->leftJoin('actions', 'to_dos.action_id', '=', 'actions.id')
+            ->when($selectedStatus, function ($query) use ($selectedStatus) {
+                $query->where('to_dos.status_id', $selectedStatus);
+            })
+            ->when($selectedContact, function ($query) use ($selectedContact) {
+                $query->where('to_dos.contact_id', $selectedContact);
+            })
+            ->when($selectedSource, function ($query) use ($selectedSource) {
+                $query->where('to_dos.source_id', $selectedSource);
+            })
+            ->when($selectedTask, function ($query) use ($selectedTask) {
+                $query->where('to_dos.task_id', $selectedTask);
+            })
+            ->when($selectedType, function ($query) use ($selectedType) {
+                $query->where('to_dos.type_id', $selectedType);
+            })
+            ->when($selectedUser, function ($query) use ($selectedUser) {
+                $query->where('to_dos.user_id', $selectedUser);
+            })
+            ->when($selectedMonth, function ($query) use ($selectedMonth) {
+                $query->whereMonth('to_dos.todo_date', '=', ($selectedMonth));
+            })
+            ->when($selectedYear, function ($query) use ($selectedYear) {
+                $query->whereYear('to_dos.todo_date', '=', ($selectedYear));
+            })
+
+            ->orderBy($sort_field, $sort_direction)
+            ->search(trim($search_term))
+            ->paginate($paginate);
+
+        return ToDoResource::collection($todo);
+    }
+
+    public function daterange()
+    {
+        $paginate = request('paginate');
+        $search_term = request('q', '');
+
+        $sort_direction = request('sort_direction');
+        $sort_field = request('sort_field');
+
+        $selectedSource = request('selectedSource');
+        $selectedStatus = request('selectedStatus');
+        $selectedContact = request('selectedContact');
+        $selectedUser = request('selectedUser');
+        $selectedTask = request('selectedTask');
+        $selectedType = request('selectedType');
 
         $selectedDateStart = request('selectedDateStart');
         $selectedDateEnd = request('selectedDateEnd');
@@ -52,17 +190,23 @@ class ToDoController extends Controller
             ->when($selectedStatus, function ($query) use ($selectedStatus) {
                 $query->where('to_dos.status_id', $selectedStatus);
             })
-            ->when($selectedDate, function ($query) use ($selectedDate) {
-                $query->whereDate('to_dos.todo_created', ('='), ($selectedDate));
+            ->when($selectedContact, function ($query) use ($selectedContact) {
+                $query->where('to_dos.contact_id', $selectedContact);
             })
-            ->when($selectedMonth, function ($query) use ($selectedMonth) {
-                $query->whereMonth('to_dos.todo_created', ('='), ($selectedMonth));
+            ->when($selectedSource, function ($query) use ($selectedSource) {
+                $query->where('to_dos.source_id', $selectedSource);
             })
-            ->when($selectedYear, function ($query) use ($selectedYear) {
-                $query->whereYear('to_dos.todo_created', ('='), ($selectedYear));
+            ->when($selectedTask, function ($query) use ($selectedTask) {
+                $query->where('to_dos.task_id', $selectedTask);
+            })
+            ->when($selectedType, function ($query) use ($selectedType) {
+                $query->where('to_dos.type_id', $selectedType);
+            })
+            ->when($selectedUser, function ($query) use ($selectedUser) {
+                $query->where('to_dos.user_id', $selectedUser);
             })
             ->when($selectedDateStart && $selectedDateEnd, function ($query) use ($selectedDateStart, $selectedDateEnd) {
-                $query->whereBetween('to_dos.todo_created', [$selectedDateStart, $selectedDateEnd]);
+                $query->whereBetween('to_dos.todo_date', [$selectedDateStart, $selectedDateEnd]);
             })
 
             ->orderBy($sort_field, $sort_direction)
@@ -86,18 +230,18 @@ class ToDoController extends Controller
     public function insert(Request $request)
     {
         $request->validate([
-            'todo_created' => 'required', 'date',
+            'todo_date' => 'required', 'date',
             'contact_id' => 'required', 'int',
             'user_id' => 'required', 'int',
             'task_id' => 'required', 'int',
         ], [
-            'todo_created.required' => 'The date is required',
+            'todo_date.required' => 'The date is required',
             'task_id.required' => 'The task is required.'
         ]);
 
         $todo = ToDo::create([
             'priority_id' => $request->priority_id,
-            'todo_created' => $request->todo_created,
+            'todo_date' => $request->todo_date,
             'todo_deadline' => $request->todo_deadline ?? '2000-01-01',
             'contact_id' => $request->contact_id,
             'user_id' => $request->user_id,
@@ -130,7 +274,7 @@ class ToDoController extends Controller
     {
         $todo->update([
             'priority_id' => $request->priority_id,
-            'todo_created' => $request->todo_created,
+            'todo_date' => $request->todo_date,
             'todo_deadline' => $request->todo_deadline,
             'contact_id' => $request->contact_id,
             'user_id' => $request->user_id,

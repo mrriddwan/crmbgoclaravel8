@@ -3,6 +3,7 @@
 namespace App\Models\Contact;
 
 use App\Models\Forecast\Forecast;
+use App\Models\ToDo\Task;
 use App\Models\ToDo\ToDo;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -53,6 +54,14 @@ class Contact extends Model
 
     public function forecast(){
         return $this->hasMany(Forecast::class)->with('product', 'type')->orderBy('forecast_date', 'desc');
+    }
+
+    public function tasks(){
+        return $this -> hasMany(Task::class);
+    }
+
+    public function summary(){
+        return $this -> hasMany(ToDo::class)->with('user', 'action');
     }
     
     public function scopeSearch($query, $term)

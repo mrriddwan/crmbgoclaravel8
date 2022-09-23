@@ -32,7 +32,7 @@ export default function toDoComposables () {
             await router.push({
                 name: "todo_index",
                 params: {
-                    selectedDate: data.todo_created,
+                    selectedDate: data.todo_date,
                 },
             });
         } catch (e) {

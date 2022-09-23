@@ -41,6 +41,8 @@ Route::get('/contacts/show/{contact}', [ContactController::class, 'show'])->name
 Route::put('/contacts/update/{contact}', [ContactController::class, 'update'])->name('contact:update');
 Route::delete('/contacts/delete/{contact}', [ContactController::class, 'delete'])->name('contact:delete');
 Route::get('/contacts/info/{contact}', [ContactController::class, 'info'])->name('contact:info');
+Route::get('/contacts/summary', [ContactController::class, 'summary'])->name('contact:summary');
+Route::get('/contacts/test', [ContactController::class, 'test'])->name('contact:test');
 
 /*Sub-Contact API*/
 Route::get('/contactcategory/index', [ContactCategoryController::class, 'index'])->name('category:index');
@@ -61,6 +63,8 @@ Route::get('/incharges/info/{incharge}', [ContactInchargeController::class, 'inf
 
 /*To Do API*/
 Route::get('/todos/index', [ToDoController::class, 'index'])->name('todo:index');
+Route::get('/todos/index/monthrange', [ToDoController::class, 'monthrange'])->name('todo:monthrange');
+Route::get('/todos/index/daterange', [ToDoController::class, 'daterange'])->name('todo:daterange');
 Route::post('/todos/insert/{todo}', [ToDoController::class, 'insert'])->name('todo:insert');
 Route::post('/todos/store', [ToDoController::class, 'store'])->name('todo:store');
 Route::get('/todos/show/{todo}', [ToDoController::class, 'show'])->name('todo:show');

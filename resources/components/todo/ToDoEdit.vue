@@ -57,7 +57,7 @@
                         <input
                             type="date"
                             class="block mt-1 w-max rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                            v-model="todo.todo_created"
+                            v-model="todo.todo_date"
                         />
                     </div>
                     <div class="form-group">
@@ -176,7 +176,7 @@ export default {
             todo: {
                 priority_id: "",
                 user_id: "",
-                todo_created: "",
+                todo_date: "",
                 todo_deadline: "",
                 status_id: "",
                 type_id: "",
@@ -242,7 +242,7 @@ export default {
                 .put("/api/todos/update/" + this.$route.params.id, {
                     priority_id: this.todo.priority_id,
                     user_id: this.todo.user_id,
-                    todo_created: this.todo.todo_created,
+                    todo_date: this.todo.todo_date,
                     todo_deadline: this.todo.todo_deadline,
                     status_id: this.todo.status_id,
                     type_id: this.todo.type_id,
@@ -255,7 +255,7 @@ export default {
                     this.$router.push({
                         name: "todo_index",
                         params: {
-                            selectedDate: this.todo.todo_created,
+                            selectedDate: this.todo.todo_date,
                         },
                     });
                 });

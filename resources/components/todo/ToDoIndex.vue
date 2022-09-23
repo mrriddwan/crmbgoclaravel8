@@ -1,34 +1,4 @@
 <template>
-    <router-link
-        to="/dashboard"
-        class="inline-block items-center px-2 py-1 bg-gray-400 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
-    >
-        Contact</router-link
-    >
-    <router-link
-        to="/todo/index"
-        class="inline-block items-center px-2 py-1 bg-blue-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
-    >
-        To Do</router-link
-    >
-    <router-link
-        to="/followup/index"
-        class="inline-block items-center px-2 py-1 bg-green-400 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
-    >
-        Follow Up</router-link
-    >
-    <router-link
-        to="/forecasts/index"
-        class="inline-block items-center px-2 py-1 bg-purple-400 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
-    >
-        Forecast</router-link
-    >
-    <router-link
-        to="/projects/index"
-        class="inline-block items-center px-2 py-1 bg-cyan-400 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
-    >
-        Project</router-link
-    >
     <h1
         class="items-center text-center text-6xl text-white font-extrabold bg-slate-600 rounded-md"
     >
@@ -133,13 +103,34 @@
     </div>
 
     <div class="py-2">
-        <Pagination
-            :data="todos"
-            @pagination-change-page="getToDosSelectDate"
-            :size="'small'"
-            :align="'center'"
-            class="pagination"
-        />
+        <span v-if="viewType === 'day'">
+            <Pagination
+                :data="todos"
+                @pagination-change-page="getToDosSelectDate"
+                :size="'small'"
+                :align="'center'"
+                class="pagination"
+            />
+        </span>
+        <span v-else-if="viewType === 'month'">
+            <Pagination
+                :data="todos"
+                @pagination-change-page="getToDosSelectMonth"
+                :size="'small'"
+                :align="'center'"
+                class="pagination"
+            />
+        </span>
+
+        <span v-else-if="viewType === 'range'">
+            <Pagination
+                :data="todos"
+                @pagination-change-page="getToDosSelectDateRange"
+                :size="'small'"
+                :align="'center'"
+                class="pagination"
+            />
+        </span>
     </div>
 
     <div class="grid grid-cols-3 w-full text-center bg-slate-500">
@@ -167,9 +158,18 @@
             </div>
         </span>
         <span v-show="viewType === `range`">
-            <div class="mt-1">
-                <h3 class="uppercase text-white font-extrabold">
-                    {{ showToday(selectedDateStart) }} ---
+            <div class="mt-1 inline-flex">
+                <h3
+                    class="uppercase text-white font-extrabold inline-flex w-max"
+                >
+                    {{ showToday(selectedDateStart) }}
+                </h3>
+                <h3 class="text-white font-extrabold inline-flex mx-3 w-max">
+                    -
+                </h3>
+                <h3
+                    class="uppercase text-white font-extrabold inline-flex w-max"
+                >
                     {{ showToday(selectedDateEnd) }}
                 </h3>
             </div>
@@ -192,8 +192,8 @@
         <table class="table table-hover table-bordered" id="example">
             <thead>
                 <tr>
-                    <th>#</th>
-                    <th>
+                    <th class="text-sm text-center">#</th>
+                    <th class="text-sm text-center">
                         <a href="#" @click.prevent="change_sort('source_name')">
                             Source
                         </a>
@@ -212,29 +212,26 @@
                             >&darr;</span
                         >
                     </th>
-                    <th>
-                        <a
-                            href="#"
-                            @click.prevent="change_sort('todo_created')"
-                        >
+                    <th class="text-sm text-center">
+                        <a href="#" @click.prevent="change_sort('todo_date')">
                             Date of Todo
                         </a>
                         <span
                             v-if="
                                 sort_direction == 'desc' &&
-                                sort_field == 'todo_created'
+                                sort_field == 'todo_date'
                             "
                             >&uarr;</span
                         >
                         <span
                             v-if="
                                 sort_direction == 'asc' &&
-                                sort_field == 'todo_created'
+                                sort_field == 'todo_date'
                             "
                             >&darr;</span
                         >
                     </th>
-                    <th>
+                    <th class="text-sm text-center">
                         <a
                             href="#"
                             @click.prevent="change_sort('todo_deadline')"
@@ -256,7 +253,7 @@
                             >&darr;</span
                         >
                     </th>
-                    <th>
+                    <th class="text-sm text-center">
                         <a href="#" @click.prevent="change_sort('status_name')">
                             Status
                         </a>
@@ -288,7 +285,7 @@
                             </option>
                         </select>
                     </th>
-                    <th>
+                    <th class="text-sm text-center">
                         <a href="#" @click.prevent="change_sort('type_name')">
                             Type
                         </a>
@@ -307,7 +304,7 @@
                             >&darr;</span
                         >
                     </th>
-                    <th>
+                    <th class="text-sm text-center">
                         <a
                             href="#"
                             @click.prevent="change_sort('contact_name')"
@@ -329,7 +326,7 @@
                             >&darr;</span
                         >
                     </th>
-                    <th>
+                    <th class="text-sm text-center">
                         <a href="#" @click.prevent="change_sort('user_name')">
                             CS
                         </a>
@@ -348,7 +345,7 @@
                             >&darr;</span
                         >
                     </th>
-                    <th>
+                    <th class="text-sm text-center">
                         <a href="#" @click.prevent="change_sort('task_name')">
                             Task
                         </a>
@@ -367,7 +364,7 @@
                             >&darr;</span
                         >
                     </th>
-                    <th>
+                    <th class="text-sm text-center">
                         <a href="#" @click.prevent="change_sort('todo_remark')">
                             Remark
                         </a>
@@ -386,31 +383,31 @@
                             >&darr;</span
                         >
                     </th>
-                    <th>Action</th>
-                    <th>-</th>
+                    <th class="text-sm text-center w-max">Action</th>
+                    <th> </th>
                 </tr>
             </thead>
             <tbody>
                 <tr v-for="(todo, index) in todos.data" :key="todo.id">
-                    <td class="text-sm">{{ index + 1 }}</td>
-                    <td class="text-sm">{{ todo.source.name }}</td>
-                    <td class="text-sm">{{ todo.todo_created }}</td>
-                    <td class="text-sm">
+                    <td class="text-xs">{{ index + 1 }}</td>
+                    <td class="text-xs">{{ todo.source.name }}</td>
+                    <td class="text-xs">{{ showToday(todo.todo_date) }}</td>
+                    <td class="text-xs">
                         <span v-if="todo.todo_deadline === '2000-01-01'">
                             None
                         </span>
                         <span v-else-if="todo.todo_deadline !== '2000-01-01'">
-                            {{ todo.todo_deadline }}
+                            {{ showToday(todo.todo_deadline) }}
                         </span>
                         <span v-else="todo.todo_deadline.length === 0">
                             Unset yet
                         </span>
                     </td>
-                    <td class="text-sm">{{ todo.status.name }}</td>
-                    <td class="text-sm">{{ todo.type.name }}</td>
-                    <td class="text-sm">
+                    <td class="text-xs">{{ todo.status.name }}</td>
+                    <td class="text-xs">{{ todo.type.name }}</td>
+                    <td class="text-xs">
                         <router-link
-                            :to="`/contacts/${todo.contact.id}/info`"
+                            :to="`/contact/${todo.contact.id}/info`"
                             custom
                             v-slot="{ navigate, href }"
                         >
@@ -419,26 +416,15 @@
                             }}</a>
                         </router-link>
                     </td>
-                    <td class="text-sm">{{ todo.user.name }}</td>
-                    <td class="text-sm">{{ todo.task.name }}</td>
-                    <td class="text-sm">{{ todo.todo_remark }}</td>
-                    <td class="text-center align-middle">
-                        <span v-if="todo.action"
-                            ><span
-                                class="inline-block text-xs align-middle w-max font-extrabold uppercase text-white bg-green-500 rounded-md py-1 px-1 text-center"
-                                >{{ todo.action.name }}</span
-                            >
-                            <!-- params: { id: contactId, todoId: toDoId } -->
-                            <router-link
-                                class="inline-block"
-                                :to="{
-                                    name: 'followup_create',
-                                    params: {
-                                        id: todo.contact.id,
-                                        todo_id: todo.id,
-                                    },
-                                }"
-                                >Update</router-link
+                    <td class="text-xs">{{ todo.user.name }}</td>
+                    <td class="text-xs">{{ todo.task.name }}</td>
+                    <td class="text-xs">{{ todo.todo_remark }}</td>
+                    <td class="text-center align-middle w-20">
+                        <div class="container">
+                            <span v-if="todo.action"
+                            ><div
+                                class="text-xs break-words align-middle font-extrabold uppercase text-white bg-green-500 rounded-md py-1 px-1 text-center"
+                                >{{ todo.action.name }}</div
                             >
                         </span>
                         <span v-else>
@@ -464,19 +450,34 @@
                                 </option>
                             </select>
                         </span>
+                        </div>
+                        
                     </td>
                     <td>
+                        <!-- params: { id: contactId, todoId: toDoId } -->
+                        <router-link
+                            v-show="todo.action"
+                            class="px-1 py-1 m-2 uppercase font-semibold bg-purple-200 text-xs rounded-md"
+                            :to="{
+                                name: 'followup_create',
+                                params: {
+                                    id: todo.contact.id,
+                                    todo_id: todo.id,
+                                },
+                            }"
+                            >+Follow Up</router-link
+                        >
                         <router-link
                             :to="{
                                 name: 'todo_edit',
                                 params: { id: todo.id },
                             }"
-                            class="mr-2 mb-2 inline-flex items-center px-2 py-1 bg-yellow-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
+                            class="m-2 inline-flex items-center px-2 py-1 bg-yellow-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
                         >
                             <PencilSquareIcon class="h-3 w-3"
                         /></router-link>
                         <button
-                            class="mr-2 mb-2 inline-flex items-center px-2 py-1 bg-red-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
+                            class="m-2 inline-flex items-center px-2 py-1 bg-red-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
                             @click="deleteToDo(todo.id)"
                         >
                             <TrashIcon class="h-3 w-3" />
@@ -565,12 +566,18 @@ export default {
             todos: [],
             paginate: 10,
             viewType: "day",
+            
             search: "",
             todo: "",
             statuses: "",
-            selectedStatus: "",
             users: "",
+
             selectedUser: 1,
+            selectedSource: "",
+            selectedStatus: "",
+            selectedType: "",
+            selectedContact: "",
+            selectedTask: "",
 
             currentDate: "",
             currentMonth: "",
@@ -585,7 +592,7 @@ export default {
             selectedDateEnd: "",
 
             sort_direction: "desc",
-            sort_field: "todo_created",
+            sort_field: "todo_date",
             actions: "",
             todo_action: {
                 action_id: "",
@@ -612,6 +619,52 @@ export default {
             }
         },
         selectedStatus: function (value) {
+            if (this.viewType === "day") {
+                this.getToDosSelectDate();
+            } else if (this.viewType === "month") {
+                this.getToDosSelectMonth();
+            } else if (this.viewType === "range") {
+                this.getToDosSelectDateRange();
+            }
+        },
+
+        selectedUser: function (value) {
+            if (this.viewType === "day") {
+                this.getToDosSelectDate();
+            } else if (this.viewType === "month") {
+                this.getToDosSelectMonth();
+            } else if (this.viewType === "range") {
+                this.getToDosSelectDateRange();
+            }
+        },
+        selectedType: function (value) {
+            if (this.viewType === "day") {
+                this.getToDosSelectDate();
+            } else if (this.viewType === "month") {
+                this.getToDosSelectMonth();
+            } else if (this.viewType === "range") {
+                this.getToDosSelectDateRange();
+            }
+        },
+        selectedContact: function (value) {
+            if (this.viewType === "day") {
+                this.getToDosSelectDate();
+            } else if (this.viewType === "month") {
+                this.getToDosSelectMonth();
+            } else if (this.viewType === "range") {
+                this.getToDosSelectDateRange();
+            }
+        },
+        selectedTask: function (value) {
+            if (this.viewType === "day") {
+                this.getToDosSelectDate();
+            } else if (this.viewType === "month") {
+                this.getToDosSelectMonth();
+            } else if (this.viewType === "range") {
+                this.getToDosSelectDateRange();
+            }
+        },
+        selectedSource: function (value) {
             if (this.viewType === "day") {
                 this.getToDosSelectDate();
             } else if (this.viewType === "month") {
@@ -704,6 +757,16 @@ export default {
                         this.selectedMonth +
                         "&selectedYear=" +
                         this.selectedYear +
+                        "&selectedUser=" +
+                        this.selectedUser +
+                        "&selectedSource=" +
+                        this.selectedSource +
+                        "&selectedType=" +
+                        this.selectedType +
+                        "&selectedContact=" +
+                        this.selectedContact +
+                        "&selectedTask=" +
+                        this.selectedTask +
                         "&selectedStatus=" +
                         this.selectedStatus +
                         "&paginate=" +
@@ -734,6 +797,16 @@ export default {
                         this.search +
                         "&selectedDate=" +
                         this.selectedDate +
+                        "&selectedUser=" +
+                        this.selectedUser +
+                        "&selectedSource=" +
+                        this.selectedSource +
+                        "&selectedType=" +
+                        this.selectedType +
+                        "&selectedContact=" +
+                        this.selectedContact +
+                        "&selectedTask=" +
+                        this.selectedTask +
                         "&selectedStatus=" +
                         this.selectedStatus +
                         "&paginate=" +
@@ -759,13 +832,23 @@ export default {
             }
             axios
                 .get(
-                    "/api/todos/index?" +
+                    "/api/todos/index/monthrange?" +
                         "q=" +
                         this.search +
                         "&selectedMonth=" +
                         this.selectedMonth +
                         "&selectedYear=" +
                         this.selectedYear +
+                        "&selectedUser=" +
+                        this.selectedUser +
+                        "&selectedSource=" +
+                        this.selectedSource +
+                        "&selectedType=" +
+                        this.selectedType +
+                        "&selectedContact=" +
+                        this.selectedContact +
+                        "&selectedTask=" +
+                        this.selectedTask +
                         "&selectedStatus=" +
                         this.selectedStatus +
                         "&paginate=" +
@@ -791,7 +874,7 @@ export default {
             }
             axios
                 .get(
-                    "/api/todos/index?" +
+                    "/api/todos/index/daterange?" +
                         "q=" +
                         this.search +
                         "&selectedDateStart=" +
@@ -850,18 +933,36 @@ export default {
                 });
         },
         change_sort(field) {
-            if (this.sort_field == field) {
-                this.sort_direction =
-                    this.sort_direction == "asc" ? "desc" : "asc";
-            } else {
-                this.sort_field = field;
+            if (this.viewType === "day") {
+                if (this.sort_field == field) {
+                    this.sort_direction =
+                        this.sort_direction == "asc" ? "desc" : "asc";
+                } else {
+                    this.sort_field = field;
+                }
+                this.getToDos();
+            } else if (this.viewType === "month") {
+                if (this.sort_field == field) {
+                    this.sort_direction =
+                        this.sort_direction == "asc" ? "desc" : "asc";
+                } else {
+                    this.sort_field = field;
+                }
+                this.getToDosSelectMonth();
+            } else if (this.viewType === "range") {
+                if (this.sort_field == field) {
+                    this.sort_direction =
+                        this.sort_direction == "asc" ? "desc" : "asc";
+                } else {
+                    this.sort_field = field;
+                }
+                this.getToDosSelectDateRange();
             }
-            this.getToDos();
         },
 
         showToday(date) {
             // let day = moment(date).format("DD-MM-YYYY");
-            let day = moment(date).format("YYYY-MM-DD");
+            let day = moment(date).format("DD-MM-YYYY");
             return day;
         },
 
@@ -919,9 +1020,9 @@ export default {
             if (!window.confirm("Update task?")) {
                 return;
             }
-            console.log("this is is the action ID: "+ action);
-            console.log("this is is the todo ID: "+ toDoId);
-            console.log("this is is the contact ID: "+ contactId);
+            console.log("this is is the action ID: " + action);
+            console.log("this is is the todo ID: " + toDoId);
+            console.log("this is is the contact ID: " + contactId);
             axios.put("/api/todos/action/" + toDoId, {
                 action_id: action,
             });

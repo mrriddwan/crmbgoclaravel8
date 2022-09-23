@@ -27,7 +27,7 @@ class ContactFactory extends Factory
     public function definition()
     {
         return [
-            'name' => $this->faker -> company(),
+            'name' => $this->faker -> unique()->company(),
             'address' => $this->faker -> unique()->address(),
             'remark' => $this->faker -> realText($maxNbChars=50),
             'user_id' => random_int(2,10),

@@ -87,7 +87,7 @@
                         <input
                             type="date"
                             class="block mt-1 w-max rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                            v-model="form.todo_created"
+                            v-model="form.todo_date"
                         />
                     </div>
 
@@ -143,7 +143,7 @@ export default {
             form: {
                 priority_id: "",
                 user_id: "",
-                todo_created: "",
+                todo_date: "",
                 todo_deadline: "",
                 status_id: "",
                 type_id: "",
@@ -171,7 +171,7 @@ export default {
                 await axios.post("/api/todos/insert/" + this.$route.params.id, {
                     priority_id: this.form.priority_id === "" ? 2 : 1,
                     user_id: contact.user_id,
-                    todo_created: this.form.todo_created,
+                    todo_date: this.form.todo_date,
                     status_id: contact.status_id,
                     type_id: contact.type_id,
                     contact_id: contact.id,
@@ -179,11 +179,11 @@ export default {
                     todo_remark: this.form.todo_remark,
                     source_id: 1,
                 });
-                console.log(this.form.todo_created)
+                console.log(this.form.todo_date)
                 await this.$router.push({
                     name: "todo_index",
                     params: {
-                        selectedDate: this.form.todo_created,
+                        selectedDate: this.form.todo_date,
                     },
                 });
             } catch (e) {
@@ -252,7 +252,7 @@ export default {
             contact_id: "",
             type_id: "",
             status_id: "",
-            todo_created: "",
+            todo_date: "",
             task_id: "",
             remark: "",
         });
