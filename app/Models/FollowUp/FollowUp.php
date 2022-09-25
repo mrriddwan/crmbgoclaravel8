@@ -19,6 +19,8 @@ class FollowUp extends Model
     protected $fillable = [
         'followup_date',
         'followup_deadline',
+        'followup_time',
+        'todo_id',
         'contact_id',
         'user_id',
         'task_id',
@@ -74,16 +76,8 @@ class FollowUp extends Model
                 })
                 ->orWhereHas('task', function ($query) use ($term) {
                     $query->where('tasks.name', 'like', $term);
-                })
-                ->orWhereHas('type', function ($query) use ($term) {
-                    $query->where('contact_types.name', 'like', $term);
-                })
-                ->orWhereHas('status', function ($query) use ($term) {
-                    $query->where('contact_statuses.name', 'like', $term);
-                })
-                ->orWhereHas('priority', function ($query) use ($term) {
-                    $query->where('priorities.name', 'like', $term);
                 });
+
         });
     }
 }

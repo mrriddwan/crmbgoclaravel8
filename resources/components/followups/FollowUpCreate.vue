@@ -169,7 +169,9 @@ export default {
                 await axios.post("/api/followups/store", {
                     priority_id: this.form.priority_id === "" ? 2 : 1,
                     followup_date: this.form.followup_date,
-                    followup_time: this.form.followup_time + ":00",
+                    followup_time: this.form.followup_time,
+                    // followup_time: this.form.followup_time,
+                    // followup_time: this.form.followup_time + ":00",
                     // followup_time: this.formatTime(this.form.followup_time),
                     task_id: this.form.task_id,
                     followup_remark: this.form.followup_remark
@@ -177,7 +179,7 @@ export default {
                         : "No remark",
                     todo_id: Number(this.$route.params.todo_id),
                     contact_id: contact.id,
-                    user_id: contact.user_id,
+                    user_id: contact.user_id,//need to replace with current user
                     status_id: contact.status_id,
                     type_id: contact.type_id,
                 });

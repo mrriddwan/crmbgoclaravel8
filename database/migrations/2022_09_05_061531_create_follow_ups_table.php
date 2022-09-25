@@ -16,6 +16,8 @@ return new class extends Migration
         Schema::create('follow_ups', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->date('followup_date');
+            // $table->time('followup_time');
+            // $table->string('followup_time');
             $table->time('followup_time')->nullable();
             $table->string('followup_remark');
             $table->unsignedBigInteger('todo_id')->nullable()->constrained();

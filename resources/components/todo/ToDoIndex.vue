@@ -1103,7 +1103,13 @@ export default {
                 return;
             }
             axios.delete("/api/todos/delete/" + id);
-            this.getToDosSelectDate();
+            if (this.viewType === "day"){
+                this.getToDosSelectDate();
+            } else if (this.viewType === "month"){
+                this.getToDosSelectMonth();
+            } else if (this.viewType === "range"){
+                this.getToDosSelectDateRange();
+            }   
         },
 
         actionSelected(action, toDoId, contactId) {

@@ -82,6 +82,8 @@ Route::get('/sources/index', [ToDoSourceController::class, 'index'])->name('sour
 
 /*Follow Up API*/
 Route::get('/followups/index', [FollowUpController::class, 'index'])->name('followup:index');
+Route::get('/followups/index/monthrange', [FollowUpController::class, 'monthrange'])->name('followup:monthrange');
+Route::get('/followups/index/daterange', [FollowUpController::class, 'daterange'])->name('followup:daterange');
 Route::post('/followups/store', [FollowUpController::class, 'store'])->name('followup:store');
 Route::delete('/followups/delete/{followup}', [FollowUpController::class, 'delete'])->name('followup:delete');
 

@@ -45,7 +45,7 @@ class Contact extends Model
     }
 
     public function todo(){
-        return $this -> hasMany(ToDo::class)->with('task', 'user');
+        return $this -> hasMany(ToDo::class)->with('task', 'user', 'action');
     }
 
     public function incharge(){

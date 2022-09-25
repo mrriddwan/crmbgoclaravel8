@@ -82,7 +82,7 @@
             />
         </div>
         <div
-            class="m-2 inline-block items-center px-2 py-1 border-gray-500 border-2"
+            class="m-1 inline-block items-center px-1 py-1 border-gray-500 border-2"
         >
             <p>Select user</p>
             <select v-model="selectedUser" class="">
@@ -95,13 +95,34 @@
     </div>
 
     <div class="py-2">
-        <Pagination
-            :data="followups"
-            @pagination-change-page="getFollowUps"
-            :size="'small'"
-            :align="'center'"
-            class="pagination"
-        />
+        <span v-if="viewType === 'day'">
+            <Pagination
+                :data="followups"
+                @pagination-change-page="getFollowUpsSelectDate"
+                :size="'small'"
+                :align="'center'"
+                class="pagination"
+            />
+        </span>
+        <span v-else-if="viewType === 'month'">
+            <Pagination
+                :data="followups"
+                @pagination-change-page="getFollowUpsSelectMonth"
+                :size="'small'"
+                :align="'center'"
+                class="pagination"
+            />
+        </span>
+
+        <span v-else-if="viewType === 'range'">
+            <Pagination
+                :data="followups"
+                @pagination-change-page="getFollowUpsSelectDateRange"
+                :size="'small'"
+                :align="'center'"
+                class="pagination"
+            />
+        </span>
     </div>
 
     <div class="grid grid-cols-3 w-full text-center bg-slate-500">
@@ -129,9 +150,18 @@
             </div>
         </span>
         <span v-show="viewType === `range`">
-            <div class="mt-2">
-                <h3 class="uppercase text-white font-extrabold">
-                    {{ showToday(selectedDateStart) }} ---
+            <div class="mt-1 inline-flex">
+                <h3
+                    class="uppercase text-white font-extrabold inline-flex w-max"
+                >
+                    {{ showToday(selectedDateStart) }}
+                </h3>
+                <h3 class="text-white font-extrabold inline-flex mx-3 w-max">
+                    -
+                </h3>
+                <h3
+                    class="uppercase text-white font-extrabold inline-flex w-max"
+                >
                     {{ showToday(selectedDateEnd) }}
                 </h3>
             </div>
@@ -259,6 +289,23 @@
                             "
                             >&darr;</span
                         >
+                        <div class="text-sm text-center h-6">
+                            <div class="text-sm text-center h-6">
+                                <select
+                                    v-model="selectedTask"
+                                    class="form-control form-control-sm w-max"
+                                >
+                                    <option value="">All</option>
+                                    <option
+                                        v-for="task in tasks.data"
+                                        :key="task.id"
+                                        :value="task.id"
+                                    >
+                                        {{ task.name }}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
                     </th>
                     <th>
                         <a
@@ -366,32 +413,35 @@ export default {
     },
 
     mounted() {
-        this.getStatus();
         this.getActions();
         this.getUsers();
-        console.log("this is the route params from follow up, month?:" + this.$route.params.selectedMonth);
-        console.log("this is the route params from follow up, year?:" + this.$route.params.selectedYear);
+        this.getTasks();
+        console.log(
+            "this is the route params from follow up, month?:" +
+                this.$route.params.selectedMonth
+        );
+        console.log(
+            "this is the route params from follow up, year?:" +
+                this.$route.params.selectedYear
+        );
 
-        this.$route.params.length !== 0
-            ? // ? (this.currentDate = this.$route.params.selectedDate)
-              (this.selectedMonth = this.$route.params.selectedMonth) &&
-              (this.selectedYear = this.$route.params.selectedYear)
-            : (this.currentDate = this.getCurrentDate());
+        if (!this.$route.params) {
+            this.currentDate = this.getCurrentDate();
+            this.select = this.currentDate;
+            this.getFollowUpsSelectMonth();
+        } else {
+            this.selectedMonth = this.$route.params.selectedMonth;
+            this.selectedYear = this.$route.params.selectedYear;
+            this.getFollowUpsSelectMonth();
+        }
         //initial date selection
         console.log(
             "Result of mounted getCurrentDate: " + this.getCurrentDate()
         );
+        this.currentDate = this.getCurrentDate();
         this.selectedDate = this.currentDate;
         // this.getSelectedDate(this.selectedDate);
         console.log("Result of mounted currrentDate: " + this.currentDate);
-        //initial month selection
-        this.selectedMonth = this.getSelectedMonth(this.selectedDate);
-        this.selectedYear = this.getSelectedYear(this.selectedDate);
-        this.getFollowUps();
-        this.selectedMonthYear =
-            this.selectedYear + "-" + this.selectedMonth + "-" + "01";
-        this.currentMonth = this.selectedYear + "-" + this.selectedMonth;
-
         //initialise date range
         this.selectedDateStart = this.selectedDate;
         this.selectedDateEnd = this.selectedDate;
@@ -401,30 +451,36 @@ export default {
         console.log(
             "Result of mounted selectedDateEnd: " + this.selectedDateEnd
         );
+        
+        //initial month selection
+        this.selectedMonth = this.getSelectedMonth(this.selectedDate);
+        this.selectedYear = this.getSelectedYear(this.selectedDate);
+        this.getFollowUpsSelectMonth();
+        this.selectedMonthYear =
+            this.selectedYear + "-" + this.selectedMonth + "-" + "01";
+        this.currentMonth = this.selectedYear + "-" + this.selectedMonth;
 
         this.incrementDate();
         this.decrementDate();
     },
     data() {
         return {
-            moment: moment,
-            rangeDate: false,
             followups: [],
+            tasks: [],
+            users: [],
+
             paginate: 10,
             viewType: "month",
+            moment: moment,
+
             search: "",
 
-            statuses: "",
-            selectedStatus: "",
-            users: "",
-            selectedUser: 1,
+            selectedUser: "",
+            selectedTask: "",
 
             currentDate: "",
             currentMonth: "",
             currentYear: "",
-
-            minDateRange: "",
-            maxDateRange: "",
 
             selectedDate: "",
             selectedMonth: "",
@@ -441,33 +497,51 @@ export default {
     },
     watch: {
         paginate: function (value) {
-            this.getFollowUps();
+            if (this.viewType === "day") {
+                this.getFollowUpsSelectDate();
+            } else if (this.viewType === "month") {
+                this.getFollowUpsSelectMonth();
+            } else if (this.viewType === "range") {
+                this.getFollowUpsSelectDateRange();
+            }
         },
         search: function (value) {
-            this.getFollowUps();
+            if (this.viewType === "day") {
+                this.getFollowUpsSelectDate();
+            } else if (this.viewType === "month") {
+                this.getFollowUpsSelectMonth();
+            } else if (this.viewType === "range") {
+                this.getFollowUpsSelectDateRange();
+            }
         },
-        selectedStatus: function (value) {
-            this.getFollowUps();
+
+        selectedUser: function (value) {
+            if (this.viewType === "day") {
+                this.getFollowUpsSelectDate();
+            } else if (this.viewType === "month") {
+                this.getFollowUpsSelectMonth();
+            } else if (this.viewType === "range") {
+                this.getFollowUpsSelectDateRange();
+            }
+        },
+
+        selectedTask: function (value) {
+            if (this.viewType === "day") {
+                this.getFollowUpsSelectDate();
+            } else if (this.viewType === "month") {
+                this.getFollowUpsSelectMonth();
+            } else if (this.viewType === "range") {
+                this.getFollowUpsSelectDateRange();
+            }
         },
 
         viewType: function (value) {
             if (value === "day") {
                 if (this.viewType === "day") {
-                    this.selectedMonth = "";
-                    this.selectedYear = "";
-                    this.selectedDateStart = "";
-                    this.selectedDateEnd = "";
-                    this.getFollowUps();
-                    this.currentDate = this.getCurrentDate();
-                    this.selectedMonth = this.currentMonth;
-                    this.selectedDateStart = this.selectedDate;
-                    this.selectedDateEnd = this.selectedDate;
+                    this.getFollowUpsSelectDate();
                 }
             }
             if (value === "month") {
-                this.selectedDate = "";
-                this.selectedDateStart = "";
-                this.selectedDateEnd = "";
                 const monthYear = this.selectedMonthYear;
                 this.getSelectedMonth(monthYear);
                 this.getSelectedYear(monthYear);
@@ -479,61 +553,44 @@ export default {
                     "Result of this.getSelectedYear(monthYear): " +
                         this.getSelectedYear(monthYear)
                 );
-                this.getFollowUps();
-                this.selectedDate = this.currentDate;
-                this.selectedDateStart = this.selectedDate;
-                this.selectedDateEnd = this.selectedDate;
+                this.getFollowUpsSelectMonth();
             }
             if (value === "range") {
-                this.selectedDate = "";
-                this.selectedMonth = "";
-                this.selectedYear = "";
                 this.getSelectedDateStart(this.currentDate);
                 this.getSelectedDateEnd(this.currentDate);
-                this.getFollowUps();
-                this.selectedDate = this.currentDate;
-                this.selectedMonth = this.currentMonth;
+                this.getFollowUpsSelectDateRange();
             }
         },
         selectedDate: function (value) {
             if (this.viewType === "day") {
-                this.selectedMonth = "";
-                this.selectedYear = "";
-                this.selectedDateStart = "";
-                this.selectedDateEnd = "";
                 this.getSelectedDate(this.selectedDate);
-                this.getFollowUps();
+                this.getFollowUpsSelectDate();
             }
         },
 
         currentMonth: function (value) {
-            this.selectedDate = "";
-            this.selectedDateStart = "";
-            this.selectedDateEnd = "";
             const monthYear = this.currentMonth + "-" + "01";
             this.selectedMonthYear = monthYear;
             this.getSelectedMonth(monthYear);
             this.getSelectedYear(monthYear);
-            this.getFollowUps();
+            this.getFollowUpsSelectMonth();
             console.log("current date after month change: " + this.currentDate);
-            this.selectedDate = this.currentDate;
-            this.selectedDateStart = this.selectedDate;
-            this.selectedDateEnd = this.selectedDate;
         },
 
-        // selectedDateRange(newVal) {
-        //     this.selectedDate = "";
-        //     this.selectedMonth = "";
-        //     this.selectedYear = "";
-        //     const [selectedDateStart, selectedDateEnd] = newVal.split("|");
-        //     this.getSelectedDateStart(selectedDateStart);
-        //     this.getSelectedDateEnd(selectedDateEnd);
-        //     console.log("result of date after this.getSelectedDateEnd(selectedDateStart): " + this.getSelectedDateEnd(selectedDateStart))
-        //     console.log("result of date after this.getSelectedDateEnd(selectedDateEnd): " + this.getSelectedDateEnd(selectedDateEnd))
-        //     this.getFollowUps();
-        //     this.selectedDate = this.currentDate;
-        //     this.selectedMonth = this.currentMonth;
-        // },
+        selectedDateRange(newVal) {
+            const [selectedDateStart, selectedDateEnd] = newVal.split("|");
+            this.getSelectedDateStart(selectedDateStart);
+            this.getSelectedDateEnd(selectedDateEnd);
+            console.log(
+                "result of date after this.getSelectedDateEnd(selectedDateStart): " +
+                    this.getSelectedDateEnd(selectedDateStart)
+            );
+            console.log(
+                "result of date after this.getSelectedDateEnd(selectedDateEnd): " +
+                    this.getSelectedDateEnd(selectedDateEnd)
+            );
+            this.getFollowUpsSelectDateRange();
+        },
     },
     computed: {
         selectedDateRange() {
@@ -542,7 +599,7 @@ export default {
     },
 
     methods: {
-        getFollowUps(page = 1) {
+        getFollowUpsSelectDate(page = 1) {
             if (typeof page === "undefined") {
                 page = 1;
             }
@@ -553,12 +610,78 @@ export default {
                         this.search +
                         "&selectedDate=" +
                         this.selectedDate +
+                        "&selectedUser=" +
+                        this.selectedUser +
+                        "&selectedTask=" +
+                        this.selectedTask +
+                        "&paginate=" +
+                        this.paginate +
+                        "&page=" +
+                        page +
+                        "&sort_direction=" +
+                        this.sort_direction +
+                        "&sort_field=" +
+                        this.sort_field
+                )
+                .then((res) => {
+                    this.followups = res.data;
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        },
+
+        getFollowUpsSelectMonth(page = 1) {
+            if (typeof page === "undefined") {
+                page = 1;
+            }
+            axios
+                .get(
+                    "/api/followups/index/monthrange?" +
+                        "q=" +
+                        this.search +
                         "&selectedMonth=" +
                         this.selectedMonth +
                         "&selectedYear=" +
                         this.selectedYear +
-                        "&selectedStatus=" +
-                        this.selectedStatus +
+                        "&selectedUser=" +
+                        this.selectedUser +
+                        "&selectedTask=" +
+                        this.selectedTask +
+                        "&paginate=" +
+                        this.paginate +
+                        "&page=" +
+                        page +
+                        "&sort_direction=" +
+                        this.sort_direction +
+                        "&sort_field=" +
+                        this.sort_field
+                )
+                .then((res) => {
+                    this.followups = res.data;
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        },
+
+        getFollowUpsSelectDateRange(page = 1) {
+            if (typeof page === "undefined") {
+                page = 1;
+            }
+            axios
+                .get(
+                    "/api/followups/index/daterange?" +
+                        "q=" +
+                        this.search +
+                        "&selectedDateStart=" +
+                        this.selectedDateStart +
+                        "&selectedDateEnd=" +
+                        this.selectedDateEnd +
+                        "&selectedUser=" +
+                        this.selectedUser +
+                        "&selectedTask=" +
+                        this.selectedTask +
                         "&paginate=" +
                         this.paginate +
                         "&page=" +
@@ -587,11 +710,11 @@ export default {
                 });
         },
 
-        getStatus() {
+        getTasks() {
             axios
-                .get("/api/contactstatus/index")
+                .get("/api/tasks/index")
                 .then((res) => {
-                    this.statuses = res.data;
+                    this.tasks = res.data;
                 })
                 .catch((error) => {
                     console.log(error);
@@ -609,18 +732,36 @@ export default {
                 });
         },
         change_sort(field) {
-            if (this.sort_field == field) {
-                this.sort_direction =
-                    this.sort_direction == "asc" ? "desc" : "asc";
-            } else {
-                this.sort_field = field;
+            if (this.viewType === "day") {
+                if (this.sort_field == field) {
+                    this.sort_direction =
+                        this.sort_direction == "asc" ? "desc" : "asc";
+                } else {
+                    this.sort_field = field;
+                }
+                this.getFollowUpsSelectDate();
+            } else if (this.viewType === "month") {
+                if (this.sort_field == field) {
+                    this.sort_direction =
+                        this.sort_direction == "asc" ? "desc" : "asc";
+                } else {
+                    this.sort_field = field;
+                }
+                this.getFollowUpsSelectMonth();
+            } else if (this.viewType === "range") {
+                if (this.sort_field == field) {
+                    this.sort_direction =
+                        this.sort_direction == "asc" ? "desc" : "asc";
+                } else {
+                    this.sort_field = field;
+                }
+                this.getFollowUpsSelectDateRange();
             }
-            this.getFollowUps();
         },
 
         showToday(date) {
             // let day = moment(date).format("DD-MM-YYYY");
-            let day = moment(date).format("YYYY-MM-DD");
+            let day = moment(date).format("DD-MM-YYYY");
             return day;
         },
 
@@ -664,31 +805,18 @@ export default {
             return this.selectedYear;
         },
 
-        searchType() {},
-
-        deleteToDo(id) {
+        deleteFollowUp(id) {
             if (!window.confirm("Are you sure?")) {
                 return;
             }
-            axios.delete("/api/todos/delete/" + id);
-            this.getFollowUps();
-        },
-
-        actionSelected(action, toDoId, contactId) {
-            if (!window.confirm("Update task?")) {
-                return;
+            axios.delete("/api/followups/delete/" + id);
+            if (this.viewType === "day") {
+                this.getFollowUpsSelectDate();
+            } else if (this.viewType === "month") {
+                this.getFollowUpsSelectMonth();
+            } else if (this.viewType === "range") {
+                this.getFollowUpsSelectDateRange();
             }
-            console.log(action);
-            console.log(toDoId);
-            console.log(contactId);
-            axios.put("/api/todos/action/" + toDoId, {
-                action_id: action,
-            });
-            alert("Task updated");
-            this.$router.push({
-                name: "followup_create",
-                params: { id: contactId, todo_id: toDoId },
-            });
         },
 
         incrementDate() {
