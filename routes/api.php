@@ -46,10 +46,10 @@ Route::get('/contacts/summary', [ContactController::class, 'summary'])->name('co
 Route::get('/contacts/test', [ContactController::class, 'test'])->name('contact:test');
 
 /*Sub-Contact API*/
-Route::get('/contactcategory/index', [ContactCategoryController::class, 'index'])->name('category:index');
-Route::get('/contacttype/index', [ContactTypeController::class, 'index'])->name('type:index');
-Route::get('/contactstatus/index', [ContactStatusController::class, 'index'])->name('status:index');
-Route::get('/contactindustry/index', [ContactIndustryController::class, 'index'])->name('industry:index');
+Route::get('/contacts/category/index', [ContactCategoryController::class, 'index'])->name('category:index');
+Route::get('/contacts/type/index', [ContactTypeController::class, 'index'])->name('type:index');
+Route::get('/contacts/status/index', [ContactStatusController::class, 'index'])->name('status:index');
+Route::get('/contacts/industry/index', [ContactIndustryController::class, 'index'])->name('industry:index');
 // Route::get('/contactstatus/dropdown', [ContactStatusController::class, 'dropdown'])->name('status:dropdown');
 Route::get('/users/index', [UserController::class, 'index'])->name('user:index');
 
@@ -106,4 +106,3 @@ Route::get('/projects/index', [ProjectController::class, 'index'])->name('projec
 Route::post('/projects/store', [ProjectController::class, 'store'])->name('project:store');
 Route::get('/projects/show/{project}', [ProjectController::class, 'show'])->name('project:show');
 Route::put('/projects/update/{project}', [ProjectController::class, 'update'])->name('project:update');
-

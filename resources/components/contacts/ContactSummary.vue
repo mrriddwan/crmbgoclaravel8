@@ -480,7 +480,7 @@ export default {
 
         async getTypes() {
             await axios
-                .get("/api/contacttype/index")
+                .get("/api/contacts/type/index")
                 .then((res) => {
                     this.types = res.data;
                 })
@@ -491,7 +491,7 @@ export default {
 
         async getStatus() {
             await axios
-                .get("/api/contactstatus/index")
+                .get("/api/contacts/status/index")
                 .then((res) => {
                     this.statuses = res.data;
                 })
@@ -502,7 +502,7 @@ export default {
 
         async getCategories() {
             await axios
-                .get("/api/contactcategory/index")
+                .get("/api/contacts/category/index")
                 .then((res) => {
                     this.categories = res.data;
                 })

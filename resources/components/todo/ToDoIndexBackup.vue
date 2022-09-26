@@ -904,7 +904,7 @@ export default {
 
         getStatus() {
             axios
-                .get("/api/contactstatus/index")
+                .get("/api/contacs/status/index")
                 .then((res) => {
                     this.statuses = res.data;
                 })

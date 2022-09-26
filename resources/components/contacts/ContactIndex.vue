@@ -112,15 +112,6 @@
                                     >&darr;</span
                                 >
                             </div>
-
-                            <div class="text-sm text-center h-6">
-                                <input
-                                    v-model.lazy="search"
-                                    type="search"
-                                    class="w-16 placeholder:text-xs placeholder:text-center h-8"
-                                    placeholder="Search date"
-                                />
-                            </div>
                         </th>
                         <th class="py-3">
                             <div class="text-sm text-center h-6">
@@ -145,13 +136,25 @@
                                     >&darr;</span
                                 >
                             </div>
-                            <div class="text-sm text-center h-6">
-                                <input
-                                    v-model.lazy="search"
-                                    type="search"
-                                    class="w-16 placeholder:text-xs placeholder:text-center h-8"
-                                    placeholder="Search user"
-                                />
+                            <div
+                                class="items-center text-xs text-center h-6 w-24"
+                            >
+                                <select
+                                    v-model="selectedUser"
+                                    class="form-control form-control-sm text-xs"
+                                >
+                                    <option class="text-xs" value="">
+                                        All
+                                    </option>
+                                    <option
+                                        class="text-xs"
+                                        v-for="user in users.data"
+                                        :key="user.id"
+                                        :value="user.id"
+                                    >
+                                        {{ user.name }}
+                                    </option>
+                                </select>
                             </div>
                         </th>
                         <th class="py-3">
@@ -218,12 +221,19 @@
                             </div>
                             <div class="text-sm text-center h-6">
                                 <div class="text-sm text-center h-6">
-                                    <input
-                                        v-model.lazy="search"
-                                        type="search"
-                                        class="w-16 placeholder:text-xs placeholder:text-center h-8"
-                                        placeholder="Search type"
-                                    />
+                                    <select
+                                        v-model="selectedType"
+                                        class="form-control form-control-sm w-max"
+                                    >
+                                        <option value="">All</option>
+                                        <option
+                                            v-for="contact_type in types.data"
+                                            :key="contact_type.id"
+                                            :value="contact_type.id"
+                                        >
+                                            {{ contact_type.name }}
+                                        </option>
+                                    </select>
                                 </div>
                             </div>
                         </th>
@@ -250,15 +260,25 @@
                                     >&darr;</span
                                 >
                             </div>
-                            <div class="text-sm text-center h-6">
-                                <div class="text-sm text-center h-6">
-                                    <input
-                                        v-model.lazy="search"
-                                        type="search"
-                                        class="w-16 placeholder:text-xs placeholder:text-center h-8"
-                                        placeholder="Search industry"
-                                    />
-                                </div>
+                            <div
+                                class="items-center text-xs text-center h-6 w-24"
+                            >
+                                <select
+                                    v-model="selectedIndustry"
+                                    class="form-control form-control-sm text-xs"
+                                >
+                                    <option class="text-xs" value="">
+                                        All
+                                    </option>
+                                    <option
+                                        class="text-xs"
+                                        v-for="industry in industries.data"
+                                        :key="industry.id"
+                                        :value="industry.id"
+                                    >
+                                        {{ industry.name }}
+                                    </option>
+                                </select>
                             </div>
                         </th>
                         <th class="py-3">
@@ -285,14 +305,7 @@
                                 >
                             </div>
                             <div class="text-sm text-center h-6">
-                                <div class="text-sm text-center h-6">
-                                    <input
-                                        v-model.lazy="search"
-                                        type="search"
-                                        class="w-16 placeholder:text-xs placeholder:text-center h-8"
-                                        placeholder="Search contact"
-                                    />
-                                </div>
+
                             </div>
                         </th>
                         <th class="py-3">
@@ -320,15 +333,25 @@
                                     >&darr;</span
                                 >
                             </div>
-                            <div class="text-sm text-center h-6">
-                                <div class="text-sm text-center h-6">
-                                    <input
-                                        v-model.lazy="search"
-                                        type="search"
-                                        class="w-16 placeholder:text-xs placeholder:text-center h-8"
-                                        placeholder="Search category"
-                                    />
-                                </div>
+                            <div
+                                class="items-center text-xs text-center h-6 w-24"
+                            >
+                                <select
+                                    v-model="selectedCategory"
+                                    class="form-control form-control-sm text-xs"
+                                >
+                                    <option class="text-xs" value="">
+                                        All
+                                    </option>
+                                    <option
+                                        class="text-xs"
+                                        v-for="category in categories.data"
+                                        :key="category.id"
+                                        :value="category.id"
+                                    >
+                                        {{ category.name }}
+                                    </option>
+                                </select>
                             </div>
                         </th>
                         <th class="py-3">
@@ -354,16 +377,6 @@
                                     >&darr;</span
                                 >
                             </div>
-                            <div class="text-sm text-center h-6">
-                                <div class="text-sm text-center h-6">
-                                    <input
-                                        v-model.lazy="search"
-                                        type="search"
-                                        class="w-16 placeholder:text-xs placeholder:text-center h-8"
-                                        placeholder="Search address"
-                                    />
-                                </div>
-                            </div>
                         </th>
                         <th class="py-3">
                             <div class="text-sm text-center h-6">
@@ -387,16 +400,6 @@
                                     "
                                     >&darr;</span
                                 >
-                            </div>
-                            <div class="text-sm text-center h-6">
-                                <div class="text-sm text-center h-6">
-                                    <input
-                                        v-model.lazy="search"
-                                        type="search"
-                                        class="w-16 placeholder:text-xs placeholder:text-center h-8"
-                                        placeholder="Search remark"
-                                    />
-                                </div>
                             </div>
                         </th>
                         <th class="py-3">
@@ -482,6 +485,10 @@ export default {
     mounted() {
         this.getContacts();
         this.getStatus();
+        this.getUsers();
+        this.getIndustries();
+        this.getTypes();
+        this.getCategories();
 
     },
     data() {
@@ -489,16 +496,21 @@ export default {
             contacts: [],
             types: [],
             users: [],
-            status: [],
+            statuses: [],
+            industries: [],
+            categories: [],
 
             paginate: 50,
 
             search: "",
+            selectedUser: "",
             selectedStatus: "",
+            selectedType: "",
+            selectedIndustry: "",
+            selectedCategory: "",
 
             sort_direction: "desc",
             sort_field: "created_at",
-            statuses: "",
         };
     },
     watch: {
@@ -508,7 +520,19 @@ export default {
         search: function (value) {
             this.getContacts();
         },
+        selectedUsers: function (value) {
+            this.getContacts();
+        },
         selectedStatus: function (value) {
+            this.getContacts();
+        },
+        selectedType: function (value) {
+            this.getContacts();
+        },
+        selectedCategory: function (value) {
+            this.getContacts();
+        },
+        selectedIndustry: function (value) {
             this.getContacts();
         },
     },
@@ -523,8 +547,16 @@ export default {
                     "/api/contacts/index?" +
                         "q=" +
                         this.search +
+                        "&selectedUser=" +
+                        this.selectedUser +
                         "&selectedStatus=" +
                         this.selectedStatus +
+                        "&selectedType=" +
+                        this.selectedType +
+                        "&selectedIndustry=" +
+                        this.selectedIndustry +
+                        "&selectedCategory=" +
+                        this.selectedCategory +
                         "&paginate=" +
                         this.paginate +
                         "&page=" +
@@ -543,9 +575,53 @@ export default {
         },
         getStatus() {
             axios
-                .get("/api/contactstatus/index")
+                .get("/api/contacts/status/index")
                 .then((res) => {
                     this.statuses = res.data;
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        },
+
+        getUsers() {
+            axios
+                .get("/api/users/index")
+                .then((res) => {
+                    this.users = res.data;
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        },
+
+        getTypes() {
+            axios
+                .get("/api/contacts/type/index")
+                .then((res) => {
+                    this.types = res.data;
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        },
+
+        getIndustries() {
+            axios
+                .get("/api/contacts/industry/index")
+                .then((res) => {
+                    this.industries = res.data;
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        },
+
+        getCategories() {
+            axios
+                .get("/api/contacts/category/index")
+                .then((res) => {
+                    this.categories = res.data;
                 })
                 .catch((error) => {
                     console.log(error);
@@ -561,8 +637,6 @@ export default {
             }
             this.getContacts();
         },
-
-        searchType() {},
 
         deletecontact(id) {
             if (!window.confirm("Are you sure?")) {

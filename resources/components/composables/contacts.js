@@ -23,17 +23,17 @@ export default function contactComposables () {
     }
 
     const getStatuses = async () => {
-        let response = await axios.get('/api/contactstatus/index')
+        let response = await axios.get('/api/contacts/status/index')
         statuses.value = response.data.data;
     }
 
     const getCategories = async () => {
-        let response = await axios.get('/api/contactcategory/index')
+        let response = await axios.get('/api/contacts/category/index')
         categories.value = response.data.data;
     }
 
     const getTypes = async () => {
-        let response = await axios.get('/api/contacttype/index')
+        let response = await axios.get('/api/contacts/type/index')
         types.value = response.data.data;
     }
 

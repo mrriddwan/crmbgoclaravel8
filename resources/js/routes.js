@@ -47,37 +47,37 @@ const routes = [
         Contact Routes                      
     */
 
-    {
+    { //No route
         path: "/",
         name: "home",
         component: ContactIndex,
     },
 
-    {
+    { //ContactIndex
         path: "/contact/index",
         name: "contact_index",
         component: ContactIndex,
     },
 
-    {
+    { //Contact Summary
         path: "/contact/summary",
         name: "contact_summary",
         component: ContactSummary,
     },
 
-    {
+    { //ContactCreate
         path: "/contact/create",
         name: "contacts_create",
         component: ContactCreate,
     },
 
-    {
+    { //ContactEdit
         path: "/contact/:id/edit",
         name: "contacts_edit",
         component: ContactEdit,
     },
 
-    {
+    { //Contact Info
         path: "/contact/:id/info",
         name: "contacts_info",
         component: ContactInfo,

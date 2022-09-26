@@ -178,7 +178,7 @@ export default {
     methods: {
         async getIndustry() {
             await axios
-                .get("/api/contactindustry/index")
+                .get("/api/contacts/industry/index")
                 .then((res) => {
                     this.industries = res.data.data;
                 })
@@ -189,7 +189,7 @@ export default {
 
         async getStatus() {
             await axios
-                .get("/api/contactstatus/index")
+                .get("/api/contacts/status/index")
                 .then((res) => {
                     this.statuses = res.data.data;
                 })
@@ -200,7 +200,7 @@ export default {
 
         async getCategory() {
             await axios
-                .get("/api/contactcategory/index")
+                .get("/api/contacts/category/index")
                 .then((res) => {
                     this.categories = res.data.data;
                 })
@@ -211,7 +211,7 @@ export default {
 
         async getType() {
             await axios
-                .get("/api/contacttype/index")
+                .get("/api/contacts/type/index")
                 .then((res) => {
                     this.types = res.data.data;
                 })
@@ -228,8 +228,8 @@ export default {
                     status_id: this.form.status_id,
                     name: this.form.name,
                     category_id: this.form.category_id,
-                    address: this.form.address = "" ? "No address saved" : this.form.address,
-                    remark: this.form.remark = "" ? "No remark" : this.form.remark,
+                    address: this.form.address ? this.form.address  : "No address saved",
+                    remark: this.form.remark ? this.form.remark : "No remark",
                     user_id: 1, //later add current user
                 })
                 .then((res) => {

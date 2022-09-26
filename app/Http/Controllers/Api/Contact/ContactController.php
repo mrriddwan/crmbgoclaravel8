@@ -27,7 +27,11 @@ class ContactController extends Controller
         $sort_direction = request('sort_direction');
         $sort_field = request('sort_field');
 
+        $selectedUser = request('selectedUser');
         $selectedStatus = request('selectedStatus');
+        $selectedCategory = request('selectedCategory');
+        $selectedType = request('selectedType');
+        $selectedIndustry = request('selectedIndustry');
 
         $contact = Contact::select([
             'contacts.*',
@@ -42,8 +46,20 @@ class ContactController extends Controller
             ->join('contact_categories', 'contacts.category_id', '=', 'contact_categories.id')
             ->join('contact_industries', 'contacts.industry_id', '=', 'contact_industries.id')
             ->join('users', 'contacts.user_id', '=', 'users.id')
+            ->when($selectedUser, function ($query) use ($selectedUser) {
+                $query->where('contacts.user_id', $selectedUser);
+            })
             ->when($selectedStatus, function ($query) use ($selectedStatus) {
                 $query->where('contacts.status_id', $selectedStatus);
+            })
+            ->when($selectedCategory, function ($query) use ($selectedCategory) {
+                $query->where('contacts.category_id', $selectedCategory);
+            })
+            ->when($selectedType, function ($query) use ($selectedType) {
+                $query->where('contacts.type_id', $selectedType);
+            })
+            ->when($selectedIndustry, function ($query) use ($selectedIndustry) {
+                $query->where('contacts.industry_id', $selectedIndustry);
             })
             ->orderBy($sort_field, $sort_direction)
             ->search(trim($search_term))
@@ -96,7 +112,6 @@ class ContactController extends Controller
             'user_id' => $request->user_id,
             'status_id' => $request->status_id,
             'type_id' => $request->type_id,
-            'industry' => $request->industry,
             'name' => $request->name,
             'category_id' => $request->category_id,
             'industry_id' => $request->industry_id,
