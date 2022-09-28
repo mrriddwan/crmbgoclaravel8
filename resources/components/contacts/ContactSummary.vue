@@ -1,5 +1,4 @@
 <template>
-
     <h1
         class="items-center text-center text-4xl text-white font-extrabold bg-slate-400 px-2 rounded-md"
     >
@@ -332,25 +331,24 @@
                                 }}</a>
                             </router-link>
                         </td>
-                        <!-- <td class="text-xs">{{ contact.summary.todo_date }}</td> -->
-                        <!-- <tr> -->
-                        <!-- <td class="text-xs">1</td> -->
-                        <!-- <td class="text-xs">Date</td> -->
-                        <!-- <td class="text-xs">User</td>
-                        <td class="text-xs">Status</td>
-                        <td class="text-xs">Type</td>
-                        <td class="text-xs">Category</td>
-                        <td class="text-xs">Company</td> -->
                         <td class="text-xs">
                             Jan
                             <span></span>
                         </td>
                         <td class="text-xs">
                             <span
-                                v-for="summary_info in contact.summary"
+                                v-for="(summary_info, index) in contact.summary[
+                                    'Apr2022'
+                                ]"
                                 :key="summary_info.id"
-                                >{{ summary_info.todo_date }} <br/></span
                             >
+                                <span v-if="index === 0">
+                                    {{ summary_info.todo_date }}
+                                    <br />
+                                    {{ summary_info.action.name }}
+                                    <br />
+                                </span>
+                            </span>
                         </td>
                         <td class="text-xs">Mar</td>
                         <td class="text-xs">Apr</td>
@@ -433,6 +431,11 @@ export default {
     },
 
     methods: {
+        getFirst(data) {
+            let firstData = first(data);
+            return firstData;
+        },
+
         async getContacts(page = 1) {
             if (typeof page === "undefined") {
                 page = 1;

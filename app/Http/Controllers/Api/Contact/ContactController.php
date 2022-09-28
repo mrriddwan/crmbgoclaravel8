@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Contact\ContactRequest;
 use App\Http\Resources\Contact\ContactResource;
 use App\Models\Contact\Contact;
+use App\Models\ToDo\ToDo;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -162,61 +163,62 @@ class ContactController extends Controller
         $selectedCategory = request('selectedCategory');
 
 
-        // Post::with('user:id,username,team_id')
-
-        //     $data
-        //         ->selectRaw("
-        //     count(id) AS data, 
-        //     DATE_FORMAT(created_at, '%Y-%m') AS new_date, 
-        //     YEAR(created_at) AS year, 
-        //     MONTH(created_at) AS month
-        //      ")
-        //         ->groupBy('new_date')
-        //         ->get();
-
-
-        $contact = Contact::with(['summary' => function ($query) {
-            $query->select(['id', 'contact_id', 'todo_date as todo_date', 'action_id'])
-                ->orderBy('todo_date', 'asc')
-                ->get();
-        }])
-
-            // ->join('contact_statuses', 'contacts.status_id', '=', 'contact_statuses.id')
-            // ->join('contact_types', 'contacts.type_id', '=', 'contact_types.id')
-            // ->join('contact_categories', 'contacts.category_id', '=', 'contact_categories.id')
-            // ->join('users', 'contacts.user_id', '=', 'users.id')
-
-            // ->leftJoin('to_dos', 'contacts.id', '=', 'to_dos.contact_id')
-
+        $contact = Contact::with(
+            [
+                'summary' => function ($q) {
+                    $q->select(['id', 'todo_date', 'contact_id', 'action_id'])
+                        ->orderBy('todo_date', 'desc')
+                        
+                        ;
+                },
+                'summary.action' => function ($q) {
+                    $q->select('id', 'name');
+                },
+            ],
+        )
+            ->join('contact_statuses', 'contacts.status_id', '=', 'contact_statuses.id')
+            ->join('contact_types', 'contacts.type_id', '=', 'contact_types.id')
+            ->join('contact_categories', 'contacts.category_id', '=', 'contact_categories.id')
+            ->join('users', 'contacts.user_id', '=', 'users.id')
             ->select([
                 'contacts.id',
                 'contacts.name',
                 'contacts.created_at',
-                // 'contacts.*',
-                // 'contact_statuses.name as status_name',
-                // 'contact_types.name as type_name',
-                // 'users.name as user_name',
-                // 'contact_categories.name as category_name',
+                'contact_statuses.name as status_name',
+                'contact_types.name as type_name',
+                'users.name as user_name',
+                'contact_categories.name as category_name',
 
             ])
+            ->when($selectedStatus, function ($query) use ($selectedStatus) {
+                $query->where('contacts.status_id', $selectedStatus);
+            })
+            ->when($selectedType, function ($query) use ($selectedType) {
+                $query->where('contacts.type_id', $selectedType);
+            })
+            ->when($selectedUser, function ($query) use ($selectedUser) {
+                $query->where('contacts.user_id', $selectedUser);
+            })
+            ->when($selectedCategory, function ($query) use ($selectedCategory) {
+                $query->where('contacts.category_id', $selectedCategory);
+            })
             ->orderBy($sort_field, $sort_direction)
             ->search(trim($search_term))
 
             ->paginate($paginate);
 
-        // ->when($selectedStatus, function ($query) use ($selectedStatus) {
-        //     $query->where('contacts.status_id', $selectedStatus);
-        // })
-        // ->when($selectedType, function ($query) use ($selectedType) {
-        //     $query->where('contacts.type_id', $selectedType);
-        // })
-        // ->when($selectedUser, function ($query) use ($selectedUser) {
-        //     $query->where('contacts.user_id', $selectedUser);
-        // })
-        // ->when($selectedCategory, function ($query) use ($selectedCategory) {
-        //     $query->where('contacts.category_id', $selectedCategory);
-        // })
-        // ->distinct()
+        // group smua todo by month
+        $contact
+            ->transform(function ($company) {
+                $company->setRelation(
+                    'summary',
+                    $company->summary->groupBy(
+                            fn ($summary) => \Carbon\Carbon::create($summary->todo_date)->format('MY')
+                        )
+                    );
+
+                return $company;
+            });
 
 
         return $contact;
@@ -225,46 +227,64 @@ class ContactController extends Controller
 
     public function test()
     {
-        // $contact = Contact::whereMonth('created_at', Carbon::now()->month)
-        //     ->select(DB::raw("MONTH(created_at) month"), DB::raw("count('month') as total_per_month"))
-        //     ->groupby('month')
-        //     ->get();
 
-        // return $contact;
+        ### DB Raw method from discord ###
 
-        // ->select(DB::raw('count(id) as `data`'), DB::raw("DATE_FORMAT(created_at, '%m-%Y') new_date"),  DB::raw('YEAR(created_at) year, MONTH(created_at) month'))
-        // ->groupby('year','month')
-        // ->get();
+        ##trial 1
 
-        // $res = ModelName::where('someColumn', 'test')
-        //     ->get()
-        //     ->groupBy(function ($val) {
-        //         return Carbon::parse($val->created_at)->format('Y');
-        //     });
+        // $contact = Contact::select(
+        //     'name',
+        //     DB::raw("DATE_FORMAT(created_at, '%M %Y') as months")
+        // )
+        // ->get()
+        // ->groupBy('months');
 
-        $contact = Contact::with(['summary' => function ($query) {
-            $query->select(['id', 'contact_id', 'todo_date', 'action_id'])
-                ->groupBy(function ($val) {
-                    return Carbon::parse($val->todo_date)->format('Y');
-                })
-                ->orderBy('todo_date', 'ASC')
-                ->get();
-        }])
+        // return $contact->toArray();
 
-            ->select([
-                'contacts.id',
-                'contacts.name',
-                'contacts.created_at',
-            ])
-            ->paginate(20);
+
+        //TRIAL 5
+
+        $contact = Contact::with(
+            [
+                'status' => function ($q) {
+                    $q->select('id', 'name');
+                },
+                'category' => function ($q) {
+                    $q->select('id', 'name');
+                },
+                'type' => function ($q) {
+                    $q->select('id', 'name');
+                },
+                'user' => function ($q) {
+                    $q->select('id', 'name');
+                },
+                'summary' => function ($q) {
+                    $q->select(['id', 'todo_date', 'contact_id', 'action_id'])
+                        ->orderBy('todo_date');
+                },
+                'summary.action' => function ($q) {
+                    $q->select('id', 'name');
+                },
+            ],
+        )
+            ->select('id', 'name', 'status_id', 'type_id', 'category_id', 'user_id')
+            ->get();
+
+        // group smua todo by month
+        $contact
+            ->transform(function ($company) {
+                $company->setRelation(
+                    'summary',
+                    $company->summary
+                        ->groupBy(
+                            fn ($summary) => \Carbon\Carbon::create($summary->todo_date)->format('F-Y')
+                        )
+
+                );
+
+                return $company;
+            });
+
         return $contact;
-
-        // $todo =  DB::table("to_dos")
-        //     ->select("id", DB::raw("(COUNT(*)) as total_click"))
-        //     ->orderBy('created_at')
-        //     ->groupBy(DB::raw("MONTH(created_at)"))
-        //     ->get();
-
-        // return $todo;
     }
 }

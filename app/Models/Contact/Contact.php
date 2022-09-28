@@ -61,8 +61,11 @@ class Contact extends Model
     }
 
     public function summary(){
-        return $this -> hasMany(ToDo::class)->with('user', 'action');
+        return $this -> hasMany(ToDo::class);
     }
+
+
+
     
     public function scopeSearch($query, $term)
     {   

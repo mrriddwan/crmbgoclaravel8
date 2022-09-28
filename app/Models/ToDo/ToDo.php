@@ -65,6 +65,10 @@ class ToDo extends Model
         return $this -> belongsTo(ToDoSource::class);
     }
 
+    public function summaryContact(){
+        return $this -> belongsTo(Contact::class);
+    }
+
     public function scopeSearch($query, $term)
     {   
         $term = "%$term%";

@@ -51,7 +51,11 @@ Route::get('/contacts/type/index', [ContactTypeController::class, 'index'])->nam
 Route::get('/contacts/status/index', [ContactStatusController::class, 'index'])->name('status:index');
 Route::get('/contacts/industry/index', [ContactIndustryController::class, 'index'])->name('industry:index');
 // Route::get('/contactstatus/dropdown', [ContactStatusController::class, 'dropdown'])->name('status:dropdown');
+
+
 Route::get('/users/index', [UserController::class, 'index'])->name('user:index');
+// Route::get('/users/action/{id}', [UserController::class, 'action'])->name('user:action');
+Route::get('/users/action', [UserController::class, 'action'])->name('user:action');
 
 
 /*Incharge API*/

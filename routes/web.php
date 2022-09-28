@@ -54,3 +54,7 @@ Route::get('/forecast/index', function () {
 Route::get('/project/index', function () {
     return view('project');
 })->middleware(['auth'])->name('project');
+
+Route::get('/performance/index', function () {
+    return view('performance');
+})->middleware(['auth'])->name('performance');
