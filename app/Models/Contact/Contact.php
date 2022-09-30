@@ -24,48 +24,76 @@ class Contact extends Model
         'user_id'
     ];
 
-    public function user(){
+    public function user()
+    {
         return $this -> belongsTo(User::class);
     }
 
-    public function category(){
+    public function category()
+    {
         return $this -> belongsTo(ContactCategory::class);
     }
 
-    public function type(){
+    public function type()
+    {
         return $this -> belongsTo(ContactType::class);
     }
 
-    public function industry(){
+    public function industry()
+    {
         return $this -> belongsTo(ContactIndustry::class);
     }
 
-    public function status(){
+    public function status()
+    {
         return $this -> belongsTo(ContactStatus::class);
     }
 
-    public function todo(){
+    public function todo()
+    {
         return $this -> hasMany(ToDo::class)->with('task', 'user', 'action');
     }
 
-    public function incharge(){
+    public function incharge()
+    {
         return $this -> hasMany(ContactIncharge::class);
     }
 
-    public function forecast(){
+    public function forecast()
+    {
         return $this->hasMany(Forecast::class)->with('product', 'type')->orderBy('forecast_date', 'desc');
     }
 
-    public function tasks(){
+    public function tasks()
+    {
         return $this -> hasMany(Task::class);
     }
 
-    public function summary(){
+    public function summary()
+    {
         return $this -> hasMany(ToDo::class);
     }
 
-
-
+    public function exportContact()
+    {
+        return Contact::with(([
+            'status' => function ($q) {
+                $q->select('id', 'name');
+            },
+            'category' => function ($q) {
+                $q->select('id', 'name');
+            },
+            'type' => function ($q) {
+                $q->select('id', 'name');
+            },
+            'user' => function ($q) {
+                $q->select('id', 'name');
+            },
+        ]))
+        ->get()
+        ->toArray()
+        ;
+    }
     
     public function scopeSearch($query, $term)
     {   

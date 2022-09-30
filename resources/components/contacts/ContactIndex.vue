@@ -36,12 +36,14 @@
     </h1>
 
     <div class="flex">
-        <router-link
-            to="/contact/create"
-            class="inline-block items-center px-2 py-1 bg-gray-800 border border-transparent rounded-md font-semibold text-sm text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
-        >
-            <UserPlusIcon class="h-6 w-6 inline" /> contact</router-link
-        >
+        <div>
+            <router-link
+                to="/contact/create"
+                class="inline-block items-center px-2 py-1 bg-gray-800 border border-transparent rounded-md font-semibold text-sm text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
+            >
+                <UserPlusIcon class="h-6 w-6 inline" /> contact</router-link
+            >
+        </div>
 
         <div class="py-2 ml-3 inline-block">
             <router-link
@@ -49,6 +51,56 @@
                 class="inline-block items-center px-2 py-1 bg-slate-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
                 >Contact Summary</router-link
             >
+        </div>
+
+        <div>
+            <div>
+                <div>
+                    <a
+                        v-if="checked.length > 0"
+                        class="px-2 py-1 ml-2 align-bottom text-center bg-emerald-300 rounded-md text-xs"
+                        type="button"
+                        :href="url"
+                        download="file.xlsx"
+                    >
+                        <button @click="exportSelected()" class="h-1">
+                            <ArrowTopRightOnSquareIcon
+                                class="h-5 w-5 mr-1 inline-block"
+                            />
+                            <p class="inline-block">Export</p>
+                        </button>
+                    </a>
+                </div>
+
+                <div
+                    v-if="checked.length > 0 && !selectPage && !selectAll"
+                    class="inline-block"
+                >
+                    Selected: <strong>{{ checked.length }}</strong> record(s)
+                </div>
+
+                <div class="inline-block" v-if="selectPage">
+                    <div
+                        v-if="
+                            selectAll || contacts.meta.total == checked.length
+                        "
+                    >
+                        Selected all:
+                        <strong>{{ checked.length }}</strong> record(s).
+                    </div>
+                    <div v-else>
+                        Selected:
+                        <strong>{{ checked.length }}</strong> record(s), All:
+                        <strong>{{ contacts.meta.total }}</strong>
+                        <a
+                            @click.prevent="selectAllRecords"
+                            href="#"
+                            class="ml-2"
+                            >Select All</a
+                        >
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -89,6 +141,9 @@
             <table class="table table-hover table-bordered w-full">
                 <thead class="bg-slate-400 border-b sticky top-0">
                     <tr>
+                        <th>
+                            <input type="checkbox" v-model="selectPage" />
+                        </th>
                         <th class="py-3">
                             <div class="text-sm text-center h-6">
                                 <a
@@ -96,22 +151,27 @@
                                     @click.prevent="change_sort('created_at')"
                                 >
                                     Date Created
+                                    <span v-if="!(sort_field == 'created_at')"
+                                        ><ArrowsUpDownIcon
+                                            class="h-4 w-4 inline-flex"
+                                    /></span>
+                                    <span
+                                        v-if="
+                                            sort_direction == 'desc' &&
+                                            sort_field == 'created_at'
+                                        "
+                                        >&uarr;</span
+                                    >
+                                    <span
+                                        v-if="
+                                            sort_direction == 'asc' &&
+                                            sort_field == 'created_at'
+                                        "
+                                        >&darr;</span
+                                    >
                                 </a>
-                                <span
-                                    v-if="
-                                        sort_direction == 'desc' &&
-                                        sort_field == 'created_at'
-                                    "
-                                    >&uarr;</span
-                                >
-                                <span
-                                    v-if="
-                                        sort_direction == 'asc' &&
-                                        sort_field == 'created_at'
-                                    "
-                                    >&darr;</span
-                                >
                             </div>
+                            <div class="text-sm text-center h-6"></div>
                         </th>
                         <th class="py-3">
                             <div class="text-sm text-center h-6">
@@ -120,7 +180,11 @@
                                     @click.prevent="change_sort('user_name')"
                                 >
                                     CS
+                                    <ArrowsUpDownIcon
+                                        class="h-5 w-5 mr-1 inline-flex"
+                                    />
                                 </a>
+
                                 <span
                                     v-if="
                                         sort_direction == 'desc' &&
@@ -304,9 +368,7 @@
                                     >&darr;</span
                                 >
                             </div>
-                            <div class="text-sm text-center h-6">
-
-                            </div>
+                            <div class="text-sm text-center h-6"></div>
                         </th>
                         <th class="py-3">
                             <div class="text-sm text-center h-6">
@@ -377,6 +439,7 @@
                                     >&darr;</span
                                 >
                             </div>
+                            <div class="text-sm text-center h-6"></div>
                         </th>
                         <th class="py-3">
                             <div class="text-sm text-center h-6">
@@ -401,6 +464,7 @@
                                     >&darr;</span
                                 >
                             </div>
+                            <div class="text-sm text-center h-6"></div>
                         </th>
                         <th class="py-3">
                             <div class="text-sm text-center h-6">Action</div>
@@ -409,7 +473,18 @@
                     </tr>
                 </thead>
                 <tbody class="mt-2">
-                    <tr v-for="contact in contacts.data" :key="contact.id">
+                    <tr
+                        v-for="contact in contacts.data"
+                        :key="contact.id"
+                        :class="isChecked(contact.id) ? 'table-primary' : ''"
+                    >
+                        <td>
+                            <input
+                                type="checkbox"
+                                :value="contact.id"
+                                v-model="checked"
+                            />
+                        </td>
                         <td class="text-xs">{{ contact.created_at }}</td>
                         <td class="text-xs">{{ contact.user.name }}</td>
                         <td class="text-xs">{{ contact.status.name }}</td>
@@ -471,6 +546,8 @@ import {
     TrashIcon,
     UserPlusIcon,
     PlusIcon,
+    ArrowTopRightOnSquareIcon,
+    ArrowsUpDownIcon,
 } from "@heroicons/vue/24/solid";
 
 export default {
@@ -480,6 +557,8 @@ export default {
         TrashIcon,
         UserPlusIcon,
         PlusIcon,
+        ArrowTopRightOnSquareIcon,
+        ArrowsUpDownIcon,
     },
 
     mounted() {
@@ -489,7 +568,6 @@ export default {
         this.getIndustries();
         this.getTypes();
         this.getCategories();
-
     },
     data() {
         return {
@@ -501,6 +579,10 @@ export default {
             categories: [],
 
             paginate: 50,
+            selectPage: false,
+            selectAll: false,
+            checked: [],
+            url: "",
 
             search: "",
             selectedUser: "",
@@ -534,6 +616,22 @@ export default {
         },
         selectedIndustry: function (value) {
             this.getContacts();
+        },
+
+        selectPage: function (value) {
+            this.checked = [];
+            if (value) {
+                this.contacts.data.forEach((contact) => {
+                    this.checked.push(contact.id);
+                });
+            } else {
+                this.checked = [];
+                this.selectAll = false;
+            }
+        },
+
+        checked: function (value) {
+            this.url = "/api/contacts/export/" + this.checked;
         },
     },
 
@@ -644,6 +742,25 @@ export default {
             }
             axios.delete("/api/contacts/delete/" + id);
             this.getContacts();
+        },
+
+        exportSelected() {
+            if (this.checked.length === 0) {
+                return alert("Need select record.");
+            } else {
+                axios.get("/api/contacts/export");
+            }
+        },
+
+        isChecked(contact_id) {
+            return this.checked.includes(contact_id);
+        },
+
+        selectAllRecords() {
+            axios.get("/api/contacts/all").then((response) => {
+                this.checked = response.data;
+                this.selectAll = true;
+            });
         },
     },
 };

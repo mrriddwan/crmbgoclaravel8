@@ -2,16 +2,15 @@
 
 namespace App\Http\Controllers\Api\Contact;
 
+use App\Exports\ContactExport;
+
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Contact\ContactRequest;
 use App\Http\Resources\Contact\ContactResource;
 use App\Models\Contact\Contact;
-use App\Models\ToDo\ToDo;
-use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ContactController extends Controller
 {
@@ -290,5 +289,19 @@ class ContactController extends Controller
             });
 
         return $contact;
+    }
+
+    public function export($contact) 
+    {
+        $date = Carbon::now()->format('Ymd');
+
+        $contactsArray = explode(',', $contact );
+
+        return Excel::download(new ContactExport($contactsArray), ('Contacts - '. $date . '.xlsx'));
+    }
+
+    public function selectAll()
+    {
+        return Contact::pluck('id');
     }
 }

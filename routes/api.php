@@ -44,6 +44,9 @@ Route::delete('/contacts/delete/{contact}', [ContactController::class, 'delete']
 Route::get('/contacts/info/{contact}', [ContactController::class, 'info'])->name('contact:info');
 Route::get('/contacts/summary', [ContactController::class, 'summary'])->name('contact:summary');
 Route::get('/contacts/test', [ContactController::class, 'test'])->name('contact:test');
+Route::get('/contacts/export/{contact}', [ContactController::class, 'export'])->name('contact:export');
+Route::get('/contacts/all', [ContactController::class, 'selectAll'])->name('contact:selectAll');
+
 
 /*Sub-Contact API*/
 Route::get('/contacts/category/index', [ContactCategoryController::class, 'index'])->name('category:index');
