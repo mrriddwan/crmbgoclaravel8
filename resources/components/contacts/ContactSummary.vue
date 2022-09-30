@@ -6,8 +6,8 @@
     </h1>
 
     <div class="">
-        <div class="grid grid-cols-2 items-center">
-            <div class="grid grid-cols-2 items-left m-2">
+        <div class="grid grid-cols-3 items-center">
+            <div class="grid grid-cols-1 items-left m-2">
                 <label for="paginate" class="">Per Page</label>
                 <select v-model="paginate" class="form-control">
                     <option value="10">10</option>
@@ -15,8 +15,17 @@
                     <option value="100">100</option>
                 </select>
             </div>
-
-            <div>
+            <div class="grid grid-cols-1 items-left m-2">
+                <label>Year</label>
+                <input
+                    v-model.lazy="selectedYear"
+                    type="search"
+                    class="form-control"
+                    placeholder="Search by any..."
+                />
+            </div>
+            <div class="grid grid-cols-1 items-left m-2">
+                <label>Search in table</label>
                 <input
                     v-model.lazy="search"
                     type="search"
@@ -321,7 +330,6 @@
                         <td class="text-xs">{{ contact.category_name }}</td>
                         <td class="text-xs">
                             <router-link
-                                class="mr-2"
                                 :to="`/contact/${contact.id}/info`"
                                 custom
                                 v-slot="{ navigate, href }"
@@ -331,35 +339,270 @@
                                 }}</a>
                             </router-link>
                         </td>
-                        <td class="text-xs">
-                            Jan
-                            <span></span>
-                        </td>
-                        <td class="text-xs">
+                        <td v-if="contact.summary['Jan2022']" class="text-xs">
                             <span
                                 v-for="(summary_info, index) in contact.summary[
-                                    'Apr2022'
+                                    `Jan`+ this.selectedYear
                                 ]"
                                 :key="summary_info.id"
                             >
                                 <span v-if="index === 0">
-                                    {{ summary_info.todo_date }}
+                                    {{ summary_info["todo_date"] }}
                                     <br />
-                                    {{ summary_info.action.name }}
-                                    <br />
+                                    {{ summary_info["action"]["name"] }}
                                 </span>
                             </span>
                         </td>
-                        <td class="text-xs">Mar</td>
-                        <td class="text-xs">Apr</td>
-                        <td class="text-xs">May</td>
-                        <td class="text-xs">June</td>
-                        <td class="text-xs">July</td>
-                        <td class="text-xs">Aug</td>
-                        <td class="text-xs">Sep</td>
-                        <td class="text-xs">Oct</td>
-                        <td class="text-xs">Nov</td>
-                        <td class="text-xs">Dec</td>
+                        <td v-else>X</td>
+
+                        <td v-if="contact.summary['Feb2022']" class="text-xs">
+                            <span
+                                v-for="(summary_info, index) in contact.summary[
+                                    `Feb`+ this.selectedYear
+                                ]"
+                                :key="summary_info.id"
+                            >
+                                <span v-if="index === 0">
+                                    {{ summary_info["todo_date"] }}
+                                    <br />
+                                    {{ summary_info["action"]["name"] }}
+                                </span>
+                            </span>
+                            <!-- <span
+                                v-for="(summary_info, index) in contact.summary[
+                                    `'Apr'+ {{ this.selectedYear }}`
+                                ]"
+                                :key="summary_info.id"
+                            > -->
+                        </td>
+                        <td v-else>X</td>
+
+                        <td v-if="contact.summary['Mar2022']" class="text-xs">
+                            <span
+                                v-for="(summary_info, index) in contact.summary[
+                                    `Mar`+ this.selectedYear
+                                ]"
+                                :key="summary_info.id"
+                            >
+                                <span v-if="index === 0">
+                                    {{ summary_info["todo_date"] }}
+                                    <br />
+                                    {{ summary_info["action"]["name"] }}
+                                </span>
+                            </span>
+                            <!-- <span
+                                v-for="(summary_info, index) in contact.summary[
+                                    `'Apr'+ {{ this.selectedYear }}`
+                                ]"
+                                :key="summary_info.id"
+                            > -->
+                        </td>
+                        <td v-else>X</td>
+
+                        <td v-if="contact.summary['Apr2022']" class="text-xs">
+                            <!-- <span
+                                v-for="(summary_info, index) in contact.summary[
+                                    `Apr2022`
+                                ]"
+                                :key="summary_info.id"
+                            >
+                                <span v-if="index === 0">
+                                    {{ summary_info["todo_date"] }}
+                                    <br />
+                                    {{ summary_info["action"]["name"] }}
+                                </span>
+                            </span> -->
+
+                            <span
+                                v-for="(summary_info, index) in contact.summary[
+                                    `Apr`+ this.selectedYear
+                                ]"
+                                :key="summary_info.id"
+                            >
+                                <span v-if="index === 0">
+                                    {{ summary_info["todo_date"] }}
+                                    <br />
+                                    {{ summary_info["action"]["name"] }}
+                                </span>
+                            </span>
+                        </td>
+                        <td v-else>X</td>
+
+                        <td v-if="contact.summary['May2022']" class="text-xs">
+                            <span
+                                v-for="(summary_info, index) in contact.summary[
+                                    `May`+ this.selectedYear
+                                ]"
+                                :key="summary_info.id"
+                            >
+                                <span v-if="index === 0">
+                                    {{ summary_info["todo_date"] }}
+                                    <br />
+                                    {{ summary_info["action"]["name"] }}
+                                </span>
+                            </span>
+                            <!-- <span
+                                v-for="(summary_info, index) in contact.summary[
+                                    `'Apr'+ {{ this.selectedYear }}`
+                                ]"
+                                :key="summary_info.id"
+                            > -->
+                        </td>
+                        <td v-else>X</td>
+
+                        <td v-if="contact.summary['Jun2022']" class="text-xs">
+                            <span
+                                v-for="(summary_info, index) in contact.summary[
+                                    `Jun`+ this.selectedYear
+                                ]"
+                                :key="summary_info.id"
+                            >
+                                <span v-if="index === 0">
+                                    {{ summary_info["todo_date"] }}
+                                    <br />
+                                    {{ summary_info["action"]["name"] }}
+                                </span>
+                            </span>
+                            <!-- <span
+                                v-for="(summary_info, index) in contact.summary[
+                                    `'Apr'+ {{ this.selectedYear }}`
+                                ]"
+                                :key="summary_info.id"
+                            > -->
+                        </td>
+                        <td v-else>X</td>
+
+                        <td v-if="contact.summary['Jul2022']" class="text-xs">
+                            <span
+                                v-for="(summary_info, index) in contact.summary[
+                                    `Jul`+ this.selectedYear
+                                ]"
+                                :key="summary_info.id"
+                            >
+                                <span v-if="index === 0">
+                                    {{ summary_info["todo_date"] }}
+                                    <br />
+                                    {{ summary_info["action"]["name"] }}
+                                </span>
+                            </span>
+                            <!-- <span
+                                v-for="(summary_info, index) in contact.summary[
+                                    `'Apr'+ {{ this.selectedYear }}`
+                                ]"
+                                :key="summary_info.id"
+                            > -->
+                        </td>
+                        <td v-else>X</td>
+
+                        <td v-if="contact.summary['Aug2022']" class="text-xs">
+                            <span
+                                v-for="(summary_info, index) in contact.summary[
+                                    `Aug`+ this.selectedYear
+                                ]"
+                                :key="summary_info.id"
+                            >
+                                <span v-if="index === 0">
+                                    {{ summary_info["todo_date"] }}
+                                    <br />
+                                    {{ summary_info["action"]["name"] }}
+                                </span>
+                            </span>
+                            <!-- <span
+                                v-for="(summary_info, index) in contact.summary[
+                                    `'Apr'+ {{ this.selectedYear }}`
+                                ]"
+                                :key="summary_info.id"
+                            > -->
+                        </td>
+                        <td v-else>X</td>
+
+                        <td v-if="contact.summary['Sep2022']" class="text-xs">
+                            <span
+                                v-for="(summary_info, index) in contact.summary[
+                                    `Sep`+ this.selectedYear
+                                ]"
+                                :key="summary_info.id"
+                            >
+                                <span v-if="index === 0">
+                                    {{ summary_info["todo_date"] }}
+                                    <br />
+                                    {{ summary_info["action"]["name"] }}
+                                </span>
+                            </span>
+                            <!-- <span
+                                v-for="(summary_info, index) in contact.summary[
+                                    `'Apr'+ {{ this.selectedYear }}`
+                                ]"
+                                :key="summary_info.id"
+                            > -->
+                        </td>
+                        <td v-else>X</td>
+
+                        <td v-if="contact.summary['Oct2022']" class="text-xs">
+                            <span
+                                v-for="(summary_info, index) in contact.summary[
+                                    `Oct`+ this.selectedYear
+                                ]"
+                                :key="summary_info.id"
+                            >
+                                <span v-if="index === 0">
+                                    {{ summary_info["todo_date"] }}
+                                    <br />
+                                    {{ summary_info["action"]["name"] }}
+                                </span>
+                            </span>
+                            <!-- <span
+                                v-for="(summary_info, index) in contact.summary[
+                                    `'Apr'+ {{ this.selectedYear }}`
+                                ]"
+                                :key="summary_info.id"
+                            > -->
+                        </td>
+                        <td v-else>X</td>
+
+                        <td v-if="contact.summary['Nov2022']" class="text-xs">
+                            <span
+                                v-for="(summary_info, index) in contact.summary[
+                                    `Nov`+ this.selectedYear
+                                ]"
+                                :key="summary_info.id"
+                            >
+                                <span v-if="index === 0">
+                                    {{ summary_info["todo_date"] }}
+                                    <br />
+                                    {{ summary_info["action"]["name"] }}
+                                </span>
+                            </span>
+                            <!-- <span
+                                v-for="(summary_info, index) in contact.summary[
+                                    `'Apr'+ {{ this.selectedYear }}`
+                                ]"
+                                :key="summary_info.id"
+                            > -->
+                        </td>
+                        <td v-else>X</td>
+
+                        <td v-if="contact.summary['Dec2022']" class="text-xs">
+                            <span
+                                v-for="(summary_info, index) in contact.summary[
+                                    `Dec`+ this.selectedYear
+                                ]"
+                                :key="summary_info.id"
+                            >
+                                <span v-if="index === 0">
+                                    {{ summary_info["todo_date"] }}
+                                    <br />
+                                    {{ summary_info["action"]["name"] }}
+                                </span>
+                            </span>
+                            <!-- <span
+                                v-for="(summary_info, index) in contact.summary[
+                                    `'Apr'+ {{ this.selectedYear }}`
+                                ]"
+                                :key="summary_info.id"
+                            > -->
+                        </td>
+                        <td v-else>X</td>
                     </tr>
                 </tbody>
             </table>
@@ -376,6 +619,7 @@ import {
     UserPlusIcon,
     PlusIcon,
 } from "@heroicons/vue/24/solid";
+import moment from "moment";
 
 export default {
     components: {
@@ -387,6 +631,7 @@ export default {
     },
 
     mounted() {
+        this.getSelectedYear(this.getCurrentDate());
         this.getContacts();
         this.getStatus();
         this.getTypes();
@@ -401,8 +646,10 @@ export default {
             types: [],
             categories: [],
             paginate: 50,
+            moment: moment,
 
             search: "",
+            selectedYear: "",
             selectedStatus: "",
             selectedUser: "",
             selectedType: "",
@@ -410,6 +657,7 @@ export default {
 
             sort_direction: "asc",
             sort_field: "id",
+            currentDate: "",
         };
     },
     watch: {
@@ -430,6 +678,8 @@ export default {
         },
     },
 
+    computed: {},
+
     methods: {
         getFirst(data) {
             let firstData = first(data);
@@ -445,6 +695,8 @@ export default {
                     "/api/contacts/summary?" +
                         "q=" +
                         this.search +
+                        "&selectedYear=" +
+                        this.selectedYear +
                         "&selectedStatus=" +
                         this.selectedStatus +
                         "&selectedUser=" +
@@ -522,6 +774,16 @@ export default {
                 this.sort_field = field;
             }
             await this.getContacts();
+        },
+
+        getCurrentDate() {
+            this.currentDate = moment().format("YYYY-MM-DD");
+            return this.currentDate;
+        },
+
+        getSelectedYear(date) {
+            this.selectedYear = moment(date).format("YYYY");
+            return this.selectedYear;
         },
     },
 };

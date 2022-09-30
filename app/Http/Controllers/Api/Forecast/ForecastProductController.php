@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api\Forecast;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Forecast\ForecastProductResource;
-use App\Models\ForecastProduct;
+use App\Models\Forecast\ForecastProduct;
 use Illuminate\Http\Request;
 
 class ForecastProductController extends Controller

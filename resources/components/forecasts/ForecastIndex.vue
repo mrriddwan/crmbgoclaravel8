@@ -7,7 +7,7 @@
 
     <div class="py-2">
         <router-link
-            to="/forecasts/index"
+            to="/forecast/index"
             class="inline-block items-center px-2 py-1 bg-purple-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
             >Forecast Summary</router-link
         >
@@ -454,7 +454,6 @@
                         </td>
                         <td class="text-xs grid-cols-2 w-max">
                             <router-link
-                                class="mr-2"
                                 :to="`/contact/${forecast.contact.id}/info`"
                                 custom
                                 v-slot="{ navigate, href }"
@@ -464,7 +463,7 @@
                                 }}</a>
                             </router-link>
                             <router-link
-                                :to="`/forecasts/${forecast.contact.id}/create`"
+                                :to="`/forecast/${forecast.contact.id}/create`"
                                 class="ml-1 px-2 py-1 items-center border text-xs text-right rounded-lg w-max text-lime-600"
                             >
                                 <PlusIcon class="h-3 w-3 inline" />
@@ -497,38 +496,41 @@
                                 </span>
                                 <button
                                     class="bg-blue-300 py-1 px-1 ml-2 text-xs rounded-md inline-block"
-                                    @click="toggleResult"
-                                    :id="forecast.id"
+                                    @click="toggleResult()"
                                 >
                                     <PencilIcon class="h-3 w-3" />
                                 </button>
-                                <span v-show="changeResult === true">
-                                    <select
-                                        hidden
-                                        id="result-change-{{forecast.id}}"
-                                        class="form-control form-control-sm mt-2"
-                                        @change="
-                                            resultSelected(
-                                                this.forecast_result.result_id,
-                                                forecast.id,
-                                                forecast.contact.id
-                                            )
-                                        "
-                                        v-model="forecast_result.result_id"
+                                <button
+                                    class="bg-blue-300 py-1 px-1 ml-2 text-xs rounded-md inline-block"
+                                    @click="hideEditResult(forecast.id)"
+                                >
+                                    Hide
+                                </button>
+                                <!-- <span v-show="changeResult"> -->
+                                <select
+                                    
+                                    id="change-result-{{forecast.id}}"
+                                    class="form-control form-control-sm mt-2"
+                                    @change="
+                                        resultSelected(
+                                            this.forecast_result.result_id,
+                                            forecast.id,
+                                            forecast.contact.id
+                                        )
+                                    "
+                                    v-model="forecast_result.result_id"
+                                >
+                                    <option value="">Select Result</option>
+                                    <option
+                                        v-for="result in results.data"
+                                        :key="result.id"
+                                        :value="result.id"
                                     >
-                                        <option disabled value="">
-                                            Select Result
-                                        </option>
-                                        <option
-                                            v-for="result in results.data"
-                                            :key="result.id"
-                                            :value="result.id"
-                                        >
-                                            {{ result.name }}
-                                        </option>
-                                    </select>
-                                </span>
+                                        {{ result.name }}
+                                    </option>
+                                </select>
                             </span>
+                            <!-- </span> -->
                             <span v-show="!forecast.result">
                                 <select
                                     id="result-select"
@@ -542,9 +544,7 @@
                                     "
                                     v-model="forecast_result.result_id"
                                 >
-                                    <option disabled value="">
-                                        Select Result
-                                    </option>
+                                    <option value="">Select Result</option>
                                     <option
                                         v-for="result in results.data"
                                         :key="result.id"
@@ -704,7 +704,7 @@ export default {
 
         getTypes() {
             axios
-                .get("/api/contacttypes/index")
+                .get("/api/contacts/type/index")
                 .then((res) => {
                     this.types = res.data;
                 })
@@ -758,7 +758,8 @@ export default {
         resultSelected(result, forecastId) {
             const date = moment().format("YYYY-MM-DD");
             if (!window.confirm("Update result of forecast?")) {
-                return;
+                this.forecast_result.result_id = "";
+                return result;
             }
             console.log(result);
             console.log(forecastId);
@@ -774,6 +775,14 @@ export default {
 
         toggleResult() {
             return (this.changeResult = !this.changeResult);
+        },
+
+        hideEditResult(forecastId) {
+            // return (this.changeResult = !this.changeResult);
+            let x = document.getElementById(`change-result-${forecastId}`).hidden
+            x = true;
+            console.log(x)
+            return x;
         },
 
         // forecastResult() {
@@ -792,4 +801,10 @@ export default {
 
 <style scoped>
 @import "bootstrap/dist/css/bootstrap.min.css";
+
+/* #change-result-${forecastId} {
+  width: 500px;
+  height: 500px;
+  background-color: lightblue;
+} */
 </style>

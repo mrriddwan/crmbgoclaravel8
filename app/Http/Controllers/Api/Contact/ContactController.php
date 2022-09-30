@@ -161,6 +161,7 @@ class ContactController extends Controller
         $selectedType = request('selectedType');
         $selectedUser = request('selectedUser');
         $selectedCategory = request('selectedCategory');
+        $selectedYear = request('selectedYear');
 
 
         $contact = Contact::with(
@@ -202,6 +203,9 @@ class ContactController extends Controller
             ->when($selectedCategory, function ($query) use ($selectedCategory) {
                 $query->where('contacts.category_id', $selectedCategory);
             })
+            // ->when($selectedYear, function ($query) use ($selectedYear) {
+            //     $query->whereYear('contacts.todo_date', '=', ($selectedYear));
+            // })
             ->orderBy($sort_field, $sort_direction)
             ->search(trim($search_term))
 
@@ -221,7 +225,7 @@ class ContactController extends Controller
             });
 
 
-        return $contact;
+        return $contact->toArray();
     }
 
 

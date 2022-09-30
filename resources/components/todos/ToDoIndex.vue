@@ -1022,6 +1022,7 @@ export default {
                     console.log(error);
                 });
         },
+        
         change_sort(field) {
             if (this.viewType === "day") {
                 if (this.sort_field == field) {
