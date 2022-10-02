@@ -11,7 +11,57 @@
             class="inline-block items-center px-2 py-1 bg-purple-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
             >Forecast Summary</router-link
         >
+
+        <a
+            v-if="checked.length > 0"
+            class="px-2 py-1 ml-2 align-bottom text-center bg-emerald-300 rounded-md text-xs"
+            type="button"
+            :href="url"
+            download="file.xlsx"
+        >
+            <button @click="exportSelected()" class="h-1">
+                <ArrowTopRightOnSquareIcon class="h-5 w-5 mr-1 inline-block" />
+                <p class="inline-block">Export</p>
+            </button>
+        </a>
+
+        <div v-if="checked.length > 0 && !selectPage" class="inline-block">
+            <div
+                class="inline-block"
+                v-if="selectAll || forecasts.meta.total == checked.length"
+            >
+                Selected:
+                <strong>{{ checked.length }}</strong> record(s).
+            </div>
+            <div v-else class="inline-block">
+                Selected:
+                <strong>{{ checked.length }}</strong> record(s), All:
+                <strong>{{ forecasts.meta.total }}</strong>
+                <a @click.prevent="selectAllRecords" href="#" class="ml-2"
+                    >Select All</a
+                >
+            </div>
+        </div>
+
+        <div class="inline-block" v-if="selectPage">
+            <div
+                class="inline-block"
+                v-if="selectAll || forecasts.meta.total == checked.length"
+            >
+                Selected all:
+                <strong>{{ checked.length }}</strong> record(s).
+            </div>
+            <div v-else class="inline-block">
+                Selected:
+                <strong>{{ checked.length }}</strong> record(s), All:
+                <strong>{{ forecasts.meta.total }}</strong>
+                <a @click.prevent="selectAllRecords" href="#" class="ml-2"
+                    >Select All</a
+                >
+            </div>
+        </div>
     </div>
+
     <div class="grid grid-cols-2">
         <div class="grid grid-cols-2 items-center align-middle w-max">
             <label for="paginate" class="px-2 inline-block">Entries</label>
@@ -30,117 +80,6 @@
                 placeholder="Search by any..."
             />
         </div>
-        <!-- <div class="bg-slate-400 w-max mx-auto">
-            <p class="mt-2 text-center">Filter Forecast Result</p>
-            <div class="grid grid-cols-2">
-                <div>
-                    <div class="grid grid-cols-2 px-3 text-center">
-                        <div class="bg-cyan-500">
-                            <input
-                                id="default-checkbox"
-                                type="checkbox"
-                                value=""
-                                class="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                            />
-                        </div>
-                        <div>
-                            <label
-                                for="default-checkbox"
-                                class="ml-2 text-sm font-medium text-black dark:text-gray-300"
-                                >None</label
-                            >
-                        </div>
-                    </div>
-                    <div class="grid grid-cols-2 py-2 px-3 text-center">
-                        <div class="bg-cyan-500">
-                            <input
-                                id="default-checkbox"
-                                type="checkbox"
-                                value=""
-                                class="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                            />
-                        </div>
-                        <div>
-                            <label
-                                for="default-checkbox"
-                                class="ml-2 text-sm font-medium text-black dark:text-gray-300"
-                                >Only Confirmed</label
-                            >
-                        </div>
-                    </div>
-                    <div class="grid grid-cols-2 px-3 text-center">
-                        <div class="bg-cyan-500">
-                            <input
-                                id="default-checkbox"
-                                type="checkbox"
-                                value=""
-                                class="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                            />
-                        </div>
-                        <div>
-                            <label
-                                for="default-checkbox"
-                                class="ml-2 text-sm font-medium text-black dark:text-gray-300"
-                                >Exclude Confirmed</label
-                            >
-                        </div>
-                    </div>
-                </div>
-                <div>
-                    <div class="grid grid-cols-2 px-3 text-center">
-                        <div class="bg-cyan-500">
-                            <input
-                                id="default-checkbox"
-                                type="checkbox"
-                                value=""
-                                class="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                            />
-                        </div>
-                        <div>
-                            <label
-                                for="default-checkbox"
-                                class="ml-2 text-sm font-medium text-black dark:text-gray-300"
-                                >None</label
-                            >
-                        </div>
-                    </div>
-                    <div class="grid grid-cols-2 py-2 px-3 text-center">
-                        <div class="bg-cyan-500">
-                            <input
-                                id="default-checkbox"
-                                type="checkbox"
-                                value=""
-                                class="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                            />
-                        </div>
-                        <div>
-                            <label
-                                for="default-checkbox"
-                                class="ml-2 text-sm font-medium text-black dark:text-gray-300"
-                                >Only Rejected</label
-                            >
-                        </div>
-                    </div>
-                    <div class="grid grid-cols-2 px-3 text-center">
-                        <div class="bg-cyan-500">
-                            <input
-                                id="default-checkbox"
-                                type="checkbox"
-                                value=""
-                                class="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                            />
-                        </div>
-                        <div>
-                            <label
-                                for="default-checkbox"
-                                class="ml-2 text-sm font-medium text-black dark:text-gray-300"
-                                >Exclude Rejected</label
-                            >
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div> -->
     </div>
     <div class="mt-1">
         <Pagination
@@ -158,6 +97,9 @@
             <table class="table table-hover w-full mt-0">
                 <thead class="bg-slate-400 border-b sticky top-0">
                     <tr>
+                        <th>
+                            <input type="checkbox" v-model="selectPage" />
+                        </th>
                         <th class="py-3">
                             <div class="text-sm text-center h-6">
                                 <a href="#" @click.prevent=""> # </a>
@@ -447,7 +389,15 @@
                     <tr
                         v-for="(forecast, index) in forecasts.data"
                         :key="forecast.id"
+                        :class="isChecked(forecast.id) ? 'table-primary' : ''"
                     >
+                        <td>
+                            <input
+                                type="checkbox"
+                                :value="forecast.id"
+                                v-model="checked"
+                            />
+                        </td>
                         <td class="text-xs">{{ index + 1 }}</td>
                         <td class="text-xs">
                             {{ forecast.forecast_updatedate }}
@@ -500,37 +450,36 @@
                                 >
                                     <PencilIcon class="h-3 w-3" />
                                 </button>
-                                <button
+                                <!-- <button
                                     class="bg-blue-300 py-1 px-1 ml-2 text-xs rounded-md inline-block"
                                     @click="hideEditResult(forecast.id)"
                                 >
                                     Hide
-                                </button>
-                                <!-- <span v-show="changeResult"> -->
-                                <select
-                                    
-                                    id="change-result-{{forecast.id}}"
-                                    class="form-control form-control-sm mt-2"
-                                    @change="
-                                        resultSelected(
-                                            this.forecast_result.result_id,
-                                            forecast.id,
-                                            forecast.contact.id
-                                        )
-                                    "
-                                    v-model="forecast_result.result_id"
-                                >
-                                    <option value="">Select Result</option>
-                                    <option
-                                        v-for="result in results.data"
-                                        :key="result.id"
-                                        :value="result.id"
+                                </button> -->
+                                <span v-show="changeResult">
+                                    <select
+                                        id="change-result-{{forecast.id}}"
+                                        class="form-control form-control-sm mt-2"
+                                        @change="
+                                            resultSelected(
+                                                this.forecast_result.result_id,
+                                                forecast.id,
+                                                forecast.contact.id
+                                            )
+                                        "
+                                        v-model="forecast_result.result_id"
                                     >
-                                        {{ result.name }}
-                                    </option>
-                                </select>
+                                        <option value="">Select Result</option>
+                                        <option
+                                            v-for="result in results.data"
+                                            :key="result.id"
+                                            :value="result.id"
+                                        >
+                                            {{ result.name }}
+                                        </option>
+                                    </select>
+                                </span>
                             </span>
-                            <!-- </span> -->
                             <span v-show="!forecast.result">
                                 <select
                                     id="result-select"
@@ -592,6 +541,8 @@ import {
     PlusIcon,
     UserPlusIcon,
     DocumentChartBarIcon,
+    ArrowTopRightOnSquareIcon,
+    ArrowsUpDownIcon,
 } from "@heroicons/vue/24/solid";
 
 export default {
@@ -603,6 +554,8 @@ export default {
         UserPlusIcon,
         DocumentChartBarIcon,
         PencilIcon,
+        ArrowTopRightOnSquareIcon,
+        ArrowsUpDownIcon,
     },
 
     mounted() {
@@ -618,7 +571,12 @@ export default {
             products: [],
             types: [],
             results: [],
+
             paginate: 50,
+            selectPage: false,
+            selectAll: false,
+            checked: [],
+            url: "",
 
             search: "",
             selectedProduct: "",
@@ -654,6 +612,21 @@ export default {
         },
         filterResult: function (value) {
             this.getForecasts();
+        },
+        selectPage: function (value) {
+            this.checked = [];
+            if (value) {
+                this.forecasts.data.forEach((forecast) => {
+                    this.checked.push(forecast.id);
+                });
+            } else {
+                this.checked = [];
+                this.selectAll = false;
+            }
+        },
+
+        checked: function (value) {
+            this.url = "/api/forecasts/export/" + this.checked;
         },
     },
 
@@ -745,8 +718,6 @@ export default {
             this.getForecasts();
         },
 
-        searchType() {},
-
         deleteForecast(id) {
             if (!window.confirm("Are you sure?")) {
                 return;
@@ -779,10 +750,31 @@ export default {
 
         hideEditResult(forecastId) {
             // return (this.changeResult = !this.changeResult);
-            let x = document.getElementById(`change-result-${forecastId}`).hidden
+            let x = document.getElementById(
+                `change-result-${forecastId}`
+            ).hidden;
             x = true;
-            console.log(x)
+            console.log(x);
             return x;
+        },
+
+        exportSelected() {
+            if (this.checked.length === 0) {
+                return alert("Need select record.");
+            } else {
+                axios.get("/api/forecasts/export/");
+            }
+        },
+
+        isChecked(forecast_id) {
+            return this.checked.includes(forecast_id);
+        },
+
+        selectAllRecords() {
+            axios.get("/api/forecasts/all").then((response) => {
+                this.checked = response.data;
+                this.selectAll = true;
+            });
         },
 
         // forecastResult() {

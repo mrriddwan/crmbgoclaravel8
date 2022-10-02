@@ -6,99 +6,172 @@
     </h1>
 
     <div class="text-sm">
+        <div class="inline-block">
+            <div>
+                <router-link
+                    to="/todo/create"
+                    class="inline-block items-center px-2 py-1 align-top bg-blue-800 border border-transparent rounded-md font-semibold text-m text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
+                >
+                    <PlusIcon class="inline h-6 w-6 mr-1" />
+                    to do</router-link
+                >
+
+                <div class="inline">
+                    <div class="inline-block">
+                        <a
+                            v-if="checked.length > 0"
+                            class="px-2 py-1 ml-2 align-bottom text-center bg-emerald-300 rounded-md text-xs"
+                            type="button"
+                            :href="url"
+                            download="file.xlsx"
+                        >
+                            <button @click="exportSelected()" class="h-1">
+                                <ArrowTopRightOnSquareIcon
+                                    class="h-5 w-5 mr-1 inline-block"
+                                />
+                                <p class="inline-block">Export</p>
+                            </button>
+                        </a>
+                    </div>
+
+                    <div v-if="checked.length > 0 && !selectPage" class="inline-block">
+                        <div
+                            v-if="
+                                selectAll || todos.meta.total == checked.length
+                            "
+                        >
+                            Selected:
+                            <strong>{{ checked.length }}</strong> record(s).
+                        </div>
+                        <div v-else>
+                            Selected:
+                            <strong>{{ checked.length }}</strong> record(s),
+                            All:
+                            <strong>{{ todos.meta.total }}</strong>
+                            <a
+                                @click.prevent="selectAllRecords"
+                                href="#"
+                                class="ml-2"
+                                >Select All</a
+                            >
+                        </div>
+                    </div>
+
+                    <div class="inline-block" v-if="selectPage">
+                        <div
+                            v-if="
+                                selectAll || todos.meta.total == checked.length
+                            "
+                        >
+                            Selected all:
+                            <strong>{{ checked.length }}</strong> record(s).
+                        </div>
+                        <div v-else>
+                            Selected:
+                            <strong>{{ checked.length }}</strong> record(s),
+                            All:
+                            <strong>{{ todos.meta.total }}</strong>
+                            <a
+                                @click.prevent="selectAllRecords"
+                                href="#"
+                                class="ml-2"
+                                >Select All</a
+                            >
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div>
-            <router-link
-                to="/todo/create"
-                class="inline-block items-center px-2 py-1 align-top bg-blue-800 border border-transparent rounded-md font-semibold text-m text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
-            >
-                <PlusIcon class="inline h-6 w-6 mr-1" />
-                to do</router-link
-            >
-        </div>
-
-        <div class="inline-block px-1 border-gray-500 border-2">
-            <select v-model="paginate" class="form-control">
-                <option value="10">10</option>
-                <option value="20">50</option>
-                <option value="30">100</option>
-            </select>
-            <label for="paginate" class="px-2">of 100 entries</label>
-        </div>
-        <div
-            class="m-1 inline-block items-center px-1 py-1 border-gray-500 border-2"
-        >
-            <p>view by</p>
-            <select v-model="viewType" class="form-control text-center">
-                <option value="day">Day</option>
-                <option value="month">Month</option>
-                <option value="range">Date Range</option>
-            </select>
-        </div>
-        <div
-            class="m-1 inline-block items-center px-1 py-1 border-gray-500 border-2"
-            @change=""
-        >
-            <span v-show="viewType === `day`">
-                <p>select date</p>
-                <input
-                    v-model.lazy="selectedDate"
-                    class="border-gray-300"
-                    type="date"
-                />
-            </span>
-            <span v-show="viewType === `month`">
-                <p>select month/year</p>
-                <input
-                    v-model.lazy="currentMonth"
-                    class="border-gray-300"
-                    type="month"
-                />
-            </span>
-
-            <span
-                v-show="viewType === `range`"
+            <div class="inline-block px-1 border-gray-500 border-2">
+                <select v-model="paginate" class="form-control">
+                    <option value="10">10</option>
+                    <option value="20">50</option>
+                    <option value="30">100</option>
+                </select>
+                <label for="paginate" class="px-2">of 100 entries</label>
+            </div>
+            <div
                 class="m-1 inline-block items-center px-1 py-1 border-gray-500 border-2"
             >
-                <div class="border-gray-800 border-2 flex px-2 py-2">
-                    <p class="px-1 mt-1">select start date</p>
+                <p>view by</p>
+                <select v-model="viewType" class="form-control text-center">
+                    <option value="day">Day</option>
+                    <option value="month">Month</option>
+                    <option value="range">Date Range</option>
+                </select>
+            </div>
+            <div
+                class="m-1 inline-block items-center px-1 py-1 border-gray-500 border-2"
+                @change=""
+            >
+                <span v-show="viewType === `day`">
+                    <p>select date</p>
                     <input
-                        v-model.lazy="selectedDateStart"
-                        class="border-gray-300 w-36"
+                        v-model.lazy="selectedDate"
+                        class="border-gray-300"
                         type="date"
                     />
-                </div>
-                <div class="border-gray-800 border-2 flex px-1 py-2">
-                    <p class="px-1 mt-1">select end date</p>
+                </span>
+                <span v-show="viewType === `month`">
+                    <p>select month/year</p>
                     <input
-                        v-model.lazy="selectedDateEnd"
-                        class="border-gray-300 w-36"
-                        type="date"
+                        v-model.lazy="currentMonth"
+                        class="border-gray-300"
+                        type="month"
                     />
-                </div>
-            </span>
-        </div>
+                </span>
 
-        <div
-            class="m-1 inline-block items-center px-1 py-1 border-gray-500 border-2"
-        >
-            <p>Filter term</p>
-            <input
-                v-model.lazy="search"
-                type="search"
-                class="form-control"
-                placeholder="Search by any..."
-            />
-        </div>
-        <div
-            class="m-1 inline-block items-center px-1 py-1 border-gray-500 border-2"
-        >
-            <p>Select user</p>
-            <select v-model="selectedUser" class="">
-                <option value="">All User</option>
-                <option v-for="user in users" :key="user.id" :value="user.id">
-                    {{ user.name }}
-                </option>
-            </select>
+                <span
+                    v-show="viewType === `range`"
+                    class="m-1 inline-block items-center px-1 py-1 border-gray-500 border-2"
+                >
+                    <div class="border-gray-800 border-2 flex px-2 py-2">
+                        <p class="px-1 mt-1">select start date</p>
+                        <input
+                            v-model.lazy="selectedDateStart"
+                            class="border-gray-300 w-36"
+                            type="date"
+                        />
+                    </div>
+                    <div class="border-gray-800 border-2 flex px-1 py-2">
+                        <p class="px-1 mt-1">select end date</p>
+                        <input
+                            v-model.lazy="selectedDateEnd"
+                            class="border-gray-300 w-36"
+                            type="date"
+                        />
+                    </div>
+                </span>
+            </div>
+
+            <div
+                class="m-1 inline-block items-center px-1 py-1 border-gray-500 border-2"
+            >
+                <p>Filter term</p>
+                <input
+                    v-model.lazy="search"
+                    type="search"
+                    class="form-control"
+                    placeholder="Search by any..."
+                />
+            </div>
+            <div
+                class="m-1 inline-block items-center px-1 py-1 border-gray-500 border-2"
+            >
+                <p>Select user</p>
+                <select v-model="selectedUser" class="">
+                    <option value="">All User</option>
+                    <option
+                        v-for="user in users"
+                        :key="user.id"
+                        :value="user.id"
+                    >
+                        {{ user.name }}
+                    </option>
+                </select>
+            </div>
         </div>
     </div>
 
@@ -192,6 +265,9 @@
         <table class="table table-hover table-bordered" id="example">
             <thead>
                 <tr>
+                    <th>
+                        <input type="checkbox" v-model="selectPage" />
+                    </th>
                     <th class="text-sm text-center">#</th>
                     <th class="text-sm text-center">
                         <a href="#" @click.prevent="change_sort('source_name')">
@@ -436,6 +512,13 @@
             </thead>
             <tbody>
                 <tr v-for="(todo, index) in todos.data" :key="todo.id">
+                    <td>
+                        <input
+                            type="checkbox"
+                            :value="todo.id"
+                            v-model="checked"
+                        />
+                    </td>
                     <td class="text-xs">{{ index + 1 }}</td>
                     <td class="text-xs">{{ todo.source.name }}</td>
                     <td class="text-xs">{{ showToday(todo.todo_date) }}</td>
@@ -549,6 +632,8 @@ import {
     ChevronDoubleRightIcon,
     PlusIcon,
     LightBulbIcon,
+    ArrowTopRightOnSquareIcon,
+    ArrowsUpDownIcon,
 } from "@heroicons/vue/24/solid";
 
 export default {
@@ -560,6 +645,8 @@ export default {
         ChevronDoubleRightIcon,
         PlusIcon,
         LightBulbIcon,
+        ArrowTopRightOnSquareIcon,
+        ArrowsUpDownIcon,
     },
 
     created() {},
@@ -614,7 +701,6 @@ export default {
 
     data() {
         return {
-
             todos: [],
             statuses: [],
             tasks: [],
@@ -628,6 +714,11 @@ export default {
 
             search: "",
             todo: "",
+
+            selectPage: false,
+            selectAll: false,
+            checked: [],
+            url: "",
 
             selectedUser: "",
             selectedSource: "",
@@ -657,6 +748,22 @@ export default {
         };
     },
     watch: {
+        checked: function (value) {
+            this.url = "/api/todos/export/" + this.checked;
+        },
+
+        selectPage: function (value) {
+            this.checked = [];
+            if (value) {
+                this.todos.data.forEach((todo) => {
+                    this.checked.push(todo.id);
+                });
+            } else {
+                this.checked = [];
+                this.selectAll = false;
+            }
+        },
+
         paginate: function (value) {
             if (this.viewType === "day") {
                 this.getToDosSelectDate();
@@ -1022,7 +1129,7 @@ export default {
                     console.log(error);
                 });
         },
-        
+
         change_sort(field) {
             if (this.viewType === "day") {
                 if (this.sort_field == field) {
@@ -1097,20 +1204,18 @@ export default {
             return this.selectedYear;
         },
 
-        searchType() {},
-
         deleteToDo(id) {
             if (!window.confirm("Are you sure?")) {
                 return;
             }
             axios.delete("/api/todos/delete/" + id);
-            if (this.viewType === "day"){
+            if (this.viewType === "day") {
                 this.getToDosSelectDate();
-            } else if (this.viewType === "month"){
+            } else if (this.viewType === "month") {
                 this.getToDosSelectMonth();
-            } else if (this.viewType === "range"){
+            } else if (this.viewType === "range") {
                 this.getToDosSelectDateRange();
-            }   
+            }
         },
 
         actionSelected(action, toDoId, contactId) {
@@ -1184,6 +1289,25 @@ export default {
             } else {
                 document.getElementById("decrementDate").disabled = true;
             }
+        },
+
+        exportSelected() {
+            if (this.checked.length === 0) {
+                return alert("Need select record.");
+            } else {
+                axios.get("/api/todos/export");
+            }
+        },
+
+        isChecked(todo_id) {
+            return this.checked.includes(todo_id);
+        },
+
+        selectAllRecords() {
+            axios.get("/api/todos/all").then((response) => {
+                this.checked = response.data;
+                this.selectAll = true;
+            });
         },
     },
 };

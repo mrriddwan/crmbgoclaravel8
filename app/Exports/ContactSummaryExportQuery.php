@@ -8,8 +8,7 @@ use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
 
-class ContactExport implements FromQuery, WithHeadings, WithMapping
-
+class ContactSummaryExport implements FromQuery, WithHeadings, WithMapping
 {
     use Exportable;
     protected $contacts;
@@ -37,6 +36,7 @@ class ContactExport implements FromQuery, WithHeadings, WithMapping
             $contacts->category->name,
             $contacts->type->name,
             $contacts->user->name,
+            $contacts->summary,
         ];
     }
 

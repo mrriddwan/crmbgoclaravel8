@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api\Contact;
 
 use App\Exports\ContactExport;
-
+use App\Exports\ContactSummaryExport;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Contact\ContactRequest;
 use App\Http\Resources\Contact\ContactResource;
@@ -298,10 +298,21 @@ class ContactController extends Controller
         $contactsArray = explode(',', $contact );
 
         return Excel::download(new ContactExport($contactsArray), ('Contacts - '. $date . '.xlsx'));
+
     }
 
     public function selectAll()
     {
         return Contact::pluck('id');
+    }
+
+    public function exportSummary($contact) 
+    {
+        $date = Carbon::now()->format('Ymd');
+
+        $contactsArray = explode(',', $contact );
+
+        return Excel::download(new ContactSummaryExport($contactsArray), ('Contacts Summary - '. $date . '.xlsx'));
+
     }
 }

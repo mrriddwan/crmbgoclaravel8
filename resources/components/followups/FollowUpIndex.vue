@@ -92,6 +92,55 @@
                 </option>
             </select>
         </div>
+
+        <div class="inline">
+            <div class="inline-block">
+                <a
+                    v-if="checked.length > 0"
+                    class="px-2 py-1 ml-2 align-bottom text-center bg-emerald-300 rounded-md text-xs"
+                    type="button"
+                    :href="url"
+                    download="file.xlsx"
+                >
+                    <button @click="exportSelected()" class="h-1">
+                        <ArrowTopRightOnSquareIcon
+                            class="h-5 w-5 mr-1 inline-block"
+                        />
+                        <p class="inline-block">Export</p>
+                    </button>
+                </a>
+            </div>
+
+            <div v-if="checked.length > 0" class="inline-block">
+                <div v-if="selectAll || followups.meta.total == checked.length">
+                    Selected:
+                    <strong>{{ checked.length }}</strong> record(s).
+                </div>
+                <div v-else>
+                    Selected:
+                    <strong>{{ checked.length }}</strong> record(s), All:
+                    <strong>{{ followups.meta.total }}</strong>
+                    <a @click.prevent="selectAllRecords" href="#" class="ml-2"
+                        >Select All</a
+                    >
+                </div>
+            </div>
+
+            <div class="inline-block" v-if="selectPage">
+                <div v-if="selectAll || followups.meta.total == checked.length">
+                    Selected all:
+                    <strong>{{ checked.length }}</strong> record(s).
+                </div>
+                <div v-else>
+                    Selected:
+                    <strong>{{ checked.length }}</strong> record(s), All:
+                    <strong>{{ followups.meta.total }}</strong>
+                    <a @click.prevent="selectAllRecords" href="#" class="ml-2"
+                        >Select All</a
+                    >
+                </div>
+            </div>
+        </div>
     </div>
 
     <div class="py-2">
@@ -184,6 +233,9 @@
         <table class="table table-hover table-bordered" id="example">
             <thead>
                 <tr>
+                    <th>
+                        <input type="checkbox" v-model="selectPage" />
+                    </th>
                     <th>#</th>
                     <th>
                         <a
@@ -337,6 +389,13 @@
                     v-for="(followup, index) in followups.data"
                     :key="followup.id"
                 >
+                    <td>
+                        <input
+                            type="checkbox"
+                            :value="followup.id"
+                            v-model="checked"
+                        />
+                    </td>
                     <td>{{ index + 1 }}</td>
                     <td>{{ followup.followup_date }}</td>
                     <td>
@@ -398,6 +457,8 @@ import {
     PlusIcon,
     LightBulbIcon,
     EyeIcon,
+    ArrowTopRightOnSquareIcon,
+    ArrowsUpDownIcon,
 } from "@heroicons/vue/24/solid";
 
 export default {
@@ -410,6 +471,8 @@ export default {
         PlusIcon,
         LightBulbIcon,
         EyeIcon,
+        ArrowTopRightOnSquareIcon,
+    ArrowsUpDownIcon,
     },
 
     mounted() {
@@ -451,7 +514,7 @@ export default {
         console.log(
             "Result of mounted selectedDateEnd: " + this.selectedDateEnd
         );
-        
+
         //initial month selection
         this.selectedMonth = this.getSelectedMonth(this.selectedDate);
         this.selectedYear = this.getSelectedYear(this.selectedDate);
@@ -474,6 +537,10 @@ export default {
             moment: moment,
 
             search: "",
+            selectPage: false,
+            selectAll: false,
+            checked: [],
+            url: "",
 
             selectedUser: "",
             selectedTask: "",
@@ -590,6 +657,22 @@ export default {
                     this.getSelectedDateEnd(selectedDateEnd)
             );
             this.getFollowUpsSelectDateRange();
+        },
+
+        checked: function (value) {
+            this.url = "/api/followups/export/" + this.checked;
+        },
+
+        selectPage: function (value) {
+            this.checked = [];
+            if (value) {
+                this.followups.data.forEach((followup) => {
+                    this.checked.push(followup.id);
+                });
+            } else {
+                this.checked = [];
+                this.selectAll = false;
+            }
         },
     },
     computed: {
@@ -873,6 +956,25 @@ export default {
             } else {
                 document.getElementById("decrementDate").disabled = true;
             }
+        },
+
+        exportSelected() {
+            if (this.checked.length === 0) {
+                return alert("Need select record.");
+            } else {
+                axios.get("/api/followups/export");
+            }
+        },
+
+        isChecked(followup_id) {
+            return this.checked.includes(followup_id);
+        },
+
+        selectAllRecords() {
+            axios.get("/api/followups/all").then((response) => {
+                this.checked = response.data;
+                this.selectAll = true;
+            });
         },
     },
 };

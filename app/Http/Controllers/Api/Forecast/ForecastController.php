@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers\Api\Forecast;
 
-
+use App\Exports\ForecastExport;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Forecast\ForecastRequest;
 use App\Http\Resources\Forecast\ForecastResource;
 use App\Models\Forecast\Forecast;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Date;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ForecastController extends Controller
 {
@@ -147,5 +149,20 @@ class ForecastController extends Controller
             'message' => 'Successfully fetch data forecast ',
             'data' => $data,
         ]);
+    }
+
+    public function export($forecast) 
+    {
+        $date = Carbon::now()->format('Ymd');
+
+        $forecastsArray = explode(',', $forecast );
+
+        return Excel::download(new ForecastExport($forecastsArray), ('Forecasts - '. $date . '.xlsx'));
+
+    }
+
+    public function selectAll()
+    {
+        return Forecast::pluck('id');
     }
 }

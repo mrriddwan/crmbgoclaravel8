@@ -46,6 +46,7 @@ Route::get('/contacts/summary', [ContactController::class, 'summary'])->name('co
 Route::get('/contacts/test', [ContactController::class, 'test'])->name('contact:test');
 Route::get('/contacts/export/{contact}', [ContactController::class, 'export'])->name('contact:export');
 Route::get('/contacts/all', [ContactController::class, 'selectAll'])->name('contact:selectAll');
+Route::get('/contacts/exportSummary/{contact}', [ContactController::class, 'selectAll'])->name('contact:exportSummary');
 
 
 /*Sub-Contact API*/
@@ -81,6 +82,8 @@ Route::put('/todos/action/{todo}', [ToDoController::class, 'action'])->name('tod
 Route::delete('/todos/delete/{todo}', [ToDoController::class, 'delete'])->name('todo:delete');
 Route::get('/todos/new/{todo}', [ToDoController::class, 'new'])->name('todo:new');
 Route::get('/todos/info/{todo}', [ToDoController::class, 'info'])->name('todo:info');
+Route::get('/todos/export/{todo}', [ToDoController::class, 'export'])->name('todo:export');
+Route::get('/todos/all', [ToDoController::class, 'selectAll'])->name('todo:selectAll');
 
 /*Sub-To Do API*/
 Route::get('/tasks/index', [TaskController::class, 'index'])->name('task:index');
@@ -93,6 +96,8 @@ Route::get('/followups/index/monthrange', [FollowUpController::class, 'monthrang
 Route::get('/followups/index/daterange', [FollowUpController::class, 'daterange'])->name('followup:daterange');
 Route::post('/followups/store', [FollowUpController::class, 'store'])->name('followup:store');
 Route::delete('/followups/delete/{followup}', [FollowUpController::class, 'delete'])->name('followup:delete');
+Route::get('/followups/export/{followup}', [FollowUpController::class, 'export'])->name('followup:export');
+Route::get('/followups/all', [FollowUpController::class, 'selectAll'])->name('followup:selectAll');
 
 /*Forecast API*/
 Route::get('/forecasts/index', [ForecastController::class, 'index'])->name('forecast:index');
@@ -103,6 +108,8 @@ Route::put('/forecasts/update/{forecast}', [ForecastController::class, 'update']
 Route::delete('/forecasts/delete/{forecast}', [ForecastController::class, 'delete'])->name('forecast:delete');
 Route::get('/forecasts/info/{forecast}', [ForecastController::class, 'info'])->name('forecast:info');
 Route::put('/forecasts/resultSelected/{forecast}', [ForecastController::class, 'resultSelected'])->name('forecast:resultSelected');
+Route::get('/forecasts/export/{forecast}', [ForecastController::class, 'export'])->name('followup:export');
+Route::get('/forecasts/all', [FollowUpController::class, 'selectAll'])->name('followup:selectAll');
 
 /*Sub-Forecast API*/
 Route::get('/forecastproducts/index', [ForecastProductController::class, 'index'])->name('forecastproduct:index');

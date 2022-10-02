@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\FollowUp;
 
+use App\Exports\FollowUpExport;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ToDo\FollowUpRequest;
 use App\Http\Resources\FollowUp\FollowUpResource;
@@ -9,6 +10,7 @@ use App\Models\FollowUp\FollowUp;
 use App\Models\ToDo;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class FollowUpController extends Controller
 {
@@ -236,5 +238,20 @@ class FollowUpController extends Controller
             'message' => 'Successfully fetch data Contact ',
             'data' => $data,
         ]);
+    }
+
+    public function export($followup) 
+    {
+        $date = Carbon::now()->format('Y-m-d');
+
+        $folowupsArray = explode(',', $followup );
+
+        return Excel::download(new FollowUpExport($folowupsArray), ('Follow Up - '. $date . '.xlsx'));
+
+    }
+
+    public function selectAll()
+    {
+        return FollowUp::pluck('id');
     }
 }

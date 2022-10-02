@@ -74,26 +74,26 @@ class Contact extends Model
         return $this -> hasMany(ToDo::class);
     }
 
-    public function exportContact()
-    {
-        return Contact::with(([
-            'status' => function ($q) {
-                $q->select('id', 'name');
-            },
-            'category' => function ($q) {
-                $q->select('id', 'name');
-            },
-            'type' => function ($q) {
-                $q->select('id', 'name');
-            },
-            'user' => function ($q) {
-                $q->select('id', 'name');
-            },
-        ]))
-        ->get()
-        ->toArray()
-        ;
-    }
+    // public function exportContact()
+    // {
+    //     return Contact::with(([
+    //         'status' => function ($q) {
+    //             $q->select('id', 'name');
+    //         },
+    //         'category' => function ($q) {
+    //             $q->select('id', 'name');
+    //         },
+    //         'type' => function ($q) {
+    //             $q->select('id', 'name');
+    //         },
+    //         'user' => function ($q) {
+    //             $q->select('id', 'name');
+    //         },
+    //     ]))
+    //     ->get()
+    //     ->toArray()
+    //     ;
+    // }
     
     public function scopeSearch($query, $term)
     {   

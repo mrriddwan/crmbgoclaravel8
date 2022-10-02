@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers\Api\ToDo;
 
+use App\Exports\TodoExport;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ToDo\ToDoContactRequest;
 use App\Http\Requests\ToDo\ToDoInternalRequest;
 use App\Http\Resources\ToDo\ToDoResource;
 use App\Models\ToDo\ToDo;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ToDoController extends Controller
 {
@@ -315,5 +318,20 @@ class ToDoController extends Controller
             'message' => 'Successfully fetch data Contact ',
             'data' => $data,
         ]);
+    }
+
+    public function export($todo) 
+    {
+        $date = Carbon::now()->format('Y-m-d');
+
+        $todosArray = explode(',', $todo );
+
+        return Excel::download(new TodoExport($todosArray), ('ToDo - '. $date . '.xlsx'));
+
+    }
+
+    public function selectAll()
+    {
+        return ToDo::pluck('id');
     }
 }
