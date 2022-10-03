@@ -1,6 +1,6 @@
 <template>
     <div
-        class="container w-max border-4 align-center"
+        class="container w-max align-center"
         v-for="info in contact_infos"
         :key="contact_infos.id"
     >
@@ -9,14 +9,14 @@
                 <p
                     v-for="error in v"
                     :key="error"
-                    class="text-xs bg-red-500 text-white rounded font-bold mb-1 shadow-lg py-2 px-4 pr-0 w-max"
+                    class="text-xs bg-red-500 text-white rounded font-bold mb-1 shadow-lg py-2 px-8 w-max"
                 >
                     {{ error }}
                 </p>
             </div>
         </div>
         <h1
-            class="items-center text-center text-white font-extrabold bg-slate-600 px-2 py-2 rounded-md"
+            class="items-center text-center text-white font-extrabold font-mono text-4xl uppercase bg-slate-600 px-2 py-2 rounded-md"
         >
             Create Forecast
         </h1>
@@ -37,7 +37,7 @@
                 class="inline-block align-middle"
             >
                 <div class="grid grid-cols-1 items-center text-center">
-                    <div class="grid grid-cols-2 w-auto items-center py-2">
+                    <div class="grid grid-cols-2 w-auto items-center py-2 px-2">
                         <div class="">
                             <label class="ml-7"
                                 >Product
@@ -49,7 +49,7 @@
                         <div class="">
                             <select
                                 v-model="form.product_id"
-                                class="form-control form-control-sm"
+                                class="form-control"
                             >
                                 <option disabled value="">
                                     Please select product
@@ -64,7 +64,7 @@
                             </select>
                         </div>
                     </div>
-                    <div class="grid grid-cols-2 w-auto items-center py-2">
+                    <div class="grid grid-cols-2 w-auto items-center py-2 px-2">
                         <label class="ml-7"
                             >Amount
                             <p class="inline text-red-600 text-lg">*</p></label
@@ -82,16 +82,13 @@
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-2 w-auto items-center py-2">
+                    <div class="grid grid-cols-2 w-auto items-center py-2 px-2">
                         <label class="ml-7"
                             >Type
                             <p class="inline text-red-600 text-lg">*</p>
                         </label>
                         <div>
-                            <select
-                                v-model="form.type_id"
-                                class="form-control form-control-sm"
-                            >
+                            <select v-model="form.type_id" class="form-control">
                                 <option disabled value="">
                                     Please select type
                                 </option>
@@ -106,7 +103,7 @@
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-2 items-center">
+                    <div class="grid grid-cols-2 items-center px-2">
                         <label class="ml-7"
                             >Forecast Date
                             <p class="inline text-red-600 text-lg">*</p></label
@@ -118,99 +115,120 @@
                         />
                     </div>
                 </div>
-                <div class="text-center col-span-2">
+                <div class="text-center col-span-2 px-2">
                     <button
                         type="submit"
-                        class="mt-4 px-8 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150 item"
+                        class="mt-4 px-8 py-2 bg-gray-800 border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150 item"
                     >
-                        Save
+                        Create
                     </button>
                 </div>
             </form>
         </div>
 
-        <div class="max-h-10 m-6">
-            <GoBack class="m-5" />
+        <div class="max-h-10 my-2">
+            <GoBack class="" />
         </div>
 
         <div class="m-4">
             <span v-if="info.forecast">
-                <span
-                    v-for="forecast_info in info.forecast"
-                    :key="forecast_info.id"
-                    class="grid grid-cols-2 border-2 p-1"
+                <h5
+                    class="items-center text-center text-white font-extrabold font-mono text-sm uppercase bg-slate-600 px-5 py-2 rounded-md"
                 >
-                    <tr class="grid grid-cols-2">
-                        <td
-                            class="px-1 py-1 text-s leading-5 text-gray-900 whitespace-no-wrap"
-                        >
-                            Product
-                        </td>
-                        <td
-                            class="px-1 py-1 text-s leading-5 font-bold text-gray-900 whitespace-no-wrap"
-                        >
-                            {{ forecast_info.product.name }}
-                        </td>
-                    </tr>
+                    Forecast
+                </h5>
+                <span
+                    v-for="(forecast_info, index) in info.forecast"
+                    :key="forecast_info.id"
+                    class=""
+                >
+                    <tr class="grid grid-cols-4 border-gray-200 py-2 border-2">
+                        <div>
+                            <td>
+                                <span
+                                    class="bg-cyan-700 px-2 py-1 font-semibold font-mono rounded-md text-neutral-300"
+                                >
+                                    {{ index + 1 }}
+                                </span>
+                            </td>
+                            <td
+                                class="px-1 py-1 text-s leading-5 text-gray-900 whitespace-no-wrap"
+                            >
+                                Product:
+                            </td>
+                            <td
+                                class="px-1 py-1 text-s leading-5 font-bold text-gray-900 whitespace-no-wrap"
+                            >
+                                {{ forecast_info.product.name }}
+                            </td>
+                        </div>
 
-                    <tr class="grid grid-cols-2">
-                        <td
-                            class="px-1 py-1 text-s leading-5 text-gray-900 whitespace-no-wrap"
-                        >
-                            Amount (RM)
-                        </td>
-                        <td
-                            class="px-1 py-1 text-s leading-5 font-bold text-gray-900 whitespace-no-wrap"
-                        >
-                            {{ forecast_info.amount.toLocaleString("en-US") }}
-                        </td>
-                    </tr>
-                    <tr class="grid grid-cols-2">
-                        <td
-                            class="px-1 py-1 text-s leading-5 text-gray-900 whitespace-no-wrap"
-                        >
-                            Type
-                        </td>
-                        <td
-                            class="px-1 py-1 text-s leading-5 font-bold text-gray-900 whitespace-no-wrap"
-                        >
-                            {{ forecast_info.type.name }}
-                        </td>
-                    </tr>
-                    <tr class="grid grid-cols-2">
-                        <td
-                            class="px-1 py-1 text-s leading-5 text-gray-900 whitespace-no-wrap"
-                        >
-                            Date
-                        </td>
-                        <td
-                            class="px-1 py-1 text-s leading-5 font-bold text-gray-900 whitespace-no-wrap"
-                        >
-                            {{ forecast_info.forecast_date }}
-                        </td>
-                    </tr>
+                        <div>
+                            <td
+                                class="px-1 py-1 text-s leading-5 text-gray-900 whitespace-no-wrap"
+                            >
+                                Amount(RM):
+                            </td>
+                            <td
+                                class="px-1 py-1 text-s leading-5 font-bold text-gray-900 whitespace-no-wrap"
+                            >
+                                {{
+                                    forecast_info.amount.toLocaleString("en-US")
+                                }}
+                            </td>
+                        </div>
 
-                    <tr class="text-center col-span-2">
-                        <router-link
-                            :to="{
-                                name: 'forecast_edit',
-                                params: { id: forecast_info.id },
-                            }"
-                            class="mr-2 inline-flex items-center px-2 py-1 bg-yellow-400 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
-                        >
-                            <PencilSquareIcon class="h-3 w-3"
-                        /></router-link>
-                        <button
-                            class="mr-2 inline-flex items-center px-2 py-1 bg-red-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
-                            @click="deleteForecast(forecast_info.id)"
-                        >
-                            <TrashIcon class="h-3 w-3" />
-                        </button>
+                        <div>
+                            <td
+                                class="px-1 py-1 text-s leading-5 text-gray-900 whitespace-no-wrap"
+                            >
+                                Type:
+                            </td>
+                            <td
+                                class="px-1 py-1 text-s leading-5 font-bold text-gray-900 whitespace-no-wrap"
+                            >
+                                {{ forecast_info.type.name }}
+                            </td>
+                        </div>
+
+                        <div>
+                            <td
+                                class="px-1 py-1 text-s leading-5 text-gray-900 whitespace-no-wrap"
+                            >
+                                Date:
+                            </td>
+                            <td
+                                class="px-1 py-1 text-s leading-5 font-bold text-gray-900 whitespace-no-wrap"
+                            >
+                                {{ showToday(forecast_info.forecast_date) }}
+                            </td>
+
+                            <router-link
+                                :to="{
+                                    name: 'forecast_edit',
+                                    params: { id: forecast_info.id },
+                                }"
+                                class="mr-2 inline-flex items-center px-2 py-1 bg-yellow-400 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
+                            >
+                                <PencilSquareIcon class="h-3 w-3"
+                            /></router-link>
+                            <button
+                                class="mr-2 inline-flex items-center px-2 py-1 bg-red-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
+                                @click="deleteForecast(forecast_info.id)"
+                            >
+                                <TrashIcon class="h-3 w-3" />
+                            </button>
+                        </div>
                     </tr>
                 </span>
             </span>
 
             <span v-else>
+                <h5
+                    class="items-center text-center text-white font-extrabold font-mono text-sm uppercase bg-slate-600 px-5 py-2 rounded-md"
+                >
+                    Forecast
+                </h5>
                 <div
                     class="uppercase text-center font-extrabold text-5xl bg-slate-400 rounded-md py-3 px-3"
                 >
@@ -230,12 +248,14 @@ import {
     PlusIcon,
     PencilIcon,
 } from "@heroicons/vue/24/solid";
+import moment from "moment";
 
 export default {
     components: { GoBack, PencilSquareIcon, TrashIcon },
 
     data() {
         return {
+            moment: moment,
             info: "",
             contact_infos: [],
             form: {
@@ -279,7 +299,7 @@ export default {
                     product_id: this.form.product_id,
                     type_id: this.form.type_id,
                 });
-                if (window.confirm("Finish adding forecast?")) {
+                if (window.confirm("Finish creating and back to main page?")) {
                     await this.$router.push({
                         name: "forecast_index",
                     });
@@ -336,6 +356,12 @@ export default {
                 params: { id: this.$route.params.id },
             });
             this.showIncharge();
+        },
+
+        showToday(date) {
+            // let day = moment(date).format("DD-MM-YYYY");
+            let day = moment(date).format("DD-MM-YYYY");
+            return day;
         },
     },
 };

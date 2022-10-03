@@ -1,7 +1,5 @@
 <template>
-    <div>
-        <h3 class="text-center">Create Contact</h3>
-        <GoBack />
+    <div class="container w-max align-center mx-auto h-max px-3 py-3">
         <div v-if="errors">
             <div v-for="(v, k) in errors" :key="k">
                 <p
@@ -13,9 +11,26 @@
                 </p>
             </div>
         </div>
-        <div class="row">
-            <div class="col-md-6">
-                <form @submit.prevent="createContact">
+        <div class="flex w-full justify-center items-center row">
+            <div class="col-md-20">
+                <form
+                    @submit.prevent="createContact"
+                    class="rounded px-8 pt-1 pb-8 mb-4"
+                >
+                    <div class="">
+                        <GoBack />
+                    </div>
+
+                    <div
+                        class="text-center text-white bg-slate-600 px-2 py-1 rounded-md"
+                    >
+                        <h1
+                            class="px-8 bg-black-50 uppercase w-max font-mono font-extrabold"
+                        >
+                            Create Contact
+                        </h1>
+                    </div>
+
                     <div class="form-group">
                         <label
                             >Status
@@ -111,10 +126,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label
-                            >Address
-                        </label
-                        >
+                        <label>Address </label>
                         <input
                             type="text"
                             class="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
@@ -132,7 +144,7 @@
 
                     <button
                         type="submit"
-                        class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
+                        class="inline-flex mt-2 items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
                     >
                         Create
                     </button>
@@ -221,34 +233,38 @@ export default {
         },
         async createContact() {
             try {
-            await axios
-                .post("/api/contacts/store", {
-                    type_id: this.form.type_id,
-                    industry_id: this.form.industry_id,
-                    status_id: this.form.status_id,
-                    name: this.form.name,
-                    category_id: this.form.category_id,
-                    address: this.form.address ? this.form.address  : "No address saved",
-                    remark: this.form.remark ? this.form.remark : "No remark",
-                    user_id: 1, //later add current user
-                })
-                .then((res) => {
-                    const contact = res.data.data;
-                    if (window.confirm("Proceed to add incharge?")) {
-                        this.$router.push({
-                            name: "incharge_create",
-                            params: { id: contact.id},
-                        });
-                    } else {
-                        this.$router.push({ name: "contact_index" });
-                    }
-                });
+                await axios
+                    .post("/api/contacts/store", {
+                        type_id: this.form.type_id,
+                        industry_id: this.form.industry_id,
+                        status_id: this.form.status_id,
+                        name: this.form.name,
+                        category_id: this.form.category_id,
+                        address: this.form.address
+                            ? this.form.address
+                            : "No address saved",
+                        remark: this.form.remark
+                            ? this.form.remark
+                            : "No remark",
+                        user_id: 1, //later add current user
+                    })
+                    .then((res) => {
+                        const contact = res.data.data;
+                        if (window.confirm("Proceed to add incharge?")) {
+                            this.$router.push({
+                                name: "incharge_create",
+                                params: { id: contact.id },
+                            });
+                        } else {
+                            this.$router.push({ name: "contact_index" });
+                        }
+                    });
             } catch (e) {
                 {
                     if (e.response.status === 422) {
                         this.errors = e.response.data.errors;
                     } else {
-                        return "no error response"
+                        return "no error response";
                     }
                 }
             }

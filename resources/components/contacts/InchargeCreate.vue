@@ -1,6 +1,6 @@
 <template>
     <div
-        class="container w-max border-4 align-center"
+        class="container w-max align-center mx-auto"
         v-for="info in contact_infos"
         :key="contact_infos.id"
     >
@@ -15,169 +15,194 @@
                 </p>
             </div>
         </div>
-        <h1
-            class="items-center text-center text-white font-extrabold bg-slate-600 px-2 py-2 rounded-md"
+        <h5
+            class="items-center text-center text-white font-extrabold font-mono uppercase text-4xl bg-slate-600 px-1 py-1 rounded-md"
         >
-            Create PIC
-        </h1>
-        <div class="text-left">
+            <strong> Create PIC </strong>
+        </h5>
+        <div class="text-left mx-auto">
             <p class="m-1 font-extrabold text-xl text-center uppercase">
                 {{ info.name }}
             </p>
 
-            <form
-                @submit.prevent="createPIC"
-                ref="inchargeForm"
-                class="inline-block align-middle"
-            >
-                <div class="grid grid-cols-2 items-center">
-                    <div class="grid grid-cols-2 w-auto items-center">
-                        <div>
+            <div class="mx-auto">
+                <form
+                    @submit.prevent="createPIC"
+                    ref="inchargeForm"
+                    class="inline-block align-middle"
+                >
+                    <div class="grid grid-cols-2 items-center">
+                        <div class="grid grid-cols-2 w-auto items-center">
+                            <div>
+                                <label class="ml-7"
+                                    >Name
+                                    <p class="inline text-red-600 text-lg">
+                                        *
+                                    </p></label
+                                >
+                            </div>
+                            <div>
+                                <input
+                                    type="text"
+                                    class="items-left rounded-md border-gray-500 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                    v-model="form.name"
+                                />
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-2 w-auto items-center">
                             <label class="ml-7"
-                                >Name
+                                >Email
                                 <p class="inline text-red-600 text-lg">
                                     *
                                 </p></label
                             >
+                            <input
+                                type="email"
+                                class="items-left mt-1 rounded-md border-gray-500 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                v-model="form.email"
+                            />
                         </div>
-                        <div>
+
+                        <div class="grid grid-cols-2 w-auto items-center">
+                            <label class="ml-7"
+                                >Phone No.(Mobile)
+                                <p class="inline text-red-600 text-lg">*</p>
+                            </label>
                             <input
                                 type="text"
-                                class="items-left rounded-md border-gray-500 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                                v-model="form.name"
+                                class="items-left mt-1 rounded-md border-gray-500 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                v-model="form.phone_mobile"
+                            />
+                        </div>
+
+                        <div class="grid grid-cols-2 items-center">
+                            <label class="ml-7">Phone No.(Office)</label>
+                            <input
+                                type="text"
+                                class="items-left mt-1 rounded-md border-gray-500 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                v-model="form.phone_office"
                             />
                         </div>
                     </div>
-                    <div class="grid grid-cols-2 w-auto items-center">
-                        <label class="ml-7"
-                            >Email
-                            <p class="inline text-red-600 text-lg">*</p></label
-                        >
-                        <input
-                            type="email"
-                            class="items-left mt-1 rounded-md border-gray-500 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                            v-model="form.email"
-                        />
-                    </div>
-
-                    <div class="grid grid-cols-2 w-auto items-center">
-                        <label class="ml-7"
-                            >Phone No.(Mobile)
-                            <p class="inline text-red-600 text-lg">*</p>
-                        </label>
-                        <input
-                            type="text"
-                            class="items-left mt-1 rounded-md border-gray-500 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                            v-model="form.phone_mobile"
-                        />
-                    </div>
-
-                    <div class="grid grid-cols-2 items-center">
-                        <label class="ml-7">Phone No.(Office)</label>
-                        <input
-                            type="text"
-                            class="items-left mt-1 rounded-md border-gray-500 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                            v-model="form.phone_office"
-                        />
-                    </div>
-                </div>
-                <div class="text-center col-span-2">
-                    <button
-                        type="submit"
-                        class="mt-4 px-8 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150 item"
-                    >
-                        Save
-                    </button>
-                </div>
-            </form>
-        </div>
-
-        <div class="max-h-10 m-6">
-            <GoBack class="m-5" />
-        </div>
-
-        <div class="m-4">
-            <span v-if="info.incharge.length !== 0">
-                <span
-                    v-for="pic in info.incharge"
-                    :key="info.incharge.id"
-                    class="grid grid-cols-2 border-2 m-4 p-4"
-                >
-                    <tr class="grid grid-cols-2">
-                        <td
-                            class="px-1 py-1 text-s leading-5 text-gray-900 whitespace-no-wrap"
-                        >
-                            Name
-                        </td>
-                        <td
-                            class="px-1 py-1 text-s leading-5 font-bold text-gray-900 whitespace-no-wrap"
-                        >
-                            {{ pic.name }}
-                        </td>
-                    </tr>
-
-                    <tr class="grid grid-cols-2">
-                        <td
-                            class="px-1 py-1 text-s leading-5 text-gray-900 whitespace-no-wrap"
-                        >
-                            Email
-                        </td>
-                        <td
-                            class="px-1 py-1 text-s leading-5 font-bold text-gray-900 whitespace-no-wrap"
-                        >
-                            {{ pic.email }}
-                        </td>
-                    </tr>
-                    <tr class="grid grid-cols-2">
-                        <td
-                            class="px-1 py-1 text-s leading-5 text-gray-900 whitespace-no-wrap"
-                        >
-                            Phone No. (Mobile)
-                        </td>
-                        <td
-                            class="px-1 py-1 text-s leading-5 font-bold text-gray-900 whitespace-no-wrap"
-                        >
-                            {{ pic.phone_mobile }}
-                        </td>
-                    </tr>
-                    <tr class="grid grid-cols-2">
-                        <td
-                            class="px-1 py-1 text-s leading-5 text-gray-900 whitespace-no-wrap"
-                        >
-                            Phone No. (Office)
-                        </td>
-                        <td
-                            class="px-1 py-1 text-s leading-5 font-bold text-gray-900 whitespace-no-wrap"
-                        >
-                            {{ pic.phone_office }}
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <router-link
-                            :to="{
-                                name: 'incharge_edit',
-                                params: { id: pic.id },
-                            }"
-                            class="mr-2 mb-2 inline-flex items-center px-2 py-1 bg-yellow-400 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
-                        >
-                            <PencilSquareIcon class="h-3 w-3"
-                        /></router-link>
+                    <div class="text-center col-span-2">
                         <button
-                            class="mr-2 mb-2 inline-flex items-center px-2 py-1 bg-red-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
-                            @click="deletePIC(pic.id)"
+                            type="submit"
+                            class="mt-4 px-8 py-2 bg-gray-800 border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150 item"
                         >
-                            <TrashIcon class="h-3 w-3" />
+                            Save
                         </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="max-h-10 my-2">
+            <GoBack class="" />
+        </div>
+
+        <div class="my-2">
+            <span v-if="info.incharge.length !== 0">
+                <h5
+                    class="items-center text-center text-white font-extrabold font-mono text-sm uppercase bg-slate-600 px-5 py-2 rounded-md"
+                >
+                    PIC
+                </h5>
+                <span
+                    v-for="(pic, index) in info.incharge"
+                    :key="info.incharge.id"
+                    class="my-2 py-1 border-gray-200"
+                >
+                    <!-- <tr ></tr> -->
+
+                    <tr
+                        class="text-left text-neutral-300 py-2 border-gray-200 grid grid-cols-4"
+                    >
+                        <div>
+                            <td>
+                                <span
+                                    class="bg-cyan-700 px-2 py-1 font-semibold font-mono rounded-md"
+                                >
+                                    {{ index + 1 }}
+                                </span>
+                            </td>
+                            <td
+                                class="px-1 py-1 text-md leading-5 text-gray-900 whitespace-no-wrap"
+                            >
+                                Name:
+                            </td>
+                            <td
+                                class="px-1 py-1 text-md leading-5 font-bold text-gray-900 whitespace-no-wrap"
+                            >
+                                {{ pic.name }}
+                            </td>
+                        </div>
+                        <div>
+                            <td
+                                class="px-1 py-1 text-md leading-5 text-gray-900 whitespace-no-wrap"
+                            >
+                                Email:
+                            </td>
+                            <td
+                                class="px-1 py-1 text-md leading-5 font-bold text-gray-900 whitespace-no-wrap"
+                            >
+                                {{ pic.email }}
+                            </td>
+                        </div>
+                        <div>
+                            <td
+                                class="px-1 py-1 text-md leading-5 text-gray-900 whitespace-no-wrap"
+                            >
+                                Phone No. (Mobile):
+                            </td>
+                            <td
+                                class="px-1 py-1 text-md leading-5 font-bold text-gray-900 whitespace-no-wrap"
+                            >
+                                {{ pic.phone_mobile }}
+                            </td>
+                        </div>
+                        <div>
+                            <td
+                                class="px-1 py-1 text-md leading-5 text-gray-900 whitespace-no-wrap"
+                            >
+                                Phone No. (Office):
+                            </td>
+                            <td
+                                class="px-1 py-1 text-md leading-5 font-bold text-gray-900 whitespace-no-wrap"
+                            >
+                                {{ pic.phone_office }}
+                            </td>
+                            <td class="py-1">
+                                <router-link
+                                    :to="{
+                                        name: 'incharge_edit',
+                                        params: { id: pic.id },
+                                    }"
+                                    class="mr-2 mb-2 inline-flex items-center px-2 py-1 bg-yellow-400 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
+                                >
+                                    <PencilSquareIcon class="h-3 w-3"
+                                /></router-link>
+                                <button
+                                    class="mr-2 mb-2 inline-flex items-center px-2 py-1 bg-red-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
+                                    @click="deletePIC(pic.id)"
+                                >
+                                    <TrashIcon class="h-3 w-3" />
+                                </button>
+                            </td>
+                        </div>
                     </tr>
                 </span>
             </span>
 
             <span v-else>
-                <div
-                    class="uppercase text-center font-extrabold text-5xl bg-slate-400 rounded-md py-3 px-3"
+                <h5
+                    class="items-center text-center text-white font-extrabold font-mono text-sm uppercase bg-slate-600 px-5 py-2 rounded-md"
                 >
-                    <h1><strong>No PIC data</strong></h1>
+                    PIC
+                </h5>
+                <div
+                    class="uppercase text-center font-extrabold text-xl bg-slate-200 rounded-md py-1 px-1"
+                >
+                    <h5><b>No PIC data</b></h5>
                 </div>
             </span>
         </div>
@@ -199,7 +224,7 @@ export default {
 
     data() {
         return {
-            info: "",
+            info: [],
             contact_infos: [],
             form: {
                 contact_id: "",

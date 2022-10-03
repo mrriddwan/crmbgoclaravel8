@@ -18,23 +18,27 @@ class Contact_CategorySeeder extends Seeder
         DB::table('contact_categories')->insert([
             [
                 'id' => 1,
-                'name' => 'Facebook'
+                'name' => 'KLTG Food'
             ],
             [
                 'id' => 2,
-                'name' => 'Radio'
+                'name' => 'KLTG Attraction'
             ],
             [
                 'id' => 3,
-                'name' => 'Newspaper'
+                'name' => 'KLTG Accomodation'
             ],
             [
                 'id' => 4,
-                'name' => 'TG-KLTG'
+                'name' => 'KV4L Food'
             ],
             [
                 'id' => 5,
-                'name' => 'TG-KV4L'
+                'name' => 'KV4L Attraction'
+            ],
+            [
+                'id' => 6,
+                'name' => 'KV4L Accomodation'
             ],
         ]);
     }

@@ -1,5 +1,5 @@
 <template>
-    <div class="container w-max border-4 align-center">
+    <div class="container w-max align-center">
         <div v-if="errors">
             <div v-for="(v, k) in errors" :key="k">
                 <p
@@ -12,7 +12,7 @@
             </div>
         </div>
         <h1
-            class="items-center text-center text-white font-extrabold bg-slate-600 px-2 py-2 rounded-md"
+            class="items-center text-center text-white font-extrabold font-mono text-5xl uppercase bg-slate-600 px-5 py-2 rounded-md"
         >
             Edit Forecast
         </h1>
@@ -45,7 +45,7 @@
                             <div class="">
                                 <select
                                     v-model="forecast.product_id"
-                                    class="form-control form-control-sm"
+                                    class="form-control"
                                 >
                                     <option disabled value="">
                                         Please select product
@@ -88,7 +88,7 @@
                             <div>
                                 <select
                                     v-model="forecast.type_id"
-                                    class="form-control form-control-sm"
+                                    class="form-control"
                                 >
                                     <option disabled value="">
                                         Please select type

@@ -1,13 +1,13 @@
 <template>
-    <div class="container w-max border-4 align-center mx-auto h-max px-5 py-5">
+    <div class="container w-max align-center mx-auto h-max px-3 py-3">
         <div>
             <GoBack />
         </div>
 
         <div
-            class="items-center text-center text-white font-extrabold bg-slate-600 px-2 py-2 rounded-md"
+            class="items-center text-center text-white  bg-slate-600 px-2 py-2 rounded-md"
         >
-            <h1 class="px-2 py-3 bg-black-50">Create To Do (Internal)</h1>
+            <h1 class="font-extrabold uppercase px-2 py-1 bg-black-50 font-mono">Create To Do (Internal)</h1>
         </div>
         <div v-if="errors">
             <div v-for="(v, k) in errors" :key="k">

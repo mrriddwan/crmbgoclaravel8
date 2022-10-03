@@ -1,13 +1,13 @@
 <template>
-    <div class="container w- border-4 align-center mx-auto h-max px-5 py-5">
+    <div class="container w-full align-center mx-auto h-max px-3 py-3">
         <div>
             <GoBack />
         </div>
 
         <div
-            class="items-center text-center text-white font-extrabold bg-slate-600 px-2 py-2 rounded-md"
+            class="items-center text-center text-white bg-slate-600 px-2 py-1 rounded-md"
         >
-            <h1 class="px-2 py-3 bg-black-50">Edit To Do</h1>
+            <h1 class="px-2 py-1 bg-black-50 font-extrabold font-mono">Edit To Do</h1>
         </div>
 
         <div class="row mt-3">
@@ -96,11 +96,11 @@
                         >
                             <option disabled value="">Please select one</option>
                             <option
-                                v-for="type in types"
-                                :key="type.id"
-                                :value="type.id"
+                                v-for="contact_type in types"
+                                :key="contact_type.id"
+                                :value="contact_type.id"
                             >
-                                {{ type.name }}
+                                {{ contact_type.name }}
                             </option>
                         </select>
                     </div>
@@ -109,7 +109,7 @@
                         <label>Contact Name</label>
                         <div>
                             <select
-                                class="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                class="block mt-1 w-max rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                                 v-model="todo.contact_id"
                                 @change="getContacts"
                             >

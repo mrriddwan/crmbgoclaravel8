@@ -18,23 +18,39 @@ class Contact_StatusSeeder extends Seeder
         DB::table('contact_statuses')->insert([
             [
                 'id' => 1,
-                'name' => 'BP Existing'
+                'name' => 'Existing'
             ],
             [
                 'id' => 2,
-                'name' => 'BP Raw'
+                'name' => 'Raw New'
             ],
             [
                 'id' => 3,
-                'name' => 'BP Potential'
+                'name' => 'Potential'
             ],
             [
                 'id' => 4,
-                'name' => 'Agency'
+                'name' => 'KLTG Raw'
             ],
             [
                 'id' => 5,
-                'name' => 'Contractor'
+                'name' => 'KLTG Potential'
+            ],
+            [
+                'id' => 6,
+                'name' => 'KLTG Existing'
+            ],
+            [
+                'id' => 7,
+                'name' => 'KV4L Raw'
+            ],
+            [
+                'id' => 8,
+                'name' => 'KV4L Potential'
+            ],
+            [
+                'id' => 9,
+                'name' => 'KV4L Existing'
             ],
         ]);
     }

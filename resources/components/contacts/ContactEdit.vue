@@ -1,13 +1,13 @@
 <template>
-    <div class="container w-max border-4 align-center mx-auto h-max">
-        <h1
-            class="items-center text-center text-white font-extrabold bg-slate-600 px-2 py-2 rounded-md"
+    <div class="container w-max align-center mx-auto h-max">
+        <div
+            class="items-center text-center text-white bg-slate-600 px-2 py-1 rounded-md"
         >
-            Edit Contact
-        </h1>
+            <h1 class="px-10 py-1 bg-black-50 font-extrabold font-mono uppercase">Edit Contact</h1>
+        </div>
         <GoBack />
         <div class="row">
-            <div class="col-md-6 px-20">
+            <div class="col-md-8">
                 <form @submit.prevent="updateContact()">
                     <div class="form-group mb-4">
                         <label class="font-bold">User</label>
@@ -119,7 +119,7 @@
                             type="text"
                             name="address"
                             id="address"
-                            class="form-control block w-max h-max px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                            class="form-control block w-auto h-max px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                             rows="3"
                             placeholder="Your message"
                             v-model="contact.address"
@@ -131,7 +131,7 @@
                             type="text"
                             name="remark"
                             id="remark"
-                            class="form-control block w-max px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                            class="form-control block w-auto px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                             rows="3"
                             placeholder="Your message"
                             v-model="contact.remark"

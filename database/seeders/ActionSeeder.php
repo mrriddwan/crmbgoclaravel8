@@ -36,6 +36,10 @@ class ActionSeeder extends Seeder
                 'id' => 5,
                 'name' => 'Carried Forward'
             ],
+            [
+                'id' => 6,
+                'name' => 'Called'
+            ],
         ]);
     }
 }

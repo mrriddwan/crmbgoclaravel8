@@ -62,15 +62,15 @@
         </div>
     </div>
 
-    <div class="grid grid-cols-2">
+    <div class="grid grid-cols-3">
         <div class="grid grid-cols-2 items-center align-middle w-max">
-            <label for="paginate" class="px-2 inline-block">Entries</label>
+            <label for="paginate" class="px-2 inline-block">Total entries</label>
             <select v-model="paginate" class="form-control inline-block">
                 <option value="10">10</option>
                 <option value="50">50</option>
                 <option value="100">100</option>
             </select>
-            <label for="paginate" class="px-2 inline-block">of 100</label>
+            
         </div>
         <div class="py-2">
             <input
@@ -80,16 +80,17 @@
                 placeholder="Search by any..."
             />
         </div>
-    </div>
-    <div class="mt-1">
+        <div class="mt-1">
         <Pagination
             :data="forecasts"
             @pagination-change-page="getForecasts"
             :size="'small'"
-            :align="'center'"
+            :align="'right'"
             class="pagination"
         />
     </div>
+    </div>
+    
     <div>
         <div
             class="table-wrp block max-h-screen overflow-y-auto overflow-x-auto"
@@ -99,6 +100,7 @@
                     <tr>
                         <th>
                             <input type="checkbox" v-model="selectPage" />
+                            <div class="text-sm text-center h-6"></div>
                         </th>
                         <th class="py-3">
                             <div class="text-sm text-center h-6">
@@ -118,6 +120,7 @@
                                     >&darr;</span
                                 >
                             </div>
+                            <div class="text-sm text-center h-6"></div>
                         </th>
                         <th class="py-3 align-middle text-center">
                             <div class="text-sm text-center h-6">
@@ -144,6 +147,7 @@
                                     >&darr;</span
                                 >
                             </div>
+                            <div class="text-sm text-center h-6"></div>
                         </th>
                         <th class="py-3 w-max">
                             <div class="text-sm text-center h-6 w-max">
@@ -168,6 +172,7 @@
                                     >&darr;</span
                                 >
                             </div>
+                            <div class="text-sm text-center h-6"></div>
                         </th>
                         <th class="py-3">
                             <div class="text-sm text-center h-6">
@@ -268,6 +273,7 @@
                                     >&darr;</span
                                 >
                             </div>
+                            <div class="text-sm text-center h-6"></div>
                         </th>
                         <th class="py-3">
                             <div class="text-sm text-center h-6">
@@ -295,6 +301,7 @@
                                     >&darr;</span
                                 >
                             </div>
+                            <div class="text-sm text-center h-6"></div>
                         </th>
                         <th class="py-3">
                             <div class="text-sm text-center h-6">
@@ -400,7 +407,7 @@
                         </td>
                         <td class="text-xs">{{ index + 1 }}</td>
                         <td class="text-xs">
-                            {{ forecast.forecast_updatedate }}
+                            {{ showToday(forecast.forecast_updatedate) }}
                         </td>
                         <td class="text-xs grid-cols-2 w-max">
                             <router-link
@@ -428,7 +435,7 @@
                             <p class="inline mr-1">RM</p>
                             {{ forecast.amount.toLocaleString("en-US") }}
                         </td>
-                        <td class="text-xs">{{ forecast.forecast_date }}</td>
+                        <td class="text-xs">{{ showToday(forecast.forecast_date) }}</td>
                         <td class="text-xs">{{ forecast.type.name }}</td>
                         <td class="text-center align-middle">
                             <span v-if="forecast.result">
@@ -724,6 +731,12 @@ export default {
             }
             axios.delete("/api/forecasts/delete/" + id);
             this.getForecasts();
+        },
+
+        showToday(date) {
+            // let day = moment(date).format("DD-MM-YYYY");
+            let day = moment(date).format("DD-MM-YYYY");
+            return day;
         },
 
         resultSelected(result, forecastId) {

@@ -22,19 +22,63 @@ class Contact_IndustrySeeder extends Seeder
             ],
             [
                 'id' => 2,
-                'name' => 'Developer'
-            ],
-            [
-                'id' => 3,
-                'name' => 'Entertainment'
-            ],
-            [
-                'id' => 4,
                 'name' => 'F&B'
             ],
             [
-                'id' => 5,
+                'id' => 3,
                 'name' => 'Education'
+            ],
+            [
+                'id' => 4,
+                'name' => 'Medical'
+            ],
+            [
+                'id' => 5,
+                'name' => 'Shopping'
+            ],
+            [
+                'id' => 6,
+                'name' => 'Retails'
+            ],
+            [
+                'id' => 7,
+                'name' => 'Fashion'
+            ],
+            [
+                'id' => 8,
+                'name' => 'Home'
+            ],
+            [
+                'id' => 9,
+                'name' => 'Properties'
+            ],
+            [
+                'id' => 10,
+                'name' => 'Services'
+            ],
+            [
+                'id' => 11,
+                'name' => 'Gov Bodies'
+            ],
+            [
+                'id' => 12,
+                'name' => 'Agencies'
+            ],
+            [
+                'id' => 13,
+                'name' => 'Transportation & Automative'
+            ],
+            [
+                'id' => 14,
+                'name' => 'Industrial & Manufacturing'
+            ],
+            [
+                'id' => 13,
+                'name' => 'Finance'
+            ],
+            [
+                'id' => 13,
+                'name' => 'Exhibitions'
             ],
         ]);
     }

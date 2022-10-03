@@ -1,15 +1,15 @@
 <template>
     <div
-        class="container w-max-10 border-4 align-center mx-auto h-max px-1 py-1"
+        class="container w-full align-center mx-auto h-max px-3 py-1"
     >
         <div>
             <GoBack />
         </div>
 
         <div
-            class="items-center text-center text-white font-extrabold bg-slate-600 px-2 rounded-md"
+            class="items-center text-center text-white bg-slate-600 px-2 rounded-md"
         >
-            <h1 class="px-2 py-3 bg-black-50">Follow Up</h1>
+            <h1 class="px-20 py-1 bg-black-50 font-extrabold font-mono text-3xl ">Follow Up</h1>
         </div>
         <div v-if="errors">
             <div v-for="(v, k) in errors" :key="k">

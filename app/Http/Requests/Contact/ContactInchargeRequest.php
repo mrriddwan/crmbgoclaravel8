@@ -28,7 +28,7 @@ class ContactInchargeRequest extends FormRequest
             'name' => ['required', 'string'],
             'email' => ['required', 'email'],
             'phone_mobile' => ['required', 'string'],
-            // 'phone_office' => ['nullable', 'string'],
+            'phone_office' => ['nullable', 'string'],
         ];
     }
 }

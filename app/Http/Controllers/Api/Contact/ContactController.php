@@ -135,7 +135,10 @@ class ContactController extends Controller
 
     public function info(Contact $contact)
     {
-        $contact = Contact::with('category', 'type', 'status', 'incharge', 'user', 'todo', 'industry', 'forecast')
+        $contact = Contact::with(['category', 'type', 'status', 'incharge', 'user', 
+        'todo' => function ($q) {
+            $q->orderBy('todo_date', 'desc');
+        }, 'industry', 'forecast'])
             ->where('id', $contact->id)
             ->get();
 
@@ -167,9 +170,7 @@ class ContactController extends Controller
             [
                 'summary' => function ($q) {
                     $q->select(['id', 'todo_date', 'contact_id', 'action_id'])
-                        ->orderBy('todo_date', 'desc')
-                        
-                        ;
+                        ->orderBy('todo_date', 'desc');
                 },
                 'summary.action' => function ($q) {
                     $q->select('id', 'name');
@@ -216,9 +217,9 @@ class ContactController extends Controller
                 $company->setRelation(
                     'summary',
                     $company->summary->groupBy(
-                            fn ($summary) => \Carbon\Carbon::create($summary->todo_date)->format('MY')
-                        )
-                    );
+                        fn ($summary) => \Carbon\Carbon::create($summary->todo_date)->format('MY')
+                    )
+                );
 
                 return $company;
             });
@@ -291,14 +292,13 @@ class ContactController extends Controller
         return $contact;
     }
 
-    public function export($contact) 
+    public function export($contact)
     {
         $date = Carbon::now()->format('Ymd');
 
-        $contactsArray = explode(',', $contact );
+        $contactsArray = explode(',', $contact);
 
-        return Excel::download(new ContactExport($contactsArray), ('Contacts - '. $date . '.xlsx'));
-
+        return Excel::download(new ContactExport($contactsArray), ('Contacts - ' . $date . '.xlsx'));
     }
 
     public function selectAll()
@@ -306,13 +306,12 @@ class ContactController extends Controller
         return Contact::pluck('id');
     }
 
-    public function exportSummary($contact) 
+    public function exportSummary($contact)
     {
         $date = Carbon::now()->format('Ymd');
 
-        $contactsArray = explode(',', $contact );
+        $contactsArray = explode(',', $contact);
 
-        return Excel::download(new ContactSummaryExport($contactsArray), ('Contacts Summary - '. $date . '.xlsx'));
-
+        return Excel::download(new ContactSummaryExport($contactsArray), ('Contacts Summary - ' . $date . '.xlsx'));
     }
 }

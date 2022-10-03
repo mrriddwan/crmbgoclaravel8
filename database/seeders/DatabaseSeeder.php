@@ -21,7 +21,7 @@ class DatabaseSeeder extends Seeder
             Contact_StatusSeeder::class,
             Contact_CategorySeeder::class,
             Contact_IndustrySeeder::class,
-            ContactSeeder::class,
+            // ContactSeeder::class,
             TaskSeeder::class,
             PrioritySeeder::class,
             TextColorSeeder::class,
@@ -29,11 +29,11 @@ class DatabaseSeeder extends Seeder
             ToDoSourceSeeder::class,
             ForecastProductSeeder::class,
             ForecastResultSeeder::class,
-            ForecastSeeder::class,
-            Contact_InchargeSeeder::class,
-            ToDoSeeder::class,
-            FollowUpSeeder::class,
-            ProjectSeeder::class,
+            // ForecastSeeder::class,
+            // Contact_InchargeSeeder::class,
+            // ToDoSeeder::class,
+            // FollowUpSeeder::class,
+            // ProjectSeeder::class,
 
         ]);
     }

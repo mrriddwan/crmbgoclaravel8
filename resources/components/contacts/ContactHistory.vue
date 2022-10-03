@@ -6,7 +6,7 @@
             <h3
                 class="mb-4 text-xl font-extrabold tracking-tight leading-none text-gray-900 md:text-2xl lg:text-2xl text-center"
             >
-                Company History - {{ info.name }}
+                Company - {{ info.name }}
             </h3>
             <div
                 v-if="info.todo.length !== 0"
@@ -50,8 +50,7 @@
                                     :to="{
                                         name: 'todo_index',
                                         params: {
-                                            selectedDate:
-                                            history.todo_date,
+                                            selectedDate: history.todo_date,
                                         },
                                     }"
                                     class="mr-2 mb-2 inline-flex items-center px-2 py-1 bg-blue-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
@@ -66,13 +65,13 @@
                     </tbody>
                 </table>
             </div>
-            <div v-else class="">
-                <h3
-                    class="mx-auto font-serif border-5 border-grey-900 mb-4 text-xl font-extrabold tracking-tight leading-none text-gray-700 md:text-2xl lg:text-2xl text-center bg-slate-500 py-5 px-2 rounded-md uppercase w-max"
+            <span v-else class="items-center my-5">
+                <h5
+                    class="mx-auto font-mono px-2 py-2 bg-grey-900 mb-2 text-xl font-extrabold tracking-tight leading-none text-gray-700 md:text-2xl lg:text-2xl text-center bg-slate-300 rounded-md uppercase w-max"
                 >
-                    No History data
-                </h3>
-            </div>
+                    No History Data
+                </h5>
+            </span>
         </span>
     </div>
 </template>
@@ -82,10 +81,10 @@ import { EyeIcon } from "@heroicons/vue/24/solid";
 import GoBack from "../utils/GoBack.vue";
 
 export default {
-    components: { 
+    components: {
         GoBack,
-        EyeIcon
-     },
+        EyeIcon,
+    },
 
     data() {
         return {

@@ -18,15 +18,15 @@ class TaskSeeder extends Seeder
         DB::table('tasks')->insert([
             [
                 'id' => 1,
-                'name' => 'Appointment Visitation'
+                'name' => 'Call'
             ],
             [
                 'id' => 2,
-                'name' => 'Attended'
+                'name' => 'Attended (others)'
             ],
             [
                 'id' => 3,
-                'name' => 'Call'
+                'name' => 'Appointment Visitation'
             ],
             [
                 'id' => 4,
@@ -34,7 +34,15 @@ class TaskSeeder extends Seeder
             ],
             [
                 'id' => 5,
-                'name' => 'Prepare Proposal'
+                'name' => 'Proposal Preparation'
+            ],
+            [
+                'id' => 6,
+                'name' => 'Email Blast'
+            ],
+            [
+                'id' => 7,
+                'name' => 'Whatsapp Blast'
             ],
         ]);
     }
