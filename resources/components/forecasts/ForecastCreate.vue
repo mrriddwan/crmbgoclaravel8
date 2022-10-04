@@ -88,12 +88,12 @@
                             <p class="inline text-red-600 text-lg">*</p>
                         </label>
                         <div>
-                            <select v-model="form.type_id" class="form-control">
+                            <select v-model="form.forecast_type_id" class="form-control">
                                 <option disabled value="">
                                     Please select type
                                 </option>
                                 <option
-                                    v-for="forecast_type in types"
+                                    v-for="forecast_type in forecast_types"
                                     :key="forecast_type.id"
                                     :value="forecast_type.id"
                                 >
@@ -131,7 +131,7 @@
         </div>
 
         <div class="m-4">
-            <span v-if="info.forecast">
+            <span v-if="info.forecast.length !== 0">
                 <h5
                     class="items-center text-center text-white font-extrabold font-mono text-sm uppercase bg-slate-600 px-5 py-2 rounded-md"
                 >
@@ -187,7 +187,7 @@
                             <td
                                 class="px-1 py-1 text-s leading-5 font-bold text-gray-900 whitespace-no-wrap"
                             >
-                                {{ forecast_info.type.name }}
+                                {{ forecast_info.forecast_type.name }}
                             </td>
                         </div>
 
@@ -262,18 +262,18 @@ export default {
                 contact_id: "",
                 product_id: "",
                 amount: "",
-                type_id: "",
+                forecast_type_id: "",
                 forecast_date: "",
             },
             errors: "",
             products: [],
-            types: [],
+            forecast_types: [],
         };
     },
     mounted() {
         this.showForecast();
         this.getProducts();
-        this.getTypes();
+        this.getForecastTypes();
     },
     methods: {
         showForecast() {
@@ -295,9 +295,9 @@ export default {
                     forecast_date: this.form.forecast_date,
                     amount: this.form.amount,
                     contact_id: contact[0].id,
-                    user_id: 1, //replace with current user id later
+                    user_id: 2, //replace with current user id later
                     product_id: this.form.product_id,
-                    type_id: this.form.type_id,
+                    forecast_type_id: this.form.forecast_type_id,
                 });
                 if (window.confirm("Finish creating and back to main page?")) {
                     await this.$router.push({
@@ -311,7 +311,7 @@ export default {
                 }
 
                 this.form.product_id = "";
-                this.form.type_id = "";
+                this.form.forecast_type_id = "";
                 this.form.amount = "";
                 this.form.forecast_date = "";
                 this.errors = "";
@@ -324,11 +324,11 @@ export default {
                 }
             }
         },
-        async getTypes() {
+        async getForecastTypes() {
             await axios
-                .get("/api/contacts/type/index")
+                .get("/api/forecasts/type/index")
                 .then((res) => {
-                    this.types = res.data.data;
+                    this.forecast_types = res.data.data;
                 })
                 .catch((error) => {
                     console.log(error);
@@ -337,7 +337,7 @@ export default {
 
         async getProducts() {
             await axios
-                .get("/api/forecastproducts/index")
+                .get("/api/forecasts/product/index")
                 .then((res) => {
                     this.products = res.data.data;
                 })

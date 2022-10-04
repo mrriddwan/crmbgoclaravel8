@@ -73,11 +73,11 @@ class Contact_IndustrySeeder extends Seeder
                 'name' => 'Industrial & Manufacturing'
             ],
             [
-                'id' => 13,
+                'id' => 15,
                 'name' => 'Finance'
             ],
             [
-                'id' => 13,
+                'id' => 16,
                 'name' => 'Exhibitions'
             ],
         ]);

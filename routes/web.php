@@ -22,6 +22,10 @@ require __DIR__ . '/auth.php';
 // Route::get('/', function () {
 //         return view('contact');
 // });
+Route::get('', function () {
+    return view('contact');
+})->middleware(['auth'])->name('contact');
+
 
 Route::get('/', function () {
     return view('contact');
@@ -31,9 +35,9 @@ Route::view('/{any}', 'contact')
     ->middleware(['auth'])
     ->where('any', '.*');
 
-// Route::get('/dashboard', function () {
-//     return view('dashboard');
-// })->middleware(['auth'])->name('dashboard');
+Route::get('', function () {
+    return view('dashboard');
+})->middleware(['auth'])->name('dashboard');
 
 Route::get('/contact/index', function () {
     return view('contact');

@@ -16,7 +16,8 @@
         >
             Edit Forecast
         </h1>
-        <div v-for="forecast in forecast_infos">
+        <div>
+            <!-- <div v-for="contact in forecast.contact" -->
             <div
                 class="items-center text-center text-black font-extrabold px-1 py-3 rounded-md w-max mx-auto"
             >
@@ -28,8 +29,7 @@
             </div>
             <div class="text-center">
                 <form
-                    @submit.prevent="editForecast"
-                    ref="inchargeForm"
+                    @submit.prevent="editForecast()"
                     class="inline-block align-middle"
                 >
                     <div class="grid grid-cols-1 items-center text-center">
@@ -87,14 +87,14 @@
                             </label>
                             <div>
                                 <select
-                                    v-model="forecast.type_id"
+                                    v-model="forecast.forecast_type_id"
                                     class="form-control"
                                 >
                                     <option disabled value="">
                                         Please select type
                                     </option>
                                     <option
-                                        v-for="forecast_type in types"
+                                        v-for="forecast_type in forecast_types"
                                         :key="forecast_type.id"
                                         :value="forecast_type.id"
                                     >
@@ -138,6 +138,7 @@
 
 <script>
 import GoBack from "../utils/GoBack.vue";
+import axios from "axios";
 import {
     PencilSquareIcon,
     TrashIcon,
@@ -151,66 +152,65 @@ export default {
 
     data() {
         return {
-            info: "",
-            forecast_infos: [],
             forecast: {
                 contact_id: "",
                 product_id: "",
                 amount: "",
-                type_id: "",
+                forecast_type_id: "",
                 forecast_date: "",
+                contact: {
+                    id:"",
+                    name: "",
+                }
             },
             errors: "",
             products: [],
-            types: [],
+            forecast_types: [],
+            forecast_infos: [],
         };
     },
+
     mounted() {
         this.showForecast();
         this.getProducts();
-        this.getTypes();
+        this.getForecastTypes();
     },
     methods: {
-
         showForecast() {
             axios
                 .get("/api/forecasts/info/" + this.$route.params.id)
                 .then((res) => {
-                    this.forecast_infos = res.data.data;
+                    this.forecast = res.data.data[0];
                 })
                 .catch((error) => {
                     console.log(error);
                 });
         },
 
-        async editForecast() {
-            const contact = this.contact_infos;
-            // const form = document.getElementById('inchargeForm');
-            try {
-                await axios.put("/api/forecasts/update", {
-                    forecast_date: this.form.forecast_date,
-                    amount: this.form.amount,
-                    contact_id: contact[0].id,
-                    user_id: 1, //replace with current user id later
-                    product_id: this.form.product_id,
-                    type_id: this.form.type_id,
-                });
-                await this.$router.push({
-                    name: "forecast_index",
-                });
-            } catch (e) {
-                {
-                    if (e.response.status === 422) {
-                        this.errors = e.response.data.errors;
-                    }
-                }
-            }
-        },
-        async getTypes() {
-            await axios
-                .get("/api/contacts/type/index")
+        editForecast() {
+            console.log(this.forecast.contact.name);
+            console.log(this.forecast.amount);
+            axios
+                .put("/api/forecasts/update/" + this.$route.params.id, {
+                    forecast_date: this.forecast.forecast_date,
+                    amount: this.forecast.amount,
+                    contact_id: this.forecast.contact.id,
+                    user_id: 2, //replace with current user id later
+                    product_id: this.forecast.product_id,
+                    forecast_type_id: this.forecast.forecast_type_id,
+                })
                 .then((res) => {
-                    this.types = res.data.data;
+                    this.$router.push({
+                        name: "forecast_index",
+                    });
+                });
+        },
+
+        async getForecastTypes() {
+            await axios
+                .get("/api/forecasts/type/index")
+                .then((res) => {
+                    this.forecast_types = res.data.data;
                 })
                 .catch((error) => {
                     console.log(error);
@@ -219,25 +219,13 @@ export default {
 
         async getProducts() {
             await axios
-                .get("/api/forecastproducts/index")
+                .get("/api/forecasts/product/index")
                 .then((res) => {
                     this.products = res.data.data;
                 })
                 .catch((error) => {
                     console.log(error);
                 });
-        },
-
-        deleteForecast(id) {
-            if (!window.confirm("Are you sure?")) {
-                return;
-            }
-            axios.delete("/api/forecasts/delete/" + id);
-            this.$router.push({
-                name: "forecast_create",
-                params: { id: this.$route.params.id },
-            });
-            this.showIncharge();
         },
     },
 };

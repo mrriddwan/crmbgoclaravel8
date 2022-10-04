@@ -12,10 +12,12 @@ use App\Http\Controllers\Api\FollowUp\FollowUpController;
 use App\Http\Controllers\Api\Forecast\ForecastController;
 use App\Http\Controllers\Api\Forecast\ForecastProductController;
 use App\Http\Controllers\Api\Forecast\ForecastResultController;
+use App\Http\Controllers\Api\Forecast\ForecastTypeController;
 use App\Http\Controllers\Api\Project\ProjectController;
 use App\Http\Controllers\Api\ToDo\TaskController;
 use App\Http\Controllers\Api\ToDo\ToDoController;
 use App\Http\Controllers\Api\ToDo\ToDoSourceController;
+use App\Models\Forecast\ForecastType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -112,8 +114,9 @@ Route::get('/forecasts/export/{forecast}', [ForecastController::class, 'export']
 Route::get('/forecasts/all', [FollowUpController::class, 'selectAll'])->name('followup:selectAll');
 
 /*Sub-Forecast API*/
-Route::get('/forecastproducts/index', [ForecastProductController::class, 'index'])->name('forecastproduct:index');
-Route::get('/forecastresults/index', [ForecastResultController::class, 'index'])->name('forecastresult:index');
+Route::get('/forecasts/product/index', [ForecastProductController::class, 'index'])->name('forecastproduct:index');
+Route::get('/forecasts/result/index', [ForecastResultController::class, 'index'])->name('forecastresult:index');
+Route::get('/forecasts/type/index', [ForecastTypeController::class, 'index'])->name('forecasttype:index');
 
 /*Forecast API*/
 Route::get('/projects/index', [ProjectController::class, 'index'])->name('project:index');

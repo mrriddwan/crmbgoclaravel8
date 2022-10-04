@@ -746,6 +746,9 @@ export default {
         selectedIndustry: function (value) {
             this.getContacts();
         },
+        selectedCategory: function (value) {
+            this.getContacts();
+        },
 
         selectPage: function (value) {
             this.checked = [];

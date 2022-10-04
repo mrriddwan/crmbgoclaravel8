@@ -143,7 +143,7 @@ export default {
                     project_enddate: this.form.project_enddate,
                     project_name: this.form.project_name,
                     project_remark: this.form.project_remark ? this.form.project_remark : "No remark",
-                    user_id: 1, //change to current user later
+                    user_id: 2, //change to current user later
                     contact_id: this.form.contact_id,
                 });
 

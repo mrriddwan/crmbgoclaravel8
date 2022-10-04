@@ -616,6 +616,7 @@
                                                 <option disabled value="">
                                                     Select Action
                                                 </option>
+                                                <option value="">No action</option>
                                                 <option
                                                     v-for="action in actions.data"
                                                     :key="action.id"
@@ -1300,7 +1301,7 @@ export default {
             console.log("this is is the todo ID: " + toDoId);
             console.log("this is is the contact ID: " + contactId);
             axios.put("/api/todos/action/" + toDoId, {
-                action_id: action,
+                action_id: action ? action : null,
             });
             alert("Task updated");
             this.$router.push({

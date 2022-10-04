@@ -7,7 +7,7 @@
 
     <div class="py-2">
         <router-link
-            to="/forecast/index"
+            to="/forecast/summary"
             class="inline-block items-center px-2 py-1 bg-purple-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
             >Forecast Summary</router-link
         >
@@ -64,13 +64,14 @@
 
     <div class="grid grid-cols-3">
         <div class="grid grid-cols-2 items-center align-middle w-max">
-            <label for="paginate" class="px-2 inline-block">Total entries</label>
+            <label for="paginate" class="px-2 inline-block"
+                >Total entries</label
+            >
             <select v-model="paginate" class="form-control inline-block">
                 <option value="10">10</option>
                 <option value="50">50</option>
                 <option value="100">100</option>
             </select>
-            
         </div>
         <div class="py-2">
             <input
@@ -81,16 +82,16 @@
             />
         </div>
         <div class="mt-1">
-        <Pagination
-            :data="forecasts"
-            @pagination-change-page="getForecasts"
-            :size="'small'"
-            :align="'right'"
-            class="pagination"
-        />
+            <Pagination
+                :data="forecasts"
+                @pagination-change-page="getForecasts"
+                :size="'small'"
+                :align="'right'"
+                class="pagination"
+            />
+        </div>
     </div>
-    </div>
-    
+
     <div>
         <div
             class="table-wrp block max-h-screen overflow-y-auto overflow-x-auto"
@@ -307,21 +308,23 @@
                             <div class="text-sm text-center h-6">
                                 <a
                                     href="#"
-                                    @click.prevent="change_sort('type_name')"
+                                    @click.prevent="
+                                        change_sort('forecast_type_name')
+                                    "
                                 >
-                                    Type
+                                    Forecast Type
                                 </a>
                                 <span
                                     v-if="
                                         sort_direction == 'desc' &&
-                                        sort_field == 'type_name'
+                                        sort_field == 'forecast_type_name'
                                     "
                                     >&uarr;</span
                                 >
                                 <span
                                     v-if="
                                         sort_direction == 'asc' &&
-                                        sort_field == 'type_name'
+                                        sort_field == 'forecast_type_name'
                                     "
                                     >&darr;</span
                                 >
@@ -329,12 +332,12 @@
                             <div class="text-sm text-center h-6">
                                 <div class="text-sm text-center h-6">
                                     <select
-                                        v-model="selectedType"
+                                        v-model="selectedForecastType"
                                         class="form-control form-control-sm w-max"
                                     >
                                         <option value="">All</option>
                                         <option
-                                            v-for="forecast_type in types.data"
+                                            v-for="forecast_type in forecast_types.data"
                                             :key="forecast_type.id"
                                             :value="forecast_type.id"
                                         >
@@ -376,6 +379,9 @@
                                         class="form-control form-control-sm w-max"
                                     >
                                         <option value="">All</option>
+                                        <option value="null">
+                                            No result
+                                        </option>
                                         <option
                                             v-for="result in results.data"
                                             :key="result.id"
@@ -435,8 +441,12 @@
                             <p class="inline mr-1">RM</p>
                             {{ forecast.amount.toLocaleString("en-US") }}
                         </td>
-                        <td class="text-xs">{{ showToday(forecast.forecast_date) }}</td>
-                        <td class="text-xs">{{ forecast.type.name }}</td>
+                        <td class="text-xs">
+                            {{ showToday(forecast.forecast_date) }}
+                        </td>
+                        <td class="text-xs">
+                            {{ forecast.forecast_type.name }}
+                        </td>
                         <td class="text-center align-middle">
                             <span v-if="forecast.result">
                                 <span
@@ -476,7 +486,10 @@
                                         "
                                         v-model="forecast_result.result_id"
                                     >
-                                        <option value="">Select Result</option>
+                                        <option disabled value="">
+                                            Select Result
+                                        </option>
+                                        <option value="">Unconfirmed</option>
                                         <option
                                             v-for="result in results.data"
                                             :key="result.id"
@@ -569,14 +582,14 @@ export default {
         this.getForecasts();
         this.getUsers();
         this.getProducts();
-        this.getTypes();
+        this.getForecastTypes();
         this.getResults();
     },
     data() {
         return {
             forecasts: [],
             products: [],
-            types: [],
+            forecast_types: [],
             results: [],
 
             paginate: 50,
@@ -587,7 +600,8 @@ export default {
 
             search: "",
             selectedProduct: "",
-            selectedType: "",
+            selectedContactType: "",
+            selectedForecastType: "",
             selectedUser: "",
             filterResult: "",
 
@@ -608,7 +622,10 @@ export default {
         search: function (value) {
             this.getForecasts();
         },
-        selectedType: function (value) {
+        selectedForecastType: function (value) {
+            this.getForecasts();
+        },
+        selectedContactType: function (value) {
             this.getForecasts();
         },
         selectedProduct: function (value) {
@@ -618,7 +635,12 @@ export default {
             this.getForecasts();
         },
         filterResult: function (value) {
-            this.getForecasts();
+            if (this.filterResult === "null") {
+                this.filterResult = null;
+                this.getForecasts();
+            } else {
+                this.getForecasts();
+            }
         },
         selectPage: function (value) {
             this.checked = [];
@@ -647,8 +669,10 @@ export default {
                     "/api/forecasts/index?" +
                         "q=" +
                         this.search +
-                        "&selectedType=" +
-                        this.selectedType +
+                        "&selectedForecastType=" +
+                        this.selectedForecastType +
+                        "&selectedContactType=" +
+                        this.selectedContactType +
                         "&selectedUser=" +
                         this.selectedUser +
                         "&selectedProduct=" +
@@ -682,11 +706,11 @@ export default {
                 });
         },
 
-        getTypes() {
+        getForecastTypes() {
             axios
-                .get("/api/contacts/type/index")
+                .get("/api/forecasts/type/index")
                 .then((res) => {
-                    this.types = res.data;
+                    this.forecast_types = res.data;
                 })
                 .catch((error) => {
                     console.log(error);
@@ -695,7 +719,7 @@ export default {
 
         getProducts() {
             axios
-                .get("/api/forecastproducts/index")
+                .get("/api/forecasts/product/index")
                 .then((res) => {
                     this.products = res.data;
                 })
@@ -706,7 +730,7 @@ export default {
 
         getResults() {
             axios
-                .get("/api/forecastresults/index")
+                .get("/api/forecasts/result/index")
                 .then((res) => {
                     this.results = res.data;
                 })
@@ -748,11 +772,12 @@ export default {
             console.log(result);
             console.log(forecastId);
             axios.put("/api/forecasts/resultSelected/" + forecastId, {
-                result_id: result,
+                result_id: result ? result : null,
                 forecast_updatedate: date,
             });
             console.log("this is update date:" + date);
             alert("Result updated");
+            this.forecast_result.result_id = "";
             this.changeResult = false;
             this.getForecasts();
         },

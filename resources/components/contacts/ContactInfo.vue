@@ -16,7 +16,7 @@
                 <table class="mt-1 mr-1 ml-1 mb-2 grid w-full">
                     <tbody>
                         <tr class="">
-                            <td>Name</td>
+                            <td class="uppercase">Name</td>
                             <td
                                 class="px-2 py-3 text-m leading-5 font-bold text-gray-900 whitespace-no-wrap"
                             >
@@ -49,7 +49,7 @@
                             </td>
                         </tr>
                         <tr class="">
-                            <td>Industry</td>
+                            <td class="uppercase">Industry</td>
                             <td
                                 class="px-2 py-3 text-m leading-5 font-bold text-gray-900 whitespace-no-wrap"
                             >
@@ -57,7 +57,7 @@
                             </td>
                         </tr>
                         <tr class="">
-                            <td>Category</td>
+                            <td class="uppercase">Category</td>
                             <td
                                 class="px-2 py-4 text-m leading-5 font-bold text-gray-900 whitespace-no-wrap"
                             >
@@ -65,7 +65,7 @@
                             </td>
                         </tr>
                         <tr class="">
-                            <td>Address</td>
+                            <td class="uppercase">Address</td>
                             <td
                                 class="px-2 py-4 text-m leading-5 font-bold text-gray-900 whitespace-no-wrap"
                             >
@@ -73,7 +73,7 @@
                             </td>
                         </tr>
                         <tr class="">
-                            <td>CS</td>
+                            <td class="uppercase">CS</td>
                             <td
                                 class="px-2 py-4 text-m leading-5 font-bold text-gray-900 whitespace-no-wrap"
                             >
@@ -82,7 +82,7 @@
                         </tr>
                         <!-- Link to -->
                         <tr class="">
-                            <td class="py-4">History</td>
+                            <td class="py-4 uppercase">History</td>
                             <td class="px-2 py-4">
                                 <router-link
                                     :to="{
@@ -97,6 +97,12 @@
                         </tr>
 
                         <!-- PIC Infos-->
+                        <h5
+                            class="text-center text-white font-extrabold font-mono text-sm uppercase bg-slate-600 px-5 py-2 rounded-md"
+                        >
+                            PIC
+                        </h5>
+
                         <tr class="col-span-2 px-2 py-4">
                             <td>PIC</td>
                             <td>
@@ -126,11 +132,6 @@
                                 v-if="info.incharge.length !== 0"
                                 class="px-2 py-2 my-4"
                             >
-                                <h5
-                                    class="items-center text-center text-white font-extrabold font-mono text-sm uppercase bg-slate-600 px-5 py-2 rounded-md"
-                                >
-                                    PIC
-                                </h5>
                                 <span
                                     v-for="(pic, index) in info.incharge"
                                     :key="info.incharge.id"
@@ -219,25 +220,22 @@
                                     </tr>
                                 </span>
                             </span>
-                            <span v-else class="text-center my-5">
-                                <div>
-                                    <h5
-                                        class="text-center text-white font-extrabold font-mono text-sm uppercase bg-slate-600 px-5 py-2 rounded-md"
-                                    >
-                                        PIC
-                                    </h5>
-                                    <td
-                                        class="mx-auto font-mono px-2 py-2 bg-grey-800 mb-2 text-xl font-extrabold tracking-tight leading-none text-gray-700 md:text-2xl lg:text-2xl text-center bg-slate-300 rounded-md uppercase w-max"
-                                    >
-                                        No PIC
-                                    </td>
+                            <span v-else>
+                                <div
+                                    class="uppercase text-center font-extrabold text-5xl bg-slate-400 rounded-md py-3 px-3"
+                                >
+                                    <h1><strong>No PIC </strong></h1>
                                 </div>
                             </span>
                         </span>
-
+                        <h5
+                            class="items-center m-2 text-center text-white font-extrabold font-mono text-sm uppercase bg-slate-600 px-5 py-2 rounded-md"
+                        >
+                            Forecast
+                        </h5>
                         <!-- Forecast Infos-->
                         <tr class="col-span-2 px-2">
-                            <td class="uppercase py-4">Forecast</td>
+                            <td class="uppercase py-2">Forecast</td>
                             <td class="ml-4">
                                 <router-link
                                     :to="`/forecast/${info.id}/create`"
@@ -251,11 +249,6 @@
                         </tr>
 
                         <span>
-                            <h5
-                                class="items-center text-center text-white font-extrabold font-mono text-sm uppercase bg-slate-600 px-5 py-2 rounded-md"
-                            >
-                                Forecast
-                            </h5>
                             <span
                                 v-if="info.forecast.length !== 0"
                                 v-for="(forecast_info, index) in info.forecast"
@@ -306,12 +299,14 @@
                                         <td
                                             class="px-1 py-1 text-s leading-5 text-gray-900 whitespace-no-wrap"
                                         >
-                                            Type:
+                                            Forecast Type:
                                         </td>
                                         <td
                                             class="px-1 py-1 text-s leading-5 font-bold text-gray-900 whitespace-no-wrap"
                                         >
-                                            {{ forecast_info.type.name }}
+                                            {{
+                                                forecast_info.forecast_type.name
+                                            }}
                                         </td>
                                     </div>
 
@@ -354,14 +349,10 @@
                                 </tr>
                             </span>
                             <span v-else>
-                                <div>
-                                    <td class="">
-                                        <h5
-                                            class="mx-auto text-center font-mono px-2 py-2 bg-grey-800 mb-2 text-xl font-extrabold tracking-tight leading-none text-gray-700 md:text-2xl lg:text-2xl bg-slate-300 rounded-md uppercase w-max"
-                                        >
-                                            No Forecast
-                                        </h5>
-                                    </td>
+                                <div
+                                    class="uppercase text-center font-extrabold text-5xl bg-slate-400 rounded-md py-3 px-3"
+                                >
+                                    <h1><strong>No Forecast </strong></h1>
                                 </div>
                             </span>
                         </span>

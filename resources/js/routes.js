@@ -26,6 +26,7 @@ import FollowUpCreate from "../components/followups/FollowUpCreate.vue";
 import ForecastIndex from "../components/forecasts/ForecastIndex.vue";
 import ForecastCreate from "../components/forecasts/ForecastCreate.vue";
 import ForecastEdit from "../components/forecasts/ForecastEdit.vue";
+import ForecastSummary from "../components/forecasts/ForecastSummary.vue";
 
 /**Project Imports */
 import ProjectIndex from "../components/projects/ProjectIndex.vue";
@@ -192,6 +193,13 @@ const routes = [
         path: "/forecast/:id/edit",
         name: "forecast_edit",
         component: ForecastEdit,
+    },
+
+    {
+        //Forecast Summary
+        path: "/forecast/summary",
+        name: "forecast_summary",
+        component: ForecastSummary,
     },
 
     /*                                                  

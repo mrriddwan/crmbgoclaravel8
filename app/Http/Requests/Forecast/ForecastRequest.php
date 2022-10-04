@@ -19,7 +19,7 @@ class ForecastRequest extends FormRequest
             'amount' => ['required', 'int'],
             'contact_id' => ['required', 'int'],
             'user_id' => ['required', 'int'],
-            'type_id' => ['required', 'int'],
+            'forecast_type_id' => ['required', 'int'],
             'product_id' => ['required', 'int'],
         ];
     }
@@ -30,7 +30,7 @@ class ForecastRequest extends FormRequest
             'forecast_date.required' => 'The forecast date is required',
             'product_id.required' => 'The product is required',
             'amount.required' => 'The forecast amount is required',
-            'type_id.required' => 'The type is required',
+            'forecast_type_id.required' => 'The forecast type is required',
         ];
     }
 }

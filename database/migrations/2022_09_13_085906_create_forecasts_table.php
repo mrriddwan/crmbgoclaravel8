@@ -38,10 +38,10 @@ class CreateForecastsTable extends Migration
                 ->references('id')
                 ->on('forecast_products')
                 ->onDelete('cascade');
-            $table->unsignedBigInteger('type_id')->nullable()->constrained();
-            $table->foreign('type_id')
+            $table->unsignedBigInteger('forecast_type_id')->nullable()->constrained();
+            $table->foreign('forecast_type_id')
                 ->references('id')
-                ->on('contact_types')
+                ->on('forecast_types')
                 ->onDelete('cascade');
             $table->timestamps();
         });

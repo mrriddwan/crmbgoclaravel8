@@ -23,25 +23,25 @@ class ForecastController extends Controller
         $sort_field = request('sort_field');
 
         $selectedProduct = request('selectedProduct');
-        $selectedType = request('selectedType');
+        $selectedForecastType = request('selectedForecastType');
         $selectedUser = request('selectedUser');
         $filterResult = request('filterResult');
 
         $forecast = Forecast::select([
             'forecasts.*',
             'forecast_products.name as product_name',
-            'contact_types.name as type_name',
             'users.name as user_name',
             'contacts.name as contact_name',
             'forecast_results.name as result_name',
-        ])          
+            'forecast_types.name as forecast_type_name',
+        ])
             ->join('forecast_products', 'forecasts.product_id', '=', 'forecast_products.id')
-            ->join('contact_types', 'forecasts.type_id', '=', 'contact_types.id')
             ->join('contacts', 'forecasts.contact_id', '=', 'contacts.id')
             ->join('users', 'forecasts.user_id', '=', 'users.id')
+            ->join('forecast_types', 'forecasts.forecast_type_id', '=', 'forecast_types.id')
             ->leftJoin('forecast_results', 'forecasts.result_id', '=', 'forecast_results.id')
-            ->when($selectedType, function ($query) use ($selectedType) {
-                $query->where('forecasts.type_id', $selectedType);
+            ->when($selectedForecastType, function ($query) use ($selectedForecastType) {
+                $query->where('forecasts.forecast_type_id', $selectedForecastType);
             })
             ->when($selectedProduct, function ($query) use ($selectedProduct) {
                 $query->where('forecasts.product_id', $selectedProduct);
@@ -50,15 +50,19 @@ class ForecastController extends Controller
                 $query->where('forecasts.user_id', $selectedUser);
             })
             ->when($filterResult, function ($query) use ($filterResult) {
-                $query->where('forecasts.result_id', $filterResult);
-            })                          
+                if ($filterResult === "null") {
+                    $query->whereNull('forecasts.result_id');
+                } else {
+                    $query->where('forecasts.result_id', $filterResult);
+                }
+            })
             ->orderBy($sort_field, $sort_direction)
             ->search(trim($search_term))
             ->distinct()
             ->paginate($paginate);
-            
-            return ForecastResource::collection($forecast);
-            // return ForecastResource::collection(Forecast::all());
+
+        return ForecastResource::collection($forecast);
+        // return ForecastResource::collection(Forecast::all());
     }
 
     // public function list (){
@@ -76,10 +80,10 @@ class ForecastController extends Controller
 
         $forecast = Forecast::create([
             'forecast_date' => $request->forecast_date,
-            'forecast_updatedate' => now(),        
-            'amount' => $request->amount,    
-            'user_id' => $request->user_id ?? 1, //change to current user later
-            'type_id' => $request->type_id,
+            'forecast_updatedate' => now(),
+            'amount' => $request->amount,
+            'user_id' => $request->user_id ?? 2, //change to current user later
+            'forecast_type_id' => $request->forecast_type_id,
             'contact_id' => $request->contact_id,
             'product_id' => $request->product_id,
         ]);
@@ -91,21 +95,20 @@ class ForecastController extends Controller
         ]);
     }
     public function show($id)
-    {   
+    {
         $forecast = Forecast::find($id);
-        return response()->json(["data"=> $forecast]);
+        return response()->json(["data" => $forecast]);
     }
 
-    public function update(Request $request, Forecast $forecast)
-    {   
+    public function update(ForecastRequest $request, Forecast $forecast)
+    {
         $forecast->update([
 
-            'forecast_date' => $request->forecast_date,        
-            'forecast_updatedate' => $request->forecast_updatedate,
+            'forecast_date' => $request->forecast_date,
+            'forecast_updatedate' => now(),
             'amount' => $request->amount,
-            'forecast_result_id' => $request->forecast_result_id,            
             'user_id' => $request->user_id,
-            'type_id' => $request->type_id,
+            'forecast_type_id' => $request->forecast_type_id,
             'contact_id' => $request->contact_id,
             'product_id' => $request->product_id,
         ]);
@@ -137,10 +140,10 @@ class ForecastController extends Controller
     }
 
     public function info(Forecast $forecast)
-    {   
-        $forecast = Forecast::with('type', 'product', 'contact', 'user', 'result')
-                ->where('id', $forecast->id)
-                ->get();
+    {
+        $forecast = Forecast::with('forecast_type', 'product', 'contact', 'user', 'result', 'contact_type',)
+            ->where('id', $forecast->id)
+            ->get();
 
         $data = $forecast->toArray();
 
@@ -151,14 +154,13 @@ class ForecastController extends Controller
         ]);
     }
 
-    public function export($forecast) 
+    public function export($forecast)
     {
         $date = Carbon::now()->format('Ymd');
 
-        $forecastsArray = explode(',', $forecast );
+        $forecastsArray = explode(',', $forecast);
 
-        return Excel::download(new ForecastExport($forecastsArray), ('Forecasts - '. $date . '.xlsx'));
-
+        return Excel::download(new ForecastExport($forecastsArray), ('Forecasts - ' . $date . '.xlsx'));
     }
 
     public function selectAll()

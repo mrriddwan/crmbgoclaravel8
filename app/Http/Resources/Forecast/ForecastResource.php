@@ -22,7 +22,7 @@ class ForecastResource extends JsonResource
             'result_id' => $this->result_id,
             'result' => $this-> result,
             'user' => $this-> user -> only('id', 'name'),
-            'type' => $this -> type -> only('id', 'name'),
+            'forecast_type' => $this -> forecast_type -> only('id', 'name'),
             'contact' => $this -> contact -> only('id', 'name'),
             'product' => $this -> product -> only('id', 'name'),
         ];

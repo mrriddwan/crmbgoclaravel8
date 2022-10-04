@@ -6,6 +6,7 @@ use App\Models\Contact\Contact;
 use App\Models\Contact\ContactType;
 use App\Models\Forecast\ForecastProduct;
 use App\Models\Forecast\ForecastResult;
+use App\Models\Forecast\ForecastType;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -22,7 +23,7 @@ class Forecast extends Model
         'user_id',
         'contact_id',
         'product_id',
-        'type_id'
+        'forecast_type_id',
     ];
 
     public function user(){
@@ -33,7 +34,7 @@ class Forecast extends Model
         return $this -> belongsTo(Contact::class);
     }
 
-    public function type(){
+    public function contact_type(){
         return $this -> belongsTo(ContactType::class);
     }
 
@@ -45,6 +46,10 @@ class Forecast extends Model
         return $this -> belongsTo(ForecastResult::class);
     }
 
+    public function forecast_type(){
+        return $this -> belongsTo(ForecastType::class);
+    }
+
     public function scopeSearch($query, $term)
     {   
         $term = "%$term%";
@@ -53,11 +58,11 @@ class Forecast extends Model
             $query->where('forecasts.forecast_date', 'like', $term)
                 ->orWhere('forecasts.forecast_updatedate', 'like', $term)
                 ->orWhere('forecasts.amount', 'like', $term)
+                ->orWhereHas('forecast_type', function ($query) use ($term) {
+                    $query->where('forecast_types.name', 'like', $term);
+                })
                 ->orWhereHas('user', function ($query) use ($term) {
                     $query->where('users.name', 'like', $term);
-                })
-                ->orWhereHas('type', function ($query) use ($term) {
-                    $query->where('contact_types.name', 'like', $term);
                 })
                 ->orWhereHas('contact', function ($query) use ($term) {
                     $query->where('contacts.name', 'like', $term);

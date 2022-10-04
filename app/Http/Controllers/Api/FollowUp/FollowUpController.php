@@ -138,18 +138,10 @@ class FollowUpController extends Controller
 
     public function store(Request $request)
     {
-        // $followupTime = ($request->followup_time);
-        // // $followupTime = strtotime($request->followup_time);
-        // // $followupTime = Carbon::parse($request->followup_time)->format('H:i:s');
-
-        // echo("this is the follow up time: " . $followupTime );
-        // echo "<br>";
-        // print_r($request->all());
 
         $request->validate([
             'priority_id' => ['nullable', 'int'],
             'followup_date' => ['required', 'date'],
-            // 'followup_time' => ['required'],
             'followup_time' => ['nullable', 'date_format:H:i'],
             'task_id' => ['required', 'int'],
             'followup_remark' => ['nullable', 'string'],

@@ -61,7 +61,7 @@ class Contact extends Model
 
     public function forecast()
     {
-        return $this->hasMany(Forecast::class)->with('product', 'type')->orderBy('forecast_date', 'desc');
+        return $this->hasMany(Forecast::class)->with('product', 'forecast_type')->orderBy('forecast_date', 'desc');
     }
 
     public function tasks()
