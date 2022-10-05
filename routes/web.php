@@ -62,3 +62,7 @@ Route::get('/project/index', function () {
 Route::get('/performance/index', function () {
     return view('performance');
 })->middleware(['auth'])->name('performance');
+
+Route::get('/admin/index', function () {
+    return view('admin');
+})->middleware(['auth'])->name('admin');

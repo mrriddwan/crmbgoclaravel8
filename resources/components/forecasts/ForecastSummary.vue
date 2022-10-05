@@ -36,7 +36,23 @@
                 </div>
 
                 <div>
+
                     <div>
+                        <a
+                            class="px-2 py-1 ml-2 align-bottom text-center bg-emerald-300 rounded-md text-xs"
+                            type="button"
+                            :href="url"
+                            download="file.xlsx"
+                        >
+                            <button @click="exportSelected()" class="h-1">
+                                <ArrowTopRightOnSquareIcon
+                                    class="h-5 w-5 mr-1 inline-block"
+                                />
+                                <p class="inline-block">Export</p>
+                            </button>
+                        </a>
+                    </div>
+                    <!-- <div>
                         <a
                             v-if="checked.length > 0"
                             class="px-2 py-1 ml-2 align-bottom text-center bg-emerald-300 rounded-md text-xs"
@@ -51,7 +67,7 @@
                                 <p class="inline-block">Export</p>
                             </button>
                         </a>
-                    </div>
+                    </div> -->
 
                     <!-- <div v-if="checked.length > 0" class="inline-block">
                     <div
@@ -99,8 +115,8 @@
                 </div>
                 <div class="py-1 inline-block">
                     <Pagination
-                        :data="contacts"
-                        @pagination-change-page="getContacts"
+                        :data="forecasts"
+                        @pagination-change-page="getForecasts"
                         :size="'small'"
                         :align="'right'"
                         class="pagination"
@@ -111,13 +127,13 @@
             <div
                 class="table-wrp block max-h-screen overflow-y-auto overflow-x-auto"
             >
-                <table class="table table-hover table-bordered w-full">
+                <table class="table table-hover table-bordered w-max">
                     <thead class="bg-slate-400 border-b sticky top-0">
                         <tr>
-                            <th>
+                            <!-- <th class="text-xs">
                                 <input type="checkbox" v-model="selectPage" />
-                            </th>
-                            <th>No.</th>
+                            </th> -->
+                            <th class="text-xs">No.</th>
                             <!-- <th class="py-3">
                             <div class="text-xs text-center h-6">
                                 <a
@@ -257,12 +273,12 @@
                                 <div class="text-xs text-center h-6">
                                     <div class="text-xs text-center h-6">
                                         <select
-                                            v-model="selectedType"
+                                            v-model="selectedContactType"
                                             class="form-control form-control-sm w-max"
                                         >
                                             <option value="">All</option>
                                             <option
-                                                v-for="contact_type in types.data"
+                                                v-for="contact_type in contact_types.data"
                                                 :key="contact_type.id"
                                                 :value="contact_type.id"
                                             >
@@ -274,7 +290,7 @@
                             </th>
 
                             <th class="py-3">
-                                <div class="text-sm text-center h-6">
+                                <div class="text-xs text-center h-6">
                                     <a
                                         href="#"
                                         @click.prevent="change_sort('name')"
@@ -310,11 +326,11 @@
                                         /></span>
                                     </a>
                                 </div>
-                                <div class="text-sm text-center h-6"></div>
+                                <div class="text-xs text-center h-6"></div>
                             </th>
 
                             <th class="py-3">
-                                <div class="text-sm text-center h-6">
+                                <div class="text-xs text-center h-6">
                                     <a
                                         href="#"
                                         @click.prevent="
@@ -352,11 +368,11 @@
                                         /></span>
                                     </a>
                                 </div>
-                                <div class="text-sm text-center h-6"></div>
+                                <div class="text-xs text-center h-6"></div>
                             </th>
 
                             <th class="py-3">
-                                <div class="text-sm text-center h-6">
+                                <div class="text-xs text-center h-6">
                                     <a
                                         href="#"
                                         @click.prevent="
@@ -397,7 +413,7 @@
                                         /></span>
                                     </a>
                                 </div>
-                                <div class="text-sm text-center h-6"></div>
+                                <div class="text-xs text-center h-6"></div>
                             </th>
 
                             <th class="py-3">
@@ -440,292 +456,315 @@
                     </thead>
                     <tbody class="mt-2">
                         <tr
-                            v-for="(forecast, index) in forecasts.data"
-                            :key="forecast.id"
+                            v-for="(contact, index) in forecasts.data"
+                            :key="contact.id"
                             :class="
-                                isChecked(forecast.id) ? 'table-primary' : ''
+                                isChecked(contact.id) ? 'table-primary' : ''
                             "
                         >
-                            <td>
+                            <!-- <td>
                                 <input
                                     type="checkbox"
-                                    :value="forecast.id"
+                                    :value="contact.id"
                                     v-model="checked"
                                 />
-                            </td>
-                            <td class="text-xs">{{ index + 1 }}</td>
+                            </td> -->
+                            <td class="text-xs text-center">{{ index + 1 }}</td>
                             <!-- <td class="text-xs">{{ contact.created_at }}</td> -->
-                            <td class="text-xs">{{ forecast.user_name }}</td>
-                            <td class="text-xs">{{ forecast.status_name }}</td>
-                            <td class="text-xs">{{ forecast.type_name }}</td>
+                            <td class="text-xs">{{ contact.user_name }}</td>
+                            <td class="text-xs">{{ contact.status_name }}</td>
+                            <td class="text-xs">{{ contact.type_name }}</td>
                             <td class="text-xs">
                                 <router-link
-                                    :to="`/contact/${forecast.id}/info`"
+                                    :to="`/contact/${contact.id}/info`"
                                     custom
                                     v-slot="{ navigate, href }"
                                 >
                                     <a :href="href" @click.stop="navigate">{{
-                                        forecast.contact.name
+                                        contact.name
                                     }}</a>
                                 </router-link>
                             </td>
-                            <!-- <td
-                                v-if="contact.summary['Jan2022']"
+
+                            <td class="text-xs">
+                                <span
+                                    v-for="forecast in contact.forecast_summary"
+                                >
+                                    {{ forecast[0]["forecast_type"]["name"] }}
+                                    <br />
+                                </span>
+                            </td>
+                            <td class="text-xs">
+                                <span
+                                    v-for="forecast in contact.forecast_summary"
+                                >
+                                    {{ forecast[0]["product"]["name"] }}
+                                    <br />
+                                </span>
+                            </td>
+
+                            <td
+                                v-if="contact.forecast_summary['Jan-2022']"
                                 class="text-xs"
                             >
                                 <span
                                     v-for="(summary_info, index) in contact
-                                        .summary[`Jan` + this.selectedYear]"
+                                        .forecast_summary[
+                                        `Jan-` + this.selectedYear
+                                    ]"
                                     :key="summary_info.id"
                                 >
-                                    <span
-                                        v-if="
-                                            index === 0 &&
-                                            summary_info['action']
-                                        "
-                                    >
-                                        {{ summary_info["todo_date"] }}
-                                    </span>
+                                    {{
+                                        summary_info["amount"].toLocaleString(
+                                            "en-US"
+                                        )
+                                    }}<br />
                                 </span>
                             </td>
                             <td v-else></td>
 
                             <td
-                                v-if="contact.summary['Feb2022']"
+                                v-if="contact.forecast_summary['Feb-2022']"
                                 class="text-xs"
                             >
                                 <span
                                     v-for="(summary_info, index) in contact
-                                        .summary[`Feb` + this.selectedYear]"
+                                        .forecast_summary[
+                                        `Feb-` + this.selectedYear
+                                    ]"
                                     :key="summary_info.id"
                                 >
-                                    <span
-                                        v-if="
-                                            index === 0 &&
-                                            summary_info['action']
-                                        "
-                                    >
-                                        {{ summary_info["todo_date"] }}
-                                        <br />
-                                    </span>
+                                    {{
+                                        summary_info["amount"].toLocaleString(
+                                            "en-US"
+                                        )
+                                    }}
+                                    <br />
                                 </span>
                             </td>
                             <td v-else></td>
 
                             <td
-                                v-if="contact.summary['Mar2022']"
+                                v-if="contact.forecast_summary['Mar-2022']"
                                 class="text-xs"
                             >
                                 <span
                                     v-for="(summary_info, index) in contact
-                                        .summary[`Mar` + this.selectedYear]"
+                                        .forecast_summary[
+                                        `Mar-` + this.selectedYear
+                                    ]"
                                     :key="summary_info.id"
                                 >
-                                    <span
-                                        v-if="
-                                            index === 0 &&
-                                            summary_info['action']
-                                        "
-                                    >
-                                        {{ summary_info["todo_date"] }}
-                                        <br />
-                                    </span>
+                                    {{
+                                        summary_info["amount"].toLocaleString(
+                                            "en-US"
+                                        )
+                                    }}
+                                    <br />
                                 </span>
                             </td>
                             <td v-else></td>
 
                             <td
-                                v-if="contact.summary['Apr2022']"
+                                v-if="contact.forecast_summary['Apr-2022']"
                                 class="text-xs"
                             >
                                 <span
                                     v-for="(summary_info, index) in contact
-                                        .summary[`Apr` + this.selectedYear]"
+                                        .forecast_summary[
+                                        `Apr-` + this.selectedYear
+                                    ]"
                                     :key="summary_info.id"
                                 >
-                                    <span
-                                        v-if="
-                                            index === 0 &&
-                                            summary_info['action']
-                                        "
-                                    >
-                                        {{ summary_info["todo_date"] }}
-                                        <br />
-                                    </span>
+                                    {{
+                                        summary_info["amount"].toLocaleString(
+                                            "en-US"
+                                        )
+                                    }}
+                                    <br />
                                 </span>
                             </td>
                             <td v-else></td>
 
                             <td
-                                v-if="contact.summary['May2022']"
+                                v-if="contact.forecast_summary['May-2022']"
                                 class="text-xs"
                             >
                                 <span
                                     v-for="(summary_info, index) in contact
-                                        .summary[`May` + this.selectedYear]"
+                                        .forecast_summary[
+                                        `May-` + this.selectedYear
+                                    ]"
                                     :key="summary_info.id"
                                 >
-                                    <span
-                                        v-if="
-                                            index === 0 &&
-                                            summary_info['action']
-                                        "
-                                    >
-                                        {{ summary_info["todo_date"] }}
-                                        <br />
-                                    </span>
+                                    {{
+                                        summary_info["amount"].toLocaleString(
+                                            "en-US"
+                                        )
+                                    }}<br />
+                                    <br />
                                 </span>
                             </td>
                             <td v-else></td>
 
                             <td
-                                v-if="contact.summary['Jun2022']"
+                                v-if="contact.forecast_summary['Jun-2022']"
                                 class="text-xs"
                             >
                                 <span
                                     v-for="(summary_info, index) in contact
-                                        .summary[`Jun` + this.selectedYear]"
+                                        .forecast_summary[
+                                        `Jun-` + this.selectedYear
+                                    ]"
                                     :key="summary_info.id"
                                 >
-                                    <span
-                                        v-if="
-                                            index === 0 &&
-                                            summary_info['action']
-                                        "
-                                    >
-                                        {{ summary_info["todo_date"] }}
-                                        <br />
-                                    </span>
+                                    {{
+                                        summary_info["amount"].toLocaleString(
+                                            "en-US"
+                                        )
+                                    }}
+                                    <br />
                                 </span>
                             </td>
                             <td v-else></td>
 
                             <td
-                                v-if="contact.summary['Jul2022']"
+                                v-if="contact.forecast_summary['Jul-2022']"
                                 class="text-xs"
                             >
                                 <span
                                     v-for="(summary_info, index) in contact
-                                        .summary[`Jul` + this.selectedYear]"
+                                        .forecast_summary[
+                                        `Jul-` + this.selectedYear
+                                    ]"
                                     :key="summary_info.id"
                                 >
-                                    <span
-                                        v-if="
-                                            index === 0 &&
-                                            summary_info['action']
-                                        "
-                                    >
-                                        {{ summary_info["todo_date"] }}
-                                        <br />
-                                    </span>
+                                    {{
+                                        summary_info["amount"].toLocaleString(
+                                            "en-US"
+                                        )
+                                    }}
+                                    <br />
                                 </span>
                             </td>
                             <td v-else></td>
 
                             <td
-                                v-if="contact.summary['Aug2022']"
+                                v-if="contact.forecast_summary['Aug-2022']"
                                 class="text-xs"
                             >
                                 <span
                                     v-for="(summary_info, index) in contact
-                                        .summary[`Aug` + this.selectedYear]"
+                                        .forecast_summary[
+                                        `Aug-` + this.selectedYear
+                                    ]"
                                     :key="summary_info.id"
                                 >
-                                    <span
-                                        v-if="
-                                            index === 0 &&
-                                            summary_info['action']
-                                        "
-                                    >
-                                        {{ summary_info["todo_date"] }}
-                                    </span>
+                                    {{
+                                        summary_info["amount"].toLocaleString(
+                                            "en-US"
+                                        )
+                                    }}<br />
                                 </span>
                             </td>
                             <td v-else></td>
 
                             <td
-                                v-if="contact.summary['Sep2022']"
+                                v-if="contact.forecast_summary['Sep-2022']"
                                 class="text-xs"
                             >
                                 <span
                                     v-for="(summary_info, index) in contact
-                                        .summary[`Sep` + this.selectedYear]"
+                                        .forecast_summary[
+                                        `Sep-` + this.selectedYear
+                                    ]"
                                     :key="summary_info.id"
                                 >
-                                    <span
-                                        v-if="
-                                            index === 0 &&
-                                            summary_info['action']
-                                        "
-                                    >
-                                        {{ summary_info["todo_date"] }}
-                                    </span>
+                                    {{
+                                        summary_info["amount"].toLocaleString(
+                                            "en-US"
+                                        )
+                                    }}<br />
                                 </span>
                             </td>
                             <td v-else></td>
 
                             <td
-                                v-if="contact.summary['Oct2022']"
+                                v-if="contact.forecast_summary['Oct-2022']"
                                 class="text-xs"
                             >
                                 <span
                                     v-for="(summary_info, index) in contact
-                                        .summary[`Oct` + this.selectedYear]"
+                                        .forecast_summary[
+                                        `Oct-` + this.selectedYear
+                                    ]"
                                     :key="summary_info.id"
                                 >
-                                    <span
-                                        v-if="
-                                            index === 0 &&
-                                            summary_info['action']
-                                        "
-                                    >
-                                        {{ summary_info["todo_date"] }}
-                                    </span>
+                                    {{
+                                        summary_info["amount"].toLocaleString(
+                                            "en-US"
+                                        )
+                                    }}
+                                    <br />
                                 </span>
                             </td>
                             <td v-else></td>
 
                             <td
-                                v-if="contact.summary['Nov2022']"
+                                v-if="contact.forecast_summary['Nov-2022']"
                                 class="text-xs"
                             >
                                 <span
                                     v-for="(summary_info, index) in contact
-                                        .summary[`Nov` + this.selectedYear]"
+                                        .forecast_summary[
+                                        `Nov-` + this.selectedYear
+                                    ]"
                                     :key="summary_info.id"
                                 >
-                                    <span
-                                        v-if="
-                                            index === 0 &&
-                                            summary_info['action']
-                                        "
-                                    >
-                                        {{ summary_info["todo_date"] }}
-                                    </span>
+                                    {{
+                                        summary_info["amount"].toLocaleString(
+                                            "en-US"
+                                        )
+                                    }}
+                                    <br />
                                 </span>
                             </td>
                             <td v-else></td>
 
                             <td
-                                v-if="contact.summary['Dec2022']"
+                                v-if="contact.forecast_summary['Dec-2022']"
                                 class="text-xs"
                             >
                                 <span
                                     v-for="(summary_info, index) in contact
-                                        .summary[`Dec` + this.selectedYear]"
+                                        .forecast_summary[
+                                        `Dec-` + this.selectedYear
+                                    ]"
                                     :key="summary_info.id"
                                 >
-                                    <span
-                                        v-if="
-                                            index === 0 &&
-                                            summary_info['action']
-                                        "
-                                    >
-                                        {{ summary_info["todo_date"] }}
-                                    </span>
+                                    {{
+                                        summary_info["amount"].toLocaleString(
+                                            "en-US"
+                                        )
+                                    }}
                                 </span>
                             </td>
-                            <td v-else></td> -->
+                            <td v-else></td>
+                        </tr>
+                        <tr class="text-xs text-center">
+                            <td colspan="7" class="text-right">Total</td>
+                            <td>Jan</td>
+                            <td>Jan</td>
+                            <td>Jan</td>
+                            <td>Jan</td>
+                            <td>Jan</td>
+                            <td>Jan</td>
+                            <td>Jan</td>
+                            <td>Jan</td>
+                            <td>Jan</td>
+                            <td>Jan</td>
+                            <td>Jan</td>
+                            <td>Jan</td>
                         </tr>
                     </tbody>
                 </table>
@@ -764,33 +803,33 @@ export default {
 
     mounted() {
         this.getSelectedYear(this.getCurrentDate());
-        this.getContacts();
+        this.getForecasts();
         this.getStatus();
-        this.getTypes();
+        this.getContactTypes();
+        this.getForecastTypes();
         this.getUsers();
-        this.getCategories();
     },
     data() {
         return {
-            contacts: [],
+            forecasts: [],
             statuses: [],
             users: [],
-            types: [],
-            categories: [],
-
+            contact_types: [],
+            forecast_types: [],
             paginate: 50,
             moment: moment,
             selectPage: false,
             selectAll: false,
             checked: [],
-            url: "",
+            url: "/api/forecasts/exportSummary",
 
             search: "",
             selectedYear: "",
             selectedStatus: "",
             selectedUser: "",
-            selectedType: "",
-            selectedCategory: "",
+            selectedContactType: "",
+            selectedForecastType: "",
+            selectedProduct: "",
 
             sort_direction: "asc",
             sort_field: "id",
@@ -810,17 +849,20 @@ export default {
         selectedUser: function (value) {
             this.getForecasts();
         },
-        selectedType: function (value) {
+        selectedContactType: function (value) {
             this.getForecasts();
         },
-        selectedCategory: function (value) {
+        selectedForecastType: function (value) {
             this.getForecasts();
         },
+        // selectedCategory: function (value) {
+        //     this.getForecasts();
+        // },
 
         selectPage: function (value) {
             this.checked = [];
             if (value) {
-                this.contacts.data.forEach((forecast) => {
+                this.forecast.data.forEach((forecast) => {
                     this.checked.push(forecast.id);
                 });
             } else {
@@ -843,7 +885,7 @@ export default {
             }
             axios
                 .get(
-                    "/api/forecasts/index?" +
+                    "/api/forecasts/summary?" +
                         "q=" +
                         this.search +
                         "&selectedContactType=" +
@@ -852,8 +894,6 @@ export default {
                         this.selectedUser +
                         "&selectedProduct=" +
                         this.selectedProduct +
-                        "&filterResult=" +
-                        this.filterResult +
                         "&selectedForecastType=" +
                         this.selectedForecastType +
                         "&paginate=" +
@@ -884,11 +924,11 @@ export default {
                 });
         },
 
-        async getTypes() {
+        async getContactTypes() {
             await axios
                 .get("/api/contacts/type/index")
                 .then((res) => {
-                    this.types = res.data;
+                    this.contact_types = res.data;
                 })
                 .catch((error) => {
                     console.log(error);
@@ -937,12 +977,13 @@ export default {
             return this.selectedYear;
         },
 
+        showToday(date) {
+            let day = moment(date).format("DD-MM-YYYY");
+            return day;
+        },
+
         exportSelected() {
-            if (this.checked.length === 0) {
-                return alert("Need select record.");
-            } else {
-                axios.get("/api/contacts/exportSummary");
-            }
+                axios.get("/api/forecasts/exportSummary");
         },
 
         isChecked(contact_id) {
@@ -950,7 +991,7 @@ export default {
         },
 
         async selectAllRecords() {
-            await axios.get("/api/contacts/all").then((response) => {
+            await axios.get("/api/forecasts/all").then((response) => {
                 this.checked = response.data;
                 this.selectAll = true;
             });

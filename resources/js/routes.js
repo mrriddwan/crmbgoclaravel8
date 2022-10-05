@@ -36,17 +36,19 @@ import ProjectEdit from "../components/projects/ProjectEdit.vue";
 /**Performance Imports */
 import PerformanceIndex from "../components/performances/PerformanceIndex.vue";
 
+/**Admin Imports */
+import AdminIndex from "../components/admins/AdminIndex.vue";
+
 const routes = [
-
-
     /*                      
         test Routes                      
     */
 
-    { //test route
-    //     path: "/testpage",
-    //     name: "TestQueryString",
-    //     component: TestQueryString,
+    {
+        //test route
+        //     path: "/testpage",
+        //     name: "TestQueryString",
+        //     component: TestQueryString,
     },
 
     /*                      
@@ -236,6 +238,17 @@ const routes = [
         path: "/performance/index",
         name: "performance_index",
         component: PerformanceIndex,
+    },
+
+    /*                                                  
+            Admin Routes 
+    */
+
+    {
+        //Admin Index
+        path: "/admin/index",
+        name: "admin_index",
+        component: AdminIndex,
     },
 ];
 

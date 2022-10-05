@@ -23,7 +23,7 @@ class ForecastFactory extends Factory
     {
         return [
             'amount' => $this->faker->numberBetween(10000, 50000),
-            'forecast_date' => $this->faker -> dateTimeBetween('-2 week', '+1 week'),
+            'forecast_date' => $this->faker -> dateTimeBetween('-8 months', '+11 months'),
             // 'result_id' => random_int(1,2),
             'forecast_updatedate' => $this->faker -> dateTimeBetween('-1 week', '+3 months'),
             'user_id' => random_int(3,10),

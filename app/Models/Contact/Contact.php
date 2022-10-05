@@ -74,6 +74,11 @@ class Contact extends Model
         return $this -> hasMany(ToDo::class);
     }
 
+    public function forecast_summary()
+    {
+        return $this -> hasMany(Forecast::class);
+    }
+
     // public function exportContact()
     // {
     //     return Contact::with(([

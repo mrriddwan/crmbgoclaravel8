@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\Contact\ContactCategoryController;
 use App\Http\Controllers\Api\Contact\ContactController;
@@ -35,6 +36,28 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+/*Admin API*/
+
+/*Admin Database Add/Delete API*/
+Route::post('/admin/create/contact/category', [AdminController::class, 'createContactCategory'])->name('contactCategory:create');
+Route::post('/admin/create/contact/status', [AdminController::class, 'createContactStatus'])->name('contactStatus:create');
+Route::post('/admin/create/contact/type', [AdminController::class, 'createContactType'])->name('contactType:create');
+Route::post('/admin/create/contact/industry', [AdminController::class, 'createContactIndustry'])->name('contactIndustry:create');
+Route::post('/admin/create/todo/task', [AdminController::class, 'createToDoTask'])->name('todoTask:create');
+Route::post('/admin/create/todo/action', [AdminController::class, 'createToDoAction'])->name('todoAction:create');
+Route::post('/admin/create/forecast/type', [AdminController::class, 'createForecastType'])->name('forecastType:create');
+Route::post('/admin/create/forecast/product', [AdminController::class, 'createForecastProduct'])->name('forecastProduct:create');
+
+Route::delete('/admin/delete/contact/category/{category}', [AdminController::class, 'deleteContactCategory'])->name('contactCategory:delete');
+Route::delete('/admin/delete/contact/status/{status}', [AdminController::class, 'deleteContactStatus'])->name('contactStatus:delete');
+Route::delete('/admin/delete/contact/type/{type}', [AdminController::class, 'deleteContactType'])->name('contactType:delete');
+Route::delete('/admin/delete/contact/industry/{industry}', [AdminController::class, 'deleteContactIndustry'])->name('contactIndustry:delete');
+Route::delete('/admin/delete/todo/task/{task}', [AdminController::class, 'deleteToDoTask'])->name('todoTask:delete');
+Route::delete('/admin/delete/todo/action/{action}', [AdminController::class, 'deleteToDoAction'])->name('todoAction:delete');
+Route::delete('/admin/delete/forecast/type/{type}', [AdminController::class, 'deleteForecastType'])->name('forecastType:delete');
+Route::delete('/admin/delete/forecast/product/{product}', [AdminController::class, 'deleteForecastProduct'])->name('forecastProduct:delete');
+
 
 /*Contact API*/
 Route::get('/contacts/index', [ContactController::class, 'index'])->name('contact:index');
@@ -111,7 +134,9 @@ Route::delete('/forecasts/delete/{forecast}', [ForecastController::class, 'delet
 Route::get('/forecasts/info/{forecast}', [ForecastController::class, 'info'])->name('forecast:info');
 Route::put('/forecasts/resultSelected/{forecast}', [ForecastController::class, 'resultSelected'])->name('forecast:resultSelected');
 Route::get('/forecasts/export/{forecast}', [ForecastController::class, 'export'])->name('followup:export');
-Route::get('/forecasts/all', [FollowUpController::class, 'selectAll'])->name('followup:selectAll');
+Route::get('/forecasts/all', [ForecastController::class, 'selectAll'])->name('followup:selectAll');
+Route::get('/forecasts/summary', [ForecastController::class, 'summary'])->name('followup:summary');
+Route::get('/forecasts/exportSummary', [ForecastController::class, 'exportSummary'])->name('followup:exportSummary');
 
 /*Sub-Forecast API*/
 Route::get('/forecasts/product/index', [ForecastProductController::class, 'index'])->name('forecastproduct:index');

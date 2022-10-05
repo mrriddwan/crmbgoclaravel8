@@ -47,6 +47,11 @@
                         {{ __('Performance') }}
                     </x-nav-link>
                 </div> --}}
+                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                    <x-nav-link :href="route('admin')" :active="request()->routeIs('admin')">
+                        {{ __('Admin') }}
+                    </x-nav-link>
+                </div>
             </div>
 
             <!-- Settings Dropdown -->
@@ -134,6 +139,10 @@
             <x-responsive-nav-link :href="route('performance')" :active="request()->routeIs('performance')">
                 {{ __('Performance') }}
             </x-responsive-nav-link> --}}
+
+            <x-responsive-nav-link :href="route('admin')" :active="request()->routeIs('admin')">
+                {{ __('Admin') }}
+            </x-responsive-nav-link>
 
         </div>
 

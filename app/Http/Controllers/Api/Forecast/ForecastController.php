@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\Api\Forecast;
 
+use App\Exports\Forecast\ForecastSummaryExport;
 use App\Exports\ForecastExport;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Forecast\ForecastRequest;
 use App\Http\Resources\Forecast\ForecastResource;
+use App\Models\Contact\Contact;
 use App\Models\Forecast\Forecast;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -64,16 +66,6 @@ class ForecastController extends Controller
         return ForecastResource::collection($forecast);
         // return ForecastResource::collection(Forecast::all());
     }
-
-    // public function list (){
-    //     $forecast = Forecast::select('id', 'name')->orderBy('name')->get();
-
-    //     return response()->json([
-    //         'data' => $forecast,
-    //         'status' => true,
-    //         'message' => 'Successfully retrieve list of forecasts',
-    //     ]);
-    // }
 
     public function store(ForecastRequest $request)
     {
@@ -163,8 +155,172 @@ class ForecastController extends Controller
         return Excel::download(new ForecastExport($forecastsArray), ('Forecasts - ' . $date . '.xlsx'));
     }
 
+    public function exportSummary()
+    {
+        $date = Carbon::now()->format('Ymd');
+
+        // $forecastsArray = explode(',', $forecast);
+
+        return Excel::download(new ForecastSummaryExport, ('ForecastSummary - ' . $date . '.xlsx'));
+    }
+
     public function selectAll()
     {
         return Forecast::pluck('id');
     }
+
+    public function summary()
+    {
+        $paginate = request('paginate');
+        $search_term = request('q', '');
+
+        $sort_direction = request('sort_direction');
+        $sort_field = request('sort_field');
+
+        $selectedStatus = request('selectedStatus');
+        $selectedForecastType = request('selectedForecastType');
+        $selectedContactType = request('selectedContactType');
+        $selectedUser = request('selectedUser');
+        $selectedYear = request('selectedYear');
+
+
+        $contact = Contact::with(
+            [
+                'forecast_summary' => function ($q) {
+                    $q->select(['id', 'forecast_type_id', 'product_id', 'contact_id', 'forecast_date', 'amount'])
+                        ->orderBy('forecast_date', 'desc');
+                },
+                'forecast_summary.forecast_type' => function ($q) {
+                    $q->select('id', 'name');
+                },
+                'forecast_summary.product' => function ($q) {
+                    $q->select('id', 'name');
+                },
+            ],
+            // 'forecast_summary'
+        )
+            // ->get();
+            ->join('contact_statuses', 'contacts.status_id', '=', 'contact_statuses.id')
+            ->join('contact_types', 'contacts.type_id', '=', 'contact_types.id')
+            // // ->join('forecast_types', 'forecasts.forecast_type_id', '=', 'forecast_types.id')
+            // // ->join('forecast_products', 'forecasts.product_id', '=', 'forecast_products.id')
+            ->join('users', 'contacts.user_id', '=', 'users.id')
+            ->select([
+                'contacts.id',
+                'contacts.name',
+                // 'contacts.created_at',
+                'contact_statuses.name as status_name',
+                'contact_types.name as type_name',
+                'users.name as user_name',
+                // 'forecast_types.name as forecast_type_name',
+                // 'forecast_products.name as forecast_product_name',
+
+            ])
+            // ->get();
+            ->when($selectedStatus, function ($query) use ($selectedStatus) {
+                $query->where('contacts.status_id', $selectedStatus);
+            })
+            ->when($selectedForecastType, function ($query) use ($selectedForecastType) {
+                $query->where('contacts.type_id', $selectedForecastType);
+            })
+            ->when($selectedContactType, function ($query) use ($selectedContactType) {
+                $query->where('contacts.type_id', $selectedContactType);
+            })
+            ->when($selectedUser, function ($query) use ($selectedUser) {
+                $query->where('contacts.user_id', $selectedUser);
+            })
+            ->when($selectedYear, function ($query) use ($selectedYear) {
+                $query->whereYear('contacts.todo_date', '=', ($selectedYear));
+            })
+            ->orderBy($sort_field, $sort_direction)
+            ->search(trim($search_term))
+
+            ->paginate($paginate);
+
+        // group smua todo by month
+        $contact
+            ->transform(function ($company) {
+                $company->setRelation(
+                    'forecast_summary',
+                    $company->forecast_summary->groupBy(
+                        fn ($forecast_summary) => \Carbon\Carbon::create($forecast_summary->forecast_date)->format('M-Y')
+                    ),
+                    // 'forecast_todo',
+                    // $company->summary
+                    //     ->groupBy(
+                    //         fn ($summary) => \Carbon\Carbon::create($summary->todo_date)->format('F-Y')
+                    //     )
+
+                );
+
+                return $company;
+            });
+
+        // ->get();
+        return $contact->toArray();
+    }
+
+
+    // public function test()
+    // {
+
+    //     ### DB Raw method from discord ###
+
+    //     ##trial 1
+
+    //     // $contact = Contact::select(
+    //     //     'name',
+    //     //     DB::raw("DATE_FORMAT(created_at, '%M %Y') as months")
+    //     // )
+    //     // ->get()
+    //     // ->groupBy('months');
+
+    //     // return $contact->toArray();
+
+
+    //     //TRIAL 5
+
+    //     $contact = Contact::with(
+    //         [
+    //             'status' => function ($q) {
+    //                 $q->select('id', 'name');
+    //             },
+    //             'category' => function ($q) {
+    //                 $q->select('id', 'name');
+    //             },
+    //             'type' => function ($q) {
+    //                 $q->select('id', 'name');
+    //             },
+    //             'user' => function ($q) {
+    //                 $q->select('id', 'name');
+    //             },
+    //             'summary' => function ($q) {
+    //                 $q->select(['id', 'todo_date', 'contact_id', 'action_id'])
+    //                     ->orderBy('todo_date');
+    //             },
+    //             'summary.action' => function ($q) {
+    //                 $q->select('id', 'name');
+    //             },
+    //         ],
+    //     )
+    //         ->select('id', 'name', 'status_id', 'type_id', 'category_id', 'user_id')
+    //         ->get();
+
+    //     // group smua todo by month
+    //     $contact
+    //         ->transform(function ($company) {
+    //             $company->setRelation(
+    //                 'summary',
+    //                 $company->summary
+    //                     ->groupBy(
+    //                         fn ($summary) => \Carbon\Carbon::create($summary->todo_date)->format('F-Y')
+    //                     )
+
+    //             );
+
+    //             return $company;
+    //         });
+
+    //     return $contact;
+    // }
 }
