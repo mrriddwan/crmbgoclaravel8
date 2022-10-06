@@ -71,7 +71,7 @@ class Contact extends Model
 
     public function summary()
     {
-        return $this -> hasMany(ToDo::class);
+        return $this -> hasMany(ToDo::class)->whereNotNull('action_id');
     }
 
     public function forecast_summary()

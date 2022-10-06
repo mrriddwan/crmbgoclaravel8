@@ -63,21 +63,29 @@
                             </option>
                         </select>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group w-max">
                         <label>Date of Task<p class="inline text-red-600 text-lg">*</p></label>
-                        <input
-                            type="date"
-                            class="block mt-1 w-max rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                            v-model="form.todo_date"
-                        />
+                        <div class="">
+                                <VueDatePicker
+                                    v-model="form.todo_date"
+                                    showNowButton
+                                    nowButtonLabel="Today"
+                                    :enableTimePicker="false"
+                                    :format="format" 
+                                />
+                            </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group w-max">
                         <label>Date of Deadline<p class="inline text-red-600 text-lg">*</p></label>
-                        <input
-                            type="date"
-                            class="block mt-1 w-max rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                            v-model="form.todo_deadline"
-                        />
+                        <div class="">
+                                <VueDatePicker
+                                    v-model="form.todo_deadline"
+                                    showNowButton
+                                    nowButtonLabel="Today"
+                                    :enableTimePicker="false"
+                                    :format="format" 
+                                />
+                            </div>
                     </div>
 
                     <div class="form-group">
@@ -161,7 +169,7 @@
                         <label>Remark</label>
                         <textarea
                             type="text"
-                            class="block mt-1 w-60 w-max-100 rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                            class="block mt-1 w-96 h-40 rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                             v-model="form.todo_remark"
                         />
                     </div>
@@ -193,11 +201,21 @@ import toDoComposables from "../composables/todos";
 import { onMounted } from "vue";
 import GoBack from "../utils/GoBack.vue";
 import { ref } from "vue";
+import { VueDatePicker } from "@vuepic/vue-datepicker";
+import moment from "moment";
 
 export default {
     setup() {
         let priority_id = ref(2);
         // let color_id = ref(3);
+        const date = ref(new Date());
+        const format = (date) => {
+            const day = date.getDate();
+            const month = date.getMonth() + 1;
+            const year = date.getFullYear();
+
+            return `${day}-${month}-${year}`;
+        }
 
         const form = reactive({
             priority_id: "",
@@ -250,11 +268,14 @@ export default {
             categories,
             types,
             priority_id,
+            format,
+            date
         };
     },
 
     components: {
         GoBack,
+        VueDatePicker
     },
 };
 </script>

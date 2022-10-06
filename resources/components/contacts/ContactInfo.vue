@@ -438,7 +438,7 @@ export default {
 
         showToday(date) {
             // let day = moment(date).format("DD-MM-YYYY");
-            let day = moment(date).format("DD-MM-YYYY");
+            let day = moment(date).format("DD-MM-YY");
             return day;
         },
     },

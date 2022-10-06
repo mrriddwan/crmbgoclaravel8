@@ -1,8 +1,12 @@
 import Alpine from "alpinejs";
 import router from "./routes";
 import { createApp } from "vue";
-
+/*third party package */
 import LaravelVuePagination from "laravel-vue-pagination";
+import Datepicker from '@vuepic/vue-datepicker';
+import '@vuepic/vue-datepicker/dist/main.css'
+
+
 import ContactIndex from "../components/contacts/ContactIndex.vue";
 import moment from "moment";
 
@@ -16,6 +20,7 @@ Alpine.start();
 const app = createApp({});
 
 app.component("Pagination", LaravelVuePagination);
+app.component('VueDatePicker', Datepicker);
 app.component("contact-index", ContactIndex);
 app.use(router);
 app.config.globalProperties.$moment = {

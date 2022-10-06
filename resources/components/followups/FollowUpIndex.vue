@@ -6,163 +6,202 @@
             Follow up Index
         </h1>
 
-        <div class="text-sm">
-            <div class="m-2 inline-block items-center px-2 py-1">
-                <p>view by</p>
-                <select v-model="viewType" class="form-control text-center">
-                    <option value="day">Day</option>
-                    <option value="month">Month</option>
-                    <option value="range">Date Range</option>
-                </select>
-            </div>
-            <div class="m-2 inline-block items-center px-2 py-1" @change="">
-                <span v-show="viewType === `day`">
-                    <p>Select date</p>
-                    <input
-                        v-model.lazy="selectedDate"
-                        class="border-gray-300"
-                        type="date"
-                    />
-                </span>
-                <span v-show="viewType === `month`">
-                    <p>Select month/year</p>
-                    <input
-                        v-model.lazy="currentMonth"
-                        class="border-gray-300"
-                        type="month"
-                    />
-                </span>
-
-                <span
-                    v-show="viewType === `range`"
-                    class="m-1 inline-block items-center px-2 py-1"
-                >
-                    <div class="border-gray-800 flex px-2 py-2">
-                        <p class="px-1 mt-1">Start date</p>
-                        <input
-                            v-model.lazy="selectedDateStart"
-                            class="border-gray-300 w-36"
-                            type="date"
-                        />
+        <div class="text-sm mb-2">
+            <div class="py-1 w-max">
+                <div class="border border-gray-500 inline-block">
+                    <div class="m-1 inline-block items-center px-1 py-1">
+                        <p>View by</p>
+                        <select
+                            v-model="viewType"
+                            class="form-control text-center"
+                        >
+                            <option value="day">Day</option>
+                            <option value="month">Month</option>
+                            <option value="range">Date Range</option>
+                        </select>
                     </div>
-                    <div class="border-gray-800 flex px-2 py-2">
-                        <p class="px-1 mt-1">End date</p>
-                        <input
-                            v-model.lazy="selectedDateEnd"
-                            class="border-gray-300 w-36"
-                            type="date"
-                        />
+                    <div class="m-1 inline-block items-center px-1 py-1">
+                        <span v-show="viewType === `day`">
+                            <p>Select date</p>
+                            <div class="px-2">
+                                <VueDatePicker
+                                    v-model="selectedDate"
+                                    showNowButton
+                                    nowButtonLabel="Today"
+                                    :enableTimePicker="false"
+                                />
+                            </div>
+                        </span>
+                        <span v-show="viewType === `month`">
+                            <p>Select month/year</p>
+                            <input
+                                v-model.lazy="currentMonth"
+                                class="border-gray-300"
+                                type="month"
+                            />
+                        </span>
+
+                        <span
+                            v-show="viewType === `range`"
+                            class="inline-block items-center py-1"
+                        >
+                            <div class="border-gray-800 flex px-1 py-1">
+                                <p class="px-1 mt-1">Start date</p>
+
+                                <div class="px-2">
+                                    <VueDatePicker
+                                        v-model="selectedDateStart"
+                                        showNowButton
+                                        nowButtonLabel="Today"
+                                        :enableTimePicker="false"
+                                    />
+                                </div>
+                            </div>
+                            <div class="border-gray-800 flex px-1 py-1">
+                                <p class="px-1">End date</p>
+                                <div class="px-2">
+                                    <VueDatePicker
+                                        v-model="selectedDateEnd"
+                                        showNowButton
+                                        nowButtonLabel="Today"
+                                        :enableTimePicker="false"
+                                    />
+                                </div>
+                            </div>
+                        </span>
                     </div>
-                </span>
-            </div>
+                </div>
 
-            <div class="m-2 inline-block items-center px-2 py-1">
-                <p>Filter term</p>
-                <input
-                    v-model.lazy="search"
-                    type="search"
-                    class="form-control"
-                    placeholder="Search by any..."
-                />
-            </div>
-            <div class="m-1 inline-block items-center px-1 py-1">
-                <p>Select user</p>
-                <select v-model="selectedUser" class="form-control">
-                    <option value="">All User</option>
-                    <option
-                        v-for="user in users"
-                        :key="user.id"
-                        :value="user.id"
-                    >
-                        {{ user.name }}
-                    </option>
-                </select>
-            </div>
-
-            <div class="m-2 inline-block items-center px-2 py-1">
-                <p for="paginate" class="px-2">Total entries</p>
-                <select v-model="paginate" class="form-control">
-                    <option value="10">10</option>
-                    <option value="50">50</option>
-                    <option value="100">100</option>
-                </select>
-            </div>
-
-            <div class="py-1 inline-block">
-                <span v-if="viewType === 'day'">
-                    <Pagination
-                        :data="followups"
-                        @pagination-change-page="getFollowUpsSelectDate"
-                        :size="'small'"
-                        :align="'center'"
-                        class="pagination"
+                <div class="m-1 inline-block items-center px-1 py-1">
+                    <p>Filter term</p>
+                    <input
+                        v-model.lazy="search"
+                        type="search"
+                        class="form-control"
+                        placeholder="Search by any..."
                     />
-                </span>
-                <span v-else-if="viewType === 'month'">
-                    <Pagination
-                        :data="followups"
-                        @pagination-change-page="getFollowUpsSelectMonth"
-                        :size="'small'"
-                        :align="'center'"
-                        class="pagination"
-                    />
-                </span>
+                </div>
+                <div class="m-1 inline-block items-center px-1 py-1">
+                    <p>Select user</p>
+                    <select v-model="selectedUser" class="form-control">
+                        <option value="">All User</option>
+                        <option
+                            v-for="user in users"
+                            :key="user.id"
+                            :value="user.id"
+                        >
+                            {{ user.name }}
+                        </option>
+                    </select>
+                </div>
 
-                <span v-else-if="viewType === 'range'">
-                    <Pagination
-                        :data="followups"
-                        @pagination-change-page="getFollowUpsSelectDateRange"
-                        :size="'small'"
-                        :align="'center'"
-                        class="pagination"
-                    />
-                </span>
+                <div class="border-gray-400 inline-block px-1 py-1">
+                    <p for="paginate">Total entries</p>
+                    <select v-model="paginate" class="form-control">
+                        <option value="10">10</option>
+                        <option value="50">50</option>
+                        <option value="100">100</option>
+                    </select>
+                </div>
+
+                <div class="inline-block ml-1">
+                    <div class="inline-block py-1">
+                        <span v-if="viewType === 'day'">
+                            <Pagination
+                                :data="followups"
+                                @pagination-change-page="getFollowUpsSelectDate"
+                                :size="'small'"
+                                :align="'right'"
+                                class="pagination"
+                            />
+                        </span>
+                        <span v-else-if="viewType === 'month'">
+                            <Pagination
+                                :data="followups"
+                                @pagination-change-page="
+                                    getFollowUpsSelectMonth
+                                "
+                                :size="'small'"
+                                :align="'right'"
+                                class="pagination"
+                            />
+                        </span>
+
+                        <span v-else-if="viewType === 'range'">
+                            <Pagination
+                                :data="followups"
+                                @pagination-change-page="
+                                    getFollowUpsSelectDateRange
+                                "
+                                :size="'small'"
+                                :align="'right'"
+                                class="pagination"
+                            />
+                        </span>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <div class="inline py-2">
-            <div class="inline-block">
-                <a
-                    v-if="checked.length > 0"
-                    class="px-2 py-1 ml-2 align-bottom text-center bg-emerald-300 rounded-md text-xs"
-                    type="button"
-                    :href="url"
-                    download="file.xlsx"
-                >
-                    <button @click="exportSelected()" class="h-1">
-                        <ArrowTopRightOnSquareIcon
-                            class="h-5 w-5 mr-1 inline-block"
-                        />
-                        <p class="inline-block">Export</p>
-                    </button>
-                </a>
-            </div>
+        <div class="mx-2 inline-block">
+            <a
+                v-if="checked.length > 0"
+                class="px-2 py-2 align-middle text-center bg-blue-400 border-black border-2 rounded-md text-xs"
+                type="button"
+                :href="url"
+                download="file.xlsx"
+            >
+                <button @click="exportSelected()" class="h-1">
+                    <ArrowTopRightOnSquareIcon
+                        class="h-5 w-5 mr-1 inline-block"
+                    />
+                    <p class="inline-block text-black uppercase font-extrabold">
+                        Export
+                    </p>
+                </button>
+            </a>
 
-            <div v-if="checked.length > 0" class="inline-block text-xs">
-                <div v-if="selectAll || followups.meta.total == checked.length">
+            <div v-if="checked.length > 0 && !selectPage" class="inline-block">
+                <div
+                    class="inline-block mx-1"
+                    v-if="selectAll || followups.meta.total == checked.length"
+                >
                     Selected:
                     <strong>{{ checked.length }}</strong> record(s).
                 </div>
-                <div v-else>
+                <div v-else class="inline-block mx-1">
                     Selected:
-                    <strong>{{ checked.length }}</strong> record(s), All:
-                    <strong>{{ followups.meta.total }}</strong>
-                    <a @click.prevent="selectAllRecords" href="#" class="ml-2"
+                    <strong>{{ checked.length }}</strong> record(s)
+                    <a
+                        @click.prevent="selectAllRecords"
+                        href="#"
+                        class="ml-1 rounded-md bg-yellow-400 border-2 border-black uppercase text-black text-xs"
                         >Select All</a
                     >
                 </div>
             </div>
 
-            <div class="inline-block text-xs" v-if="selectPage">
-                <div v-if="selectAll || followups.meta.total == checked.length">
-                    Selected all:
-                    <strong>{{ checked.length }}</strong> record(s).
-                </div>
-                <div v-else>
+            <div class="inline-block" v-if="selectPage">
+                <div
+                    class="inline-block mx-1"
+                    v-if="selectAll || followups.meta.total == checked.length"
+                >
                     Selected:
-                    <strong>{{ checked.length }}</strong> record(s), All:
-                    <strong>{{ followups.meta.total }}</strong>
-                    <a @click.prevent="selectAllRecords" href="#" class="ml-2"
+                    <strong>{{ checked.length }}</strong> record(s).
+                    <a
+                        @click.prevent="selectAllRecords"
+                        href="#"
+                        class="ml-1 rounded-md bg-yellow-400 border-2 border-black uppercase text-black text-xs px-1"
+                        >Select All</a
+                    >
+                </div>
+                <div v-else class="inline-block mx-1">
+                    Selected:
+                    <strong>{{ checked.length }}</strong> record(s)
+                    <a
+                        @click.prevent="selectAllRecords"
+                        href="#"
+                        class="ml-1 rounded-md bg-yellow-400 border-2 border-black uppercase text-black text-xs px-1"
                         >Select All</a
                     >
                 </div>
@@ -457,6 +496,7 @@
 import LaravelVuePagination from "laravel-vue-pagination";
 import axios from "axios";
 import moment from "moment";
+import { VueDatePicker } from "@vuepic/vue-datepicker";
 import {
     PencilSquareIcon,
     TrashIcon,
@@ -481,6 +521,7 @@ export default {
         EyeIcon,
         ArrowTopRightOnSquareIcon,
         ArrowsUpDownIcon,
+        VueDatePicker,
     },
 
     mounted() {
@@ -852,7 +893,7 @@ export default {
 
         showToday(date) {
             // let day = moment(date).format("DD-MM-YYYY");
-            let day = moment(date).format("DD-MM-YYYY");
+            let day = moment(date).format("DD-MM-YY");
             return day;
         },
 

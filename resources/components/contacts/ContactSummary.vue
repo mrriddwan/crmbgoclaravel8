@@ -111,13 +111,13 @@
             <div
                 class="table-wrp block max-h-screen overflow-y-auto overflow-x-auto"
             >
-                <table class="table table-hover table-bordered w-full">
+                <table class="table table-hover table-bordered w-max">
                     <thead class="bg-slate-400 border-b sticky top-0">
-                        <tr>
+                        <tr class="w-max">
                             <th>
                                 <input type="checkbox" v-model="selectPage" />
                             </th>
-                            <th>No.</th>
+                            <!-- <th class="text-xs">No.</th> -->
                             <!-- <th class="py-3">
                             <div class="text-xs text-center h-6">
                                 <a
@@ -142,7 +142,7 @@
                                 >
                             </div>
                         </th> -->
-                            <th class="py-3">
+                            <th class="py-3 w-2">
                                 <div class="text-xs text-center h-6">
                                     <a
                                         href="#"
@@ -316,6 +316,49 @@
                                     </div>
                                 </div>
                             </th>
+                            <th class="py-3">
+                                <div class="text-xs text-center h-6">
+                                    <a
+                                        href="#"
+                                        @click.prevent="
+                                            change_sort('industry_name')
+                                        "
+                                    >
+                                        Industry
+                                    </a>
+                                    <span
+                                        v-if="
+                                            sort_direction == 'desc' &&
+                                            sort_field == 'industry_name'
+                                        "
+                                        >&uarr;</span
+                                    >
+                                    <span
+                                        v-if="
+                                            sort_direction == 'asc' &&
+                                            sort_field == 'industry_name'
+                                        "
+                                        >&darr;</span
+                                    >
+                                </div>
+                                <div class="text-xs text-center h-6">
+                                    <div class="text-xs text-center h-6">
+                                        <select
+                                            v-model="selectedIndustry"
+                                            class="form-control form-control-sm w-max"
+                                        >
+                                            <option value="">All</option>
+                                            <option
+                                                v-for="industry in industries.data"
+                                                :key="industry.id"
+                                                :value="industry.id"
+                                            >
+                                                {{ industry.name }}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </th>
 
                             <th class="py-3">
                                 <div class="text-xs text-center h-6">
@@ -394,13 +437,14 @@
                                     v-model="checked"
                                 />
                             </td>
-                            <td class="text-xs">{{ index + 1 }}</td>
+                            <!-- <td class="text-xs">{{ index + 1 }}</td> -->
                             <!-- <td class="text-xs">{{ contact.created_at }}</td> -->
-                            <td class="text-xs">{{ contact.user_name }}</td>
-                            <td class="text-xs">{{ contact.status_name }}</td>
+                            <td class="text-xs break-normal w-2">{{ contact.user_name }}</td>
+                            <td class="text-xs break-normal">{{ contact.status_name }}</td>
                             <td class="text-xs">{{ contact.type_name }}</td>
-                            <td class="text-xs">{{ contact.category_name }}</td>
-                            <td class="text-xs">
+                            <td class="text-xs break-normal">{{ contact.category_name }}</td>
+                            <td class="text-xs break-normal">{{ contact.industry_name }}</td>
+                            <td class="text-xs break-normal">
                                 <router-link
                                     :to="`/contact/${contact.id}/info`"
                                     custom
@@ -413,7 +457,7 @@
                             </td>
                             <td
                                 v-if="contact.summary['Jan2022']"
-                                class="text-xs"
+                                class="text-xs "
                             >
                                 <span
                                     v-for="(summary_info, index) in contact
@@ -425,8 +469,9 @@
                                             index === 0 &&
                                             summary_info['action']
                                         "
+                                        class="w-max"
                                     >
-                                        {{ summary_info["todo_date"] }}
+                                        {{ showToday(summary_info["todo_date"]) }}
                                     </span>
                                 </span>
                             </td>
@@ -447,7 +492,7 @@
                                             summary_info['action']
                                         "
                                     >
-                                        {{ summary_info["todo_date"] }}
+                                        {{ showToday(summary_info["todo_date"]) }}
                                         <br />
                                     </span>
                                 </span>
@@ -469,7 +514,7 @@
                                             summary_info['action']
                                         "
                                     >
-                                        {{ summary_info["todo_date"] }}
+                                        {{ showToday(summary_info["todo_date"]) }}
                                         <br />
                                     </span>
                                 </span>
@@ -491,7 +536,7 @@
                                             summary_info['action']
                                         "
                                     >
-                                        {{ summary_info["todo_date"] }}
+                                        {{ showToday(summary_info["todo_date"]) }}
                                         <br />
                                     </span>
                                 </span>
@@ -513,7 +558,7 @@
                                             summary_info['action']
                                         "
                                     >
-                                        {{ summary_info["todo_date"] }}
+                                        {{ showToday(summary_info["todo_date"]) }}
                                         <br />
                                     </span>
                                 </span>
@@ -535,7 +580,7 @@
                                             summary_info['action']
                                         "
                                     >
-                                        {{ summary_info["todo_date"] }}
+                                        {{ showToday(summary_info["todo_date"]) }}
                                         <br />
                                     </span>
                                 </span>
@@ -557,7 +602,7 @@
                                             summary_info['action']
                                         "
                                     >
-                                        {{ summary_info["todo_date"] }}
+                                        {{ showToday(summary_info["todo_date"]) }}
                                         <br />
                                     </span>
                                 </span>
@@ -579,7 +624,7 @@
                                             summary_info['action']
                                         "
                                     >
-                                        {{ summary_info["todo_date"] }}
+                                        {{ showToday(summary_info["todo_date"]) }}
                                     </span>
                                 </span>
                             </td>
@@ -600,7 +645,7 @@
                                             summary_info['action']
                                         "
                                     >
-                                        {{ summary_info["todo_date"] }}
+                                        {{ showToday(summary_info["todo_date"]) }}
                                     </span>
                                 </span>
                             </td>
@@ -621,7 +666,7 @@
                                             summary_info['action']
                                         "
                                     >
-                                        {{ summary_info["todo_date"] }}
+                                        {{ showToday(summary_info["todo_date"]) }}
                                     </span>
                                 </span>
                             </td>
@@ -642,7 +687,7 @@
                                             summary_info['action']
                                         "
                                     >
-                                        {{ summary_info["todo_date"] }}
+                                        {{ showToday(summary_info["todo_date"]) }}
                                     </span>
                                 </span>
                             </td>
@@ -663,7 +708,7 @@
                                             summary_info['action']
                                         "
                                     >
-                                        {{ summary_info["todo_date"] }}
+                                        {{ showToday(summary_info["todo_date"]) }}
                                     </span>
                                 </span>
                             </td>
@@ -707,6 +752,7 @@ export default {
         this.getTypes();
         this.getUsers();
         this.getCategories();
+        this.getIndustries();
     },
     data() {
         return {
@@ -714,6 +760,7 @@ export default {
             statuses: [],
             users: [],
             types: [],
+            industries: [],
             categories: [],
 
             paginate: 50,
@@ -729,6 +776,7 @@ export default {
             selectedUser: "",
             selectedType: "",
             selectedCategory: "",
+            selectedIndustry: "",
 
             sort_direction: "asc",
             sort_field: "id",
@@ -752,6 +800,9 @@ export default {
             this.getContacts();
         },
         selectedCategory: function (value) {
+            this.getContacts();
+        },
+        selectedIndustry: function (value) {
             this.getContacts();
         },
 
@@ -794,6 +845,8 @@ export default {
                         this.selectedType +
                         "&selectedCategory=" +
                         this.selectedCategory +
+                        "&selectedIndustry=" +
+                        this.selectedIndustry +
                         "&paginate=" +
                         this.paginate +
                         "&page=" +
@@ -855,6 +908,17 @@ export default {
                 });
         },
 
+        async getIndustries() {
+            await axios
+                .get("/api/contacts/industry/index")
+                .then((res) => {
+                    this.industries = res.data;
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        },
+
         async change_sort(field) {
             if (this.sort_field == field) {
                 this.sort_direction =
@@ -873,6 +937,12 @@ export default {
         getSelectedYear(date) {
             this.selectedYear = moment(date).format("YYYY");
             return this.selectedYear;
+        },
+
+        showToday(date) {
+            // let day = moment(date).format("DD-MM-YYYY");
+            let day = moment(date).format("DD-MM-YY");
+            return day;
         },
 
         exportSelected() {

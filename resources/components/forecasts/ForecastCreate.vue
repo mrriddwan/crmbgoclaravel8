@@ -88,7 +88,10 @@
                             <p class="inline text-red-600 text-lg">*</p>
                         </label>
                         <div>
-                            <select v-model="form.forecast_type_id" class="form-control">
+                            <select
+                                v-model="form.forecast_type_id"
+                                class="form-control"
+                            >
                                 <option disabled value="">
                                     Please select type
                                 </option>
@@ -108,11 +111,14 @@
                             >Forecast Date
                             <p class="inline text-red-600 text-lg">*</p></label
                         >
-                        <input
-                            type="date"
-                            class="items-left mt-1 rounded-md border-gray-500 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                            v-model="form.forecast_date"
-                        />
+                        <div class="w-max">
+                            <VueDatePicker
+                                v-model="form.forecast_date"
+                                showNowButton
+                                nowButtonLabel="Today"
+                                :enableTimePicker="false"
+                            />
+                        </div>
                     </div>
                 </div>
                 <div class="text-center col-span-2 px-2">
@@ -249,9 +255,10 @@ import {
     PencilIcon,
 } from "@heroicons/vue/24/solid";
 import moment from "moment";
+import { VueDatePicker } from "@vuepic/vue-datepicker";
 
 export default {
-    components: { GoBack, PencilSquareIcon, TrashIcon },
+    components: { GoBack, PencilSquareIcon, TrashIcon, VueDatePicker },
 
     data() {
         return {
@@ -292,7 +299,7 @@ export default {
             // const form = document.getElementById('inchargeForm');
             try {
                 await axios.post("/api/forecasts/store", {
-                    forecast_date: this.form.forecast_date,
+                    forecast_date: this.moment(this.form.forecast_date).format("YYYY-MM-DD"),
                     amount: this.form.amount,
                     contact_id: contact[0].id,
                     user_id: 2, //replace with current user id later
@@ -360,7 +367,7 @@ export default {
 
         showToday(date) {
             // let day = moment(date).format("DD-MM-YYYY");
-            let day = moment(date).format("DD-MM-YYYY");
+            let day = moment(date).format("DD-MM-YY");
             return day;
         },
     },

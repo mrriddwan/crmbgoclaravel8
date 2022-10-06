@@ -1,5 +1,5 @@
 <template>
-    <div class="container w-full align-center mx-auto h-max px-3 py-3">
+    <div class="container w-full align-center mx-auto h-max py-3">
         <div>
             <GoBack />
         </div>
@@ -7,7 +7,9 @@
         <div
             class="items-center text-center text-white bg-slate-600 px-2 py-1 rounded-md"
         >
-            <h1 class="px-2 py-1 bg-black-50 font-extrabold font-mono">Edit To Do</h1>
+            <h1 class="px-10 py-1 bg-black-50 font-extrabold font-mono">
+                Edit To Do
+            </h1>
         </div>
 
         <div class="row mt-3">
@@ -54,19 +56,25 @@
                     </div>
                     <div class="form-group">
                         <label>Date of Task</label>
-                        <input
-                            type="date"
-                            class="block mt-1 w-max rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                            v-model="todo.todo_date"
-                        />
+                        <div class="">
+                            <VueDatePicker
+                                v-model="todo.todo_date"
+                                showNowButton
+                                nowButtonLabel="Today"
+                                :enableTimePicker="false"
+                            />
+                        </div>
                     </div>
                     <div class="form-group">
                         <label>Deadline of Task</label>
-                        <input
-                            type="date"
-                            class="block mt-1 w-max rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                            v-model="todo.todo_deadline"
-                        />
+                        <div class="">
+                            <VueDatePicker
+                                v-model="todo.todo_deadline"
+                                showNowButton
+                                nowButtonLabel="Today"
+                                :enableTimePicker="false"
+                            />
+                        </div>
                     </div>
 
                     <div class="form-group">
@@ -149,7 +157,7 @@
                         <label>Remark</label>
                         <textarea
                             type="text"
-                            class="block mt-1 w-60 w-max-100 rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                            class="block mt-1 w-96 h-40 rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                             v-model="todo.todo_remark"
                         />
                     </div>
@@ -169,10 +177,13 @@
 <script>
 import GoBack from "../utils/GoBack.vue";
 import axios from "axios";
+import { VueDatePicker } from "@vuepic/vue-datepicker";
+import moment from "moment";
 
 export default {
     data() {
         return {
+            moment: moment,
             todo: {
                 priority_id: "",
                 user_id: "",
@@ -201,49 +212,14 @@ export default {
         this.getType();
     },
 
-    // <p class="inline text-red-600 text-lg">*</p></label>
-
-    // async createPIC() {
-    //         const contact = this.contact_infos;
-    //         // const form = document.getElementById('inchargeForm');
-    //         try {
-    //             await axios.post("/api/incharges/store", {
-    //                 contact_id: contact[0].id,
-    //                 name: this.form.name,
-    //                 email: this.form.email,
-    //                 phone_mobile: this.form.phone_mobile,
-    //                 phone_office: this.form.phone_office,
-    //             });
-
-    //             await this.$router.push({
-    //                 name: "incharge_create",
-    //                 params: { id: this.$route.params.id },
-    //             });
-    //             this.form.contact_id = "";
-    //             this.form.name = "";
-    //             this.form.email = "";
-    //             this.form.phone_mobile = "";
-    //             this.form.phone_office = "";
-    //             this.errors = "";
-    //             this.showIncharge();
-    //         } catch (e) {
-    //             {
-    //                 if (e.response.status === 422){
-    //                     this.errors = e.response.data.errors;
-    //                 }
-
-    //             }
-    //         }
-    //     },
-
     methods: {
         editToDo() {
             axios
                 .put("/api/todos/update/" + this.$route.params.id, {
                     priority_id: this.todo.priority_id,
                     user_id: this.todo.user_id,
-                    todo_date: this.todo.todo_date,
-                    todo_deadline: this.todo.todo_deadline,
+                    todo_date: this.moment(this.todo.todo_date).format("YYYY-MM-DD"),
+                    todo_deadline: this.moment(this.todo.todo_deadline).format("YYYY-MM-DD"),
                     status_id: this.todo.status_id,
                     type_id: this.todo.type_id,
                     contact_id: this.todo.contact_id,
@@ -327,6 +303,6 @@ export default {
                 });
         },
     },
-    components: { GoBack },
+    components: { GoBack, VueDatePicker },
 };
 </script>

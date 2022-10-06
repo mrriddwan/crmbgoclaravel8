@@ -6,58 +6,70 @@
     </h1>
 
     <div class="py-2">
-        <router-link
-            to="/forecast/summary"
-            class="inline-block items-center px-2 py-1 bg-purple-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
-            >Forecast Summary</router-link
-        >
-
-        <a
-            v-if="checked.length > 0"
-            class="px-2 py-1 ml-2 align-bottom text-center bg-emerald-300 rounded-md text-xs"
-            type="button"
-            :href="url"
-            download="file.xlsx"
-        >
-            <button @click="exportSelected()" class="h-1">
-                <ArrowTopRightOnSquareIcon class="h-5 w-5 mr-1 inline-block" />
-                <p class="inline-block">Export</p>
-            </button>
-        </a>
-
-        <div v-if="checked.length > 0 && !selectPage" class="inline-block">
-            <div
-                class="inline-block"
-                v-if="selectAll || forecasts.meta.total == checked.length"
+        <div class="inline-block ">
+            <router-link
+                to="/forecast/summary"
+                class="inline-block items-center px-2 py-1 bg-purple-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
+                >Forecast Summary</router-link
             >
-                Selected:
-                <strong>{{ checked.length }}</strong> record(s).
-            </div>
-            <div v-else class="inline-block">
-                Selected:
-                <strong>{{ checked.length }}</strong> record(s), All:
-                <strong>{{ forecasts.meta.total }}</strong>
-                <a @click.prevent="selectAllRecords" href="#" class="ml-2"
-                    >Select All</a
-                >
-            </div>
         </div>
 
-        <div class="inline-block" v-if="selectPage">
-            <div
-                class="inline-block"
-                v-if="selectAll || forecasts.meta.total == checked.length"
+        <div class="mx-2 inline-block">
+            <a
+                v-if="checked.length > 0"
+                class="px-2 py-2 align-middle text-center bg-blue-400 border-black border-2 rounded-md text-xs"
+                type="button"
+                :href="url"
+                download="file.xlsx"
             >
-                Selected all:
-                <strong>{{ checked.length }}</strong> record(s).
-            </div>
-            <div v-else class="inline-block">
-                Selected:
-                <strong>{{ checked.length }}</strong> record(s), All:
-                <strong>{{ forecasts.meta.total }}</strong>
-                <a @click.prevent="selectAllRecords" href="#" class="ml-2"
-                    >Select All</a
+                <button @click="exportSelected()" class="h-1">
+                    <ArrowTopRightOnSquareIcon
+                        class="h-5 w-5 mr-1 inline-block"
+                    />
+                    <p class="inline-block text-black uppercase font-extrabold">
+                        Export
+                    </p>
+                </button>
+            </a>
+
+            <div v-if="checked.length > 0 && !selectPage" class="inline-block">
+                <div
+                    class="inline-block mx-1"
+                    v-if="selectAll || forecasts.meta.total == checked.length"
                 >
+                    Selected:
+                    <strong>{{ checked.length }}</strong> record(s).
+                </div>
+                <div v-else class="inline-block mx-1">
+                    Selected:
+                    <strong>{{ checked.length }}</strong> record(s)
+                    <a
+                        @click.prevent="selectAllRecords"
+                        href="#"
+                        class="ml-1 rounded-md bg-yellow-400 border-2 border-black uppercase text-black text-xs"
+                        >Select All</a
+                    >
+                </div>
+            </div>
+
+            <div class="inline-block" v-if="selectPage">
+                <div
+                    class="inline-block mx-1"
+                    v-if="selectAll || forecasts.meta.total == checked.length"
+                >
+                    Selected:
+                    <strong>{{ checked.length }}</strong> record(s).
+                </div>
+                <div v-else class="inline-block mx-1">
+                    Selected:
+                    <strong>{{ checked.length }}</strong> record(s)
+                    <a
+                        @click.prevent="selectAllRecords"
+                        href="#"
+                        class="ml-1 rounded-md bg-yellow-400 border-2 border-black uppercase text-black text-xs px-1"
+                        >Select All</a
+                    >
+                </div>
             </div>
         </div>
     </div>
@@ -379,9 +391,7 @@
                                         class="form-control form-control-sm w-max"
                                     >
                                         <option value="">All</option>
-                                        <option value="null">
-                                            No result
-                                        </option>
+                                        <option value="null">No result</option>
                                         <option
                                             v-for="result in results.data"
                                             :key="result.id"
@@ -759,7 +769,7 @@ export default {
 
         showToday(date) {
             // let day = moment(date).format("DD-MM-YYYY");
-            let day = moment(date).format("DD-MM-YYYY");
+            let day = moment(date).format("DD-MM-YY");
             return day;
         },
 

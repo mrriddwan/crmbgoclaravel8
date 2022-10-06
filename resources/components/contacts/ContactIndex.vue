@@ -25,10 +25,10 @@
             </div>
 
             <div>
-                <div>
+                <div class="mx-2">
                     <a
                         v-if="checked.length > 0"
-                        class="px-2 py-1 ml-2 align-bottom text-center bg-emerald-300 rounded-md text-xs"
+                        class="px-2 py-2 align-bottom text-center bg-blue-400 border-black border-2 rounded-md text-xs"
                         type="button"
                         :href="url"
                         download="file.xlsx"
@@ -37,7 +37,7 @@
                             <ArrowTopRightOnSquareIcon
                                 class="h-5 w-5 mr-1 inline-block"
                             />
-                            <p class="inline-block">Export</p>
+                            <p class="inline-block text-black uppercase font-extrabold">Export</p>
                         </button>
                     </a>
 
@@ -46,7 +46,7 @@
                         class="inline-block"
                     >
                         <div
-                            class="inline-block"
+                            class="inline-block mx-1"
                             v-if="
                                 selectAll ||
                                 contacts.meta.total == checked.length
@@ -55,15 +55,13 @@
                             Selected:
                             <strong>{{ checked.length }}</strong> record(s).
                         </div>
-                        <div v-else class="inline-block">
+                        <div v-else class="inline-block mx-1">
                             Selected:
-                            <strong>{{ checked.length }}</strong> record(s),
-                            All:
-                            <strong>{{ contacts.meta.total }}</strong>
+                            <strong>{{ checked.length }}</strong> record(s)
                             <a
                                 @click.prevent="selectAllRecords"
                                 href="#"
-                                class="ml-2"
+                                class="ml-1 rounded-md bg-yellow-400 border-2 border-black uppercase text-black text-xs"
                                 >Select All</a
                             >
                         </div>
@@ -71,24 +69,22 @@
 
                     <div class="inline-block" v-if="selectPage">
                         <div
-                            class="inline-block"
+                            class="inline-block mx-1"
                             v-if="
                                 selectAll ||
                                 contacts.meta.total == checked.length
                             "
                         >
-                            Selected all:
+                            Selected:
                             <strong>{{ checked.length }}</strong> record(s).
                         </div>
-                        <div v-else class="inline-block">
+                        <div v-else class="inline-block mx-1">
                             Selected:
-                            <strong>{{ checked.length }}</strong> record(s),
-                            All:
-                            <strong>{{ contacts.meta.total }}</strong>
+                            <strong>{{ checked.length }}</strong> record(s)
                             <a
                                 @click.prevent="selectAllRecords"
                                 href="#"
-                                class="ml-2"
+                                class="ml-1 rounded-md bg-yellow-400 border-2 border-black uppercase text-black text-xs px-1"
                                 >Select All</a
                             >
                         </div>

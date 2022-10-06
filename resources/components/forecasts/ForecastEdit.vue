@@ -111,11 +111,14 @@
                                     *
                                 </p></label
                             >
-                            <input
-                                type="date"
-                                class="items-left mt-1 rounded-md border-gray-500 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                            <div class="w-max">
+                            <VueDatePicker
                                 v-model="forecast.forecast_date"
+                                showNowButton
+                                nowButtonLabel="Today"
+                                :enableTimePicker="false"
                             />
+                        </div>
                         </div>
                     </div>
                     <div class="text-center col-span-2">
@@ -139,6 +142,7 @@
 <script>
 import GoBack from "../utils/GoBack.vue";
 import axios from "axios";
+import { VueDatePicker } from "@vuepic/vue-datepicker";
 import {
     PencilSquareIcon,
     TrashIcon,
@@ -146,12 +150,14 @@ import {
     PlusIcon,
     PencilIcon,
 } from "@heroicons/vue/24/solid";
+import moment from "moment";
 
 export default {
-    components: { GoBack, PencilSquareIcon, TrashIcon },
+    components: { GoBack, PencilSquareIcon, TrashIcon, VueDatePicker },
 
     data() {
         return {
+            moment: moment,
             forecast: {
                 contact_id: "",
                 product_id: "",
@@ -192,7 +198,7 @@ export default {
             console.log(this.forecast.amount);
             axios
                 .put("/api/forecasts/update/" + this.$route.params.id, {
-                    forecast_date: this.forecast.forecast_date,
+                    forecast_date: this.moment(this.forecast.forecast_date).format("YYYY-MM-DD"),
                     amount: this.forecast.amount,
                     contact_id: this.forecast.contact.id,
                     user_id: 2, //replace with current user id later

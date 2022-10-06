@@ -1,7 +1,5 @@
 <template>
-    <div
-        class="container w-full align-center mx-auto h-max px-3 py-1"
-    >
+    <div class="container w-full align-center mx-auto h-max px-3 py-1">
         <div>
             <GoBack />
         </div>
@@ -9,7 +7,11 @@
         <div
             class="items-center text-center text-white bg-slate-600 px-2 rounded-md"
         >
-            <h1 class="px-20 py-1 bg-black-50 font-extrabold font-mono text-3xl ">Follow Up</h1>
+            <h1
+                class="px-20 py-1 bg-black-50 font-extrabold font-mono text-3xl"
+            >
+                Follow Up
+            </h1>
         </div>
         <div v-if="errors">
             <div v-for="(v, k) in errors" :key="k">
@@ -67,11 +69,14 @@
                             >Date of Follow Up
                             <p class="inline text-red-600 text-lg">*</p></label
                         >
-                        <input
-                            type="date"
-                            class="block mt-1 w-max rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                            v-model="form.followup_date"
-                        />
+                        <div class="w-max">
+                            <VueDatePicker
+                                v-model="form.followup_date"
+                                showNowButton
+                                nowButtonLabel="Today"
+                                :enableTimePicker="false"
+                            />
+                        </div>
                     </div>
 
                     <div class="form-group">
@@ -108,7 +113,7 @@
                         <label>Remark</label>
                         <textarea
                             type="text"
-                            class="block mt-1 w-60 w-max-100 rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                            class="block mt-1 w-96 h-40 rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                             v-model="form.followup_remark"
                         />
                     </div>
@@ -129,10 +134,12 @@
 import GoBack from "../utils/GoBack.vue";
 import axios from "axios";
 import moment from "moment";
+import { VueDatePicker } from "@vuepic/vue-datepicker";
 
 export default {
     data() {
         return {
+            moment: moment,
             checkedPriority: [],
             form: {
                 priority_id: "",
@@ -168,7 +175,9 @@ export default {
             try {
                 await axios.post("/api/followups/store", {
                     priority_id: this.form.priority_id === "" ? 2 : 1,
-                    followup_date: this.form.followup_date,
+                    followup_date: this.moment(this.form.followup_date).format(
+                        "YYYY-MM-DD"
+                    ),
                     followup_time: this.form.followup_time,
                     task_id: this.form.task_id,
                     followup_remark: this.form.followup_remark
@@ -176,7 +185,7 @@ export default {
                         : "No remark",
                     todo_id: Number(this.$route.params.todo_id),
                     contact_id: contact.id,
-                    user_id: contact.user_id,//need to replace with current user
+                    user_id: contact.user_id, //need to replace with current user
                     status_id: contact.status_id,
                     type_id: contact.type_id,
                 });
@@ -185,7 +194,9 @@ export default {
                     .post("/api/todos/insert/" + this.$route.params.id, {
                         priority_id: this.form.priority_id === "" ? 2 : 1,
                         user_id: contact.user_id,
-                        todo_date: this.form.followup_date,
+                        todo_date: this.moment(this.form.followup_date).format(
+                            "YYYY-MM-DD"
+                        ),
                         // todo_deadline: "2000-01-01",
                         status_id: contact.status_id,
                         type_id: contact.type_id,
@@ -201,18 +212,21 @@ export default {
                         this.$router.push({
                             name: "followup_index",
                             params: {
-                                selectedMonth: this.getSelectedMonth(this.form.todo_date),
-                                selectedYear: this.getSelectedYear(this.form.todo_date),
+                                selectedMonth: this.getSelectedMonth(
+                                    this.form.todo_date
+                                ),
+                                selectedYear: this.getSelectedYear(
+                                    this.form.todo_date
+                                ),
                             },
-                        })
-                        
+                        });
                     });
             } catch (e) {
                 {
                     if (e.response.status === 422) {
                         this.errors = e.response.data.errors;
                     } else {
-                        console.log(this.errors = e.response.data.errors)
+                        console.log((this.errors = e.response.data.errors));
                     }
                 }
             }
@@ -261,12 +275,12 @@ export default {
             return this.selectedYear;
         },
 
-        formatTime(time){
-            let followuptime = moment(time, ).format("hh:mm:ss");
+        formatTime(time) {
+            let followuptime = moment(time).format("hh:mm:ss");
             return followuptime;
-        }
+        },
     },
-    components: { GoBack },
+    components: { GoBack, VueDatePicker },
 };
 </script>
 <!-- <script>

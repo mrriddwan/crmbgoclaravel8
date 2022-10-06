@@ -213,7 +213,19 @@ class ToDoController extends Controller
 
     public function store(ToDoInternalRequest $request)
     {
-        $todo = ToDo::create($request->validated());
+        $todo = ToDo::create([
+            'priority_id' => $request->priority_id,
+            'todo_date' => Carbon::parse($request->todo_date)->toDate(),
+            'todo_deadline' => Carbon::parse($request->todo_deadline)->toDate() ?? '2000-01-01',
+            'contact_id' => $request->contact_id,
+            'user_id' => $request->user_id,
+            'task_id' => $request->task_id,
+            'status_id' => $request->status_id,
+            'type_id' => $request->type_id,
+            'todo_remark' => $request->todo_remark ?? "None",
+            'color_id' => $request->color_id ?? '1',
+            'source_id' => $request->source_id
+        ]);
 
         return response()->json([
             'data' => $todo,
@@ -236,8 +248,8 @@ class ToDoController extends Controller
 
         $todo = ToDo::create([
             'priority_id' => $request->priority_id,
-            'todo_date' => $request->todo_date,
-            'todo_deadline' => $request->todo_deadline ?? '2000-01-01',
+            'todo_date' => Carbon::parse($request->todo_date)->toDate(),
+            'todo_deadline' => Carbon::parse($request->todo_deadline)->toDate() ?? '2000-01-01',
             'contact_id' => $request->contact_id,
             'user_id' => $request->user_id,
             'task_id' => $request->task_id,

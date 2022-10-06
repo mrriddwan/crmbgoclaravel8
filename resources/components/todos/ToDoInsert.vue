@@ -1,9 +1,13 @@
 <template>
     <div class="container w-max-10 align-center mx-auto h-max px-2 py-2">
         <div
-            class="items-center text-center text-white  bg-slate-600 px-2 py-1 rounded-md"
+            class="items-center text-center text-white bg-slate-600 px-2 py-1 rounded-md"
         >
-            <h3 class="px-2 py-1 bg-black-50 uppercase font-extrabold font-mono">Create To Do (Contact)</h3>
+            <h3
+                class="px-2 py-1 bg-black-50 uppercase font-extrabold font-mono"
+            >
+                Create To Do (Contact)
+            </h3>
         </div>
         <GoBack />
         <div
@@ -79,11 +83,14 @@
                         >Date of Task
                         <p class="inline text-red-600 text-lg">*</p></label
                     >
-                    <input
-                        type="date"
-                        class="block mt-1 w-max rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                        v-model="form.todo_date"
-                    />
+                    <div class="w-max">
+                        <VueDatePicker
+                            v-model="form.todo_date"
+                            showNowButton
+                            nowButtonLabel="Today"
+                            :enableTimePicker="false"
+                        />
+                    </div>
                 </div>
 
                 <div class="form-group">
@@ -111,7 +118,7 @@
                     <label>Remark</label>
                     <textarea
                         type="text"
-                        class="block mt-1 w-60 w-max-100 rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                        class="block mt-1 w-96 h-40 rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                         v-model="form.todo_remark"
                     />
                 </div>
@@ -130,10 +137,13 @@
 <script>
 import GoBack from "../utils/GoBack.vue";
 import axios from "axios";
+import { VueDatePicker } from "@vuepic/vue-datepicker";
+import moment from "moment";
 
 export default {
     data() {
         return {
+            moment: moment,
             form: {
                 priority_id: "",
                 user_id: "",
@@ -165,7 +175,7 @@ export default {
                 await axios.post("/api/todos/insert/" + this.$route.params.id, {
                     priority_id: this.form.priority_id === "" ? 2 : 1,
                     user_id: contact.user_id,
-                    todo_date: this.form.todo_date,
+                    todo_date: this.moment(this.form.todo_date).format("YYYY-MM-DD"),
                     status_id: contact.status_id,
                     type_id: contact.type_id,
                     contact_id: contact.id,
@@ -222,7 +232,7 @@ export default {
                 });
         },
     },
-    components: { GoBack },
+    components: { GoBack, VueDatePicker },
 };
 </script>
 <!-- <script>

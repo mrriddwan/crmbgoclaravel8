@@ -20,17 +20,17 @@
                             <option value="range">Date Range</option>
                         </select>
                     </div>
-                    <div
-                        class="m-1 inline-block items-center px-1 py-1"
-                        @change=""
-                    >
+                    <div class="m-1 inline-block items-center px-1 py-1">
                         <span v-show="viewType === `day`">
                             <p>Select date</p>
-                            <input
-                                v-model.lazy="selectedDate"
-                                class="border-gray-300"
-                                type="date"
-                            />
+                            <div class="px-2">
+                                <VueDatePicker
+                                    v-model="selectedDate"
+                                    showNowButton
+                                    nowButtonLabel="Today"
+                                    :enableTimePicker="false"
+                                />
+                            </div>
                         </span>
                         <span v-show="viewType === `month`">
                             <p>Select month/year</p>
@@ -43,27 +43,30 @@
 
                         <span
                             v-show="viewType === `range`"
-                            class="m-1 inline-block items-center px-1 py-1"
+                            class="inline-block items-center py-1"
                         >
-                            <div
-                                class="border-gray-800 flex px-2 py-2"
-                            >
+                            <div class="border-gray-800 flex px-1 py-1">
                                 <p class="px-1 mt-1">Start date</p>
-                                <input
-                                    v-model.lazy="selectedDateStart"
-                                    class="border-gray-300 w-36"
-                                    type="date"
-                                />
+
+                                <div class="px-2">
+                                    <VueDatePicker
+                                        v-model="selectedDateStart"
+                                        showNowButton
+                                        nowButtonLabel="Today"
+                                        :enableTimePicker="false"
+                                    />
+                                </div>
                             </div>
-                            <div
-                                class="border-gray-800 flex px-1 py-2"
-                            >
-                                <p class="px-1 mt-1">End date</p>
-                                <input
-                                    v-model.lazy="selectedDateEnd"
-                                    class="border-gray-300 w-36"
-                                    type="date"
-                                />
+                            <div class="border-gray-800 flex px-1 py-1">
+                                <p class="px-1">End date</p>
+                                <div class="px-2">
+                                    <VueDatePicker
+                                        v-model="selectedDateEnd"
+                                        showNowButton
+                                        nowButtonLabel="Today"
+                                        :enableTimePicker="false"
+                                    />
+                                </div>
                             </div>
                         </span>
                     </div>
@@ -147,10 +150,10 @@
                 </div>
             </div>
         </div>
-        <div class="inline-block my-2">
+        <div class="mx-2 inline-block">
             <a
                 v-if="checked.length > 0"
-                class="px-2 py-1 ml-2 align-bottom text-center bg-emerald-300 rounded-md text-xs"
+                class="px-2 py-2 align-middle text-center bg-blue-400 border-black border-2 rounded-md text-xs"
                 type="button"
                 :href="url"
                 download="file.xlsx"
@@ -159,38 +162,56 @@
                     <ArrowTopRightOnSquareIcon
                         class="h-5 w-5 mr-1 inline-block"
                     />
-                    <p class="inline-block">Export</p>
+                    <p class="inline-block text-black uppercase font-extrabold">
+                        Export
+                    </p>
                 </button>
             </a>
-        </div>
 
-        <div v-if="checked.length > 0 && !selectPage" class="inline-block mt-2">
-            <div v-if="selectAll || todos.meta.total == checked.length">
-                Selected:
-                <strong>{{ checked.length }}</strong> record(s).
-            </div>
-            <div v-else>
-                Selected:
-                <strong>{{ checked.length }}</strong> record(s), All:
-                <strong>{{ todos.meta.total }}</strong>
-                <a @click.prevent="selectAllRecords" href="#" class="ml-2"
-                    >Select All</a
+            <div v-if="checked.length > 0 && !selectPage" class="inline-block">
+                <div
+                    class="inline-block mx-1"
+                    v-if="selectAll || todos.meta.total == checked.length"
                 >
+                    Selected:
+                    <strong>{{ checked.length }}</strong> record(s).
+                </div>
+                <div v-else class="inline-block mx-1">
+                    Selected:
+                    <strong>{{ checked.length }}</strong> record(s)
+                    <a
+                        @click.prevent="selectAllRecords"
+                        href="#"
+                        class="ml-1 rounded-md bg-yellow-400 border-2 border-black uppercase text-black text-xs"
+                        >Select All</a
+                    >
+                </div>
             </div>
-        </div>
 
-        <div class="inline-block" v-if="selectPage">
-            <div v-if="selectAll || todos.meta.total == checked.length">
-                Selected all:
-                <strong>{{ checked.length }}</strong> record(s).
-            </div>
-            <div v-else>
-                Selected:
-                <strong>{{ checked.length }}</strong> record(s), All:
-                <strong>{{ todos.meta.total }}</strong>
-                <a @click.prevent="selectAllRecords" href="#" class="ml-2"
-                    >Select All</a
+            <div class="inline-block" v-if="selectPage">
+                <div
+                    class="inline-block mx-1"
+                    v-if="selectAll || todos.meta.total == checked.length"
                 >
+                    Selected:
+                    <strong>{{ checked.length }}</strong> record(s).
+                    <a
+                        @click.prevent="selectAllRecords"
+                        href="#"
+                        class="ml-1 rounded-md bg-yellow-400 border-2 border-black uppercase text-black text-xs px-1"
+                        >Select All</a
+                    >
+                </div>
+                <div v-else class="inline-block mx-1">
+                    Selected:
+                    <strong>{{ checked.length }}</strong> record(s)
+                    <a
+                        @click.prevent="selectAllRecords"
+                        href="#"
+                        class="ml-1 rounded-md bg-yellow-400 border-2 border-black uppercase text-black text-xs px-1"
+                        >Select All</a
+                    >
+                </div>
             </div>
         </div>
 
@@ -307,7 +328,8 @@
                                 href="#"
                                 @click.prevent="change_sort('todo_date')"
                             >
-                                Date <br> Todo
+                                Date <br />
+                                Todo
                             </a>
                             <span
                                 v-if="
@@ -330,7 +352,8 @@
                                 href="#"
                                 @click.prevent="change_sort('todo_deadline')"
                             >
-                                Date <br> Deadline
+                                Date <br />
+                                Deadline
                             </a>
                             <span
                                 v-if="
@@ -593,12 +616,6 @@
                                         >
                                             <PencilIcon class="h-3 w-3" />
                                         </button>
-                                        <!-- <button
-                                    class="bg-blue-300 py-1 px-1 ml-2 text-xs rounded-md inline-block"
-                                    @click="hideEditResult(forecast.id)"
-                                >
-                                    Hide
-                                </button> -->
                                         <span v-show="changeAction" class="">
                                             <select
                                                 id="selectAction"
@@ -616,7 +633,9 @@
                                                 <option disabled value="">
                                                     Select Action
                                                 </option>
-                                                <option value="">No action</option>
+                                                <option value="">
+                                                    No action
+                                                </option>
                                                 <option
                                                     v-for="action in actions.data"
                                                     :key="action.id"
@@ -696,6 +715,7 @@
 import LaravelVuePagination from "laravel-vue-pagination";
 import axios from "axios";
 import moment from "moment";
+import { VueDatePicker } from "@vuepic/vue-datepicker";
 import {
     PencilSquareIcon,
     TrashIcon,
@@ -720,6 +740,7 @@ export default {
         ArrowTopRightOnSquareIcon,
         ArrowsUpDownIcon,
         PencilIcon,
+        VueDatePicker,
     },
 
     created() {},
@@ -1234,7 +1255,7 @@ export default {
 
         showToday(date) {
             // let day = moment(date).format("DD-MM-YYYY");
-            let day = moment(date).format("DD-MM-YYYY");
+            let day = moment(date).format("DD-MM-YY");
             return day;
         },
 
