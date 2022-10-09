@@ -137,10 +137,11 @@
                                 <div class="text-sm text-center h-6 w-max">
                                     <a
                                         href="#"
-                                        class="text-white"
+                                        
                                         @click.prevent="
                                             change_sort('created_at')
                                         "
+                                        class="text-white"
                                     >
                                         Date<br />Created
                                         <span

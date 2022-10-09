@@ -11,7 +11,7 @@ class ContactStatusController extends Controller
 {
     public function index()
     {
-        return ContactStatusResource::collection(ContactStatus::all());
+        return ContactStatusResource::collection(ContactStatus::all()->sortBy('name'));
     }
 
     public function dropdown()

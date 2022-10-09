@@ -11,6 +11,6 @@ class ForecastTypeController extends Controller
 {
     public function index()
     {
-        return ForecastTypeResource::collection(ForecastType::all());
+        return ForecastTypeResource::collection(ForecastType::all()->sortBy('name'));
     }
 }

@@ -28,6 +28,7 @@
         "laravel-vue-pagination": "^3.0.0",
         "moment": "^2.29.4",
         "vue": "^3.2.36",
+        "vue-json-excel3": "^0.0.3",
         "vue-loader": "^17.0.0",
         "vue-router": "^4.0.13"
     }

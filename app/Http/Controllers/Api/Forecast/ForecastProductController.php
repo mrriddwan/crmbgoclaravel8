@@ -11,7 +11,7 @@ class ForecastProductController extends Controller
 {
     public function index()
     {
-        return ForecastProductResource::collection(ForecastProduct::all());
+        return ForecastProductResource::collection(ForecastProduct::all()->sortBy('name'));
         // return ContactCategory::all()->only('id', 'name');
     }
 }

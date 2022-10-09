@@ -5,6 +5,10 @@ import { createApp } from "vue";
 import LaravelVuePagination from "laravel-vue-pagination";
 import Datepicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css'
+import JsonExcel from "vue-json-excel3";
+
+// window.$ = window.jQuery = require('jquery')
+
 
 
 import ContactIndex from "../components/contacts/ContactIndex.vue";
@@ -19,9 +23,13 @@ Alpine.start();
 
 const app = createApp({});
 
+
 app.component("Pagination", LaravelVuePagination);
 app.component('VueDatePicker', Datepicker);
 app.component("contact-index", ContactIndex);
+app.component("downloadExcel", JsonExcel);
+
+
 app.use(router);
 app.config.globalProperties.$moment = {
     formNow(date) {

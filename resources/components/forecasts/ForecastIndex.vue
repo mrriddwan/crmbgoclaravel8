@@ -1,12 +1,12 @@
 <template>
     <h1
-        class="items-center text-center text-6xl text-white font-extrabold bg-slate-400 px-2 rounded-md"
+        class="items-center text-center text-5xl text-white font-extrabold bg-slate-400 px-2 rounded-md"
     >
         Forecast List
     </h1>
 
     <div class="py-2">
-        <div class="inline-block ">
+        <div class="inline-block">
             <router-link
                 to="/forecast/summary"
                 class="inline-block items-center px-2 py-1 bg-purple-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
@@ -108,30 +108,16 @@
         <div
             class="table-wrp block max-h-screen overflow-y-auto overflow-x-auto"
         >
-            <table class="table table-hover w-full mt-0">
-                <thead class="bg-slate-400 border-b sticky top-0">
+            <table class="table table-hover table-bordered w-full mt-0 ">
+                <thead class="bg-slate-500 border-b sticky top-0 text-xs">
                     <tr>
                         <th>
                             <input type="checkbox" v-model="selectPage" />
                             <div class="text-sm text-center h-6"></div>
                         </th>
                         <th class="py-3">
-                            <div class="text-sm text-center h-6">
-                                <a href="#" @click.prevent=""> # </a>
-                                <span
-                                    v-if="
-                                        sort_direction == 'desc' &&
-                                        sort_field == ''
-                                    "
-                                    >&uarr;</span
-                                >
-                                <span
-                                    v-if="
-                                        sort_direction == 'asc' &&
-                                        sort_field == ''
-                                    "
-                                    >&darr;</span
-                                >
+                            <div class="text-sm text-center text-white h-6">
+                                #
                             </div>
                             <div class="text-sm text-center h-6"></div>
                         </th>
@@ -142,23 +128,38 @@
                                     @click.prevent="
                                         change_sort('forecast_updatedate')
                                     "
+                                    class="text-white"
                                 >
                                     Last<br />Update
+                                    <span
+                                        v-if="
+                                            (!(sort_direction == 'asc') ||
+                                                !(sort_direction == 'desc')) &&
+                                            !(
+                                                sort_field ==
+                                                'forecast_updatedate'
+                                            )
+                                        "
+                                        class="inline-block"
+                                        ><ArrowsUpDownIcon class="h-4 w-4"
+                                    /></span>
+                                    <span
+                                        v-if="
+                                            sort_direction == 'desc' &&
+                                            sort_field == 'forecast_updatedate'
+                                        "
+                                        class="inline-block"
+                                        ><ArrowUpIcon class="h-4 w-4"
+                                    /></span>
+                                    <span
+                                        v-if="
+                                            sort_direction == 'asc' &&
+                                            sort_field == 'forecast_updatedate'
+                                        "
+                                        class="inline-block"
+                                        ><ArrowDownIcon class="h-4 w-4"
+                                    /></span>
                                 </a>
-                                <span
-                                    v-if="
-                                        sort_direction == 'desc' &&
-                                        sort_field == 'forecast_updatedate'
-                                    "
-                                    >&uarr;</span
-                                >
-                                <span
-                                    v-if="
-                                        sort_direction == 'asc' &&
-                                        sort_field == 'forecast_updatedate'
-                                    "
-                                    >&darr;</span
-                                >
                             </div>
                             <div class="text-sm text-center h-6"></div>
                         </th>
@@ -167,43 +168,72 @@
                                 <a
                                     href="#"
                                     @click.prevent="change_sort('contact_name')"
+                                    class="text-white"
                                 >
-                                    Company
+                                    Contact
+                                    <span
+                                        v-if="
+                                            (!(sort_direction == 'asc') ||
+                                                !(sort_direction == 'desc')) &&
+                                            !(sort_field == 'contact_name')
+                                        "
+                                        class="inline-block"
+                                        ><ArrowsUpDownIcon class="h-4 w-4"
+                                    /></span>
+                                    <span
+                                        v-if="
+                                            sort_direction == 'desc' &&
+                                            sort_field == 'contact_name'
+                                        "
+                                        class="inline-block"
+                                        ><ArrowUpIcon class="h-4 w-4"
+                                    /></span>
+                                    <span
+                                        v-if="
+                                            sort_direction == 'asc' &&
+                                            sort_field == 'contact_name'
+                                        "
+                                        class="inline-block"
+                                        ><ArrowDownIcon class="h-4 w-4"
+                                    /></span>
                                 </a>
-                                <span
-                                    v-if="
-                                        sort_direction == 'desc' &&
-                                        sort_field == 'contact_name'
-                                    "
-                                    >&uarr;</span
-                                >
-                                <span
-                                    v-if="
-                                        sort_direction == 'asc' &&
-                                        sort_field == 'contact_name'
-                                    "
-                                    >&darr;</span
-                                >
                             </div>
                             <div class="text-sm text-center h-6"></div>
                         </th>
                         <th class="py-3">
                             <div class="text-sm text-center h-6">
-                                <a href="#" @click.prevent=""> CS </a>
-                                <span
-                                    v-if="
-                                        sort_direction == 'desc' &&
-                                        sort_field == 'user_name'
-                                    "
-                                    >&uarr;</span
+                                <a
+                                    href="#"
+                                    @click.prevent="change_sort('user_name')"
+                                    class="text-white"
                                 >
-                                <span
-                                    v-if="
-                                        sort_direction == 'asc' &&
-                                        sort_field == 'user_name'
-                                    "
-                                    >&darr;</span
-                                >
+                                    CS
+                                    <span
+                                        v-if="
+                                            (!(sort_direction == 'asc') ||
+                                                !(sort_direction == 'desc')) &&
+                                            !(sort_field == 'user_name')
+                                        "
+                                        class="inline-block"
+                                        ><ArrowsUpDownIcon class="h-4 w-4"
+                                    /></span>
+                                    <span
+                                        v-if="
+                                            sort_direction == 'desc' &&
+                                            sort_field == 'user_name'
+                                        "
+                                        class="inline-block"
+                                        ><ArrowUpIcon class="h-4 w-4"
+                                    /></span>
+                                    <span
+                                        v-if="
+                                            sort_direction == 'asc' &&
+                                            sort_field == 'user_name'
+                                        "
+                                        class="inline-block"
+                                        ><ArrowDownIcon class="h-4 w-4"
+                                    /></span>
+                                </a>
                             </div>
                             <div
                                 class="items-center text-xs text-center h-6 w-24"
@@ -227,22 +257,39 @@
                             </div>
                         </th>
                         <th class="py-3 w-max">
-                            <div class="text-sm text-center h-6">
-                                <a href="#" @click.prevent=""> Product </a>
-                                <span
-                                    v-if="
-                                        sort_direction == 'desc' &&
-                                        sort_field == 'product_name'
-                                    "
-                                    >&uarr;</span
+                            <div class="text-sm text-center h-max">
+                                <a
+                                    href="#"
+                                    @click.prevent="change_sort('product_name')"
+                                    class="text-white"
                                 >
-                                <span
-                                    v-if="
-                                        sort_direction == 'asc' &&
-                                        sort_field == 'product_name'
-                                    "
-                                    >&darr;</span
-                                >
+                                    Forecast<br />Product
+                                    <span
+                                        v-if="
+                                            (!(sort_direction == 'asc') ||
+                                                !(sort_direction == 'desc')) &&
+                                            !(sort_field == 'product_name')
+                                        "
+                                        class="inline-block"
+                                        ><ArrowsUpDownIcon class="h-4 w-4"
+                                    /></span>
+                                    <span
+                                        v-if="
+                                            sort_direction == 'desc' &&
+                                            sort_field == 'product_name'
+                                        "
+                                        class="inline-block"
+                                        ><ArrowUpIcon class="h-4 w-4"
+                                    /></span>
+                                    <span
+                                        v-if="
+                                            sort_direction == 'asc' &&
+                                            sort_field == 'product_name'
+                                        "
+                                        class="inline-block"
+                                        ><ArrowDownIcon class="h-4 w-4"
+                                    /></span>
+                                </a>
                             </div>
                             <div class="text-center h-6 w-20">
                                 <select
@@ -268,78 +315,116 @@
                                 <a
                                     href="#"
                                     @click.prevent="change_sort('amount')"
+                                    class="text-white"
                                 >
                                     Amount
+                                    <span
+                                        v-if="
+                                            (!(sort_direction == 'asc') ||
+                                                !(sort_direction == 'desc')) &&
+                                            !(sort_field == 'amount')
+                                        "
+                                        class="inline-block"
+                                        ><ArrowsUpDownIcon class="h-4 w-4"
+                                    /></span>
+                                    <span
+                                        v-if="
+                                            sort_direction == 'desc' &&
+                                            sort_field == 'amount'
+                                        "
+                                        class="inline-block"
+                                        ><ArrowUpIcon class="h-4 w-4"
+                                    /></span>
+                                    <span
+                                        v-if="
+                                            sort_direction == 'asc' &&
+                                            sort_field == 'amount'
+                                        "
+                                        class="inline-block"
+                                        ><ArrowDownIcon class="h-4 w-4"
+                                    /></span>
                                 </a>
-                                <span
-                                    v-if="
-                                        sort_direction == 'desc' &&
-                                        sort_field == 'amount'
-                                    "
-                                    >&uarr;</span
-                                >
-                                <span
-                                    v-if="
-                                        sort_direction == 'asc' &&
-                                        sort_field == 'amount'
-                                    "
-                                    >&darr;</span
-                                >
                             </div>
                             <div class="text-sm text-center h-6"></div>
                         </th>
                         <th class="py-3">
-                            <div class="text-sm text-center h-6">
+                            <div class="text-sm text-center h-max">
                                 <a
                                     href="#"
                                     @click.prevent="
                                         change_sort('forecast_date')
                                     "
+                                    class="text-white"
                                 >
-                                    Expected<br />
-                                    Forecast
+                                    Date<br />Forecast
+                                    <span
+                                        v-if="
+                                            (!(sort_direction == 'asc') ||
+                                                !(sort_direction == 'desc')) &&
+                                            !(sort_field == 'forecast_date')
+                                        "
+                                        class="inline-block"
+                                        ><ArrowsUpDownIcon class="h-4 w-4"
+                                    /></span>
+                                    <span
+                                        v-if="
+                                            sort_direction == 'desc' &&
+                                            sort_field == 'forecast_date'
+                                        "
+                                        class="inline-block"
+                                        ><ArrowUpIcon class="h-4 w-4"
+                                    /></span>
+                                    <span
+                                        v-if="
+                                            sort_direction == 'asc' &&
+                                            sort_field == 'forecast_date'
+                                        "
+                                        class="inline-block"
+                                        ><ArrowDownIcon class="h-4 w-4"
+                                    /></span>
                                 </a>
-                                <span
-                                    v-if="
-                                        sort_direction == 'desc' &&
-                                        sort_field == 'forecast_date'
-                                    "
-                                    >&uarr;</span
-                                >
-                                <span
-                                    v-if="
-                                        sort_direction == 'asc' &&
-                                        sort_field == 'forecast_date'
-                                    "
-                                    >&darr;</span
-                                >
                             </div>
                             <div class="text-sm text-center h-6"></div>
                         </th>
                         <th class="py-3">
-                            <div class="text-sm text-center h-6">
+                            <div class="text-sm text-center h-max">
                                 <a
                                     href="#"
                                     @click.prevent="
                                         change_sort('forecast_type_name')
                                     "
+                                    class="text-white"
                                 >
-                                    Forecast Type
+                                    Forecast<br />Type
+                                    <span
+                                        v-if="
+                                            (!(sort_direction == 'asc') ||
+                                                !(sort_direction == 'desc')) &&
+                                            !(
+                                                sort_field ==
+                                                'forecast_type_name'
+                                            )
+                                        "
+                                        class="inline-block"
+                                        ><ArrowsUpDownIcon class="h-4 w-4"
+                                    /></span>
+                                    <span
+                                        v-if="
+                                            sort_direction == 'desc' &&
+                                            sort_field == 'forecast_type_name'
+                                        "
+                                        class="inline-block"
+                                        ><ArrowUpIcon class="h-4 w-4"
+                                    /></span>
+                                    <span
+                                        v-if="
+                                            sort_direction == 'asc' &&
+                                            sort_field == 'forecast_type_name'
+                                        "
+                                        class="inline-block"
+                                        ><ArrowDownIcon class="h-4 w-4"
+                                    /></span>
                                 </a>
-                                <span
-                                    v-if="
-                                        sort_direction == 'desc' &&
-                                        sort_field == 'forecast_type_name'
-                                    "
-                                    >&uarr;</span
-                                >
-                                <span
-                                    v-if="
-                                        sort_direction == 'asc' &&
-                                        sort_field == 'forecast_type_name'
-                                    "
-                                    >&darr;</span
-                                >
                             </div>
                             <div class="text-sm text-center h-6">
                                 <div class="text-sm text-center h-6">
@@ -360,29 +445,41 @@
                             </div>
                         </th>
                         <th class="py-3">
-                            <div class="text-sm text-center h-6">
+                            <div class="text-sm text-center h-max">
                                 <a
                                     href="#"
                                     @click.prevent="
                                         change_sort('forecast_result')
                                     "
+                                    class="text-white"
                                 >
                                     Result
+                                    <span
+                                        v-if="
+                                            (!(sort_direction == 'asc') ||
+                                                !(sort_direction == 'desc')) &&
+                                            !(sort_field == 'forecast_result')
+                                        "
+                                        class="inline-block"
+                                        ><ArrowsUpDownIcon class="h-4 w-4"
+                                    /></span>
+                                    <span
+                                        v-if="
+                                            sort_direction == 'desc' &&
+                                            sort_field == 'forecast_result'
+                                        "
+                                        class="inline-block"
+                                        ><ArrowUpIcon class="h-4 w-4"
+                                    /></span>
+                                    <span
+                                        v-if="
+                                            sort_direction == 'asc' &&
+                                            sort_field == 'forecast_result'
+                                        "
+                                        class="inline-block"
+                                        ><ArrowDownIcon class="h-4 w-4"
+                                    /></span>
                                 </a>
-                                <span
-                                    v-if="
-                                        sort_direction == 'desc' &&
-                                        sort_field == 'forecast_result'
-                                    "
-                                    >&uarr;</span
-                                >
-                                <span
-                                    v-if="
-                                        sort_direction == 'asc' &&
-                                        sort_field == 'forecast_result'
-                                    "
-                                    >&darr;</span
-                                >
                             </div>
                             <div class="text-sm text-center h-6">
                                 <div class="text-sm text-center h-6">
@@ -408,13 +505,13 @@
                         </th>
                     </tr>
                 </thead>
-                <tbody class="mt-2">
+                <tbody class="mt-2 text-center">
                     <tr
                         v-for="(forecast, index) in forecasts.data"
                         :key="forecast.id"
                         :class="isChecked(forecast.id) ? 'table-primary' : ''"
                     >
-                        <td>
+                        <td class="text-center">
                             <input
                                 type="checkbox"
                                 :value="forecast.id"
@@ -573,6 +670,8 @@ import {
     DocumentChartBarIcon,
     ArrowTopRightOnSquareIcon,
     ArrowsUpDownIcon,
+    ArrowUpIcon,
+    ArrowDownIcon,
 } from "@heroicons/vue/24/solid";
 
 export default {
@@ -586,6 +685,8 @@ export default {
         PencilIcon,
         ArrowTopRightOnSquareIcon,
         ArrowsUpDownIcon,
+        ArrowUpIcon,
+        ArrowDownIcon,
     },
 
     mounted() {

@@ -1,5 +1,5 @@
 <template>
-    <div class="container">
+    <div class="w-max">
         <h1
             class="items-center text-center text-4xl text-white font-extrabold font-mono uppercase bg-slate-400 px-2 rounded-md"
         >
@@ -7,15 +7,15 @@
         </h1>
 
         <div class="">
-            <div class="grid grid-cols-5 items-center">
-                <div class="grid grid-cols-1 items-left m-2">
+            <div class="grid grid-cols-4 items-center">
+                <!-- <div class="grid grid-cols-1 items-left m-2">
                     <label for="paginate" class="">Per Page</label>
                     <select v-model="paginate" class="form-control">
                         <option value="10">10</option>
                         <option value="50">50</option>
                         <option value="100">100</option>
                     </select>
-                </div>
+                </div> -->
                 <div class="grid grid-cols-1 items-left m-2">
                     <label>Year</label>
                     <input
@@ -37,65 +37,19 @@
 
                 <div>
                     <div>
-                        <a
-                            v-if="checked.length > 0"
-                            class="px-2 py-1 ml-2 align-bottom text-center bg-emerald-300 rounded-md text-xs"
-                            type="button"
-                            :href="url"
-                            download="file.xlsx"
+                        <download-excel
+                            :data="contacts.data"
+                            :fields="contact_fields"
+                            worksheet="ContactSummary"
+                            name="ContactSummary.xls"
+                            class="btn btn-success btn-sm"
                         >
-                            <button @click="exportSelected()" class="h-1">
-                                <ArrowTopRightOnSquareIcon
-                                    class="h-5 w-5 mr-1 inline-block"
-                                />
-                                <p class="inline-block">Export</p>
-                            </button>
-                        </a>
+                            <ArrowTopRightOnSquareIcon
+                                class="h-5 w-5 mr-1 inline-block"
+                            />
+                            Export
+                        </download-excel>
                     </div>
-
-                    <!-- <div v-if="checked.length > 0" class="inline-block">
-                    <div
-                        v-if="
-                            selectAll || contacts.meta.total == checked.length
-                        "
-                    >
-                        Selected all:
-                        <strong>{{ checked.length }}</strong> record(s).
-                    </div>
-                    <div v-else>
-                        Selected:
-                        <strong>{{ checked.length }}</strong> record(s), All:
-                        <strong>{{ contacts.meta.total }}</strong>
-                        <a
-                            @click.prevent="selectAllRecords"
-                            href="#"
-                            class="ml-2"
-                            >Select All</a
-                        >
-                    </div>
-                </div>
-
-                <div class="inline-block" v-if="selectPage">
-                    <div
-                        v-if="
-                            selectAll || contacts.meta.total == checked.length
-                        "
-                    >
-                        Selected all:
-                        <strong>{{ checked.length }}</strong> record(s).
-                    </div>
-                    <div v-else>
-                        Selected:
-                        <strong>{{ checked.length }}</strong> record(s), All:
-                        <strong>{{ contacts.meta.total }}</strong>
-                        <a
-                            @click.prevent="selectAllRecords"
-                            href="#"
-                            class="ml-2"
-                            >Select All</a
-                        >
-                    </div>
-                </div> -->
                 </div>
                 <div class="py-1 inline-block">
                     <Pagination
@@ -108,17 +62,18 @@
                 </div>
             </div>
 
-            <div
-                class="table-wrp block max-h-screen overflow-y-auto overflow-x-auto"
-            >
-                <table class="table table-hover table-bordered w-max">
+            <div class="block max-h-screen overflow-y-auto overflow-x-auto">
+                <table
+                    class="table table-hover table-bordered w-max"
+                    id="summary_table"
+                >
                     <thead class="bg-slate-400 border-b sticky top-0">
-                        <tr class="w-max">
-                            <th>
+                        <tr class="w-full">
+                            <!-- <th>
                                 <input type="checkbox" v-model="selectPage" />
-                            </th>
+                            </th> -->
                             <!-- <th class="text-xs">No.</th> -->
-                            <!-- <th class="py-3">
+                            <!-- <th class="w-10">
                             <div class="text-xs text-center h-6">
                                 <a
                                     href="#"
@@ -142,7 +97,7 @@
                                 >
                             </div>
                         </th> -->
-                            <th class="py-3 w-2">
+                            <th class="w-10">
                                 <div class="text-xs text-center h-6">
                                     <a
                                         href="#"
@@ -168,7 +123,7 @@
                                     >
                                 </div>
                                 <div
-                                    class="items-center text-xs text-center h-6 w-24"
+                                    class="items-center text-xs text-center h-6 4"
                                 >
                                     <select
                                         v-model="selectedUser"
@@ -188,7 +143,7 @@
                                     </select>
                                 </div>
                             </th>
-                            <th class="py-3">
+                            <th class="w-10">
                                 <div class="text-xs text-center h-6">
                                     <a
                                         href="#"
@@ -229,7 +184,7 @@
                                     </select>
                                 </div>
                             </th>
-                            <th class="py-3">
+                            <th class="w-10">
                                 <div class="text-xs text-center h-6">
                                     <a
                                         href="#"
@@ -273,7 +228,7 @@
                                 </div>
                             </th>
 
-                            <th class="py-3">
+                            <th class="w-10">
                                 <div class="text-xs text-center h-6">
                                     <a
                                         href="#"
@@ -316,7 +271,7 @@
                                     </div>
                                 </div>
                             </th>
-                            <th class="py-3">
+                            <th class="w-10">
                                 <div class="text-xs text-center h-6">
                                     <a
                                         href="#"
@@ -360,7 +315,7 @@
                                 </div>
                             </th>
 
-                            <th class="py-3">
+                            <th class="w-10">
                                 <div class="text-xs text-center h-6">
                                     <a
                                         href="#"
@@ -384,40 +339,40 @@
                                     >
                                 </div>
                             </th>
-                            <th class="py-3">
+                            <th class="">
                                 <div class="text-xs text-center">Jan</div>
                             </th>
-                            <th class="py-3">
+                            <th class="">
                                 <div class="text-xs text-center">Feb</div>
                             </th>
-                            <th class="py-3">
+                            <th class="">
                                 <div class="text-xs text-center">Mar</div>
                             </th>
-                            <th class="py-3">
+                            <th class="">
                                 <div class="text-xs text-center">Apr</div>
                             </th>
-                            <th class="py-3">
+                            <th class="">
                                 <div class="text-xs text-center">May</div>
                             </th>
-                            <th class="py-3">
+                            <th class="">
                                 <div class="text-xs text-center">June</div>
                             </th>
-                            <th class="py-3">
+                            <th class="">
                                 <div class="text-xs text-center">July</div>
                             </th>
-                            <th class="py-3">
+                            <th class="">
                                 <div class="text-xs text-center">Aug</div>
                             </th>
-                            <th class="py-3">
+                            <th class="">
                                 <div class="text-xs text-center">Sept</div>
                             </th>
-                            <th class="py-3">
+                            <th class="">
                                 <div class="text-xs text-center">Oct</div>
                             </th>
-                            <th class="py-3">
+                            <th class="">
                                 <div class="text-xs text-center">Nov</div>
                             </th>
-                            <th class="py-3">
+                            <th class="">
                                 <div class="text-xs text-center">Dec</div>
                             </th>
                         </tr>
@@ -426,24 +381,20 @@
                         <tr
                             v-for="(contact, index) in contacts.data"
                             :key="contact.id"
-                            :class="
-                                isChecked(contact.id) ? 'table-primary' : ''
-                            "
                         >
-                            <td>
-                                <input
-                                    type="checkbox"
-                                    :value="contact.id"
-                                    v-model="checked"
-                                />
+                            <td class="text-xs break-normal">
+                                {{ contact.user_name }}
                             </td>
-                            <!-- <td class="text-xs">{{ index + 1 }}</td> -->
-                            <!-- <td class="text-xs">{{ contact.created_at }}</td> -->
-                            <td class="text-xs break-normal w-2">{{ contact.user_name }}</td>
-                            <td class="text-xs break-normal">{{ contact.status_name }}</td>
+                            <td class="text-xs break-normal">
+                                {{ contact.status_name }}
+                            </td>
                             <td class="text-xs">{{ contact.type_name }}</td>
-                            <td class="text-xs break-normal">{{ contact.category_name }}</td>
-                            <td class="text-xs break-normal">{{ contact.industry_name }}</td>
+                            <td class="text-xs break-normal">
+                                {{ contact.category_name }}
+                            </td>
+                            <td class="text-xs break-normal">
+                                {{ contact.industry_name }}
+                            </td>
                             <td class="text-xs break-normal">
                                 <router-link
                                     :to="`/contact/${contact.id}/info`"
@@ -457,7 +408,7 @@
                             </td>
                             <td
                                 v-if="contact.summary['Jan2022']"
-                                class="text-xs "
+                                class="text-xs"
                             >
                                 <span
                                     v-for="(summary_info, index) in contact
@@ -471,7 +422,9 @@
                                         "
                                         class="w-max"
                                     >
-                                        {{ showToday(summary_info["todo_date"]) }}
+                                        {{
+                                            showToday(summary_info["todo_date"])
+                                        }}
                                     </span>
                                 </span>
                             </td>
@@ -492,7 +445,9 @@
                                             summary_info['action']
                                         "
                                     >
-                                        {{ showToday(summary_info["todo_date"]) }}
+                                        {{
+                                            showToday(summary_info["todo_date"])
+                                        }}
                                         <br />
                                     </span>
                                 </span>
@@ -514,7 +469,9 @@
                                             summary_info['action']
                                         "
                                     >
-                                        {{ showToday(summary_info["todo_date"]) }}
+                                        {{
+                                            showToday(summary_info["todo_date"])
+                                        }}
                                         <br />
                                     </span>
                                 </span>
@@ -536,7 +493,9 @@
                                             summary_info['action']
                                         "
                                     >
-                                        {{ showToday(summary_info["todo_date"]) }}
+                                        {{
+                                            showToday(summary_info["todo_date"])
+                                        }}
                                         <br />
                                     </span>
                                 </span>
@@ -558,7 +517,9 @@
                                             summary_info['action']
                                         "
                                     >
-                                        {{ showToday(summary_info["todo_date"]) }}
+                                        {{
+                                            showToday(summary_info["todo_date"])
+                                        }}
                                         <br />
                                     </span>
                                 </span>
@@ -580,7 +541,9 @@
                                             summary_info['action']
                                         "
                                     >
-                                        {{ showToday(summary_info["todo_date"]) }}
+                                        {{
+                                            showToday(summary_info["todo_date"])
+                                        }}
                                         <br />
                                     </span>
                                 </span>
@@ -602,7 +565,9 @@
                                             summary_info['action']
                                         "
                                     >
-                                        {{ showToday(summary_info["todo_date"]) }}
+                                        {{
+                                            showToday(summary_info["todo_date"])
+                                        }}
                                         <br />
                                     </span>
                                 </span>
@@ -624,7 +589,9 @@
                                             summary_info['action']
                                         "
                                     >
-                                        {{ showToday(summary_info["todo_date"]) }}
+                                        {{
+                                            showToday(summary_info["todo_date"])
+                                        }}
                                     </span>
                                 </span>
                             </td>
@@ -645,7 +612,9 @@
                                             summary_info['action']
                                         "
                                     >
-                                        {{ showToday(summary_info["todo_date"]) }}
+                                        {{
+                                            showToday(summary_info["todo_date"])
+                                        }}
                                     </span>
                                 </span>
                             </td>
@@ -666,7 +635,9 @@
                                             summary_info['action']
                                         "
                                     >
-                                        {{ showToday(summary_info["todo_date"]) }}
+                                        {{
+                                            showToday(summary_info["todo_date"])
+                                        }}
                                     </span>
                                 </span>
                             </td>
@@ -687,7 +658,9 @@
                                             summary_info['action']
                                         "
                                     >
-                                        {{ showToday(summary_info["todo_date"]) }}
+                                        {{
+                                            showToday(summary_info["todo_date"])
+                                        }}
                                     </span>
                                 </span>
                             </td>
@@ -708,7 +681,9 @@
                                             summary_info['action']
                                         "
                                     >
-                                        {{ showToday(summary_info["todo_date"]) }}
+                                        {{
+                                            showToday(summary_info["todo_date"])
+                                        }}
                                     </span>
                                 </span>
                             </td>
@@ -781,6 +756,124 @@ export default {
             sort_direction: "asc",
             sort_field: "id",
             currentDate: "",
+
+            contact_fields: {
+                ID: "id",
+                Company: "name",
+                Status: "status_name",
+                Type: "type_name",
+                User: "user_name",
+                "Contact Product": "category_name",
+                Industry: "industry_name",
+                Jan: {
+                    callback: (value) => {
+                        if (!value.summary[`Jan` + this.selectedYear]) {
+                            return " ";
+                        } else {
+                            return `${value.summary[`Jan` + this.selectedYear][0]["todo_date"]}`;
+                        }
+                    },
+                },
+                Feb: {
+                    callback: (value) => {
+                        if (!value.summary[`Feb` + this.selectedYear]) {
+                            return " ";
+                        } else {
+                            return `${value.summary[`Feb` + this.selectedYear][0]["todo_date"]}`;
+                        }
+                    },
+                },
+                Mar: {
+                    callback: (value) => {
+                        if (!value.summary[`Mar` + this.selectedYear]) {
+                            return " ";
+                        } else {
+                            return `${value.summary[`Mar` + this.selectedYear][0]["todo_date"]}`;
+                        }
+                    },
+                },
+                Apr: {
+                    callback: (value) => {
+                        if (!value.summary[`Apr` + this.selectedYear]) {
+                            return " ";
+                        } else {
+                            return `${value.summary[`Apr` + this.selectedYear][0]["todo_date"]}`;
+                        }
+                    },
+                },
+                May: {
+                    callback: (value) => {
+                        if (!value.summary[`May` + this.selectedYear]) {
+                            return " ";
+                        } else {
+                            return `${value.summary[`May` + this.selectedYear][0]["todo_date"]}`;
+                        }
+                    },
+                },
+                Jun: {
+                    callback: (value) => {
+                        if (!value.summary[`Jun` + this.selectedYear]) {
+                            return " ";
+                        } else {
+                            return `${value.summary[`Jun` + this.selectedYear][0]["todo_date"]}`;
+                        }
+                    },
+                },
+                Jul: {
+                    callback: (value) => {
+                        if (!value.summary[`Jul` + this.selectedYear]) {
+                            return " ";
+                        } else {
+                            return `${value.summary[`Jul` + this.selectedYear][0]["todo_date"]}`;
+                        }
+                    },
+                },
+                Aug: {
+                    callback: (value) => {
+                        if (!value.summary[`Aug` + this.selectedYear]) {
+                            return " ";
+                        } else {
+                            return `${value.summary[`Aug` + this.selectedYear][0]["todo_date"]}`;
+                        }
+                    },
+                },
+                Sep: {
+                    callback: (value) => {
+                        if (!value.summary[`Sep` + this.selectedYear]) {
+                            return " ";
+                        } else {
+                            return `${value.summary[`Sep` + this.selectedYear][0]["todo_date"]}`;
+                        }
+                    },
+                },
+                Oct: {
+                    callback: (value) => {
+                        if (!value.summary[`Oct` + this.selectedYear]) {
+                            return " ";
+                        } else {
+                            return `${value.summary[`Oct` + this.selectedYear][0]["todo_date"]}`;
+                        }
+                    },
+                },
+                Nov: {
+                    callback: (value) => {
+                        if (!value.summary[`Nov` + this.selectedYear]) {
+                            return " ";
+                        } else {
+                            return `${value.summary[`Nov` + this.selectedYear][0]["todo_date"]}`;
+                        }
+                    },
+                },
+                Dec: {
+                    callback: (value) => {
+                        if (!value.summary[`Dec` + this.selectedYear]) {
+                            return " ";
+                        } else {
+                            return `${value.summary[`Dec` + this.selectedYear][0]["todo_date"]}`;
+                        }
+                    },
+                },
+            },
         };
     },
     watch: {
@@ -945,24 +1038,7 @@ export default {
             return day;
         },
 
-        exportSelected() {
-            if (this.checked.length === 0) {
-                return alert("Need select record.");
-            } else {
-                axios.get("/api/contacts/exportSummary");
-            }
-        },
 
-        isChecked(contact_id) {
-            return this.checked.includes(contact_id);
-        },
-
-        async selectAllRecords() {
-            await axios.get("/api/contacts/all").then((response) => {
-                this.checked = response.data;
-                this.selectAll = true;
-            });
-        },
     },
 };
 </script>

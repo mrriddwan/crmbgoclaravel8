@@ -12,7 +12,7 @@ class ContactIndustryController extends Controller
 {
     public function index()
     {
-        return ContactIndustryResource::collection(ContactIndustry::all());
+        return ContactIndustryResource::collection(ContactIndustry::all()->sortBy('name'));
     }
     
 }

@@ -43,6 +43,16 @@ class CreateForecastsTable extends Migration
                 ->references('id')
                 ->on('forecast_types')
                 ->onDelete('cascade');
+            $table->unsignedBigInteger('contact_status_id')->nullable()->constrained();
+            $table->foreign('contact_status_id')
+                ->references('id')
+                ->on('contact_statuses')
+                ->onDelete('cascade');
+            $table->unsignedBigInteger('contact_type_id')->nullable()->constrained();
+            $table->foreign('contact_type_id')
+                ->references('id')
+                ->on('contact_types')
+                ->onDelete('cascade');
             $table->timestamps();
         });
     }

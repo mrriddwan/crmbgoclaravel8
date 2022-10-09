@@ -30,6 +30,8 @@ class ForecastFactory extends Factory
             'contact_id' => random_int(1,100),
             'forecast_type_id' => random_int(1,4),
             'product_id' => random_int(1,5),
+            'contact_status_id' => random_int(1,5),
+            'contact_type_id' => random_int(1,5),
         ];
     }
 }

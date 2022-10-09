@@ -11,6 +11,6 @@ class ContactTypeController extends Controller
 {
     public function index()
     {
-        return ContactTypeResource::collection(ContactType::all());
+        return ContactTypeResource::collection(ContactType::all()->sortBy('name'));
     }
 }

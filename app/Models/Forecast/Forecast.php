@@ -3,6 +3,7 @@
 namespace App\Models\Forecast;
 
 use App\Models\Contact\Contact;
+use App\Models\Contact\ContactStatus;
 use App\Models\Contact\ContactType;
 use App\Models\Forecast\ForecastProduct;
 use App\Models\Forecast\ForecastResult;
@@ -23,6 +24,8 @@ class Forecast extends Model
         'user_id',
         'contact_id',
         'product_id',
+        'contact_status_id',
+        'contact_type_id',
         'forecast_type_id',
     ];
 
@@ -38,6 +41,10 @@ class Forecast extends Model
         return $this -> belongsTo(ContactType::class);
     }
 
+    public function contact_status(){
+        return $this -> belongsTo(ContactStatus::class);
+    }
+
     public function product(){
         return $this -> belongsTo(ForecastProduct::class);
     }
@@ -49,6 +56,11 @@ class Forecast extends Model
     public function forecast_type(){
         return $this -> belongsTo(ForecastType::class);
     }
+
+    // public function summary(){
+    //     return $this -> belongsTo(Forecast::class)->with('contact');
+    // }
+    
 
     public function scopeSearch($query, $term)
     {   
@@ -66,6 +78,12 @@ class Forecast extends Model
                 })
                 ->orWhereHas('contact', function ($query) use ($term) {
                     $query->where('contacts.name', 'like', $term);
+                })
+                ->orWhereHas('contact_status', function ($query) use ($term) {
+                    $query->where('contact_statuses.name', 'like', $term);
+                })
+                ->orWhereHas('contact_type', function ($query) use ($term) {
+                    $query->where('contact_types.name', 'like', $term);
                 })
                 ->orWhereHas('product', function ($query) use ($term) {
                     $query->where('forecast_products.name', 'like', $term);

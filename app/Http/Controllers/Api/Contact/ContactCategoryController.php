@@ -12,7 +12,7 @@ class ContactCategoryController extends Controller
 {
     public function index()
     {
-        return ContactCategoryResource::collection(ContactCategory::all());
+        return ContactCategoryResource::collection(ContactCategory::all()->sortBy('name'));
         // return ContactCategory::all()->only('id', 'name');
     }
 }

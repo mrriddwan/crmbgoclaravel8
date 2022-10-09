@@ -43,6 +43,10 @@ Route::get('/contact/index', function () {
     return view('contact');
 })->middleware(['auth'])->name('contact');
 
+Route::get('/contact/summary', function () {
+    return view('forecastsummary');
+})->middleware(['auth'])->name('contact-summary');
+
 Route::get('/todo/index', function () {
     return view('todo');
 })->middleware(['auth'])->name('todo');
@@ -54,6 +58,10 @@ Route::get('/followup/index', function () {
 Route::get('/forecast/index', function () {
     return view('forecast');
 })->middleware(['auth'])->name('forecast');
+
+Route::get('/forecast/summary', function () {
+    return view('forecastsummary');
+})->middleware(['auth'])->name('forecast-summary');
 
 Route::get('/project/index', function () {
     return view('project');

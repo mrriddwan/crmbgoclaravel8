@@ -51,7 +51,9 @@ class Contact extends Model
 
     public function todo()
     {
-        return $this -> hasMany(ToDo::class)->with('task', 'user', 'action');
+        return $this -> hasMany(ToDo::class)
+        // ->with('task', 'user', 'action')
+        ;
     }
 
     public function incharge()
@@ -78,27 +80,6 @@ class Contact extends Model
     {
         return $this -> hasMany(Forecast::class);
     }
-
-    // public function exportContact()
-    // {
-    //     return Contact::with(([
-    //         'status' => function ($q) {
-    //             $q->select('id', 'name');
-    //         },
-    //         'category' => function ($q) {
-    //             $q->select('id', 'name');
-    //         },
-    //         'type' => function ($q) {
-    //             $q->select('id', 'name');
-    //         },
-    //         'user' => function ($q) {
-    //             $q->select('id', 'name');
-    //         },
-    //     ]))
-    //     ->get()
-    //     ->toArray()
-    //     ;
-    // }
     
     public function scopeSearch($query, $term)
     {   

@@ -1,9 +1,9 @@
 <template>
     <div class="container w-max">
         <h1
-            class="items-center text-center text-6xl text-white font-extrabold bg-slate-400 px-2 rounded-md"
+            class="items-center text-center text-5xl text-white font-extrabold bg-slate-400 px-2 rounded-md"
         >
-            Follow up Index
+            Follow Up List
         </h1>
 
         <div class="text-sm mb-2">
@@ -208,7 +208,7 @@
             </div>
         </div>
 
-        <div class="grid grid-cols-3 w-full text-center bg-slate-500">
+        <div class="grid grid-cols-3 w-full text-center bg-slate-400">
             <div class="text-left">
                 <button
                     class="text-xl text-left px-3 py-3"
@@ -269,7 +269,7 @@
 
         <div>
             <table class="table table-hover table-bordered" id="example">
-                <thead>
+                <thead class="bg-slate-500">
                     <tr>
                         <th>
                             <input type="checkbox" v-model="selectPage" />
@@ -279,112 +279,172 @@
                             <a
                                 href="#"
                                 @click.prevent="change_sort('followup_date')"
+                                class="text-white"
                             >
-                                Date of Follow Up
+                                Date<br />Follow Up
+                                <span
+                                    v-if="
+                                        (!(sort_direction == 'asc') ||
+                                            !(sort_direction == 'desc')) &&
+                                        !(sort_field == 'followup_date')
+                                    "
+                                    class="inline-block"
+                                    ><ArrowsUpDownIcon class="h-4 w-4"
+                                /></span>
+                                <span
+                                    v-if="
+                                        sort_direction == 'desc' &&
+                                        sort_field == 'followup_date'
+                                    "
+                                    class="inline-block"
+                                    ><ArrowUpIcon class="h-4 w-4"
+                                /></span>
+                                <span
+                                    v-if="
+                                        sort_direction == 'asc' &&
+                                        sort_field == 'followup_date'
+                                    "
+                                    class="inline-block"
+                                    ><ArrowDownIcon class="h-4 w-4"
+                                /></span>
                             </a>
-                            <span
-                                v-if="
-                                    sort_direction == 'desc' &&
-                                    sort_field == 'followup_date'
-                                "
-                                >&uarr;</span
-                            >
-                            <span
-                                v-if="
-                                    sort_direction == 'asc' &&
-                                    sort_field == 'followup_date'
-                                "
-                                >&darr;</span
-                            >
                             <div></div>
                         </th>
                         <th>
                             <a
                                 href="#"
                                 @click.prevent="change_sort('followup_time')"
+                                class="text-white"
                             >
-                                Time
+                                Time<br />Follow Up
+                                <span
+                                    v-if="
+                                        (!(sort_direction == 'asc') ||
+                                            !(sort_direction == 'desc')) &&
+                                        !(sort_field == 'followup_time')
+                                    "
+                                    class="inline-block"
+                                    ><ArrowsUpDownIcon class="h-4 w-4"
+                                /></span>
+                                <span
+                                    v-if="
+                                        sort_direction == 'desc' &&
+                                        sort_field == 'followup_time'
+                                    "
+                                    class="inline-block"
+                                    ><ArrowUpIcon class="h-4 w-4"
+                                /></span>
+                                <span
+                                    v-if="
+                                        sort_direction == 'asc' &&
+                                        sort_field == 'followup_time'
+                                    "
+                                    class="inline-block"
+                                    ><ArrowDownIcon class="h-4 w-4"
+                                /></span>
                             </a>
-                            <span
-                                v-if="
-                                    sort_direction == 'desc' &&
-                                    sort_field == 'followup_time'
-                                "
-                                >&uarr;</span
-                            >
-                            <span
-                                v-if="
-                                    sort_direction == 'asc' &&
-                                    sort_field == 'followup_time'
-                                "
-                                >&darr;</span
-                            >
                         </th>
                         <th>
                             <a
                                 href="#"
                                 @click.prevent="change_sort('contact_name')"
+                                class="text-white"
                             >
                                 Contact
+                                <span
+                                    v-if="
+                                        (!(sort_direction == 'asc') ||
+                                            !(sort_direction == 'desc')) &&
+                                        !(sort_field == 'contact_name')
+                                    "
+                                    class="inline-block"
+                                    ><ArrowsUpDownIcon class="h-4 w-4"
+                                /></span>
+                                <span
+                                    v-if="
+                                        sort_direction == 'desc' &&
+                                        sort_field == 'contact_name'
+                                    "
+                                    class="inline-block"
+                                    ><ArrowUpIcon class="h-4 w-4"
+                                /></span>
+                                <span
+                                    v-if="
+                                        sort_direction == 'asc' &&
+                                        sort_field == 'contact_name'
+                                    "
+                                    class="inline-block"
+                                    ><ArrowDownIcon class="h-4 w-4"
+                                /></span>
                             </a>
-                            <span
-                                v-if="
-                                    sort_direction == 'desc' &&
-                                    sort_field == 'contact_name'
-                                "
-                                >&uarr;</span
-                            >
-                            <span
-                                v-if="
-                                    sort_direction == 'asc' &&
-                                    sort_field == 'contact_name'
-                                "
-                                >&darr;</span
-                            >
                         </th>
                         <th>
                             <a
                                 href="#"
                                 @click.prevent="change_sort('user_name')"
+                                class="text-white"
                             >
                                 CS
+                                <span
+                                    v-if="
+                                        (!(sort_direction == 'asc') ||
+                                            !(sort_direction == 'desc')) &&
+                                        !(sort_field == 'user_name')
+                                    "
+                                    class="inline-block"
+                                    ><ArrowsUpDownIcon class="h-4 w-4"
+                                /></span>
+                                <span
+                                    v-if="
+                                        sort_direction == 'desc' &&
+                                        sort_field == 'user_name'
+                                    "
+                                    class="inline-block"
+                                    ><ArrowUpIcon class="h-4 w-4"
+                                /></span>
+                                <span
+                                    v-if="
+                                        sort_direction == 'asc' &&
+                                        sort_field == 'user_name'
+                                    "
+                                    class="inline-block"
+                                    ><ArrowDownIcon class="h-4 w-4"
+                                /></span>
                             </a>
-                            <span
-                                v-if="
-                                    sort_direction == 'desc' &&
-                                    sort_field == 'user_name'
-                                "
-                                >&uarr;</span
-                            >
-                            <span
-                                v-if="
-                                    sort_direction == 'asc' &&
-                                    sort_field == 'user_name'
-                                "
-                                >&darr;</span
-                            >
                         </th>
                         <th>
                             <a
                                 href="#"
                                 @click.prevent="change_sort('task_name')"
+                                class="text-white"
                             >
                                 Task
+                                <span
+                                    v-if="
+                                        (!(sort_direction == 'asc') ||
+                                            !(sort_direction == 'desc')) &&
+                                        !(sort_field == 'task_name')
+                                    "
+                                    class="inline-block"
+                                    ><ArrowsUpDownIcon class="h-4 w-4"
+                                /></span>
+                                <span
+                                    v-if="
+                                        sort_direction == 'desc' &&
+                                        sort_field == 'task_name'
+                                    "
+                                    class="inline-block"
+                                    ><ArrowUpIcon class="h-4 w-4"
+                                /></span>
+                                <span
+                                    v-if="
+                                        sort_direction == 'asc' &&
+                                        sort_field == 'task_name'
+                                    "
+                                    class="inline-block"
+                                    ><ArrowDownIcon class="h-4 w-4"
+                                /></span>
                             </a>
-                            <span
-                                v-if="
-                                    sort_direction == 'desc' &&
-                                    sort_field == 'task_name'
-                                "
-                                >&uarr;</span
-                            >
-                            <span
-                                v-if="
-                                    sort_direction == 'asc' &&
-                                    sort_field == 'task_name'
-                                "
-                                >&darr;</span
-                            >
                             <div class="text-sm text-center h-6">
                                 <div class="text-sm text-center h-6">
                                     <select
@@ -407,25 +467,37 @@
                             <a
                                 href="#"
                                 @click.prevent="change_sort('followup_remark')"
+                                class="text-white"
                             >
                                 Remark
+                                <span
+                                    v-if="
+                                        (!(sort_direction == 'asc') ||
+                                            !(sort_direction == 'desc')) &&
+                                        !(sort_field == 'followup_remark')
+                                    "
+                                    class="inline-block"
+                                    ><ArrowsUpDownIcon class="h-4 w-4"
+                                /></span>
+                                <span
+                                    v-if="
+                                        sort_direction == 'desc' &&
+                                        sort_field == 'followup_remark'
+                                    "
+                                    class="inline-block"
+                                    ><ArrowUpIcon class="h-4 w-4"
+                                /></span>
+                                <span
+                                    v-if="
+                                        sort_direction == 'asc' &&
+                                        sort_field == 'followup_remark'
+                                    "
+                                    class="inline-block"
+                                    ><ArrowDownIcon class="h-4 w-4"
+                                /></span>
                             </a>
-                            <span
-                                v-if="
-                                    sort_direction == 'desc' &&
-                                    sort_field == 'followup_remark'
-                                "
-                                >&uarr;</span
-                            >
-                            <span
-                                v-if="
-                                    sort_direction == 'asc' &&
-                                    sort_field == 'followup_remark'
-                                "
-                                >&darr;</span
-                            >
                         </th>
-                        <th>Action</th>
+                        <th class="text-white">Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -507,6 +579,8 @@ import {
     EyeIcon,
     ArrowTopRightOnSquareIcon,
     ArrowsUpDownIcon,
+    ArrowUpIcon,
+    ArrowDownIcon,
 } from "@heroicons/vue/24/solid";
 
 export default {
@@ -522,6 +596,8 @@ export default {
         ArrowTopRightOnSquareIcon,
         ArrowsUpDownIcon,
         VueDatePicker,
+        ArrowUpIcon,
+        ArrowDownIcon,
     },
 
     mounted() {

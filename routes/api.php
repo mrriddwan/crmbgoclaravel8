@@ -71,7 +71,9 @@ Route::get('/contacts/summary', [ContactController::class, 'summary'])->name('co
 Route::get('/contacts/test', [ContactController::class, 'test'])->name('contact:test');
 Route::get('/contacts/export/{contact}', [ContactController::class, 'export'])->name('contact:export');
 Route::get('/contacts/all', [ContactController::class, 'selectAll'])->name('contact:selectAll');
-Route::get('/contacts/exportSummary/{contact}', [ContactController::class, 'selectAll'])->name('contact:exportSummary');
+// Route::get('/contacts/exportSummary/{contact}', [ContactController::class, 'selectAll'])->name('contact:exportSummary');
+Route::get('/contacts/exportSummary', [ContactController::class, 'exportSummary'])->name('contact:exportSummary');
+Route::get('/contacts/todo', [ContactController::class, 'todo'])->name('contact:todo');
 
 
 /*Sub-Contact API*/
@@ -137,6 +139,7 @@ Route::get('/forecasts/export/{forecast}', [ForecastController::class, 'export']
 Route::get('/forecasts/all', [ForecastController::class, 'selectAll'])->name('followup:selectAll');
 Route::get('/forecasts/summary', [ForecastController::class, 'summary'])->name('followup:summary');
 Route::get('/forecasts/exportSummary', [ForecastController::class, 'exportSummary'])->name('followup:exportSummary');
+Route::get('/forecasts/summary2', [ForecastController::class, 'summary2'])->name('followup:summary2');
 
 /*Sub-Forecast API*/
 Route::get('/forecasts/product/index', [ForecastProductController::class, 'index'])->name('forecastproduct:index');

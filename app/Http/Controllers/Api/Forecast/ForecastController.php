@@ -12,6 +12,7 @@ use App\Models\Forecast\Forecast;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Date;
+use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 
 class ForecastController extends Controller
@@ -230,12 +231,14 @@ class ForecastController extends Controller
                 $query->where('contacts.user_id', $selectedUser);
             })
             ->when($selectedYear, function ($query) use ($selectedYear) {
-                $query->whereYear('contacts.todo_date', '=', ($selectedYear));
+                $query->whereHas('forecast_summary', function ($q) use ($selectedYear) {
+                    $q->whereYear('forecast_date', $selectedYear);
+                });
             })
             ->orderBy($sort_field, $sort_direction)
             ->search(trim($search_term))
 
-            ->paginate($paginate);
+            ->paginate(5000);
 
         // group smua todo by month
         $contact
@@ -258,6 +261,94 @@ class ForecastController extends Controller
 
         // ->get();
         return $contact->toArray();
+    }
+
+    public function summary2()
+    {
+        $paginate = request('paginate');
+        $search_term = request('q', '');
+
+        $sort_direction = request('sort_direction');
+        $sort_field = request('sort_field');
+
+        $selectedtContact = request('selectedtContact');
+        $selectedContactStatus = request('selectedContactStatus');
+        $selectedContactType = request('selectedContactType');
+        $selectedForecastType = request('selectedForecastType');
+        $selectedForecastProduct = request('selectedForecastProduct');
+        $selectedUser = request('selectedUser');
+        $selectedYear = request('selectedYear');
+
+
+        $forecast = Forecast::select(
+            'forecasts.id',
+            'forecasts.contact_id',
+            'forecasts.forecast_date',
+            'forecasts.amount',
+            'contacts.name as contact',
+            'contact_statuses.name as contact_status',
+            'contact_types.name as contact_type',
+            'users.name as user_name',
+            'forecast_types.name as forecast_type',
+            'forecast_products.name as forecast_product',
+            DB::raw("DATE_FORMAT(forecasts.forecast_date, '%M-%Y') as month"),
+            // DB::raw("MAX(forecasts.forecast_date, '%M %Y') as last"),
+        )
+            ->join('contacts', 'forecasts.contact_id', '=', 'contacts.id')
+            ->join('contact_statuses', 'forecasts.contact_status_id', '=', 'contact_statuses.id')
+            ->join('contact_types', 'forecasts.contact_type_id', '=', 'contact_types.id')
+            ->join('forecast_types', 'forecasts.forecast_type_id', '=', 'forecast_types.id')
+            ->join('forecast_products', 'forecasts.product_id', '=', 'forecast_products.id')
+            ->join('users', 'forecasts.user_id', '=', 'users.id')
+            ->when($selectedContactStatus, function ($query) use ($selectedContactStatus) {
+                $query->where('contact_status_id', $selectedContactStatus);
+            })
+            ->when($selectedForecastProduct, function ($query) use ($selectedForecastProduct) {
+                $query->where('product_id', $selectedForecastProduct);
+            })
+            ->when($selectedForecastType, function ($query) use ($selectedForecastType) {
+                $query->where('forecast_type_id', $selectedForecastType);
+            })
+            ->when($selectedContactType, function ($query) use ($selectedContactType) {
+                $query->where('contact_type_id', $selectedContactType);
+            })
+            ->when($selectedUser, function ($query) use ($selectedUser) {
+                $query->where('forecasts.user_id', $selectedUser);
+            })
+            ->when($selectedtContact, function ($query) use ($selectedtContact) {
+                $query->where('contact_id', $selectedtContact);
+            })
+            ->when($selectedYear, function ($query) use ($selectedYear) {
+                $query->whereHas('forecast_summary', function ($q) use ($selectedYear) {
+                    $q->whereYear('forecast_date', $selectedYear);
+                });
+            })
+            ->orderBy($sort_field, $sort_direction)
+            ->search(trim($search_term))
+            ->paginate(5000)
+            // ->groupBy('contact_name')
+            // ->groupBy('month')
+            // ->toArray()
+            ;
+
+        // $data = Tutorial::where('completed', 0)->get();
+        // $groups = $data->groupBy('subj_id');
+
+        // $results = [];
+        // foreach ($forecast as $group) {
+        //     $forecast['month'] = head($group);
+        // }
+        // return $results;
+
+        // return head($forecast);
+
+        // return response()->json([
+        //     'status' => true,
+        //     'message' => 'Successfully fetch data forecast ',
+        //     'data' => $forecast,
+        // ]);
+
+        return $forecast->toArray();
     }
 
 

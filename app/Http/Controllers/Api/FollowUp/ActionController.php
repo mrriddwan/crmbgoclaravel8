@@ -11,6 +11,6 @@ class ActionController extends Controller
 {
     public function index()
     {
-        return ActionResource::collection(Action::all());
+        return ActionResource::collection(Action::all()->sortBy('name'));
     }
 }

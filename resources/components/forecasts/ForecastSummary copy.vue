@@ -1,13 +1,13 @@
 <template>
     <div class="container">
         <h1
-            class="items-center text-center text-5xl text-white font-extrabold bg-slate-400 px-2 rounded-md"
+            class="items-center text-center text-4xl text-white font-extrabold font-mono uppercase bg-slate-400 px-2 rounded-md"
         >
             Forecast Summary
         </h1>
 
         <div class="">
-            <div class="grid grid-cols-4 items-center">
+            <div class="grid grid-cols-5 items-center">
                 <!-- <div class="grid grid-cols-1 items-left m-2">
                     <label for="paginate" class="">Per Page</label>
                     <select v-model="paginate" class="form-control">
@@ -34,12 +34,8 @@
                         placeholder="Search by any..."
                     />
                 </div>
-                <div class="grid grid-cols-2 break-normal text-xs">
-                    <div class="bg-blue-700 rounded-md w-max px-2 py-2">
-                        <button @click="getForecasts" class="text-white">
-                            Find Records
-                        </button>
-                    </div>
+
+                <div>
                     <div>
                         <download-excel
                             :data="forecasts.data"
@@ -55,8 +51,7 @@
                         </download-excel>
                     </div>
                 </div>
-
-                <!-- <div class="py-1 inline-block">
+                <div class="py-1 inline-block">
                     <Pagination
                         :data="forecasts"
                         @pagination-change-page="getForecasts"
@@ -64,7 +59,7 @@
                         :align="'right'"
                         class="pagination"
                     />
-                </div> -->
+                </div>
             </div>
 
             <div
@@ -73,12 +68,7 @@
                 <table class="table table-hover table-bordered w-max">
                     <thead class="bg-slate-400 border-b sticky top-0">
                         <tr>
-                            <th class="text-xs">
-                                <div class="text-xs text-center h-6 text-white">
-                                    No.
-                                </div>
-                                <div class="text-xs text-center h-6"></div>
-                            </th>
+                            <th class="text-xs">No.</th>
                             <th class="py-3">
                                 <div class="text-xs text-center h-6">
                                     <a
@@ -86,37 +76,23 @@
                                         @click.prevent="
                                             change_sort('user_name')
                                         "
-                                        class="text-white"
                                     >
                                         CS
-                                        <span
-                                            v-if="
-                                                (!(sort_direction == 'asc') ||
-                                                    !(
-                                                        sort_direction == 'desc'
-                                                    )) &&
-                                                !(sort_field == 'user_name')
-                                            "
-                                            class="inline-block"
-                                            ><ArrowsUpDownIcon class="h-4 w-4"
-                                        /></span>
-                                        <span
-                                            v-if="
-                                                sort_direction == 'desc' &&
-                                                sort_field == 'user_name'
-                                            "
-                                            class="inline-block"
-                                            ><ArrowUpIcon class="h-4 w-4"
-                                        /></span>
-                                        <span
-                                            v-if="
-                                                sort_direction == 'asc' &&
-                                                sort_field == 'user_name'
-                                            "
-                                            class="inline-block"
-                                            ><ArrowDownIcon class="h-4 w-4"
-                                        /></span>
                                     </a>
+                                    <span
+                                        v-if="
+                                            sort_direction == 'desc' &&
+                                            sort_field == 'user_name'
+                                        "
+                                        >&uarr;</span
+                                    >
+                                    <span
+                                        v-if="
+                                            sort_direction == 'asc' &&
+                                            sort_field == 'user_name'
+                                        "
+                                        >&darr;</span
+                                    >
                                 </div>
                                 <div
                                     class="items-center text-xs text-center h-6 w-24"
@@ -140,50 +116,33 @@
                                 </div>
                             </th>
                             <th class="py-3">
-                                <div class="text-xs text-center h-max">
+                                <div class="text-xs text-center h-6">
                                     <a
                                         href="#"
                                         @click.prevent="
-                                            change_sort('contact_status')
+                                            change_sort('status_name')
                                         "
-                                        class="text-white"
                                     >
-                                        Contact Type
-                                        <span
-                                            v-if="
-                                                (!(sort_direction == 'asc') ||
-                                                    !(
-                                                        sort_direction == 'desc'
-                                                    )) &&
-                                                !(
-                                                    sort_field ==
-                                                    'contact_status'
-                                                )
-                                            "
-                                            class="inline-block"
-                                            ><ArrowsUpDownIcon class="h-4 w-4"
-                                        /></span>
-                                        <span
-                                            v-if="
-                                                sort_direction == 'desc' &&
-                                                sort_field == 'contact_status'
-                                            "
-                                            class="inline-block"
-                                            ><ArrowUpIcon class="h-4 w-4"
-                                        /></span>
-                                        <span
-                                            v-if="
-                                                sort_direction == 'asc' &&
-                                                sort_field == 'contact_status'
-                                            "
-                                            class="inline-block"
-                                            ><ArrowDownIcon class="h-4 w-4"
-                                        /></span>
+                                        Status
                                     </a>
+                                    <span
+                                        v-if="
+                                            sort_direction == 'desc' &&
+                                            sort_field == 'status_name'
+                                        "
+                                        >&uarr;</span
+                                    >
+                                    <span
+                                        v-if="
+                                            sort_direction == 'asc' &&
+                                            sort_field == 'status_name'
+                                        "
+                                        >&darr;</span
+                                    >
                                 </div>
                                 <div class="text-xs text-center h-6">
                                     <select
-                                        v-model="selectedContactStatus"
+                                        v-model="selectedStatus"
                                         class="form-control form-control-sm"
                                     >
                                         <option value="">All</option>
@@ -198,43 +157,29 @@
                                 </div>
                             </th>
                             <th class="py-3">
-                                <div class="text-xs text-center h-max">
+                                <div class="text-xs text-center h-6">
                                     <a
                                         href="#"
                                         @click.prevent="
-                                            change_sort('contact_type')
+                                            change_sort('type_name')
                                         "
-                                        class="text-white"
                                     >
-                                        Contact Type
-                                        <span
-                                            v-if="
-                                                (!(sort_direction == 'asc') ||
-                                                    !(
-                                                        sort_direction == 'desc'
-                                                    )) &&
-                                                !(sort_field == 'contact_type')
-                                            "
-                                            class="inline-block"
-                                            ><ArrowsUpDownIcon class="h-4 w-4"
-                                        /></span>
-                                        <span
-                                            v-if="
-                                                sort_direction == 'desc' &&
-                                                sort_field == 'contact_type'
-                                            "
-                                            class="inline-block"
-                                            ><ArrowUpIcon class="h-4 w-4"
-                                        /></span>
-                                        <span
-                                            v-if="
-                                                sort_direction == 'asc' &&
-                                                sort_field == 'contact_type'
-                                            "
-                                            class="inline-block"
-                                            ><ArrowDownIcon class="h-4 w-4"
-                                        /></span>
+                                        Type
                                     </a>
+                                    <span
+                                        v-if="
+                                            sort_direction == 'desc' &&
+                                            sort_field == 'type_name'
+                                        "
+                                        >&uarr;</span
+                                    >
+                                    <span
+                                        v-if="
+                                            sort_direction == 'asc' &&
+                                            sort_field == 'type_name'
+                                        "
+                                        >&darr;</span
+                                    >
                                 </div>
                                 <div class="text-xs text-center h-6">
                                     <div class="text-xs text-center h-6">
@@ -259,7 +204,7 @@
                                 <div class="text-xs text-center h-6">
                                     <a
                                         href="#"
-                                        @click.prevent="change_sort('contact')"
+                                        @click.prevent="change_sort('name')"
                                         class="text-white"
                                     >
                                         Company
@@ -269,7 +214,7 @@
                                                     !(
                                                         sort_direction == 'desc'
                                                     )) &&
-                                                !(sort_field == 'contact')
+                                                !(sort_field == 'name')
                                             "
                                             class="inline-block"
                                             ><ArrowsUpDownIcon class="h-4 w-4"
@@ -277,7 +222,7 @@
                                         <span
                                             v-if="
                                                 sort_direction == 'desc' &&
-                                                sort_field == 'contact'
+                                                sort_field == 'name'
                                             "
                                             class="inline-block"
                                             ><ArrowUpIcon class="h-4 w-4"
@@ -285,7 +230,7 @@
                                         <span
                                             v-if="
                                                 sort_direction == 'asc' &&
-                                                sort_field == 'contact'
+                                                sort_field == 'name'
                                             "
                                             class="inline-block"
                                             ><ArrowDownIcon class="h-4 w-4"
@@ -296,7 +241,7 @@
                             </th>
 
                             <th class="py-3">
-                                <div class="text-xs text-center h-max">
+                                <div class="text-xs text-center h-6">
                                     <a
                                         href="#"
                                         @click.prevent="
@@ -334,27 +279,11 @@
                                         /></span>
                                     </a>
                                 </div>
-                                <div class="text-xs text-center h-6">
-                                    <div class="text-xs text-center h-6">
-                                        <select
-                                            v-model="selectedForecastType"
-                                            class="form-control form-control-sm w-max"
-                                        >
-                                            <option value="">All</option>
-                                            <option
-                                                v-for="forecast_type in forecast_types.data"
-                                                :key="forecast_type.id"
-                                                :value="forecast_type.id"
-                                            >
-                                                {{ forecast_type.name }}
-                                            </option>
-                                        </select>
-                                    </div>
-                                </div>
+                                <div class="text-xs text-center h-6"></div>
                             </th>
 
                             <th class="py-3">
-                                <div class="text-xs text-center h-max">
+                                <div class="text-xs text-center h-6">
                                     <a
                                         href="#"
                                         @click.prevent="
@@ -362,7 +291,7 @@
                                         "
                                         class="text-white"
                                     >
-                                        Forecast Product
+                                        Product
                                         <span
                                             v-if="
                                                 (!(sort_direction == 'asc') ||
@@ -395,23 +324,7 @@
                                         /></span>
                                     </a>
                                 </div>
-                                <div class="text-xs text-center h-6">
-                                    <div class="text-xs text-center h-6">
-                                        <select
-                                            v-model="selectedForecastProduct"
-                                            class="form-control form-control-sm w-max"
-                                        >
-                                            <option value="">All</option>
-                                            <option
-                                                v-for="product in products.data"
-                                                :key="product.id"
-                                                :value="product.id"
-                                            >
-                                                {{ product.name }}
-                                            </option>
-                                        </select>
-                                    </div>
-                                </div>
+                                <div class="text-xs text-center h-6"></div>
                             </th>
 
                             <th class="py-3">
@@ -454,166 +367,288 @@
                     </thead>
                     <tbody class="mt-2">
                         <tr
-                            v-for="(forecast, index) in forecasts.data"
-                            :key="forecast.id"
+                            v-for="(contact, index) in forecasts.data"
+                            :key="contact.id"
                         >
                             <td class="text-xs text-center">{{ index + 1 }}</td>
                             <!-- <td class="text-xs">{{ contact.created_at }}</td> -->
-                            <td class="text-xs">{{ forecast.user_name }}</td>
-                            <td class="text-xs">
-                                {{ forecast.contact_status }}
-                            </td>
-                            <td class="text-xs">
-                                {{ forecast.contact_type }}
-                            </td>
+                            <td class="text-xs">{{ contact.user_name }}</td>
+                            <td class="text-xs">{{ contact.status_name }}</td>
+                            <td class="text-xs">{{ contact.type_name }}</td>
                             <td class="text-xs">
                                 <router-link
-                                    :to="`/contact/${forecast.contact_id}/info`"
+                                    :to="`/contact/${contact.id}/info`"
                                     custom
                                     v-slot="{ navigate, href }"
                                 >
                                     <a :href="href" @click.stop="navigate">{{
-                                        forecast.contact
+                                        contact.name
                                     }}</a>
                                 </router-link>
                             </td>
 
                             <td class="text-xs">
-                                {{ forecast.forecast_type }}
+                                <span
+                                    v-for="forecast in contact.forecast_summary"
+                                >
+                                    {{ forecast[0]["forecast_type"]["name"] }}
+                                    <br />
+                                </span>
                             </td>
                             <td class="text-xs">
-                                {{ forecast.forecast_product }}
+                                <span
+                                    v-for="forecast in contact.forecast_summary"
+                                >
+                                    {{ forecast[0]["product"]["name"] }}
+                                    <br />
+                                </span>
                             </td>
 
                             <td
+                                v-if="contact.forecast_summary['Jan-2022']"
                                 class="text-xs"
-                                v-if="
-                                    getMonth(forecast.forecast_date) ===
-                                    this.selectedYear + '-01'
-                                "
                             >
-                                {{ forecast.amount }}
-                            </td>
-                            <td v-else></td>
-
-                            <td
-                                class="text-xs"
-                                v-if="
-                                    getMonth(forecast.forecast_date) ===
-                                    this.selectedYear + '-02'
-                                "
-                            >
-                                {{ forecast.amount }}
-                            </td>
-                            <td v-else></td>
-
-                            <td
-                                class="text-xs"
-                                v-if="
-                                    getMonth(forecast.forecast_date) ===
-                                    this.selectedYear + '-03'
-                                "
-                            >
-                                {{ forecast.amount }}
+                                <span
+                                    v-for="(summary_info, index) in contact
+                                        .forecast_summary[
+                                        `Jan-` + this.selectedYear
+                                    ]"
+                                    :key="summary_info.id"
+                                >
+                                    {{
+                                        summary_info["amount"].toLocaleString(
+                                            "en-US"
+                                        )
+                                    }}<br />
+                                </span>
                             </td>
                             <td v-else></td>
 
                             <td
+                                v-if="contact.forecast_summary['Feb-2022']"
                                 class="text-xs"
-                                v-if="
-                                    getMonth(forecast.forecast_date) ===
-                                    this.selectedYear + '-04'
-                                "
                             >
-                                {{ forecast.amount }}
+                                <span
+                                    v-for="(summary_info, index) in contact
+                                        .forecast_summary[
+                                        `Feb-` + this.selectedYear
+                                    ]"
+                                    :key="summary_info.id"
+                                >
+                                    {{
+                                        summary_info["amount"].toLocaleString(
+                                            "en-US"
+                                        )
+                                    }}
+                                    <br />
+                                </span>
                             </td>
                             <td v-else></td>
 
                             <td
+                                v-if="contact.forecast_summary['Mar-2022']"
                                 class="text-xs"
-                                v-if="
-                                    getMonth(forecast.forecast_date) ===
-                                    this.selectedYear + '-05'
-                                "
                             >
-                                {{ forecast.amount }}
+                                <span
+                                    v-for="(summary_info, index) in contact
+                                        .forecast_summary[
+                                        `Mar-` + this.selectedYear
+                                    ]"
+                                    :key="summary_info.id"
+                                >
+                                    {{
+                                        summary_info["amount"].toLocaleString(
+                                            "en-US"
+                                        )
+                                    }}
+                                    <br />
+                                </span>
                             </td>
                             <td v-else></td>
 
                             <td
+                                v-if="contact.forecast_summary['Apr-2022']"
                                 class="text-xs"
-                                v-if="
-                                    getMonth(forecast.forecast_date) ===
-                                    this.selectedYear + '-06'
-                                "
                             >
-                                {{ forecast.amount }}
+                                <span
+                                    v-for="(summary_info, index) in contact
+                                        .forecast_summary[
+                                        `Apr-` + this.selectedYear
+                                    ]"
+                                    :key="summary_info.id"
+                                >
+                                    {{
+                                        summary_info["amount"].toLocaleString(
+                                            "en-US"
+                                        )
+                                    }}
+                                    <br />
+                                </span>
                             </td>
                             <td v-else></td>
 
                             <td
+                                v-if="contact.forecast_summary['May-2022']"
                                 class="text-xs"
-                                v-if="
-                                    getMonth(forecast.forecast_date) ===
-                                    this.selectedYear + '-07'
-                                "
                             >
-                                {{ forecast.amount }}
+                                <span
+                                    v-for="(summary_info, index) in contact
+                                        .forecast_summary[
+                                        `May-` + this.selectedYear
+                                    ]"
+                                    :key="summary_info.id"
+                                >
+                                    {{
+                                        summary_info["amount"].toLocaleString(
+                                            "en-US"
+                                        )
+                                    }}<br />
+                                    <br />
+                                </span>
                             </td>
                             <td v-else></td>
 
                             <td
+                                v-if="contact.forecast_summary['Jun-2022']"
                                 class="text-xs"
-                                v-if="
-                                    getMonth(forecast.forecast_date) ===
-                                    this.selectedYear + '-08'
-                                "
                             >
-                                {{ forecast.amount }}
+                                <span
+                                    v-for="(summary_info, index) in contact
+                                        .forecast_summary[
+                                        `Jun-` + this.selectedYear
+                                    ]"
+                                    :key="summary_info.id"
+                                >
+                                    {{
+                                        summary_info["amount"].toLocaleString(
+                                            "en-US"
+                                        )
+                                    }}
+                                    <br />
+                                </span>
                             </td>
                             <td v-else></td>
 
                             <td
+                                v-if="contact.forecast_summary['Jul-2022']"
                                 class="text-xs"
-                                v-if="
-                                    getMonth(forecast.forecast_date) ===
-                                    this.selectedYear + '-09'
-                                "
                             >
-                                {{ forecast.amount }}
+                                <span
+                                    v-for="(summary_info, index) in contact
+                                        .forecast_summary[
+                                        `Jul-` + this.selectedYear
+                                    ]"
+                                    :key="summary_info.id"
+                                >
+                                    {{
+                                        summary_info["amount"].toLocaleString(
+                                            "en-US"
+                                        )
+                                    }}
+                                    <br />
+                                </span>
                             </td>
                             <td v-else></td>
 
                             <td
+                                v-if="contact.forecast_summary['Aug-2022']"
                                 class="text-xs"
-                                v-if="
-                                    getMonth(forecast.forecast_date) ===
-                                    this.selectedYear + '-10'
-                                "
                             >
-                                {{ forecast.amount }}
+                                <span
+                                    v-for="(summary_info, index) in contact
+                                        .forecast_summary[
+                                        `Aug-` + this.selectedYear
+                                    ]"
+                                    :key="summary_info.id"
+                                >
+                                    {{
+                                        summary_info["amount"].toLocaleString(
+                                            "en-US"
+                                        )
+                                    }}<br />
+                                </span>
                             </td>
                             <td v-else></td>
 
                             <td
+                                v-if="contact.forecast_summary['Sep-2022']"
                                 class="text-xs"
-                                v-if="
-                                    getMonth(forecast.forecast_date) ===
-                                    this.selectedYear + '-11'
-                                "
                             >
-                                {{ forecast.amount }}
+                                <span
+                                    v-for="(summary_info, index) in contact
+                                        .forecast_summary[
+                                        `Sep-` + this.selectedYear
+                                    ]"
+                                    :key="summary_info.id"
+                                >
+                                    {{
+                                        summary_info["amount"].toLocaleString(
+                                            "en-US"
+                                        )
+                                    }}<br />
+                                </span>
                             </td>
                             <td v-else></td>
 
                             <td
+                                v-if="contact.forecast_summary['Oct-2022']"
                                 class="text-xs"
-                                v-if="
-                                    getMonth(forecast.forecast_date) ===
-                                    this.selectedYear + '-12'
-                                "
                             >
-                                {{ forecast.amount }}
+                                <span
+                                    v-for="(summary_info, index) in contact
+                                        .forecast_summary[
+                                        `Oct-` + this.selectedYear
+                                    ]"
+                                    :key="summary_info.id"
+                                >
+                                    {{
+                                        summary_info["amount"].toLocaleString(
+                                            "en-US"
+                                        )
+                                    }}
+                                    <br />
+                                </span>
+                            </td>
+                            <td v-else></td>
+
+                            <td
+                                v-if="contact.forecast_summary['Nov-2022']"
+                                class="text-xs"
+                            >
+                                <span
+                                    v-for="(summary_info, index) in contact
+                                        .forecast_summary[
+                                        `Nov-` + this.selectedYear
+                                    ]"
+                                    :key="summary_info.id"
+                                >
+                                    {{
+                                        summary_info["amount"].toLocaleString(
+                                            "en-US"
+                                        )
+                                    }}
+                                    <br />
+                                </span>
+                            </td>
+                            <td v-else></td>
+
+                            <td
+                                v-if="contact.forecast_summary['Dec-2022']"
+                                class="text-xs"
+                            >
+                                <span
+                                    v-for="(summary_info, index) in contact
+                                        .forecast_summary[
+                                        `Dec-` + this.selectedYear
+                                    ]"
+                                    :key="summary_info.id"
+                                >
+                                    {{
+                                        summary_info["amount"].toLocaleString(
+                                            "en-US"
+                                        )
+                                    }}
+                                </span>
                             </td>
                             <td v-else></td>
                         </tr>
@@ -669,12 +704,11 @@ export default {
 
     mounted() {
         this.getSelectedYear(this.getCurrentDate());
-        // this.getForecasts();
+        this.getForecasts();
         this.getStatus();
         this.getContactTypes();
         this.getForecastTypes();
         this.getUsers();
-        this.getProducts();
     },
     data() {
         return {
@@ -683,9 +717,7 @@ export default {
             users: [],
             contact_types: [],
             forecast_types: [],
-            products: [],
-
-            paginate: 5000,
+            paginate: 50,
             moment: moment,
             selectPage: false,
             selectAll: false,
@@ -693,170 +725,134 @@ export default {
 
             search: "",
             selectedYear: "",
+            selectedStatus: "",
             selectedUser: "",
-            selectedContact: "",
             selectedContactType: "",
-            selectedContactStatus: "",
             selectedForecastType: "",
-            selectedForecastProduct: "",
+            selectedProduct: "",
 
             sort_direction: "asc",
-            sort_field: "contact",
+            sort_field: "id",
             currentDate: "",
 
             forecast_fields: {
                 ID: "id",
+                Company: "name",
+                Status: "status_name",
+                Type: "type_name",
                 User: "user_name",
-                "Contact Status": "contact_status",
-                "Contact Type": "contact_type",
-                Company: "user_name",
-                "Forecast Type": "forecast_type",
-                "Forecast Product": "forecast_product",
+                User: "user_name",
+                User: "user_name",
                 Jan: {
                     callback: (value) => {
-                        if (
-                            this.getMonth(value.forecast_date) !==
-                            this.selectedYear + "-01"
-                        ) {
+                        if (!value.forecast_summary[`Jan-` + this.selectedYear]) {
                             return " ";
                         } else {
-                            return value.amount;
+                            return `${value.forecast_summary[`Jan-` + this.selectedYear][0]["amount"]}`;
                         }
                     },
                 },
                 Feb: {
                     callback: (value) => {
-                        if (
-                            this.getMonth(value.forecast_date) !==
-                            this.selectedYear + "-02"
-                        ) {
+                        if (!value.forecast_summary[`Feb-` + this.selectedYear]) {
                             return " ";
                         } else {
-                            return value.amount;
+                            return `${value.forecast_summary[`Feb-` + this.selectedYear][0]["amount"]}`;
                         }
                     },
                 },
                 Mar: {
                     callback: (value) => {
-                        if (
-                            this.getMonth(value.forecast_date) !==
-                            this.selectedYear + "-03"
-                        ) {
+                        if (!value.forecast_summary[`Mar-` + this.selectedYear]) {
                             return " ";
                         } else {
-                            return value.amount;
+                            return `${value.forecast_summary[`Mar-` + this.selectedYear][0]["amount"]}`;
                         }
                     },
                 },
                 Apr: {
                     callback: (value) => {
-                        if (
-                            this.getMonth(value.forecast_date) !==
-                            this.selectedYear + "-04"
-                        ) {
+                        if (!value.forecast_summary[`Apr-` + this.selectedYear]) {
                             return " ";
                         } else {
-                            return value.amount;
+                            return `${value.forecast_summary[`Apr-` + this.selectedYear][0]["amount"]}`;
                         }
                     },
                 },
                 May: {
                     callback: (value) => {
-                        if (
-                            this.getMonth(value.forecast_date) !==
-                            this.selectedYear + "-05"
-                        ) {
+                        if (!value.forecast_summary[`May-` + this.selectedYear]) {
                             return " ";
                         } else {
-                            return value.amount;
+                            return `${value.forecast_summary[`May-` + this.selectedYear][0]["amount"]}`;
                         }
                     },
                 },
                 Jun: {
                     callback: (value) => {
-                        if (
-                            this.getMonth(value.forecast_date) !==
-                            this.selectedYear + "-06"
-                        ) {
+                        if (!value.forecast_summary[`Jun-` + this.selectedYear]) {
                             return " ";
                         } else {
-                            return value.amount;
+                            return `${value.forecast_summary[`Jun-` + this.selectedYear][0]["amount"]}`;
                         }
                     },
                 },
                 Jul: {
                     callback: (value) => {
-                        if (
-                            this.getMonth(value.forecast_date) !==
-                            this.selectedYear + "-07"
-                        ) {
+                        if (!value.forecast_summary[`Jul-` + this.selectedYear]) {
                             return " ";
                         } else {
-                            return value.amount;
+                            return `${value.forecast_summary[`Jul-` + this.selectedYear][0]["amount"]}`;
                         }
                     },
                 },
                 Aug: {
                     callback: (value) => {
-                        if (
-                            this.getMonth(value.forecast_date) !==
-                            this.selectedYear + "-08"
-                        ) {
+                        if (!value.forecast_summary[`Aug-` + this.selectedYear]) {
                             return " ";
                         } else {
-                            return value.amount;
+                            return `${value.forecast_summary[`Aug-` + this.selectedYear][0]["amount"]}`;
                         }
                     },
                 },
                 Sep: {
                     callback: (value) => {
-                        if (
-                            this.getMonth(value.forecast_date) !==
-                            this.selectedYear + "-09"
-                        ) {
+                        if (!value.forecast_summary[`Sep-` + this.selectedYear]) {
                             return " ";
                         } else {
-                            return value.amount;
+                            return `${value.forecast_summary[`Sep-` + this.selectedYear][0]["amount"]}`;
                         }
                     },
                 },
                 Oct: {
                     callback: (value) => {
-                        if (
-                            this.getMonth(value.forecast_date) !==
-                            this.selectedYear + "-10"
-                        ) {
+                        if (!value.forecast_summary[`Oct-` + this.selectedYear]) {
                             return " ";
                         } else {
-                            return value.amount;
+                            return `${value.forecast_summary[`Oct-` + this.selectedYear][0]["amount"]}`;
                         }
                     },
                 },
                 Nov: {
                     callback: (value) => {
-                        if (
-                            this.getMonth(value.forecast_date) !==
-                            this.selectedYear + "-11"
-                        ) {
+                        if (!value.forecast_summary[`Nov-` + this.selectedYear]) {
                             return " ";
                         } else {
-                            return value.amount;
+                            return `${value.forecast_summary[`Nov-` + this.selectedYear][0]["amount"]}`;
                         }
                     },
                 },
                 Dec: {
                     callback: (value) => {
-                        if (
-                            this.getMonth(value.forecast_date) !==
-                            this.selectedYear + "-12"
-                        ) {
+                        if (!value.forecast_summary[`Dec-` + this.selectedYear]) {
                             return " ";
                         } else {
-                            return value.amount;
+                            return `${value.forecast_summary[`Dec-` + this.selectedYear][0]["amount"]}`;
                         }
                     },
                 },
             },
+        
         };
     },
     watch: {
@@ -866,7 +862,7 @@ export default {
         search: function (value) {
             this.getForecasts();
         },
-        selectedContactStatus: function (value) {
+        selectedStatus: function (value) {
             this.getForecasts();
         },
         selectedUser: function (value) {
@@ -878,9 +874,9 @@ export default {
         selectedForecastType: function (value) {
             this.getForecasts();
         },
-        selectedForecastProduct: function (value) {
-            this.getForecasts();
-        },
+        // selectedCategory: function (value) {
+        //     this.getForecasts();
+        // },
 
         selectPage: function (value) {
             this.checked = [];
@@ -908,21 +904,17 @@ export default {
             }
             axios
                 .get(
-                    "/api/forecasts/summary2?" +
+                    "/api/forecasts/summary?" +
                         "q=" +
                         this.search +
                         "&selectedContactType=" +
                         this.selectedContactType +
                         "&selectedUser=" +
                         this.selectedUser +
-                        "&selectedContactStatus=" +
-                        this.selectedContactStatus +
-                        "&selectedForecastProduct=" +
-                        this.selectedForecastProduct +
+                        "&selectedProduct=" +
+                        this.selectedProduct +
                         "&selectedForecastType=" +
                         this.selectedForecastType +
-                        "&selectedContact=" +
-                        this.selectedContact +
                         "&paginate=" +
                         this.paginate +
                         "&page=" +
@@ -984,17 +976,6 @@ export default {
                 });
         },
 
-        async getProducts() {
-            await axios
-                .get("/api/forecasts/product/index")
-                .then((res) => {
-                    this.products = res.data;
-                })
-                .catch((error) => {
-                    console.log(error);
-                });
-        },
-
         async change_sort(field) {
             if (this.sort_field == field) {
                 this.sort_direction =
@@ -1017,11 +998,6 @@ export default {
 
         showToday(date) {
             let day = moment(date).format("DD-MM-YY");
-            return day;
-        },
-
-        getMonth(date) {
-            let day = moment(date).format("YYYY-MM");
             return day;
         },
 
