@@ -4,6 +4,9 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
+use App\Models\Billboard\Billboard;
+use App\Models\Billboard\BillboardTenure;
+use App\Models\Billboard\Tempboard;
 use App\Models\Forecast\ForecastType;
 use Illuminate\Database\Seeder;
 
@@ -36,7 +39,9 @@ class DatabaseSeeder extends Seeder
             ToDoSeeder::class,
             FollowUpSeeder::class,
             ProjectSeeder::class,
-
+            BillboardSeeder::class,
+            TempboardSeeder::class,
+            BillboardTenureSeeder::class,
         ]);
     }
 }

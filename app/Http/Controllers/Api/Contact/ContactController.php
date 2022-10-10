@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Api\Contact;
 
 use App\Exports\ContactExport;
-use App\Exports\ContactSummaryExport;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Contact\ContactRequest;
 use App\Http\Resources\Contact\ContactResource;

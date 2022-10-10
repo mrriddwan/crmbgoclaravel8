@@ -71,6 +71,14 @@ Route::get('/performance/index', function () {
     return view('performance');
 })->middleware(['auth'])->name('performance');
 
+Route::get('/billboard/index', function () {
+    return view('billboard');
+})->middleware(['auth'])->name('billboard');
+
+Route::get('/tempboard/index', function () {
+    return view('tempboard');
+})->middleware(['auth'])->name('tempboard');
+
 Route::get('/admin/index', function () {
     return view('admin');
 })->middleware(['auth'])->name('admin');

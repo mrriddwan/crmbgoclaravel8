@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Api\Billboard\BillboardController;
+use App\Http\Controllers\Api\Billboard\TempboardController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\Contact\ContactCategoryController;
 use App\Http\Controllers\Api\Contact\ContactController;
@@ -18,6 +20,7 @@ use App\Http\Controllers\Api\Project\ProjectController;
 use App\Http\Controllers\Api\ToDo\TaskController;
 use App\Http\Controllers\Api\ToDo\ToDoController;
 use App\Http\Controllers\Api\ToDo\ToDoSourceController;
+use App\Models\Billboard\BillboardTenure;
 use App\Models\Forecast\ForecastType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -151,3 +154,18 @@ Route::get('/projects/index', [ProjectController::class, 'index'])->name('projec
 Route::post('/projects/store', [ProjectController::class, 'store'])->name('project:store');
 Route::get('/projects/show/{project}', [ProjectController::class, 'show'])->name('project:show');
 Route::put('/projects/update/{project}', [ProjectController::class, 'update'])->name('project:update');
+
+/*Billboard/Tempboard API*/
+Route::get('/billboard/index', [BillboardController::class, 'index'])->name('billboard:index');
+Route::post('/billboard/store', [BillboardController::class, 'store'])->name('billboard:store');
+Route::get('/billboard/show/{billboard}', [BillboardController::class, 'show'])->name('billboard:show');
+Route::put('/billboard/update/{billboard}', [BillboardController::class, 'update'])->name('billboard:update');
+Route::delete('/billboard/delete/{billboard}', [BillboardController::class, 'delete'])->name('billboard:delete');
+
+Route::get('/tempboard/index', [TempboardController::class, 'index'])->name('tempboard:index');
+Route::post('/tempboard/store', [TempboardController::class, 'store'])->name('tempboard:store');
+Route::get('/tempboard/show/{tempboard}', [TempboardController::class, 'show'])->name('tempboard:show');
+Route::put('/tempboard/update/{tempboard}', [TempboardController::class, 'update'])->name('tempboard:update');
+Route::delete('/tempboard/delete/{tempboard}', [TempboardController::class, 'delete'])->name('tempboard:delete');
+
+Route::post('/billboard/tenure/index', [BillboardTenure::class, 'index'])->name('tenure:index');

@@ -69,34 +69,6 @@
                 >
                     <thead class="bg-slate-400 border-b sticky top-0">
                         <tr class="w-full">
-                            <!-- <th>
-                                <input type="checkbox" v-model="selectPage" />
-                            </th> -->
-                            <!-- <th class="text-xs">No.</th> -->
-                            <!-- <th class="w-10">
-                            <div class="text-xs text-center h-6">
-                                <a
-                                    href="#"
-                                    @click.prevent="change_sort('created_at')"
-                                >
-                                    Date<br />Created
-                                </a>
-                                <span
-                                    v-if="
-                                        sort_direction == 'desc' &&
-                                        sort_field == 'created_at'
-                                    "
-                                    >&uarr;</span
-                                >
-                                <span
-                                    v-if="
-                                        sort_direction == 'asc' &&
-                                        sort_field == 'created_at'
-                                    "
-                                    >&darr;</span
-                                >
-                            </div>
-                        </th> -->
                             <th class="w-10">
                                 <div class="text-xs text-center h-6">
                                     <a

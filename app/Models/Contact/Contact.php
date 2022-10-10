@@ -2,6 +2,7 @@
 
 namespace App\Models\Contact;
 
+use App\Models\Billboard\Billboard;
 use App\Models\Forecast\Forecast;
 use App\Models\ToDo\Task;
 use App\Models\ToDo\ToDo;
@@ -69,6 +70,11 @@ class Contact extends Model
     public function tasks()
     {
         return $this -> hasMany(Task::class);
+    }
+
+    public function billboard()
+    {
+        return $this->belongsTo(Billboard::class);
     }
 
     public function summary()

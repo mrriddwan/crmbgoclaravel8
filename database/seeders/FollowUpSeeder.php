@@ -15,6 +15,6 @@ class FollowUpSeeder extends Seeder
      */
     public function run()
     {
-        FollowUp::factory(500)->create();
+        FollowUp::factory(200)->create();
     }
 }

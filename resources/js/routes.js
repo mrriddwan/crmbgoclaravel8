@@ -1,6 +1,9 @@
 import { createRouter, createWebHistory } from "vue-router";
 // import TestQueryString from "../components/utils/TestQueryString.vue";
 
+/**Admin Imports */
+import AdminIndex from "../components/admins/AdminIndex.vue";
+
 /**Contact Imports */
 import ContactIndex from "../components/contacts/ContactIndex.vue";
 import ContactCreate from "../components/contacts/ContactCreate.vue";
@@ -36,8 +39,16 @@ import ProjectEdit from "../components/projects/ProjectEdit.vue";
 /**Performance Imports */
 import PerformanceIndex from "../components/performances/PerformanceIndex.vue";
 
-/**Admin Imports */
-import AdminIndex from "../components/admins/AdminIndex.vue";
+/**Billboard Imports */
+import BillboardIndex from "../components/billboards/BillboardIndex.vue";
+import BillboardCreate from "../components/billboards/BillboardCreate.vue";
+import BillboardEdit from "../components/billboards/BillboardEdit.vue";
+import BillboardTenure from "../components/billboards/BillboardTenure.vue";
+import TempboardIndex from "../components/billboards/TempboardIndex.vue";
+import TempboardCreate from "../components/billboards/TempboardCreate.vue";
+import TempboardEdit from "../components/billboards/TempboardEdit.vue";
+
+
 
 const routes = [
     /*                      
@@ -238,6 +249,66 @@ const routes = [
         path: "/performance/index",
         name: "performance_index",
         component: PerformanceIndex,
+    },
+
+    /*                                                  
+            Billboard Routes 
+    */
+
+    {
+        //Billboard Index
+        path: "/billboard/index",
+        name: "billboard_index",
+        component: BillboardIndex,
+    },
+
+    {
+        //Billboard Create
+        path: "/billboard/create",
+        name: "billboard_create",
+        component: BillboardCreate,
+    },
+
+    {
+        //Billboard Edit
+        path: "/billboard/edit",
+        name: "billboard_edit",
+        component: BillboardEdit,
+    },
+
+    {
+        //Billboard Edit
+        path: "/billboard/edit",
+        name: "billboard_edit",
+        component: BillboardEdit,
+    },
+
+    {
+        //Billboard Tenure
+        path: "/billboard/tenure",
+        name: "billboard_tenure",
+        component: BillboardTenure,
+    },
+
+    {
+        //Tempboard Index
+        path: "/tempboard/index",
+        name: "tempboard_index",
+        component: TempboardIndex,
+    },
+
+    {
+        //Tempboard Create
+        path: "/tempboard/create",
+        name: "tempboard_create",
+        component: TempboardCreate,
+    },
+
+    {
+        //Tempboard Edit
+        path: "/tempboard/Edit",
+        name: "tempboard_edit",
+        component: TempboardEdit,
     },
 
     /*                                                  

@@ -36,7 +36,7 @@ class ProjectFactory extends Factory
             // 'project_duration' => $project_duration,
             'project_name' => $this->faker->realText($maxNbChars = 15),
             'project_remark' => $this->faker->realText($maxNbChars = 50),
-            'contact_id' => random_int(1, 100),
+            'contact_id' => random_int(1, 50),
             'user_id' => random_int(2, 10),
         ];
     }
