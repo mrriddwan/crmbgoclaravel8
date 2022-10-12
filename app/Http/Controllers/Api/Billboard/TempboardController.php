@@ -17,8 +17,8 @@ class TempboardController extends Controller
         $sort_direction = request('sort_direction');
         $sort_field = request('sort_field');
 
-        $selectedSite = request('selectedSite');
-        $selectedSize = request('selectedSize');
+        $selectedUser = request('selectedUser');
+        $selectedYear = request('selectedYear');
 
 
         $tempboard = Tempboard::with([
@@ -57,18 +57,169 @@ class TempboardController extends Controller
             ])
             ->join('users', 'tempboards.user_id', '=', 'users.id')
             ->join('contacts', 'tempboards.contact_id', '=', 'contacts.id')
+
+            ->when($selectedUser, function ($query) use ($selectedUser) {
+                $query->where('tempboards.user_id', $selectedUser);
+            })
+            ->when($selectedYear, function ($query) use ($selectedYear) {
+                $query->whereYear('tempboards.tpboard_entrydate', $selectedYear);
+            })
+            ->when($selectedYear, function ($query) use ($selectedYear) {
+                $query->whereYear('tempboards.tpboard_startdate', $selectedYear);
+            })
+            ->when($selectedYear, function ($query) use ($selectedYear) {
+                $query->whereYear('tempboards.tpboard_enddate', $selectedYear);
+            })
+            //     ->when($selectedSize, function ($query) use ($selectedSize) {
+            //         $query->where('billboards.bboard_size', $selectedSize);
+            //     })
+            ->orderBy($sort_field, $sort_direction)
+            ->search(trim($search_term))
+            //     ->paginate($paginate);
             ->get();
-        //     ->when($selectedSite, function ($query) use ($selectedSite) {
-        //         $query->where('billboards.site_id', $selectedSite);
-        //     })
-        //     ->when($selectedSize, function ($query) use ($selectedSize) {
-        //         $query->where('billboards.bboard_size', $selectedSize);
-        //     })
-        //     // ->orderBy($sort_field, $sort_direction)
-        //     ->search(trim($search_term))
-        //     ->paginate($paginate);
 
         return TempboardResource::collection($tempboard);
         // return $tempboard;
+    }
+
+    public function store(Request $request)
+    {
+
+        $request->validate([
+            'tpboard_entrydate' => 'required', 'string',
+            'contact_id' => 'required', 'int',
+            'user_id' => 'required', 'int',
+            'tpboard_startdate' => 'required', 'date',
+            'tpboard_enddate' => 'required | date | after:tpboard_startdate',
+            'tpboard_size1' => 'required', 'string',
+            'tpboard_size2' => 'required', 'string',
+            'tpboard_location' => 'required', 'string',
+            'tpboard_unit' => 'required', 'string',
+            'tpboard_collection' => 'required', 'string',
+            'tpboard_material' => 'required', 'string',
+            'tpboard_printing' => 'required', 'string',
+            'tpboard_installation' => 'required', 'string',
+            'tpboard_remark' => 'nullable', 'string',
+
+        ], [
+            'tpboard_entrydate.required' => 'The entry date is required',
+            'contact_id.required' => 'Please select a contact',
+            'user_id.required' => 'Please select a CS',
+            'tpboard_startdate.required' => 'The start date is required',
+            'tpboard_enddate.required' => 'The end date is required.',
+            'tpboard_location.required' => 'The location is required.',
+            'tpboard_unit.required' => 'The unit is required.',
+            'tpboard_collection.required' => 'The collection is required.',
+            'tpboard_material.required' => 'The material is required.',
+            'tpboard_printing.required' => 'The printing is required.',
+            'tpboard_installation.required' => 'The installation is required.',
+            'tpboard_size1.required' => 'The first dimension is required.',
+            'tpboard_size2.required' => 'The second dimension is required.',
+        ]);
+
+        $tempboard = Tempboard::create([
+            'tpboard_entrydate' => $request->tpboard_entrydate,
+            'contact_id' => $request->contact_id,
+            'user_id' => $request->user_id,
+            'tpboard_startdate' => $request->tpboard_startdate,
+            'tpboard_enddate' => $request->tpboard_enddate,
+            'tpboard_location' => $request->tpboard_location,
+            'tpboard_unit' => $request->tpboard_unit,
+            'tpboard_collection' => $request->tpboard_collection,
+            'tpboard_material' => $request->tpboard_material,
+            'tpboard_printing' => $request->tpboard_printing,
+            'tpboard_installation' => $request->tpboard_installation,
+            'tpboard_remark' => $request->tpboard_remark,
+
+            'tpboard_size' => $request->tpboard_size1 . ' x ' . $request->tpboard_size2,
+        ]);
+
+        return response()->json([
+            'data' => $tempboard,
+            'status' => true,
+            'message' => 'Successfully store billboard',
+        ]);
+    }
+
+    public function update(Request $request, Tempboard $tempboard)
+    {
+
+        $request->validate([
+            'tpboard_entrydate' => 'required', 'string',
+            'contact_id' => 'required', 'int',
+            'user_id' => 'required', 'int',
+            'tpboard_startdate' => 'required', 'date',
+            'tpboard_enddate' => 'required | date | after:tpboard_startdate',
+            'tpboard_size1' => 'nullable', 'string',
+            'tpboard_size2' => 'nullable', 'string',
+            'tpboard_location' => 'required', 'string',
+            'tpboard_unit' => 'required', 'string',
+            'tpboard_collection' => 'required', 'string',
+            'tpboard_material' => 'required', 'string',
+            'tpboard_printing' => 'required', 'string',
+            'tpboard_installation' => 'required', 'string',
+            'tpboard_remark' => 'nullable', 'string',
+
+        ], [
+            'tpboard_entrydate.required' => 'The entry date is required',
+            'contact_id.required' => 'Please select a contact',
+            'user_id.required' => 'Please select a CS',
+            'tpboard_startdate.required' => 'The start date is required',
+            'tpboard_enddate.required' => 'The end date is required.',
+            'tpboard_location.required' => 'The location is required.',
+            'tpboard_unit.required' => 'The unit is required.',
+            'tpboard_collection.required' => 'The collection is required.',
+            'tpboard_material.required' => 'The material is required.',
+            'tpboard_printing.required' => 'The printing is required.',
+            'tpboard_installation.required' => 'The installation is required.',
+            // 'tpboard_size1.required' => 'The first dimension is required.',
+            // 'tpboard_size2.required' => 'The second dimension is required.',
+        ]);
+
+        $tempboard ->update([
+            'tpboard_entrydate' => $request->tpboard_entrydate,
+            'contact_id' => $request->contact_id,
+            'user_id' => $request->user_id,
+            'tpboard_startdate' => $request->tpboard_startdate,
+            'tpboard_enddate' => $request->tpboard_enddate,
+            'tpboard_location' => $request->tpboard_location,
+            'tpboard_unit' => $request->tpboard_unit,
+            'tpboard_collection' => $request->tpboard_collection,
+            'tpboard_material' => $request->tpboard_material,
+            'tpboard_printing' => $request->tpboard_printing,
+            'tpboard_installation' => $request->tpboard_installation,
+            'tpboard_remark' => $request->tpboard_remark,
+
+            'tpboard_size' => ($request->tpboard_size1 && $request->tpboard_size2 ) ? $request->tpboard_size1 . ' x ' . $request->tpboard_size2 : $request->tpboard_size,
+        ]);
+
+        return response()->json([
+            'data' => $tempboard,
+            'status' => true,
+            'message' => 'Successfully update billboard',
+        ]);
+    }
+
+    public function delete(Tempboard $tempboard)
+    {
+        $tempboard->delete();
+        return response()->json('Tempboard deleted.');
+    }
+
+    public function info(Tempboard $tempboard)
+    {
+        $tempboard = Tempboard::with(
+            'contact', 'user'
+        )
+            ->where('id', $tempboard->id)
+            ->get();
+
+        $data = $tempboard->toArray();
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Successfully fetch data billboard ',
+            'data' => $data,
+        ]);
     }
 }

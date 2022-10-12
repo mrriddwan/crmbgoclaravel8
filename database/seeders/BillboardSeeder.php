@@ -14,6 +14,6 @@ class BillboardSeeder extends Seeder
      */
     public function run()
     {
-        Billboard::factory(200)->create();
+        Billboard::factory(20)->create();
     }
 }

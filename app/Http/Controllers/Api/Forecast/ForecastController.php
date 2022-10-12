@@ -79,6 +79,8 @@ class ForecastController extends Controller
             'forecast_type_id' => $request->forecast_type_id,
             'contact_id' => $request->contact_id,
             'product_id' => $request->product_id,
+            'contact_type_id' => $request->contact_type_id,
+            'contact_status_id' => $request->contact_status_id,
         ]);
 
         return response()->json([

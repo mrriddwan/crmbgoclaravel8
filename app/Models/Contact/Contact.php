@@ -27,39 +27,43 @@ class Contact extends Model
 
     public function user()
     {
-        return $this -> belongsTo(User::class);
+        return $this->belongsTo(User::class);
     }
 
     public function category()
     {
-        return $this -> belongsTo(ContactCategory::class);
+        return $this->belongsTo(ContactCategory::class);
     }
 
     public function type()
     {
-        return $this -> belongsTo(ContactType::class);
+        return $this->belongsTo(ContactType::class);
     }
 
     public function industry()
     {
-        return $this -> belongsTo(ContactIndustry::class);
+        return $this->belongsTo(ContactIndustry::class);
     }
 
     public function status()
     {
-        return $this -> belongsTo(ContactStatus::class);
+        return $this->belongsTo(ContactStatus::class);
     }
 
     public function todo()
     {
-        return $this -> hasMany(ToDo::class)
-        // ->with('task', 'user', 'action')
-        ;
+        return $this->hasMany(ToDo::class)
+            ->with('task', 'user', 'action');
+    }
+
+    public function history()
+    {
+        return $this->hasMany(ToDo::class)->with('task', 'user', 'action');
     }
 
     public function incharge()
     {
-        return $this -> hasMany(ContactIncharge::class);
+        return $this->hasMany(ContactIncharge::class);
     }
 
     public function forecast()
@@ -69,7 +73,7 @@ class Contact extends Model
 
     public function tasks()
     {
-        return $this -> hasMany(Task::class);
+        return $this->hasMany(Task::class);
     }
 
     public function billboard()
@@ -79,19 +83,19 @@ class Contact extends Model
 
     public function summary()
     {
-        return $this -> hasMany(ToDo::class)->whereNotNull('action_id');
+        return $this->hasMany(ToDo::class)->whereNotNull('action_id');
     }
 
     public function forecast_summary()
     {
-        return $this -> hasMany(Forecast::class);
+        return $this->hasMany(Forecast::class);
     }
-    
+
     public function scopeSearch($query, $term)
-    {   
+    {
         $term = "%$term%";
 
-        $query->where(function($query) use ($term){
+        $query->where(function ($query) use ($term) {
             $query->where('contacts.created_at', 'like', $term)
                 ->orWhere('contacts.name', 'like', $term)
                 ->orWhere('contacts.address', 'like', $term)

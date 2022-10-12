@@ -14,6 +14,6 @@ class BillboardTenureSeeder extends Seeder
      */
     public function run()
     {
-        BillboardTenure::factory(100)->create();
+        BillboardTenure::factory(20)->create();
     }
 }

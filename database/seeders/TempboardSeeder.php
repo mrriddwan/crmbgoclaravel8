@@ -14,6 +14,6 @@ class TempboardSeeder extends Seeder
      */
     public function run()
     {
-        Tempboard::factory(200)->create();
+        Tempboard::factory(20)->create();
     }
 }

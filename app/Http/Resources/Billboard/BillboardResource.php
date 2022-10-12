@@ -17,13 +17,13 @@ class BillboardResource extends JsonResource
         return [
             'id' => $this -> id,
             'site_id' => $this -> site_id,
-            'bboard_location' => substr( $this -> bboard_location, 0 , 20 ) . '...',
+            'billboard_id' => $this -> billboard_id,
+            'bboard_location' => substr( $this -> bboard_location, 0 , 10 ) . '...',
             'bboard_size' => $this -> bboard_size,
-            'tenure_startdate' => $this -> tenure,
-            // 'tenure_startdate' => $this -> tenure[0]["tenure_startdate"],
-            // 'tenure_enddate' => $this -> tenure[0]["tenure_enddate"],
-            // 'contact_id' => $this -> tenure[0]["contact"]["id"],
-            // 'contact_name' => $this -> tenure[0]["contact"]["name"],
+            'tenure_startdate' => $this -> tenure_startdate,
+            'tenure_enddate' => $this -> tenure_enddate,
+            'contact_id' => $this -> company_id,
+            'contact_name' => $this -> company_name,
         ];
     }
 }

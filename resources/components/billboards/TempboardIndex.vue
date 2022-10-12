@@ -81,14 +81,14 @@
                     class="table table-hover table-bordered w-max"
                     id="summary_table"
                 >
-                    <thead class="bg-slate-400 border-b sticky top-0">
+                    <thead class="bg-slate-500 border-b sticky top-0">
                         <tr class="w-full">
                             <th class="w-10">
                                 <div class="text-xs text-center h-6 text-white">
                                     No.
                                 </div>
                             </th>
-                            <th class="w-10">
+                            <th class="w-max">
                                 <div class="text-xs text-center h-6">
                                     <a
                                         href="#"
@@ -98,21 +98,39 @@
                                         class="text-white"
                                     >
                                         Date<br />Entry
+                                        <span
+                                            v-if="
+                                                (!(sort_direction == 'asc') ||
+                                                    !(
+                                                        sort_direction == 'desc'
+                                                    )) &&
+                                                !(
+                                                    sort_field ==
+                                                    'tpboard_entrydate'
+                                                )
+                                            "
+                                            class="inline-block"
+                                            ><ArrowsUpDownIcon class="h-4 w-4"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'desc' &&
+                                                sort_field ==
+                                                    'tpboard_entrydate'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowUpIcon class="h-4 w-4 "
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'asc' &&
+                                                sort_field ==
+                                                    'tpboard_entrydate'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowDownIcon class="h-4 w-4"
+                                        /></span>
                                     </a>
-                                    <span
-                                        v-if="
-                                            sort_direction == 'desc' &&
-                                            sort_field == 'tpboard_entrydate'
-                                        "
-                                        >&uarr;</span
-                                    >
-                                    <span
-                                        v-if="
-                                            sort_direction == 'asc' &&
-                                            sort_field == 'tpboard_entrydate'
-                                        "
-                                        >&darr;</span
-                                    >
                                 </div>
                                 <div
                                     class="items-center text-xs text-center h-6"
@@ -128,21 +146,34 @@
                                         class="text-white"
                                     >
                                         CS
+                                        <span
+                                            v-if="
+                                                (!(sort_direction == 'asc') ||
+                                                    !(
+                                                        sort_direction == 'desc'
+                                                    )) &&
+                                                !(sort_field == 'user_name')
+                                            "
+                                            class="inline-block"
+                                            ><ArrowsUpDownIcon class="h-4 w-4"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'desc' &&
+                                                sort_field == 'user_name'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowUpIcon class="h-4 w-4"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'asc' &&
+                                                sort_field == 'user_name'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowDownIcon class="h-4 w-4"
+                                        /></span>
                                     </a>
-                                    <span
-                                        v-if="
-                                            sort_direction == 'desc' &&
-                                            sort_field == 'user_name'
-                                        "
-                                        >&uarr;</span
-                                    >
-                                    <span
-                                        v-if="
-                                            sort_direction == 'asc' &&
-                                            sort_field == 'user_name'
-                                        "
-                                        >&darr;</span
-                                    >
                                 </div>
                                 <div
                                     class="items-center text-xs text-center h-6"
@@ -175,21 +206,37 @@
                                         class="text-white"
                                     >
                                         Location
+                                        <span
+                                            v-if="
+                                                (!(sort_direction == 'asc') ||
+                                                    !(
+                                                        sort_direction == 'desc'
+                                                    )) &&
+                                                !(
+                                                    sort_field ==
+                                                    'tpboard_location'
+                                                )
+                                            "
+                                            class="inline-block"
+                                            ><ArrowsUpDownIcon class="h-4 w-4"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'desc' &&
+                                                sort_field == 'tpboard_location'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowUpIcon class="h-4 w-4"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'asc' &&
+                                                sort_field == 'tpboard_location'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowDownIcon class="h-4 w-4"
+                                        /></span>
                                     </a>
-                                    <span
-                                        v-if="
-                                            sort_direction == 'desc' &&
-                                            sort_field == 'tpboard_location'
-                                        "
-                                        >&uarr;</span
-                                    >
-                                    <span
-                                        v-if="
-                                            sort_direction == 'asc' &&
-                                            sort_field == 'tpboard_location'
-                                        "
-                                        >&darr;</span
-                                    >
                                 </div>
                                 <div
                                     class="items-center text-xs text-center h-6"
@@ -205,21 +252,34 @@
                                         class="text-white"
                                     >
                                         Company
+                                        <span
+                                            v-if="
+                                                (!(sort_direction == 'asc') ||
+                                                    !(
+                                                        sort_direction == 'desc'
+                                                    )) &&
+                                                !(sort_field == 'contact_name')
+                                            "
+                                            class="inline-block"
+                                            ><ArrowsUpDownIcon class="h-4 w-4"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'desc' &&
+                                                sort_field == 'contact_name'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowUpIcon class="h-4 w-4"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'asc' &&
+                                                sort_field == 'contact_name'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowDownIcon class="h-4 w-4"
+                                        /></span>
                                     </a>
-                                    <span
-                                        v-if="
-                                            sort_direction == 'desc' &&
-                                            sort_field == 'contact_name'
-                                        "
-                                        >&uarr;</span
-                                    >
-                                    <span
-                                        v-if="
-                                            sort_direction == 'asc' &&
-                                            sort_field == 'contact_name'
-                                        "
-                                        >&darr;</span
-                                    >
                                 </div>
                                 <div
                                     class="items-center text-xs text-center h-6"
@@ -235,27 +295,40 @@
                                         class="text-white"
                                     >
                                         Unit
+                                        <span
+                                            v-if="
+                                                (!(sort_direction == 'asc') ||
+                                                    !(
+                                                        sort_direction == 'desc'
+                                                    )) &&
+                                                !(sort_field == 'tpboard_unit')
+                                            "
+                                            class="inline-block"
+                                            ><ArrowsUpDownIcon class="h-4 w-4"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'desc' &&
+                                                sort_field == 'tpboard_unit'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowUpIcon class="h-4 w-4"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'asc' &&
+                                                sort_field == 'tpboard_unit'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowDownIcon class="h-4 w-4"
+                                        /></span>
                                     </a>
-                                    <span
-                                        v-if="
-                                            sort_direction == 'desc' &&
-                                            sort_field == 'tpboard_unit'
-                                        "
-                                        >&uarr;</span
-                                    >
-                                    <span
-                                        v-if="
-                                            sort_direction == 'asc' &&
-                                            sort_field == 'tpboard_unit'
-                                        "
-                                        >&darr;</span
-                                    >
                                 </div>
                                 <div
                                     class="items-center text-xs text-center h-6"
                                 ></div>
                             </th>
-                            <th class="w-10">
+                            <th class="w-max">
                                 <div class="text-xs text-center h-6">
                                     <a
                                         href="#"
@@ -265,27 +338,40 @@
                                         class="text-white"
                                     >
                                         Size
+                                        <span
+                                            v-if="
+                                                (!(sort_direction == 'asc') ||
+                                                    !(
+                                                        sort_direction == 'desc'
+                                                    )) &&
+                                                !(sort_field == 'tpboard_size')
+                                            "
+                                            class="inline-block"
+                                            ><ArrowsUpDownIcon class="h-4 w-4"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'desc' &&
+                                                sort_field == 'tpboard_size'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowUpIcon class="h-4 w-4"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'asc' &&
+                                                sort_field == 'tpboard_size'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowDownIcon class="h-4 w-4"
+                                        /></span>
                                     </a>
-                                    <span
-                                        v-if="
-                                            sort_direction == 'desc' &&
-                                            sort_field == 'tpboard_size'
-                                        "
-                                        >&uarr;</span
-                                    >
-                                    <span
-                                        v-if="
-                                            sort_direction == 'asc' &&
-                                            sort_field == 'tpboard_size'
-                                        "
-                                        >&darr;</span
-                                    >
                                 </div>
                                 <div
                                     class="items-center text-xs text-center h-6"
                                 ></div>
                             </th>
-                            <th class="w-10">
+                            <th class="w-max">
                                 <div class="text-xs text-center h-6">
                                     <a
                                         href="#"
@@ -295,27 +381,45 @@
                                         class="text-white"
                                     >
                                         Date<br />Start
+                                        <span
+                                            v-if="
+                                                (!(sort_direction == 'asc') ||
+                                                    !(
+                                                        sort_direction == 'desc'
+                                                    )) &&
+                                                !(
+                                                    sort_field ==
+                                                    'tpboard_startdate'
+                                                )
+                                            "
+                                            class="inline-block"
+                                            ><ArrowsUpDownIcon class="h-4 w-4"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'desc' &&
+                                                sort_field ==
+                                                    'tpboard_startdate'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowUpIcon class="h-4 w-4"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'asc' &&
+                                                sort_field ==
+                                                    'tpboard_startdate'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowDownIcon class="h-4 w-4"
+                                        /></span>
                                     </a>
-                                    <span
-                                        v-if="
-                                            sort_direction == 'desc' &&
-                                            sort_field == 'tpboard_startdate'
-                                        "
-                                        >&uarr;</span
-                                    >
-                                    <span
-                                        v-if="
-                                            sort_direction == 'asc' &&
-                                            sort_field == 'tpboard_startdate'
-                                        "
-                                        >&darr;</span
-                                    >
                                 </div>
                                 <div
                                     class="items-center text-xs text-center h-6"
                                 ></div>
                             </th>
-                            <th class="w-10">
+                            <th class="w-max">
                                 <div class="text-xs text-center h-6">
                                     <a
                                         href="#"
@@ -325,21 +429,37 @@
                                         class="text-white"
                                     >
                                         Date<br />End
+                                        <span
+                                            v-if="
+                                                (!(sort_direction == 'asc') ||
+                                                    !(
+                                                        sort_direction == 'desc'
+                                                    )) &&
+                                                !(
+                                                    sort_field ==
+                                                    'tpboard_enddate'
+                                                )
+                                            "
+                                            class="inline-block"
+                                            ><ArrowsUpDownIcon class="h-4 w-4"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'desc' &&
+                                                sort_field == 'tpboard_enddate'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowUpIcon class="h-4 w-4"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'asc' &&
+                                                sort_field == 'tpboard_enddate'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowDownIcon class="h-4 w-4"
+                                        /></span>
                                     </a>
-                                    <span
-                                        v-if="
-                                            sort_direction == 'desc' &&
-                                            sort_field == 'tpboard_enddate'
-                                        "
-                                        >&uarr;</span
-                                    >
-                                    <span
-                                        v-if="
-                                            sort_direction == 'asc' &&
-                                            sort_field == 'tpboard_enddate'
-                                        "
-                                        >&darr;</span
-                                    >
                                 </div>
                                 <div
                                     class="items-center text-xs text-center h-6"
@@ -355,21 +475,39 @@
                                         class="text-white"
                                     >
                                         Collection
+                                        <span
+                                            v-if="
+                                                (!(sort_direction == 'asc') ||
+                                                    !(
+                                                        sort_direction == 'desc'
+                                                    )) &&
+                                                !(
+                                                    sort_field ==
+                                                    'tpboard_collection'
+                                                )
+                                            "
+                                            class="inline-block"
+                                            ><ArrowsUpDownIcon class="h-4 w-4"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'desc' &&
+                                                sort_field ==
+                                                    'tpboard_collection'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowUpIcon class="h-4 w-4"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'asc' &&
+                                                sort_field ==
+                                                    'tpboard_collection'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowDownIcon class="h-4 w-4"
+                                        /></span>
                                     </a>
-                                    <span
-                                        v-if="
-                                            sort_direction == 'desc' &&
-                                            sort_field == 'tpboard_collection'
-                                        "
-                                        >&uarr;</span
-                                    >
-                                    <span
-                                        v-if="
-                                            sort_direction == 'asc' &&
-                                            sort_field == 'tpboard_collection'
-                                        "
-                                        >&darr;</span
-                                    >
                                 </div>
                                 <div
                                     class="items-center text-xs text-center h-6"
@@ -385,21 +523,37 @@
                                         class="text-white"
                                     >
                                         Material
+                                        <span
+                                            v-if="
+                                                (!(sort_direction == 'asc') ||
+                                                    !(
+                                                        sort_direction == 'desc'
+                                                    )) &&
+                                                !(
+                                                    sort_field ==
+                                                    'tpboard_material'
+                                                )
+                                            "
+                                            class="inline-block"
+                                            ><ArrowsUpDownIcon class="h-4 w-4"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'desc' &&
+                                                sort_field == 'tpboard_material'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowUpIcon class="h-4 w-4"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'asc' &&
+                                                sort_field == 'tpboard_material'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowDownIcon class="h-4 w-4"
+                                        /></span>
                                     </a>
-                                    <span
-                                        v-if="
-                                            sort_direction == 'desc' &&
-                                            sort_field == 'tpboard_material'
-                                        "
-                                        >&uarr;</span
-                                    >
-                                    <span
-                                        v-if="
-                                            sort_direction == 'asc' &&
-                                            sort_field == 'tpboard_material'
-                                        "
-                                        >&darr;</span
-                                    >
                                 </div>
                                 <div
                                     class="items-center text-xs text-center h-6"
@@ -415,21 +569,37 @@
                                         class="text-white"
                                     >
                                         Printing
+                                        <span
+                                            v-if="
+                                                (!(sort_direction == 'asc') ||
+                                                    !(
+                                                        sort_direction == 'desc'
+                                                    )) &&
+                                                !(
+                                                    sort_field ==
+                                                    'tpboard_printing'
+                                                )
+                                            "
+                                            class="inline-block"
+                                            ><ArrowsUpDownIcon class="h-4 w-4"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'desc' &&
+                                                sort_field == 'tpboard_printing'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowUpIcon class="h-4 w-4"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'asc' &&
+                                                sort_field == 'tpboard_printing'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowDownIcon class="h-4 w-4"
+                                        /></span>
                                     </a>
-                                    <span
-                                        v-if="
-                                            sort_direction == 'desc' &&
-                                            sort_field == 'tpboard_printing'
-                                        "
-                                        >&uarr;</span
-                                    >
-                                    <span
-                                        v-if="
-                                            sort_direction == 'asc' &&
-                                            sort_field == 'tpboard_printing'
-                                        "
-                                        >&darr;</span
-                                    >
                                 </div>
                                 <div
                                     class="items-center text-xs text-center h-6"
@@ -445,21 +615,39 @@
                                         class="text-white"
                                     >
                                         Installation
+                                        <span
+                                            v-if="
+                                                (!(sort_direction == 'asc') ||
+                                                    !(
+                                                        sort_direction == 'desc'
+                                                    )) &&
+                                                !(
+                                                    sort_field ==
+                                                    'tpboard_installation'
+                                                )
+                                            "
+                                            class="inline-block"
+                                            ><ArrowsUpDownIcon class="h-4 w-4"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'desc' &&
+                                                sort_field ==
+                                                    'tpboard_installation'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowUpIcon class="h-4 w-4"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'asc' &&
+                                                sort_field ==
+                                                    'tpboard_installation'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowDownIcon class="h-4 w-4"
+                                        /></span>
                                     </a>
-                                    <span
-                                        v-if="
-                                            sort_direction == 'desc' &&
-                                            sort_field == 'tpboard_installation'
-                                        "
-                                        >&uarr;</span
-                                    >
-                                    <span
-                                        v-if="
-                                            sort_direction == 'asc' &&
-                                            sort_field == 'tpboard_installation'
-                                        "
-                                        >&darr;</span
-                                    >
                                 </div>
                                 <div
                                     class="items-center text-xs text-center h-6"
@@ -475,21 +663,37 @@
                                         class="text-white"
                                     >
                                         Remark
+                                        <span
+                                            v-if="
+                                                (!(sort_direction == 'asc') ||
+                                                    !(
+                                                        sort_direction == 'desc'
+                                                    )) &&
+                                                !(
+                                                    sort_field ==
+                                                    'tpboard_remark'
+                                                )
+                                            "
+                                            class="inline-block"
+                                            ><ArrowsUpDownIcon class="h-4 w-4"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'desc' &&
+                                                sort_field == 'tpboard_remark'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowUpIcon class="h-4 w-4"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'asc' &&
+                                                sort_field == 'tpboard_remark'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowDownIcon class="h-4 w-4"
+                                        /></span>
                                     </a>
-                                    <span
-                                        v-if="
-                                            sort_direction == 'desc' &&
-                                            sort_field == 'tpboard_remark'
-                                        "
-                                        >&uarr;</span
-                                    >
-                                    <span
-                                        v-if="
-                                            sort_direction == 'asc' &&
-                                            sort_field == 'tpboard_remark'
-                                        "
-                                        >&darr;</span
-                                    >
                                 </div>
                                 <div
                                     class="items-center text-xs text-center h-6"
@@ -510,7 +714,7 @@
                         >
                             <td class="text-xs">{{ index + 1 }}</td>
                             <td class="text-xs w-max">
-                                {{ tempboard.tpboard_entrydate }}
+                                {{ showToday(tempboard.tpboard_entrydate) }}
                             </td>
                             <td class="text-xs break-normal">
                                 {{ tempboard.user_name }}
@@ -536,10 +740,10 @@
                                 {{ tempboard.tpboard_size }}
                             </td>
                             <td class="text-xs break-normal">
-                                {{ tempboard.tpboard_startdate }}
+                                {{ showToday(tempboard.tpboard_startdate) }}
                             </td>
                             <td class="text-xs break-normal">
-                                {{ tempboard.tpboard_enddate }}
+                                {{ showToday(tempboard.tpboard_enddate) }}
                             </td>
                             <td class="text-xs break-normal">
                                 {{ tempboard.tpboard_collection }}
@@ -555,6 +759,24 @@
                             </td>
                             <td class="text-xs break-normal">
                                 {{ tempboard.tpboard_remark }}
+                            </td>
+                            <td class="text-xs">
+                                <br />
+                                <router-link
+                                    :to="{
+                                        name: 'tempboard_edit',
+                                        params: { id: tempboard.id },
+                                    }"
+                                    class="mr-2 mb-2 inline-flex items-center px-2 py-1 bg-yellow-400 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
+                                >
+                                    <PencilSquareIcon class="h-3 w-3"
+                                /></router-link>
+                                <button
+                                    class="mr-2 mb-2 inline-flex items-center px-2 py-1 bg-red-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
+                                    @click="deleteTempboard(tempboard.id)"
+                                >
+                                    <TrashIcon class="h-3 w-3" />
+                                </button>
                             </td>
                         </tr>
                     </tbody>
@@ -574,6 +796,8 @@ import {
     PlusIcon,
     ArrowTopRightOnSquareIcon,
     ArrowsUpDownIcon,
+    ArrowUpIcon,
+    ArrowDownIcon,
 } from "@heroicons/vue/24/solid";
 import moment from "moment";
 
@@ -586,6 +810,8 @@ export default {
         PlusIcon,
         ArrowTopRightOnSquareIcon,
         ArrowsUpDownIcon,
+        ArrowUpIcon,
+        ArrowDownIcon,
     },
 
     mounted() {
@@ -615,7 +841,7 @@ export default {
             selectedUser: "",
 
             sort_direction: "asc",
-            sort_field: "id",
+            sort_field: "tpboard_entrydate",
             currentDate: "",
 
             // contact_fields: {
@@ -747,9 +973,9 @@ export default {
         selectedYear: function (value) {
             this.getTempboards();
         },
-        // selectedSite: function (value) {
-        //     this.getTempboards();
-        // },
+        selectedUser: function (value) {
+            this.getTempboards();
+        },
         // selectedSize: function (value) {
         //     this.getTempboards();
         // },
@@ -764,17 +990,13 @@ export default {
             }
             axios
                 .get(
-                    "/api/tempboard/index?" +
+                    "/api/tempboards/index?" +
                         "q=" +
                         this.search +
                         "&selectedYear=" +
                         this.selectedYear +
-                        "&selectedStatus=" +
-                        this.selectedSite +
-                        "&selectedSite=" +
-                        this.selectedSize +
-                        "&selectedSize=" +
-                        this.selectedType +
+                        "&selectedUser=" +
+                        this.selectedUser +
                         "&paginate=" +
                         this.paginate +
                         "&page=" +
@@ -791,28 +1013,6 @@ export default {
                     console.log(error);
                 });
         },
-
-        async getBillboardSites() {
-            await axios
-                .get("/api/tempboard/site")
-                .then((res) => {
-                    this.billboard_sites = res.data;
-                })
-                .catch((error) => {
-                    console.log(error);
-                });
-        },
-
-        // async getBillboardSizes() {
-        //     await axios
-        //         .get("/api/tempboard/size")
-        //         .then((res) => {
-        //             this.billboard_sizes = res.data;
-        //         })
-        //         .catch((error) => {
-        //             console.log(error);
-        //         });
-        // },
 
         async getUsers() {
             await axios
@@ -832,7 +1032,15 @@ export default {
             } else {
                 this.sort_field = field;
             }
-            await this.getTempboards();
+            this.getTempboards();
+        },
+
+        deleteTempboard(id) {
+            if (!window.confirm("Are you sure?")) {
+                return;
+            }
+            axios.delete("/api/tempboards/delete/" + id);
+            this.getTempboards();
         },
 
         getCurrentDate() {

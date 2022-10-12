@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Api\Billboard\BillboardController;
+use App\Http\Controllers\Api\Billboard\BillboardTenureController;
 use App\Http\Controllers\Api\Billboard\TempboardController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\Contact\ContactCategoryController;
@@ -20,8 +21,6 @@ use App\Http\Controllers\Api\Project\ProjectController;
 use App\Http\Controllers\Api\ToDo\TaskController;
 use App\Http\Controllers\Api\ToDo\ToDoController;
 use App\Http\Controllers\Api\ToDo\ToDoSourceController;
-use App\Models\Billboard\BillboardTenure;
-use App\Models\Forecast\ForecastType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -77,6 +76,7 @@ Route::get('/contacts/all', [ContactController::class, 'selectAll'])->name('cont
 // Route::get('/contacts/exportSummary/{contact}', [ContactController::class, 'selectAll'])->name('contact:exportSummary');
 Route::get('/contacts/exportSummary', [ContactController::class, 'exportSummary'])->name('contact:exportSummary');
 Route::get('/contacts/todo', [ContactController::class, 'todo'])->name('contact:todo');
+Route::get('/contacts/history/{contact}', [ContactController::class, 'history'])->name('contact:history');
 
 
 /*Sub-Contact API*/
@@ -156,16 +156,19 @@ Route::get('/projects/show/{project}', [ProjectController::class, 'show'])->name
 Route::put('/projects/update/{project}', [ProjectController::class, 'update'])->name('project:update');
 
 /*Billboard/Tempboard API*/
-Route::get('/billboard/index', [BillboardController::class, 'index'])->name('billboard:index');
-Route::post('/billboard/store', [BillboardController::class, 'store'])->name('billboard:store');
-Route::get('/billboard/show/{billboard}', [BillboardController::class, 'show'])->name('billboard:show');
-Route::put('/billboard/update/{billboard}', [BillboardController::class, 'update'])->name('billboard:update');
-Route::delete('/billboard/delete/{billboard}', [BillboardController::class, 'delete'])->name('billboard:delete');
+Route::get('/billboards/index', [BillboardController::class, 'index'])->name('billboard:index');
+Route::get('/billboards/tenure', [BillboardController::class, 'tenure'])->name('billboard:tenure');
+Route::post('/billboards/store', [BillboardController::class, 'store'])->name('billboard:store');
+Route::get('/billboards/show/{billboard}', [BillboardController::class, 'show'])->name('billboard:show');
+Route::get('/billboards/info/{billboard}', [BillboardController::class, 'info'])->name('billboard:info');
+Route::put('/billboards/update/{billboard}', [BillboardController::class, 'update'])->name('billboard:update');
+Route::delete('/billboards/delete/{billboard}', [BillboardController::class, 'delete'])->name('billboard:delete');
 
-Route::get('/tempboard/index', [TempboardController::class, 'index'])->name('tempboard:index');
-Route::post('/tempboard/store', [TempboardController::class, 'store'])->name('tempboard:store');
-Route::get('/tempboard/show/{tempboard}', [TempboardController::class, 'show'])->name('tempboard:show');
-Route::put('/tempboard/update/{tempboard}', [TempboardController::class, 'update'])->name('tempboard:update');
-Route::delete('/tempboard/delete/{tempboard}', [TempboardController::class, 'delete'])->name('tempboard:delete');
+Route::get('/tempboards/index', [TempboardController::class, 'index'])->name('tempboard:index');
+Route::post('/tempboards/store', [TempboardController::class, 'store'])->name('tempboard:store');
+Route::get('/tempboards/info/{tempboard}', [TempboardController::class, 'info'])->name('tempboard:info');
+Route::put('/tempboards/update/{tempboard}', [TempboardController::class, 'update'])->name('tempboard:update');
+Route::delete('/tempboards/delete/{tempboard}', [TempboardController::class, 'delete'])->name('tempboard:delete');
 
-Route::post('/billboard/tenure/index', [BillboardTenure::class, 'index'])->name('tenure:index');
+Route::post('/billboards/tenure/store', [BillboardTenureController::class, 'store'])->name('tenure:store');
+Route::delete('/billboards/tenure/delete/{tenure}', [BillboardTenureController::class, 'delete'])->name('tenure:delete');

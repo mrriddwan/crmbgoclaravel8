@@ -51,10 +51,10 @@ class Tempboard extends Model
                 ->orWhere('tempboards.tpboard_printing', 'like', $term)
                 ->orWhere('tempboards.tpboard_installation', 'like', $term)
                 ->orWhere('tempboards.tpboard_remark', 'like', $term)      
-                ->orWhereHas('contacts', function ($query) use ($term) {
+                ->orWhereHas('contact', function ($query) use ($term) {
                     $query->where('contacts.name', 'like', $term);
                 })
-                ->orWhereHas('users', function ($query) use ($term) {
+                ->orWhereHas('user', function ($query) use ($term) {
                     $query->where('users.name', 'like', $term);
                 })
                 ;

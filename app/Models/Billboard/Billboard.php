@@ -18,22 +18,36 @@ class Billboard extends Model
 
     public function tenure()
     {
-        return $this -> hasMany(BillboardTenure::class, 'bboard_id')->select('id', 'tenure_startdate', 'contact_id')->with('contact');
+        return $this->hasMany(BillboardTenure::class, 'bboard_id')->select(
+            "id",
+            "tenure_startdate",
+            "tenure_enddate",
+            "bboard_id",
+            "contact_id",
+            "user_id"
+        )->with('contact', 'user');
     }
 
-    public function scopeSearch($query, $term)
-    {   
-        $term = "%$term%";
+    public function tenure2()
+    {
+        return $this->hasMany(BillboardTenure::class, 'bboard_id')->select('id', 'tenure_startdate', 'contact_id', 'bboard_id')->with('contact');
+    }
 
-        $query->where(function($query) use ($term){
-            $query->where('billboards.site_id', 'like', $term)
-                ->orWhere('billboards.bboard_location', 'like', $term)
-                ->orWhere('billboards.bboard_size', 'like', $term)
-                // ->orWhereHas('tenure', function ($query) use ($term) {
-                //     $query->where('billboard_tenures.name', 'like', $term);
-                // })
-                ;
-
-        });
+    public function summary()
+    {
+        return $this->hasMany(BillboardTenure::class, 'bboard_id')->select(
+            "billboard_tenures.id",
+            "tenure_startdate",
+            "tenure_enddate",
+            "bboard_id",
+            "billboard_tenures.contact_id as company_id",
+            "billboard_tenures.user_id as user_id",
+            "contacts.name as company_name",
+            "users.name as user_name",
+            "users.id as user_id",
+        )
+        // ->with('contact', 'user')
+        ->join('contacts', 'billboard_tenures.contact_id', '=', 'contacts.id')
+        ->join('users', 'billboard_tenures.user_id', '=', 'users.id');
     }
 }

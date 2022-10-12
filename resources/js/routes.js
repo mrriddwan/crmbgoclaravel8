@@ -2,7 +2,9 @@ import { createRouter, createWebHistory } from "vue-router";
 // import TestQueryString from "../components/utils/TestQueryString.vue";
 
 /**Admin Imports */
-import AdminIndex from "../components/admins/AdminIndex.vue";
+import AdminData from "../components/admins/AdminData.vue";
+import AdminUserAccess from "../components/admins/AdminUserAccess.vue";
+import AdminUserManage from "../components/admins/AdminUserManage.vue";
 
 /**Contact Imports */
 import ContactIndex from "../components/contacts/ContactIndex.vue";
@@ -42,7 +44,6 @@ import PerformanceIndex from "../components/performances/PerformanceIndex.vue";
 /**Billboard Imports */
 import BillboardIndex from "../components/billboards/BillboardIndex.vue";
 import BillboardCreate from "../components/billboards/BillboardCreate.vue";
-import BillboardEdit from "../components/billboards/BillboardEdit.vue";
 import BillboardTenure from "../components/billboards/BillboardTenure.vue";
 import TempboardIndex from "../components/billboards/TempboardIndex.vue";
 import TempboardCreate from "../components/billboards/TempboardCreate.vue";
@@ -255,58 +256,38 @@ const routes = [
             Billboard Routes 
     */
 
-    {
-        //Billboard Index
+    { //Billboard Index
         path: "/billboard/index",
         name: "billboard_index",
         component: BillboardIndex,
     },
 
-    {
-        //Billboard Create
+    {//Billboard Create
         path: "/billboard/create",
         name: "billboard_create",
         component: BillboardCreate,
     },
 
-    {
-        //Billboard Edit
-        path: "/billboard/edit",
-        name: "billboard_edit",
-        component: BillboardEdit,
-    },
-
-    {
-        //Billboard Edit
-        path: "/billboard/edit",
-        name: "billboard_edit",
-        component: BillboardEdit,
-    },
-
-    {
-        //Billboard Tenure
-        path: "/billboard/tenure",
+    {//Billboard Tenure
+        path: "/billboard/:id/tenure",
         name: "billboard_tenure",
         component: BillboardTenure,
     },
 
-    {
-        //Tempboard Index
+    { //Tempboard Index
         path: "/tempboard/index",
         name: "tempboard_index",
         component: TempboardIndex,
     },
 
-    {
-        //Tempboard Create
+    { //Tempboard Create
         path: "/tempboard/create",
         name: "tempboard_create",
         component: TempboardCreate,
     },
 
-    {
-        //Tempboard Edit
-        path: "/tempboard/Edit",
+    { //Tempboard Edit
+        path: "/tempboard/:id/edit",
         name: "tempboard_edit",
         component: TempboardEdit,
     },
@@ -315,11 +296,20 @@ const routes = [
             Admin Routes 
     */
 
-    {
-        //Admin Index
-        path: "/admin/index",
-        name: "admin_index",
-        component: AdminIndex,
+    {   //Admin Index
+        path: "/admin/data",
+        name: "admin_data",
+        component: AdminData,
+    },
+    {   //Admin Management
+        path: "/admin/user/management",
+        name: "admin_userManagement",
+        component: AdminUserManage,
+    },
+    {   //Admin Access
+        path: "/admin/user/access",
+        name: "admin_userAccess",
+        component: AdminUserAccess,
     },
 ];
 

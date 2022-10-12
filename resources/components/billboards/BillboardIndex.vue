@@ -66,15 +66,15 @@
                         </download-excel> -->
                     </div>
                 </div>
-                <div class="py-1 inline-block">
+                <!-- <div class="py-1 inline-block">
                     <Pagination
-                        :data="billboards"
+                        :data="tenures"
                         @pagination-change-page="getBillboards"
                         :size="'small'"
                         :align="'right'"
                         class="pagination"
                     />
-                </div>
+                </div> -->
             </div>
 
             <div class="block max-h-screen overflow-y-auto overflow-x-auto">
@@ -82,44 +82,19 @@
                     class="table table-hover table-bordered w-max"
                     id="summary_table"
                 >
-                    <thead class="bg-slate-400 border-b sticky top-0">
+                    <thead class="bg-slate-600 border-b sticky top-0">
                         <tr class="w-full">
                             <th class="w-10">
                                 <div class="text-xs text-center h-6">No.</div>
-                            </th>
-                            <th class="w-10">
-                                <div class="text-xs text-center h-6">
-                                    <a
-                                        href="#"
-                                        @click.prevent="
-                                            change_sort('contact_name')
-                                        "
-                                    >
-                                        Company
-                                    </a>
-                                    <span
-                                        v-if="
-                                            sort_direction == 'desc' &&
-                                            sort_field == 'contact_name'
-                                        "
-                                        >&uarr;</span
-                                    >
-                                    <span
-                                        v-if="
-                                            sort_direction == 'asc' &&
-                                            sort_field == 'contact_name'
-                                        "
-                                        >&darr;</span
-                                    >
-                                </div>
                             </th>
                             <th class="w-w-max">
                                 <div class="text-xs text-center h-6">
                                     <a
                                         href="#"
                                         @click.prevent="change_sort('site_id')"
+                                        class="text-white"
                                     >
-                                        Site ID.
+                                        Site No.
                                     </a>
                                     <span
                                         v-if="
@@ -157,6 +132,7 @@
                                     </select>
                                 </div> -->
                             </th>
+
                             <th class="w-10">
                                 <div class="text-xs text-center h-6">
                                     <a
@@ -164,6 +140,7 @@
                                         @click.prevent="
                                             change_sort('bboard_location')
                                         "
+                                        class="text-white"
                                     >
                                         Location
                                     </a>
@@ -190,6 +167,7 @@
                                         @click.prevent="
                                             change_sort('bboard_size')
                                         "
+                                        class="text-white"
                                     >
                                         Size
                                     </a>
@@ -208,8 +186,8 @@
                                         >&darr;</span
                                     >
                                 </div>
-                                <div class="text-xs text-center h-6">
-                                    <!-- <div class="text-xs text-center h-6">
+                                <!--     <div class="text-xs text-center h-6">
+                                     <div class="text-xs text-center h-6">
                                         <select
                                             v-model="selectedSize"
                                             class="form-control form-control-sm w-max"
@@ -223,67 +201,108 @@
                                                 {{ billboard_size.name }}
                                             </option>
                                         </select>
-                                    </div> -->
+                                    </div> 
+                                </div>-->
+                            </th>
+                            <th class="w-max">
+                                <div class="text-xs text-center h-6">
+                                    <a
+                                        href="#"
+                                        @click.prevent="
+                                            change_sort('company_name')
+                                        "
+                                        class="text-white"
+                                    >
+                                        Company
+                                    </a>
+                                    <span
+                                        v-if="
+                                            sort_direction == 'desc' &&
+                                            sort_field == 'company_name'
+                                        "
+                                        >&uarr;</span
+                                    >
+                                    <span
+                                        v-if="
+                                            sort_direction == 'asc' &&
+                                            sort_field == 'company_name'
+                                        "
+                                        >&darr;</span
+                                    >
+                                </div>
+                            </th>
+
+                            <th class="">
+                                <div class="text-xs text-center text-white">
+                                    Jan
                                 </div>
                             </th>
                             <th class="">
-                                <div class="text-xs text-center">Jan</div>
+                                <div class="text-xs text-center text-white">
+                                    Feb
+                                </div>
                             </th>
                             <th class="">
-                                <div class="text-xs text-center">Feb</div>
+                                <div class="text-xs text-center text-white">
+                                    Mar
+                                </div>
                             </th>
                             <th class="">
-                                <div class="text-xs text-center">Mar</div>
+                                <div class="text-xs text-center text-white">
+                                    Apr
+                                </div>
                             </th>
                             <th class="">
-                                <div class="text-xs text-center">Apr</div>
+                                <div class="text-xs text-center text-white">
+                                    May
+                                </div>
                             </th>
                             <th class="">
-                                <div class="text-xs text-center">May</div>
+                                <div class="text-xs text-center text-white">
+                                    June
+                                </div>
                             </th>
                             <th class="">
-                                <div class="text-xs text-center">June</div>
+                                <div class="text-xs text-center text-white">
+                                    July
+                                </div>
                             </th>
                             <th class="">
-                                <div class="text-xs text-center">July</div>
+                                <div class="text-xs text-center text-white">
+                                    Aug
+                                </div>
                             </th>
                             <th class="">
-                                <div class="text-xs text-center">Aug</div>
+                                <div class="text-xs text-center text-white">
+                                    Sept
+                                </div>
                             </th>
                             <th class="">
-                                <div class="text-xs text-center">Sept</div>
+                                <div class="text-xs text-center text-white">
+                                    Oct
+                                </div>
                             </th>
                             <th class="">
-                                <div class="text-xs text-center">Oct</div>
+                                <div class="text-xs text-center text-white">
+                                    Nov
+                                </div>
                             </th>
                             <th class="">
-                                <div class="text-xs text-center">Nov</div>
-                            </th>
-                            <th class="">
-                                <div class="text-xs text-center">Dec</div>
+                                <div class="text-xs text-center text-white">
+                                    Dec
+                                </div>
                             </th>
                         </tr>
                     </thead>
-                    <tbody class="mt-2">
+                    <tbody class="text-xs font-medium">
                         <tr
                             v-for="(billboard, index) in billboards.data"
                             :key="billboard.id"
                         >
-                            <td class="text-xs">{{ index + 1 }}</td>
-                            <td class="text-xs break-normal">
+                            <td>{{ index + 1 }}</td>
+                            <td>
                                 <router-link
-                                    :to="`/contact/${billboard.contact_id}/info`"
-                                    custom
-                                    v-slot="{ navigate, href }"
-                                >
-                                    <a :href="href" @click.stop="navigate">{{
-                                        billboard.contact_name
-                                    }}</a>
-                                </router-link>
-                            </td>
-                            <td class="text-xs break-normal">
-                                <router-link
-                                    :to="`/billboard/${billboard.id}/info`"
+                                    :to="`/billboard/${billboard.id}/tenure`"
                                     custom
                                     v-slot="{ navigate, href }"
                                 >
@@ -292,265 +311,809 @@
                                     }}</a>
                                 </router-link>
                             </td>
-                            <td class="text-xs w-max">
-                                {{ billboard.bboard_location }}
+                            <td>{{ billboard.bboard_location }}</td>
+                            <td>{{ billboard.bboard_size }}</td>
+                            <td class="py-2">
+                                <tr
+                                    v-for="tenure in billboard.summary"
+                                    :key="tenure.id"
+                                    class=""
+                                >
+                                    <td>
+                                        <router-link
+                                            :to="`/contact/${tenure.company_id}/info`"
+                                            custom
+                                            v-slot="{ navigate, href }"
+                                        >
+                                            <a
+                                                :href="href"
+                                                @click.stop="navigate"
+                                                >{{ tenure.company_name }}</a
+                                            >
+                                        </router-link>
+                                    </td>
+                                </tr>
                             </td>
-                            <td class="text-xs break-normal">
-                                {{ billboard.bboard_size }}
-                            </td>
-                            <td
-                                class="text-xs"
-                                v-if="billboard.tenure_startdate"
-                            >
-                                <span
-                                    v-if="
-                                        getMonth(billboard.tenure_startdate) ===
-                                        this.selectedYear + '-01'
-                                    "
-                                    >{{ showToday(billboard.tenure_startdate) }}</span
+                            <td class="text-xs py-2">
+                                <tr
+                                    v-for="tenure in billboard.summary"
+                                    :key="tenure.id"
+                                    class=""
                                 >
-                                <br>
-                                <span
-                                    v-if="
-                                        getMonth(billboard.tenure_enddate) ===
-                                        this.selectedYear + '-01'
-                                    "
-                                    >{{ showToday(billboard.tenure_enddate) }}</span
-                                >
-                            </td>
-                            <td v-else></td>
-                            <td
-                                class="text-xs"
-                                v-if="billboard.tenure_startdate"
-                            >
-                                <span
-                                    v-if="
-                                        getMonth(billboard.tenure_startdate) ===
-                                        this.selectedYear + '-02'
-                                    "
-                                    >{{ showToday(billboard.tenure_startdate) }}</span
-                                >
-                                <br>
-                                <span
-                                    v-if="
-                                        getMonth(billboard.tenure_enddate) ===
-                                        this.selectedYear + '-02'
-                                    "
-                                    >{{ showToday(billboard.tenure_enddate) }}</span
-                                >
-                            </td>
-                            <td v-else></td>
-                            <td
-                                class="text-xs"
-                                v-if="billboard.tenure_startdate"
-                            >
-                                <span
-                                    v-if="
-                                        getMonth(billboard.tenure_startdate) ===
-                                        this.selectedYear + '-03'
-                                    "
-                                    >{{ showToday(billboard.tenure_startdate) }}</span
-                                >
-                                <br>
-                                <span
-                                    v-if="
-                                        getMonth(billboard.tenure_enddate) ===
-                                        this.selectedYear + '-03'
-                                    "
-                                    >{{ showToday(billboard.tenure_enddate) }}</span
-                                >
-                            </td>
-                            <td v-else></td>
-                            <td
-                                class="text-xs"
-                                v-if="billboard.tenure_startdate"
-                            >
-                                <span
-                                    v-if="
-                                        getMonth(billboard.tenure_startdate) ===
-                                        this.selectedYear + '-04'
-                                    "
-                                    >{{ showToday(billboard.tenure_startdate) }}</span
-                                >
-                                <br>
-                                <span
-                                    v-if="
-                                        getMonth(billboard.tenure_enddate) ===
-                                        this.selectedYear + '-04'
-                                    "
-                                    >{{ showToday(billboard.tenure_enddate) }}</span
-                                >
-                            </td>
-                            <td v-else></td>
-                            <td
-                                class="text-xs"
-                                v-if="billboard.tenure_startdate"
-                            >
-                                <span
-                                    v-if="
-                                        getMonth(billboard.tenure_startdate) ===
-                                        this.selectedYear + '-05'
-                                    "
-                                    >{{ showToday(billboard.tenure_startdate) }}</span
-                                >
-                                <br>
-                                <span
-                                    v-if="
-                                        getMonth(billboard.tenure_enddate) ===
-                                        this.selectedYear + '-05'
-                                    "
-                                    >{{ showToday(billboard.tenure_enddate) }}</span
-                                >
-                            </td>
-                            <td v-else></td>
-                            <td
-                                class="text-xs"
-                                v-if="billboard.tenure_startdate"
-                            >
-                                <span
-                                    v-if="
-                                        getMonth(billboard.tenure_startdate) ===
-                                        this.selectedYear + '-06'
-                                    "
-                                    >{{ showToday(billboard.tenure_startdate) }}</span
-                                >
-                                <br>
-                                <span
-                                    v-if="
-                                        getMonth(billboard.tenure_enddate) ===
-                                        this.selectedYear + '-06'
-                                    "
-                                    >{{ showToday(billboard.tenure_enddate) }}</span
-                                >
-                            </td>
-                            <td v-else></td>
-                            <td
-                                class="text-xs"
-                                v-if="billboard.tenure_startdate"
-                            >
-                                <span
-                                    v-if="
-                                        getMonth(billboard.tenure_startdate) ===
-                                        this.selectedYear + '-07'
-                                    "
-                                    >{{ showToday(billboard.tenure_startdate) }}</span
-                                >
-                                <br>
-                                <span
-                                    v-if="
-                                        getMonth(billboard.tenure_enddate) ===
-                                        this.selectedYear + '-07'
-                                    "
-                                    >{{ showToday(billboard.tenure_enddate) }}</span
-                                >
-                            </td>
-                            <td v-else></td>
-                            <td
-                                class="text-xs"
-                                v-if="billboard.tenure_startdate"
-                            >
-                                <span
-                                    v-if="
-                                        getMonth(billboard.tenure_startdate) ===
-                                        this.selectedYear + '-08'
-                                    "
-                                    >{{ showToday(billboard.tenure_startdate) }}</span
-                                >
-                                <br>
-                                <span
-                                    v-if="
-                                        getMonth(billboard.tenure_enddate) ===
-                                        this.selectedYear + '-08'
-                                    "
-                                    >{{ showToday(billboard.tenure_enddate) }}</span
-                                >
-                            </td>
-                            <td v-else></td>
-                            <td
-                                class="text-xs"
-                                v-if="billboard.tenure_startdate"
-                            >
-                                <span
-                                    v-if="
-                                        getMonth(billboard.tenure_startdate) ===
-                                        this.selectedYear + '-09'
-                                    "
-                                    >{{ showToday(billboard.tenure_startdate) }}</span
-                                >
-                                <br>
-                                <span
-                                    v-if="
-                                        getMonth(billboard.tenure_enddate) ===
-                                        this.selectedYear + '-10'
-                                    "
-                                    >{{ showToday(billboard.tenure_enddate) }}</span
-                                >
-                            </td>
-                            <td v-else></td>
-                            <td
-                                class="text-xs"
-                                v-if="billboard.tenure_startdate"
-                            >
-                                <span
-                                    v-if="
-                                        getMonth(billboard.tenure_startdate) ===
-                                        this.selectedYear + '-10'
-                                    "
-                                    >{{ showToday(billboard.tenure_startdate) }}</span
-                                >
-                                <br>
-                                <span
-                                    v-if="
-                                        getMonth(billboard.tenure_enddate) ===
-                                        this.selectedYear + '-10'
-                                    "
-                                    >{{ showToday(billboard.tenure_enddate) }}</span
-                                >
-                            </td>
-                            <td v-else></td>
-                            <td
-                                class="text-xs"
-                                v-if="billboard.tenure_startdate"
-                            >
-                                <span
-                                    v-if="
-                                        getMonth(billboard.tenure_startdate) ===
-                                        this.selectedYear + '-11'
-                                    "
-                                    >{{ showToday(billboard.tenure_startdate) }}</span
-                                >
-                                <br>
-                                <span
-                                    v-if="
-                                        getMonth(billboard.tenure_enddate) ===
-                                        this.selectedYear + '-11'
-                                    "
-                                    >{{ showToday(billboard.tenure_enddate) }}</span
-                                >
-                            </td>
-                            <td v-else></td>
-                            <td
-                                class="text-xs"
-                                v-if="billboard.tenure_startdate"
-                            >
-                                <span
-                                    v-if="
-                                        getMonth(billboard.tenure_startdate) ===
-                                        this.selectedYear + '-12'
-                                    "
-                                    >{{ showToday(billboard.tenure_startdate) }}</span
-                                >
-                                <br>
-                                <span
-                                    v-if="
-                                        getMonth(billboard.tenure_enddate) ===
-                                        this.selectedYear + '-12'
-                                    "
-                                    >{{ showToday(billboard.tenure_enddate) }}</span
-                                >
-                            </td>
-                            <td v-else></td>
+                                    <td
+                                        v-if="
+                                            getMonth(
+                                                tenure.tenure_startdate
+                                            ) ===
+                                                this.selectedYear + '-01' ||
+                                            getMonth(tenure.tenure_enddate) ===
+                                                this.selectedYear + '-01'
+                                        "
+                                    >
+                                        <span
+                                            v-if="
+                                                getMonth(
+                                                    tenure.tenure_startdate
+                                                ) ===
+                                                this.selectedYear + '-01'
+                                            "
+                                            class="bg-green-300 text-center px-1 my-1 font-bold"
+                                            >{{
+                                                showToday(
+                                                    tenure.tenure_startdate
+                                                )
+                                            }}<br
+                                        /></span>
 
+                                        <span
+                                            v-if="
+                                                getMonth(
+                                                    tenure.tenure_enddate
+                                                ) ===
+                                                this.selectedYear + '-01'
+                                            "
+                                            class="bg-red-300 text-center px-1 my-1 font-bold"
+                                        >
+                                            {{
+                                                showToday(tenure.tenure_enddate)
+                                            }}
+                                        </span>
+                                    </td>
+                                    <td
+                                        v-else-if="
+                                            checkMonth(
+                                                this.selectedYear + '-01-01',
+                                                tenure.tenure_startdate,
+                                                tenure.tenure_enddate
+                                            )
+                                        "
+                                        class="bg-green-300 text-center w-16 px-1 my-1 font-bold text-transparent"
+                                    >
+                                        X
+                                    </td>
+                                    <td
+                                        v-else
+                                        class="bg-yellow-300 text-center w-16 px-1 my-1 font-bold text-transparent"
+                                    >
+                                        X
+                                    </td>
+                                </tr>
+                            </td>
+                            <td class="py-2">
+                                <tr
+                                    v-for="tenure in billboard.summary"
+                                    :key="tenure.id"
+                                    class=""
+                                >
+                                    <td
+                                        v-if="
+                                            getMonth(
+                                                tenure.tenure_startdate
+                                            ) ===
+                                                this.selectedYear + '-02' ||
+                                            getMonth(tenure.tenure_enddate) ===
+                                                this.selectedYear + '-02'
+                                        "
+                                    >
+                                        <span
+                                            v-if="
+                                                getMonth(
+                                                    tenure.tenure_startdate
+                                                ) ===
+                                                this.selectedYear + '-02'
+                                            "
+                                            class="bg-green-300 text-center px-1 my-1 font-bold"
+                                            >{{
+                                                showToday(
+                                                    tenure.tenure_startdate
+                                                )
+                                            }}<br
+                                        /></span>
+
+                                        <span
+                                            v-if="
+                                                getMonth(
+                                                    tenure.tenure_enddate
+                                                ) ===
+                                                this.selectedYear + '-02'
+                                            "
+                                            class="bg-red-300 text-center px-1 my-1 font-bold"
+                                        >
+                                            {{
+                                                showToday(tenure.tenure_enddate)
+                                            }}
+                                        </span>
+                                    </td>
+                                    <td
+                                        v-else-if="
+                                            checkMonth(
+                                                this.selectedYear + '-02-01',
+                                                tenure.tenure_startdate,
+                                                tenure.tenure_enddate
+                                            )
+                                        "
+                                        class="bg-green-300 text-center w-16 px-1 my-1 font-bold text-transparent"
+                                    >
+                                        X
+                                    </td>
+                                    <td
+                                        v-else
+                                        class="bg-yellow-300 text-center w-16 px-1 my-1 font-bold text-transparent"
+                                    >
+                                        X
+                                    </td>
+                                </tr>
+                            </td>
+                            <td class="py-2">
+                                <tr
+                                    v-for="tenure in billboard.summary"
+                                    :key="tenure.id"
+                                    class=""
+                                >
+                                    <td
+                                        v-if="
+                                            getMonth(
+                                                tenure.tenure_startdate
+                                            ) ===
+                                                this.selectedYear + '-03' ||
+                                            getMonth(tenure.tenure_enddate) ===
+                                                this.selectedYear + '-03'
+                                        "
+                                    >
+                                        <span
+                                            v-if="
+                                                getMonth(
+                                                    tenure.tenure_startdate
+                                                ) ===
+                                                this.selectedYear + '-03'
+                                            "
+                                            class="bg-green-300 text-center px-1 my-1 font-bold"
+                                            >{{
+                                                showToday(
+                                                    tenure.tenure_startdate
+                                                )
+                                            }}<br
+                                        /></span>
+
+                                        <span
+                                            v-if="
+                                                getMonth(
+                                                    tenure.tenure_enddate
+                                                ) ===
+                                                this.selectedYear + '-03'
+                                            "
+                                            class="bg-red-300 text-center px-1 my-1 font-bold"
+                                        >
+                                            {{
+                                                showToday(tenure.tenure_enddate)
+                                            }}
+                                        </span>
+                                    </td>
+                                    <td
+                                        v-else-if="
+                                            checkMonth(
+                                                this.selectedYear + '-03-01',
+                                                tenure.tenure_startdate,
+                                                tenure.tenure_enddate
+                                            )
+                                        "
+                                        class="bg-green-300 text-center w-16 px-1 my-1 font-bold text-transparent"
+                                    >
+                                        X
+                                    </td>
+                                    <td
+                                        v-else
+                                        class="bg-yellow-300 text-center w-16 px-1 my-1 font-bold text-transparent"
+                                    >
+                                        X
+                                    </td>
+                                </tr>
+                            </td>
+                            <td class="py-2">
+                                <tr
+                                    v-for="tenure in billboard.summary"
+                                    :key="tenure.id"
+                                    class=""
+                                >
+                                    <td
+                                        v-if="
+                                            getMonth(
+                                                tenure.tenure_startdate
+                                            ) ===
+                                                this.selectedYear + '-04' ||
+                                            getMonth(tenure.tenure_enddate) ===
+                                                this.selectedYear + '-04'
+                                        "
+                                    >
+                                        <span
+                                            v-if="
+                                                getMonth(
+                                                    tenure.tenure_startdate
+                                                ) ===
+                                                this.selectedYear + '-04'
+                                            "
+                                            class="bg-green-300 text-center px-1 my-1 font-bold"
+                                            >{{
+                                                showToday(
+                                                    tenure.tenure_startdate
+                                                )
+                                            }}<br
+                                        /></span>
+
+                                        <span
+                                            v-if="
+                                                getMonth(
+                                                    tenure.tenure_enddate
+                                                ) ===
+                                                this.selectedYear + '-04'
+                                            "
+                                            class="bg-red-300 text-center px-1 my-1 font-bold"
+                                        >
+                                            {{
+                                                showToday(tenure.tenure_enddate)
+                                            }}
+                                        </span>
+                                    </td>
+                                    <td
+                                        v-else-if="
+                                            checkMonth(
+                                                this.selectedYear + '-04-01',
+                                                tenure.tenure_startdate,
+                                                tenure.tenure_enddate
+                                            )
+                                        "
+                                        class="bg-green-300 text-center w-16 px-1 my-1 font-bold text-transparent"
+                                    >
+                                        X
+                                    </td>
+                                    <td
+                                        v-else
+                                        class="bg-yellow-300 text-center w-16 px-1 my-1 font-bold text-transparent"
+                                    >
+                                        X
+                                    </td>
+                                </tr>
+                            </td>
+                            <td class="py-2">
+                                <tr
+                                    v-for="tenure in billboard.summary"
+                                    :key="tenure.id"
+                                    class=""
+                                >
+                                    <td
+                                        v-if="
+                                            getMonth(
+                                                tenure.tenure_startdate
+                                            ) ===
+                                                this.selectedYear + '-05' ||
+                                            getMonth(tenure.tenure_enddate) ===
+                                                this.selectedYear + '-05'
+                                        "
+                                    >
+                                        <span
+                                            v-if="
+                                                getMonth(
+                                                    tenure.tenure_startdate
+                                                ) ===
+                                                this.selectedYear + '-05'
+                                            "
+                                            class="bg-green-300 text-center px-1 my-1 font-bold"
+                                            >{{
+                                                showToday(
+                                                    tenure.tenure_startdate
+                                                )
+                                            }}<br
+                                        /></span>
+
+                                        <span
+                                            v-if="
+                                                getMonth(
+                                                    tenure.tenure_enddate
+                                                ) ===
+                                                this.selectedYear + '-05'
+                                            "
+                                            class="bg-red-300 text-center px-1 my-1 font-bold"
+                                        >
+                                            {{
+                                                showToday(tenure.tenure_enddate)
+                                            }}
+                                        </span>
+                                    </td>
+                                    <td
+                                        v-else-if="
+                                            checkMonth(
+                                                this.selectedYear + '-05-01',
+                                                tenure.tenure_startdate,
+                                                tenure.tenure_enddate
+                                            )
+                                        "
+                                        class="bg-green-300 text-center w-16 px-1 my-1 font-bold text-transparent"
+                                    >
+                                        X
+                                    </td>
+                                    <td
+                                        v-else
+                                        class="bg-yellow-300 text-center w-16 px-1 my-1 font-bold text-transparent"
+                                    >
+                                        X
+                                    </td>
+                                </tr>
+                            </td>
+                            <td class="py-2">
+                                <tr
+                                    v-for="tenure in billboard.summary"
+                                    :key="tenure.id"
+                                    class=""
+                                >
+                                    <td
+                                        v-if="
+                                            getMonth(
+                                                tenure.tenure_startdate
+                                            ) ===
+                                                this.selectedYear + '-06' ||
+                                            getMonth(tenure.tenure_enddate) ===
+                                                this.selectedYear + '-06'
+                                        "
+                                    >
+                                        <span
+                                            v-if="
+                                                getMonth(
+                                                    tenure.tenure_startdate
+                                                ) ===
+                                                this.selectedYear + '-06'
+                                            "
+                                            class="bg-green-300 text-center px-1 my-1 font-bold"
+                                            >{{
+                                                showToday(
+                                                    tenure.tenure_startdate
+                                                )
+                                            }}<br
+                                        /></span>
+
+                                        <span
+                                            v-if="
+                                                getMonth(
+                                                    tenure.tenure_enddate
+                                                ) ===
+                                                this.selectedYear + '-06'
+                                            "
+                                            class="bg-red-300 text-center px-1 my-1 font-bold"
+                                        >
+                                            {{
+                                                showToday(tenure.tenure_enddate)
+                                            }}
+                                        </span>
+                                    </td>
+                                    <td
+                                        v-else-if="
+                                            checkMonth(
+                                                this.selectedYear + '-06-01',
+                                                tenure.tenure_startdate,
+                                                tenure.tenure_enddate
+                                            )
+                                        "
+                                        class="bg-green-300 text-center w-16 px-1 my-1 font-bold text-transparent"
+                                    >
+                                        X
+                                    </td>
+                                    <td
+                                        v-else
+                                        class="bg-yellow-300 text-center w-16 px-1 my-1 font-bold text-transparent"
+                                    >
+                                        X
+                                    </td>
+                                </tr>
+                            </td>
+                            <td class="py-2">
+                                <tr
+                                    v-for="tenure in billboard.summary"
+                                    :key="tenure.id"
+                                    class=""
+                                >
+                                    <td
+                                        v-if="
+                                            getMonth(
+                                                tenure.tenure_startdate
+                                            ) ===
+                                                this.selectedYear + '-07' ||
+                                            getMonth(tenure.tenure_enddate) ===
+                                                this.selectedYear + '-07'
+                                        "
+                                    >
+                                        <span
+                                            v-if="
+                                                getMonth(
+                                                    tenure.tenure_startdate
+                                                ) ===
+                                                this.selectedYear + '-07'
+                                            "
+                                            class="bg-green-300 text-center px-1 my-1 font-bold"
+                                            >{{
+                                                showToday(
+                                                    tenure.tenure_startdate
+                                                )
+                                            }}<br
+                                        /></span>
+
+                                        <span
+                                            v-if="
+                                                getMonth(
+                                                    tenure.tenure_enddate
+                                                ) ===
+                                                this.selectedYear + '-07'
+                                            "
+                                            class="bg-red-300 text-center px-1 my-1 font-bold"
+                                        >
+                                            {{
+                                                showToday(tenure.tenure_enddate)
+                                            }}
+                                        </span>
+                                    </td>
+                                    <td
+                                        v-else-if="
+                                            checkMonth(
+                                                this.selectedYear + '-07-01',
+                                                tenure.tenure_startdate,
+                                                tenure.tenure_enddate
+                                            )
+                                        "
+                                        class="bg-green-300 text-center w-16 px-1 my-1 font-bold text-transparent"
+                                    >
+                                        X
+                                    </td>
+                                    <td
+                                        v-else
+                                        class="bg-yellow-300 text-center w-16 px-1 my-1 font-bold text-transparent"
+                                    >
+                                        X
+                                    </td>
+                                </tr>
+                            </td>
+                            <td>
+                                <tr
+                                    v-for="tenure in billboard.summary"
+                                    :key="tenure.id"
+                                    class="py-2"
+                                >
+                                    <td
+                                        v-if="
+                                            getMonth(
+                                                tenure.tenure_startdate
+                                            ) ===
+                                                this.selectedYear + '-08' ||
+                                            getMonth(tenure.tenure_enddate) ===
+                                                this.selectedYear + '-08'
+                                        "
+                                    >
+                                        <span
+                                            v-if="
+                                                getMonth(
+                                                    tenure.tenure_startdate
+                                                ) ===
+                                                this.selectedYear + '-08'
+                                            "
+                                            class="bg-green-300 text-center px-1 my-1 font-bold"
+                                            >{{
+                                                showToday(
+                                                    tenure.tenure_startdate
+                                                )
+                                            }}<br
+                                        /></span>
+
+                                        <span
+                                            v-if="
+                                                getMonth(
+                                                    tenure.tenure_enddate
+                                                ) ===
+                                                this.selectedYear + '-08'
+                                            "
+                                            class="bg-red-300 text-center px-1 my-1 font-bold"
+                                        >
+                                            {{
+                                                showToday(tenure.tenure_enddate)
+                                            }}
+                                        </span>
+                                    </td>
+                                    <td
+                                        v-else-if="
+                                            checkMonth(
+                                                this.selectedYear + '-08-01',
+                                                tenure.tenure_startdate,
+                                                tenure.tenure_enddate
+                                            )
+                                        "
+                                        class="bg-green-300 text-center w-16 px-1 my-1 font-bold text-transparent"
+                                    >
+                                        X
+                                    </td>
+                                    <td
+                                        v-else
+                                        class="bg-yellow-300 text-center w-16 px-1 my-1 font-bold text-transparent"
+                                    >
+                                        X
+                                    </td>
+                                </tr>
+                            </td>
+                            <td>
+                                <tr
+                                    v-for="tenure in billboard.summary"
+                                    :key="tenure.id"
+                                    class="py-2"
+                                >
+                                    <td
+                                        v-if="
+                                            getMonth(
+                                                tenure.tenure_startdate
+                                            ) ===
+                                                this.selectedYear + '-09' ||
+                                            getMonth(tenure.tenure_enddate) ===
+                                                this.selectedYear + '-09'
+                                        "
+                                    >
+                                        <span
+                                            v-if="
+                                                getMonth(
+                                                    tenure.tenure_startdate
+                                                ) ===
+                                                this.selectedYear + '-09'
+                                            "
+                                            class="bg-green-300 text-center px-1 my-1 font-bold"
+                                            >{{
+                                                showToday(
+                                                    tenure.tenure_startdate
+                                                )
+                                            }}<br
+                                        /></span>
+
+                                        <span
+                                            v-if="
+                                                getMonth(
+                                                    tenure.tenure_enddate
+                                                ) ===
+                                                this.selectedYear + '-09'
+                                            "
+                                            class="bg-red-300 text-center px-1 my-1 font-bold"
+                                        >
+                                            {{
+                                                showToday(tenure.tenure_enddate)
+                                            }}
+                                        </span>
+                                    </td>
+                                    <td
+                                        v-else-if="
+                                            checkMonth(
+                                                this.selectedYear + '-09-01',
+                                                tenure.tenure_startdate,
+                                                tenure.tenure_enddate
+                                            )
+                                        "
+                                        class="bg-green-300 text-center w-16 px-1 my-1 font-bold text-transparent"
+                                    >
+                                        X
+                                    </td>
+                                    <td
+                                        v-else
+                                        class="bg-yellow-300 text-center w-16 px-1 my-1 font-bold text-transparent"
+                                    >
+                                        X
+                                    </td>
+                                </tr>
+                            </td>
+                            <td>
+                                <tr
+                                    v-for="tenure in billboard.summary"
+                                    :key="tenure.id"
+                                    class="py-2"
+                                >
+                                    <td
+                                        v-if="
+                                            getMonth(
+                                                tenure.tenure_startdate
+                                            ) ===
+                                                this.selectedYear + '-10' ||
+                                            getMonth(tenure.tenure_enddate) ===
+                                                this.selectedYear + '-10'
+                                        "
+                                    >
+                                        <span
+                                            v-if="
+                                                getMonth(
+                                                    tenure.tenure_startdate
+                                                ) ===
+                                                this.selectedYear + '-10'
+                                            "
+                                            class="bg-green-300 text-center px-1 my-1 font-bold"
+                                            >{{
+                                                showToday(
+                                                    tenure.tenure_startdate
+                                                )
+                                            }}<br
+                                        /></span>
+
+                                        <span
+                                            v-if="
+                                                getMonth(
+                                                    tenure.tenure_enddate
+                                                ) ===
+                                                this.selectedYear + '-10'
+                                            "
+                                            class="bg-red-300 text-center px-1 my-1 font-bold"
+                                        >
+                                            {{
+                                                showToday(tenure.tenure_enddate)
+                                            }}
+                                        </span>
+                                    </td>
+                                    <td
+                                        v-else-if="
+                                            checkMonth(
+                                                this.selectedYear + '-10-01',
+                                                tenure.tenure_startdate,
+                                                tenure.tenure_enddate
+                                            )
+                                        "
+                                        class="bg-green-300 text-center w-16 px-1 my-1 font-bold text-transparent"
+                                    >
+                                        X
+                                    </td>
+                                    <td
+                                        v-else
+                                        class="bg-yellow-300 text-center w-16 px-1 my-1 font-bold text-transparent"
+                                    >
+                                        X
+                                    </td>
+                                </tr>
+                            </td>
+                            <td>
+                                <tr
+                                    v-for="tenure in billboard.summary"
+                                    :key="tenure.id"
+                                    class="py-2"
+                                >
+                                    <td
+                                        v-if="
+                                            getMonth(
+                                                tenure.tenure_startdate
+                                            ) ===
+                                                this.selectedYear + '-11' ||
+                                            getMonth(tenure.tenure_enddate) ===
+                                                this.selectedYear + '-11'
+                                        "
+                                    >
+                                        <span
+                                            v-if="
+                                                getMonth(
+                                                    tenure.tenure_startdate
+                                                ) ===
+                                                this.selectedYear + '-11'
+                                            "
+                                            class="bg-green-300 text-center px-1 my-1 font-bold"
+                                            >{{
+                                                showToday(
+                                                    tenure.tenure_startdate
+                                                )
+                                            }}<br
+                                        /></span>
+
+                                        <span
+                                            v-if="
+                                                getMonth(
+                                                    tenure.tenure_enddate
+                                                ) ===
+                                                this.selectedYear + '-11'
+                                            "
+                                            class="bg-red-300 text-center px-1 my-1 font-bold"
+                                        >
+                                            {{
+                                                showToday(tenure.tenure_enddate)
+                                            }}
+                                        </span>
+                                    </td>
+                                    <td
+                                        v-else-if="
+                                            checkMonth(
+                                                this.selectedYear + '-11-01',
+                                                tenure.tenure_startdate,
+                                                tenure.tenure_enddate
+                                            )
+                                        "
+                                        class="bg-green-300 text-center w-16 px-1 my-1 font-bold text-transparent"
+                                    >
+                                        X
+                                    </td>
+                                    <td
+                                        v-else
+                                        class="bg-yellow-300 text-center w-16 px-1 my-1 font-bold text-transparent"
+                                    >
+                                        X
+                                    </td>
+                                </tr>
+                            </td>
+                            <td>
+                                <tr
+                                    v-for="tenure in billboard.summary"
+                                    :key="tenure.id"
+                                    class="py-2"
+                                >
+                                    <td
+                                        v-if="
+                                            getMonth(
+                                                tenure.tenure_startdate
+                                            ) ===
+                                                this.selectedYear + '-12' ||
+                                            getMonth(tenure.tenure_enddate) ===
+                                                this.selectedYear + '-12'
+                                        "
+                                    >
+                                        <span
+                                            v-if="
+                                                getMonth(
+                                                    tenure.tenure_startdate
+                                                ) ===
+                                                this.selectedYear + '-12'
+                                            "
+                                            class="bg-green-300 text-center px-1 my-1 font-bold"
+                                            >{{
+                                                showToday(
+                                                    tenure.tenure_startdate
+                                                )
+                                            }}<br
+                                        /></span>
+
+                                        <span
+                                            v-if="
+                                                getMonth(
+                                                    tenure.tenure_enddate
+                                                ) ===
+                                                this.selectedYear + '-12'
+                                            "
+                                            class="bg-red-300 text-center px-1 my-1 font-bold"
+                                        >
+                                            {{
+                                                showToday(tenure.tenure_enddate)
+                                            }}
+                                        </span>
+                                    </td>
+                                    <td
+                                        v-else-if="
+                                            checkMonth(
+                                                this.selectedYear + '-12-01',
+                                                tenure.tenure_startdate,
+                                                tenure.tenure_enddate
+                                            )
+                                        "
+                                        class="bg-green-300 text-center w-16 px-1 my-1 font-bold text-transparent"
+                                    >
+                                        X
+                                    </td>
+                                    <td
+                                        v-else
+                                        class="bg-yellow-300 text-center w-16 px-1 my-1 font-bold text-transparent"
+                                    >
+                                        X
+                                    </td>
+                                </tr>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
@@ -589,14 +1152,16 @@ export default {
 
     mounted() {
         this.getSelectedYear(this.getCurrentDate());
-        this.getBillboards();
+        // this.getTenures();
         this.getBillboardSizes();
+        this.getBillboards();
     },
     data() {
         return {
-            billboards: [],
+            tenures: [],
             billboard_sizes: [],
             contacts: [],
+            billboards: [],
 
             paginate: 50,
             moment: moment,
@@ -611,7 +1176,7 @@ export default {
             selectedSize: "",
 
             sort_direction: "asc",
-            sort_field: "id",
+            sort_field: "site_id",
             currentDate: "",
 
             // contact_fields: {
@@ -735,42 +1300,40 @@ export default {
     },
     watch: {
         paginate: function (value) {
-            this.getBillboards();
+            this.getTenures();
         },
         search: function (value) {
-            this.getBillboards();
+            this.getTenures();
         },
         selectedYear: function (value) {
-            this.getBillboards();
+            this.getTenures();
         },
         selectedSite: function (value) {
-            this.getBillboards();
+            this.getTenures();
         },
         selectedSize: function (value) {
-            this.getBillboards();
+            this.getTenures();
         },
     },
 
     computed: {},
 
     methods: {
-        getBillboards(page = 1) {
+        getTenures(page = 1) {
             if (typeof page === "undefined") {
                 page = 1;
             }
             axios
                 .get(
-                    "/api/billboard/index?" +
+                    "/api/billboards/tenure?" +
                         "q=" +
                         this.search +
                         "&selectedYear=" +
                         this.selectedYear +
-                        "&selectedStatus=" +
-                        this.selectedSite +
                         "&selectedSite=" +
-                        this.selectedSize +
+                        this.selectedSite +
                         "&selectedSize=" +
-                        this.selectedType +
+                        this.selectedSize +
                         "&paginate=" +
                         this.paginate +
                         "&page=" +
@@ -779,6 +1342,39 @@ export default {
                         this.sort_direction +
                         "&sort_field=" +
                         this.sort_field
+                )
+                .then((res) => {
+                    this.tenures = res.data;
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        },
+
+        getBillboards(page = 1) {
+            if (typeof page === "undefined") {
+                page = 1;
+            }
+            axios
+                .get(
+                    "/api/billboards/index"
+                    // +
+                    // "q=" +
+                    // this.search +
+                    // "&selectedYear=" +
+                    // this.selectedYear +
+                    // "&selectedSite=" +
+                    // this.selectedSite +
+                    // "&selectedSize=" +
+                    // this.selectedSize +
+                    // "&paginate=" +
+                    // this.paginate +
+                    // "&page=" +
+                    // page +
+                    // "&sort_direction=" +
+                    // this.sort_direction +
+                    // "&sort_field=" +
+                    // this.sort_field
                 )
                 .then((res) => {
                     this.billboards = res.data;
@@ -790,7 +1386,7 @@ export default {
 
         async getBillboardSites() {
             await axios
-                .get("/api/billboard/site")
+                .get("/api/billboards/site")
                 .then((res) => {
                     this.billboard_sites = res.data;
                 })
@@ -801,7 +1397,7 @@ export default {
 
         async getBillboardSizes() {
             await axios
-                .get("/api/billboard/size")
+                .get("/api/billboards/size")
                 .then((res) => {
                     this.billboard_sizes = res.data;
                 })
@@ -839,6 +1435,21 @@ export default {
         getMonth(date) {
             let day = moment(date).format("YYYY-MM");
             return day;
+        },
+
+        checkMonth(month, start_date, end_date) {
+            const date = new Date(month);
+
+            const start = new Date(start_date);
+            const end = new Date(end_date);
+
+            if (date > start && date < end) {
+                // console.log("✅ date is between the 2 dates");
+                return true;
+            } else {
+                // console.log("⛔️ date is not in the range");
+                return false;
+            }
         },
     },
 };

@@ -617,7 +617,7 @@
                             </td>
                             <td v-else></td>
                         </tr>
-                        <tr class="text-xs text-center">
+                        <!-- <tr class="text-xs text-center">
                             <td colspan="7" class="text-right">Total</td>
                             <td>Jan</td>
                             <td>Jan</td>
@@ -631,7 +631,7 @@
                             <td>Jan</td>
                             <td>Jan</td>
                             <td>Jan</td>
-                        </tr>
+                        </tr> -->
                     </tbody>
                 </table>
             </div>

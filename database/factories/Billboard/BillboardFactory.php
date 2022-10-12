@@ -30,7 +30,7 @@ class BillboardFactory extends Factory
         return [
             'site_id' => $site_id,
             'bboard_location' => $this->faker->city(),
-            'bboard_size' => $bboard_height . "x" . $bboard_length,
+            'bboard_size' => $bboard_height . " x " . $bboard_length,
         ];
     }
 }

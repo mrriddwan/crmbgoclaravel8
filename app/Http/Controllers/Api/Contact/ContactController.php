@@ -152,6 +152,35 @@ class ContactController extends Controller
         ]);
     }
 
+    public function history(Contact $contact)
+    {
+        $contact = Contact::with([
+            'todo' => function ($q) {
+                $q->select(
+                    'id',
+                    'contact_id',
+                    'todo_date',
+                    'todo_deadline',
+                    'todo_remark',
+                    'user_id',
+                    'task_id',
+                    'action_id'
+                )
+                    ->orderBy('todo_date', 'desc');
+            },
+        ])->select('contacts.id', 'contacts.name')
+            ->where('id', $contact->id)
+            ->get();
+
+        $data = $contact->toArray();
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Successfully fetch data Contact ',
+            'data' => $data,
+        ]);
+    }
+
     public function summary()
     {
         $paginate = request('paginate');

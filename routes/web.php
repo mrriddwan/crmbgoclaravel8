@@ -79,6 +79,14 @@ Route::get('/tempboard/index', function () {
     return view('tempboard');
 })->middleware(['auth'])->name('tempboard');
 
-Route::get('/admin/index', function () {
-    return view('admin');
-})->middleware(['auth'])->name('admin');
+Route::get('/admin/data', function () {
+    return view('admin_data');
+})->middleware(['auth'])->name('admin-data');
+
+Route::get('/admin/user/management', function () {
+    return view('admin_management');
+})->middleware(['auth'])->name('admin-management');
+
+Route::get('/admin/user/access', function () {
+    return view('admin_access');
+})->middleware(['auth'])->name('admin-access');
