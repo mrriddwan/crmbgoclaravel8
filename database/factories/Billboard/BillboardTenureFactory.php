@@ -30,7 +30,7 @@ class BillboardTenureFactory extends Factory
             'tenure_enddate' => $tenure_enddate,
             'bboard_id' => random_int(1, 20),
             'contact_id' => random_int(1, 100),
-            'user_id' => random_int(3, 10),
+            'user_id' => random_int(1, 10),
         ];
     }
 }

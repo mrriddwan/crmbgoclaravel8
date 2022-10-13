@@ -728,7 +728,7 @@ export default {
         search: function (value) {
             this.getContacts();
         },
-        selectedUsers: function (value) {
+        selectedUser: function (value) {
             this.getContacts();
         },
         selectedStatus: function (value) {
@@ -774,8 +774,8 @@ export default {
                     "/api/contacts/index?" +
                         "q=" +
                         this.search +
-                        "&selectedUser=" +
-                        this.selectedUser +
+                        // "&selectedUser=" +
+                        // this.selectedUser +
                         "&selectedStatus=" +
                         this.selectedStatus +
                         "&selectedType=" +

@@ -1,5 +1,9 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\TestController;
+use App\Http\Controllers\Api\Contact\ContactController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -22,6 +26,10 @@ require __DIR__ . '/auth.php';
 // Route::get('/', function () {
 //         return view('contact');
 // });
+
+// Auth::routes();
+
+
 Route::get('', function () {
     return view('contact');
 })->middleware(['auth'])->name('contact');

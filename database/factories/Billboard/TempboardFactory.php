@@ -31,7 +31,7 @@ class TempboardFactory extends Factory
             'tpboard_startdate' => $tpboard_startdate,
             'tpboard_enddate' => $tpboard_enddate,
             'contact_id' => random_int(1, 100),
-            'user_id' => random_int(3, 10),
+            'user_id' => random_int(1, 10),
             'tpboard_size' => $tpboard_height . "x" . $tpboard_length,
             'tpboard_location' => $this->faker->city(),
             'tpboard_unit' => $this->faker->randomDigitNotNull(),

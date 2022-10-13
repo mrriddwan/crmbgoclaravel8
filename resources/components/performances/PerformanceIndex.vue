@@ -6,9 +6,7 @@
     </h1>
 
     <div class="text-sm">
-        <div
-            class="m-1 inline-block items-center px-1 py-1 border-gray-500 border-2"
-        >
+        <div class="m-1 inline-block items-center px-1 py-1">
             <p>view by</p>
             <select v-model="viewType" class="form-control text-center">
                 <option value="week">Week</option>
@@ -27,11 +25,9 @@
             </span>
         </div>
 
-        <div
-            class="m-1 inline-block items-center px-1 py-1 border-gray-500 border-2"
-        >
+        <div class="m-1 inline-block items-center px-1 py-1">
             <p>Select user</p>
-            <select v-model="selectedUser" class="">
+            <select v-model="selectedUser" class="form-control">
                 <option value="">All User</option>
                 <option v-for="user in users" :key="user.id" :value="user.id">
                     {{ user.name }}
@@ -131,7 +127,7 @@
 
             <tbody>
                 <!-- <span v-if="viewType === 'month'"> -->
-                <tr v-if="viewType === 'month'">
+                <!-- <tr v-if="viewType === 'month'">
                     <td>
                         Week 1 : 01/
                         {{
@@ -139,8 +135,28 @@
                             " / " +
                             moment(this.selectedYear).format("YY") +
                             " - " +
-                            "04/09/22"
+                            "04 / 09 /22"
                         }}
+                    </td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                </tr> -->
+                <tr v-for="date in this.weekInMonth">
+                    <td >
+                        <!-- {{  this.displayWeek() }} -->
+                        <!-- {{ moment().date(2).format("DD-MM-YY") }} ------- {{ getStartWeek(getWeek()) }} -->
+                        <span >
+                            {{ moment(date.startDate).format("DD-MM-YY") }}
+                        </span>
+                        <span class="mx-2">
+                            to
+                        </span>
+                        <span >
+                            {{ moment(date.endDate).format("DD-MM-YY") }}
+                        </span>
                     </td>
                     <td>0</td>
                     <td>0</td>
@@ -191,13 +207,28 @@ export default {
         this.getActions();
         this.getUsers();
         this.getCurrentDate();
-        console.log(this.getWeek());
+        this.getDates(this.currentDate);
+
+        this.selectedDate = this.currentDate;
+        // this.getWeek();
+        // console.log(
+        //     "Currently this is week no. for this current month: " +
+        //         this.getWeek()
+        // );
+        console.log(this.currentDate);
 
         // console.log(
         //     "result of getDatesOfWeek: " + this.getDates(this.currentDate)
         // );
 
         // console.log("Result of mounted currrentDate: " + this.currentDate);
+
+        this.m = parseInt(this.getSelectedMonth(this.selectedDate));
+        this.y = parseInt(this.getSelectedYear(this.selectedDate));
+        // console.log(this.m);
+
+        // this.consoleList();
+        
 
         //initial month selection
         this.selectedMonth = this.getSelectedMonth(this.currentDate);
@@ -206,9 +237,9 @@ export default {
             this.selectedYear + "-" + this.selectedMonth + "-" + "01";
         this.currentMonth = this.selectedYear + "-" + this.selectedMonth;
         //initialise date range
-
-        this.incrementDate();
-        this.decrementDate();
+        this.displayWeek();
+        // this.incrementDate();
+        // this.decrementDate();
     },
 
     props: {},
@@ -218,7 +249,9 @@ export default {
             actions: [],
             users: [],
             users_actions: [],
-
+            m: Number,
+            y: Number,
+            weekInMonth: [],
             // paginate: 10,
             viewType: "month",
             moment: moment,
@@ -272,8 +305,12 @@ export default {
         currentMonth: function (value) {
             const monthYear = this.currentMonth + "-" + "01";
             this.selectedMonthYear = monthYear;
-            this.getSelectedMonth(monthYear);
-            this.getSelectedYear(monthYear);
+            // this.returnM(monthYear);
+            // this.returnY(monthYear);
+            // this.displayWeek();
+            // this.getSelectedMonth(monthYear);
+            // this.getSelectedYear(monthYear);
+
             // this.getToDosSelectMonth();
             // console.log("current date after month change: " + this.currentDate);
         },
@@ -299,21 +336,6 @@ export default {
         //             console.log(error);
         //         });
         // },
-
-        getWeek() {
-            // return moment(date).isoWeek();
-
-            const d = new Date();
-            const date = d.getDate();
-            const day = d.getDay();
-            const weekOfMonth = Math.ceil((date - 1 - day) / 7);
-            return weekOfMonth;
-        },
-
-        getWeekday(day) {
-            let currentDay = this.weekday[day];
-            return currentDay;
-        },
 
         getUsers() {
             axios
@@ -360,6 +382,23 @@ export default {
 
         // },
 
+        getWeek() {
+            // return moment(date).isoWeek();
+            // let tarikh =
+            //     this.getSelectedYear + "-" + this.getSelectedMonth + "-01";
+            const d = new Date(
+                this.getSelectedYear + "-" + this.getSelectedMonth + "-01"
+            );
+            const date = d.getDate();
+            const day = d.getDay();
+            const weekOfMonth = Math.ceil((date - 1 - day) / 7);
+            return weekOfMonth;
+        },
+
+        getWeekday(day) {
+            let currentDay = this.weekday[day];
+            return currentDay;
+        },
         //first and last Dates in Week
         getStartWeek() {
             var startOfWeek = moment().startOf("isoweek").format("DD-MM-YY");
@@ -478,6 +517,85 @@ export default {
                 document.getElementById("decrementDate").disabled = true;
             }
         },
+
+        getWeekNumbers(year, month) {
+            let firstWeek = moment(new Date(year, month, 1)).isoWeek();
+            let lastWeek = moment(new Date(year, month + 1, 0)).isoWeek();
+
+            let out = [`Week ${firstWeek}`];
+            if (firstWeek === 52 || firstWeek === 53) {
+                firstWeek = 0;
+            }
+
+            for (let i = firstWeek + 1; i <= lastWeek; i++) {
+                out.push(`Week ${i}`);
+            }
+            return out;
+        },
+
+        getMomentDate(start, end) {
+            return {
+                startDate: moment([this.y, this.m - 1, start]),
+                endDate: moment([this.y, this.m - 1, end]),
+            };
+        },
+
+        weeks(month) {
+            const weekStartEndDay = [];
+            const first = month.day() == 0 ? 6 : month.day() - 1;
+            let day = 7 - first;
+            const last = month.daysInMonth();
+            const count = (last - day) / 7;
+
+            weekStartEndDay.push(this.getMomentDate(1, day));
+            for (let i = 0; i < count; i++) {
+                weekStartEndDay.push(
+                    this.getMomentDate(day + 1, Math.min((day += 7), last))
+                );
+            }
+            return weekStartEndDay;
+        },
+
+        // consoleList() {
+        //     const month = moment([this.y, this.m - 1]);
+        //     const weekNumbers = this.getWeekNumbers(this.y, this.m - 1);
+        //     const weekList = this.weeks(month);
+        //     // console.log("weekNumbers", weekNumbers);
+        //     // console.log("weekList", weekList);
+        //     weekList.forEach((date) => {
+        //         console.log(
+        //             "start - " + date.startDate.format("DD-MM--YY"),
+        //             "end - " + date.endDate.format("DD-MM--YY")
+        //         );
+        //     });
+        // },
+
+        displayWeek() {
+            let monthYear = this.selectedYear + "-" + this.selectedMonth + "-01";
+            let y = parseInt(this.getSelectedYear(monthYear));
+            let m = parseInt(this.getSelectedMonth(monthYear));
+
+            const month = moment([y, m - 1]);
+            const weekList = this.weeks(month);
+            // console.log("weekNumbers", weekNumbers);
+            // console.log("weekList", weekList);
+            // weekList.forEach((date) => {
+            //     console.log(
+            //         "start - " + date.startDate.format("DD-MM--YY"),
+            //         "end - " + date.endDate.format("DD-MM--YY")
+            //     );
+            // });
+            return this.weekInMonth.push(...weekList);
+        },
+
+        returnM(date){
+            return this.m = parseInt(this.getSelectedMonth(date));
+
+        },
+
+        returnY(date){
+            return this.y = parseInt(this.getSelectedYear(date));
+        }
     },
 };
 </script>

@@ -9,6 +9,7 @@ use App\Http\Resources\Contact\ContactResource;
 use App\Models\Contact\Contact;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
 
 class ContactController extends Controller
@@ -18,8 +19,32 @@ class ContactController extends Controller
     //     $this->middleware('auth');
     // }
 
+
+    public function getuserid(Request $request)
+    {
+        $user = Auth::user(); // Retrieve the currently authenticated user...
+        $id = Auth::id(); // Retrieve the currently authenticated user's ID...
+
+
+        // $user = $request->user(); // returns an instance of the authenticated user...
+        // $id = $request->user()->id; // Retrieve the currently authenticated user's ID...
+
+
+        // $user = auth()->user(); // Retrieve the currently authenticated user...
+        // $id = auth()->id();  // Retrieve the currently authenticated user's ID...
+
+        // $contact = Contact::all();
+
+        // return $contact->where('user_id','=',$id);
+        // $user = auth()->user();
+        dd($id);
+        // dd($user);
+    }
+
     public function index()
     {
+        $id = Auth::id();
+
         $paginate = request('paginate');
         $search_term = request('q', '');
 
@@ -40,6 +65,8 @@ class ContactController extends Controller
             'contact_categories.name as category_name',
             'contact_industries.name as industry_name'
         ])
+            // ->where('contacts.user_id', '=', $id)
+
             ->join('contact_statuses', 'contacts.status_id', '=', 'contact_statuses.id')
             ->join('contact_types', 'contacts.type_id', '=', 'contact_types.id')
             ->join('contact_categories', 'contacts.category_id', '=', 'contact_categories.id')

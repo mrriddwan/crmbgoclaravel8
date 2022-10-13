@@ -22,11 +22,59 @@ class UserSeeder extends Seeder
         ]);
 
         User::create([
-            'name' => 'TestUser', 
-            'email' => 'testuser@gmail.com', 
-            'password' => bcrypt('testuser123'),
+            'name' => 'Media 3', 
+            'email' => 'media3@gmail.com', 
+            'password' => bcrypt('media3bluedale'),
+        ]);
+        
+        User::create([
+            'name' => 'James', 
+            'email' => 'james@gmail.com', 
+            'password' => bcrypt('james123'),
         ]);
 
-        User::factory(20)->create();
+        User::create([
+            'name' => 'Ali', 
+            'email' => 'ali@gmail.com', 
+            'password' => bcrypt('ali123'),
+        ]);
+
+        User::create([
+            'name' => 'Abu', 
+            'email' => 'abu@gmail.com', 
+            'password' => bcrypt('abu123'),
+        ]);
+
+        User::create([
+            'name' => 'Chong', 
+            'email' => 'chong@gmail.com', 
+            'password' => bcrypt('chong123'),
+        ]);
+
+        User::create([
+            'name' => 'Siti', 
+            'email' => 'siti@gmail.com', 
+            'password' => bcrypt('siti123'),
+        ]);
+
+        User::create([
+            'name' => 'Ahmad', 
+            'email' => 'ahmad@gmail.com', 
+            'password' => bcrypt('ahmad123'),
+        ]);
+
+        User::create([
+            'name' => 'Harry', 
+            'email' => 'harry@gmail.com', 
+            'password' => bcrypt('harry123'),
+        ]);
+
+        User::create([
+            'name' => 'Lydia', 
+            'email' => 'lydia@gmail.com', 
+            'password' => bcrypt('lydia123'),
+        ]);
+
+        // User::factory(20)->create();
     }
 }

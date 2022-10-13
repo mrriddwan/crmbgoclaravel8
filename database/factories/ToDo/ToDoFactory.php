@@ -39,7 +39,7 @@ class ToDoFactory extends Factory
             'todo_deadline' => $todo_deadline,
             'todo_remark' => $this->faker->realText($maxNbChars = 50),
             'contact_id' => random_int(1, 50),
-            'user_id' => random_int(2, 10),
+            'user_id' => random_int(1, 10),
             'task_id' => random_int(1, 5),
             'status_id' => random_int(1, 5),
             'type_id' => random_int(1, 5),

@@ -26,7 +26,7 @@ class ForecastFactory extends Factory
             'forecast_date' => $this->faker -> dateTimeBetween('-8 months', '+11 months'),
             // 'result_id' => random_int(1,2),
             'forecast_updatedate' => $this->faker -> dateTimeBetween('-1 week', '+3 months'),
-            'user_id' => random_int(3,10),
+            'user_id' => random_int(1,10),
             'contact_id' => random_int(1,100),
             'forecast_type_id' => random_int(1,4),
             'product_id' => random_int(1,5),

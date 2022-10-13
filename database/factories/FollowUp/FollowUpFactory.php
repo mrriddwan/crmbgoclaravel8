@@ -30,7 +30,7 @@ class FollowUpFactory extends Factory
             'followup_remark' => $this->faker ->realText($maxNbChars = 50),
             'todo_id' => random_int(1, 150),
             'contact_id' => random_int(1, 100),
-            'user_id' => random_int(2, 10),
+            'user_id' => random_int(1, 10),
             'task_id' => random_int(1, 5),
             'status_id' => random_int(1, 5),
             'type_id' => random_int(1, 5),
