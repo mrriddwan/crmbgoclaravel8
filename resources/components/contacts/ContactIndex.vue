@@ -774,8 +774,8 @@ export default {
                     "/api/contacts/index?" +
                         "q=" +
                         this.search +
-                        // "&selectedUser=" +
-                        // this.selectedUser +
+                        "&selectedUser=" +
+                        this.selectedUser +
                         "&selectedStatus=" +
                         this.selectedStatus +
                         "&selectedType=" +

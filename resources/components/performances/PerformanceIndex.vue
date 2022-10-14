@@ -240,6 +240,8 @@ export default {
         this.displayWeek();
         // this.incrementDate();
         // this.decrementDate();
+
+        //need to change according to the current/selected month
     },
 
     props: {},

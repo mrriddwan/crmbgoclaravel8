@@ -42,6 +42,9 @@ class DatabaseSeeder extends Seeder
             BillboardSeeder::class,
             TempboardSeeder::class,
             BillboardTenureSeeder::class,
+            SupervisorSeeder::class,
+            UserCategorySeeder::class,
+            UserCategoryBenchmarkSeeder::class,
         ]);
     }
 }

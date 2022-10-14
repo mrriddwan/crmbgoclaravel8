@@ -27,7 +27,7 @@ return new class extends Migration
             $table->unsignedBigInteger('color_id')->nullable()->constrained();
             $table->unsignedBigInteger('source_id')->nullable()->constrained();
             $table->unsignedBigInteger('action_id')->nullable()->constrained();
-            $table->timestamps();
+
 
             $table->foreign('contact_id')
                 ->references('id')
@@ -73,6 +73,8 @@ return new class extends Migration
                 ->references('id')
                 ->on('actions')
                 ->onDelete('cascade');
+
+            $table->timestamps();
         });
     }
 

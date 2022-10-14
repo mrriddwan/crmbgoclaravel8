@@ -11,6 +11,7 @@ use App\Models\FollowUp\Action;
 use App\Models\Forecast\ForecastProduct;
 use App\Models\Forecast\ForecastType;
 use App\Models\ToDo\Task;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class AdminController extends Controller
@@ -176,5 +177,10 @@ class AdminController extends Controller
         return response()->json('Forecast product deleted.');
     }
 
-    
+    public function user_info($id)
+    {
+        $user = User::select('id', 'name', 'email')->find($id);
+        return response()->json(["data" => $user]);
+        // return UserResource::collection(User::where('id',$id));
+    }
 }

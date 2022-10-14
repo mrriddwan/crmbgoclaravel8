@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\UserCategoryController;
 use App\Http\Controllers\Api\Billboard\BillboardController;
 use App\Http\Controllers\Api\Billboard\BillboardTenureController;
 use App\Http\Controllers\Api\Billboard\TempboardController;
@@ -21,6 +22,7 @@ use App\Http\Controllers\Api\Project\ProjectController;
 use App\Http\Controllers\Api\ToDo\TaskController;
 use App\Http\Controllers\Api\ToDo\ToDoController;
 use App\Http\Controllers\Api\ToDo\ToDoSourceController;
+use App\Models\Admin\UserCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -60,6 +62,14 @@ Route::delete('/admin/delete/todo/action/{action}', [AdminController::class, 'de
 Route::delete('/admin/delete/forecast/type/{type}', [AdminController::class, 'deleteForecastType'])->name('forecastType:delete');
 Route::delete('/admin/delete/forecast/product/{product}', [AdminController::class, 'deleteForecastProduct'])->name('forecastProduct:delete');
 
+Route::get('/admin/users/info/{user}', [AdminController::class, 'user_info'])->name('user:info');
+Route::get('/admin/users/update/name/{user}', [AdminController::class, 'info'])->name('user:info');
+Route::get('/admin/users/update/password/{user}', [AdminController::class, 'info'])->name('user:info');
+Route::get('/admin/users/update/email/{user}', [AdminController::class, 'info'])->name('user:info');
+
+Route::get('/admin/users/category/index', [UserCategoryController::class, 'index'])->name('user_category:index');
+Route::get('/admin/users/category/info/{category}', [UserCategoryController::class, 'info'])->name('user_category:info');
+Route::get('/admin/users/category/user_list', [UserCategoryController::class, 'user_list'])->name('user_category:user_list');
 
 /*Contact API*/
 

@@ -16,6 +16,7 @@ class UserController extends Controller
         return UserResource::collection(User::all());
     }
 
+
     public function action(User $user)
     {
         //Query test 1
@@ -50,7 +51,7 @@ class UserController extends Controller
 
         return $user;
 
-        return $user;
+        // return $user;
 
 
 
