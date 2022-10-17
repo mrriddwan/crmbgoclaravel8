@@ -128,7 +128,7 @@
                                     @click.prevent="
                                         change_sort('forecast_updatedate')
                                     "
-                                    class="text-white"
+                                    class="text-white inline-flex"
                                 >
                                     Last<br />Update
                                     <span
@@ -168,7 +168,7 @@
                                 <a
                                     href="#"
                                     @click.prevent="change_sort('contact_name')"
-                                    class="text-white"
+                                    class="text-white inline-flex"
                                 >
                                     Contact
                                     <span
@@ -205,7 +205,7 @@
                                 <a
                                     href="#"
                                     @click.prevent="change_sort('user_name')"
-                                    class="text-white"
+                                    class="text-white inline-flex"
                                 >
                                     CS
                                     <span
@@ -261,7 +261,7 @@
                                 <a
                                     href="#"
                                     @click.prevent="change_sort('product_name')"
-                                    class="text-white"
+                                    class="text-white inline-flex"
                                 >
                                     Forecast<br />Product
                                     <span
@@ -315,7 +315,7 @@
                                 <a
                                     href="#"
                                     @click.prevent="change_sort('amount')"
-                                    class="text-white"
+                                    class="text-white inline-flex"
                                 >
                                     Amount
                                     <span
@@ -354,7 +354,7 @@
                                     @click.prevent="
                                         change_sort('forecast_date')
                                     "
-                                    class="text-white"
+                                    class="text-white inline-flex"
                                 >
                                     Date<br />Forecast
                                     <span
@@ -393,7 +393,7 @@
                                     @click.prevent="
                                         change_sort('forecast_type_name')
                                     "
-                                    class="text-white"
+                                    class="text-white inline-flex"
                                 >
                                     Forecast<br />Type
                                     <span
@@ -451,7 +451,7 @@
                                     @click.prevent="
                                         change_sort('forecast_result')
                                     "
-                                    class="text-white"
+                                    class="text-white inline-flex"
                                 >
                                     Result
                                     <span

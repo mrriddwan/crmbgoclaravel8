@@ -1,5 +1,5 @@
 <template>
-    <div class="mx-auto">
+    <div class="mx-auto max-w-screen-lg">
         <GoBack />
 
         <span v-for="info in contact" :key="info.id">
@@ -13,18 +13,18 @@
                 class="overflow-x-auto relative shadow-md sm:rounded-lg"
             >
                 <table
-                    class="border-2 mb-4 w-full text-sm text-left text-gray-500 dark:text-gray-400"
+                    class="border-2 mb-4 text-xs text-left text-gray-500 dark:text-gray-400"
                 >
                     <thead
-                        class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
+                        class="text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
                     >
                         <tr class="text-center">
-                            <th scope="col" class="py-3 px-6">Date</th>
-                            <th scope="col" class="py-3 px-6">CS</th>
-                            <th scope="col" class="py-3 px-6">Task</th>
-                            <th scope="col" class="py-3 px-6">Action</th>
-                            <th scope="col" class="py-3 px-6">Remark</th>
-                            <th scope="col" class="py-3 px-6"></th>
+                            <th scope="col" class="py-3 px-3">Date</th>
+                            <th scope="col" class="py-3 px-3">CS</th>
+                            <th scope="col" class="py-3 px-3">Task</th>
+                            <th scope="col" class="py-3 px-3">Action</th>
+                            <th scope="col" class="py-3 px-3">Remark</th>
+                            <th scope="col" class="py-3 px-3"></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -33,19 +33,19 @@
                             :key="history.id"
                             class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 text-gray-900 font-bold"
                         >
-                            <td class="py-4 px-6">
-                                {{ history.todo_date }}
+                            <td class="py-4 px-3 w-24">
+                                {{ showToday(history.todo_date) }}
                             </td>
-                            <td class="py-4 px-6">{{ history.user.name }}</td>
-                            <td class="py-4 px-6">{{ history.task.name }}</td>
-                            <td class="py-4 px-6">
+                            <td class="py-4 px-3">{{ history.user.name }}</td>
+                            <td class="py-4 px-3">{{ history.task.name }}</td>
+                            <td class="py-4 px-3">
                                 <span v-if="history.action">
                                     {{ history.action.name }}
                                 </span>
                                 <span v-else> No action yet </span>
                             </td>
-                            <td class="py-4 px-6">{{ history.todo_remark }}</td>
-                            <td class="py-4 px-6">
+                            <td class="py-4 px-3">{{ history.todo_remark }}</td>
+                            <td class="py-4 px-3">
                                 <router-link
                                     :to="{
                                         name: 'todo_index',
@@ -79,6 +79,7 @@
 <script>
 import { EyeIcon } from "@heroicons/vue/24/solid";
 import GoBack from "../utils/GoBack.vue";
+import moment from 'moment'
 
 export default {
     components: {
@@ -90,6 +91,7 @@ export default {
         return {
             info: "",
             contact: [],
+            moment: moment,
         };
     },
 
@@ -107,6 +109,12 @@ export default {
                 .catch((error) => {
                     console.log(error);
                 });
+        },
+
+        showToday(date) {
+            // let day = moment(date).format("DD-MM-YYYY");
+            let day = moment(date).format("DD-MM-YY");
+            return day;
         },
     },
 };

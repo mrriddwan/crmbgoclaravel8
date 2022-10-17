@@ -34,7 +34,7 @@
             </div>
         </div>
 
-        <div class="col-md-8 mx-auto">
+        <div class="col-lg-12 mx-auto">
             <form @submit.prevent="insertToDo">
                 <div>
                     <label
@@ -118,7 +118,7 @@
                     <label>Remark</label>
                     <textarea
                         type="text"
-                        class="block mt-1 w-96 h-40 rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                        class="block mt-1 w-full h-40 rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                         v-model="form.todo_remark"
                     />
                 </div>

@@ -172,100 +172,100 @@ class ForecastController extends Controller
         return Forecast::pluck('id');
     }
 
+    // public function summary2()
+    // {
+    //     $paginate = request('paginate');
+    //     $search_term = request('q', '');
+
+    //     $sort_direction = request('sort_direction');
+    //     $sort_field = request('sort_field');
+
+    //     $selectedStatus = request('selectedStatus');
+    //     $selectedForecastType = request('selectedForecastType');
+    //     $selectedContactType = request('selectedContactType');
+    //     $selectedUser = request('selectedUser');
+    //     $selectedYear = request('selectedYear');
+
+
+    //     $contact = Contact::with(
+    //         [
+    //             'forecast_summary' => function ($q) {
+    //                 $q->select(['id', 'forecast_type_id', 'product_id', 'contact_id', 'forecast_date', 'amount'])
+    //                     ->orderBy('forecast_date', 'desc');
+    //             },
+    //             'forecast_summary.forecast_type' => function ($q) {
+    //                 $q->select('id', 'name');
+    //             },
+    //             'forecast_summary.product' => function ($q) {
+    //                 $q->select('id', 'name');
+    //             },
+    //         ],
+    //         // 'forecast_summary'
+    //     )
+    //         // ->get();
+    //         ->join('contact_statuses', 'contacts.status_id', '=', 'contact_statuses.id')
+    //         ->join('contact_types', 'contacts.type_id', '=', 'contact_types.id')
+    //         // // ->join('forecast_types', 'forecasts.forecast_type_id', '=', 'forecast_types.id')
+    //         // // ->join('forecast_products', 'forecasts.product_id', '=', 'forecast_products.id')
+    //         ->join('users', 'contacts.user_id', '=', 'users.id')
+    //         ->select([
+    //             'contacts.id',
+    //             'contacts.name',
+    //             // 'contacts.created_at',
+    //             'contact_statuses.name as status_name',
+    //             'contact_types.name as type_name',
+    //             'users.name as user_name',
+    //             // 'forecast_types.name as forecast_type_name',
+    //             // 'forecast_products.name as forecast_product_name',
+
+    //         ])
+    //         // ->get();
+    //         ->when($selectedStatus, function ($query) use ($selectedStatus) {
+    //             $query->where('contacts.status_id', $selectedStatus);
+    //         })
+    //         ->when($selectedForecastType, function ($query) use ($selectedForecastType) {
+    //             $query->where('contacts.type_id', $selectedForecastType);
+    //         })
+    //         ->when($selectedContactType, function ($query) use ($selectedContactType) {
+    //             $query->where('contacts.type_id', $selectedContactType);
+    //         })
+    //         ->when($selectedUser, function ($query) use ($selectedUser) {
+    //             $query->where('contacts.user_id', $selectedUser);
+    //         })
+    //         ->when($selectedYear, function ($query) use ($selectedYear) {
+    //             $query->whereHas('forecast_summary', function ($q) use ($selectedYear) {
+    //                 $q->whereYear('forecast_date', $selectedYear);
+    //             });
+    //         })
+    //         ->orderBy($sort_field, $sort_direction)
+    //         ->search(trim($search_term))
+
+    //         ->paginate(5000);
+
+    //     // group smua todo by month
+    //     $contact
+    //         ->transform(function ($company) {
+    //             $company->setRelation(
+    //                 'forecast_summary',
+    //                 $company->forecast_summary->groupBy(
+    //                     fn ($forecast_summary) => \Carbon\Carbon::create($forecast_summary->forecast_date)->format('M-Y')
+    //                 ),
+    //                 // 'forecast_todo',
+    //                 // $company->summary
+    //                 //     ->groupBy(
+    //                 //         fn ($summary) => \Carbon\Carbon::create($summary->todo_date)->format('F-Y')
+    //                 //     )
+
+    //             );
+
+    //             return $company;
+    //         });
+
+    //     // ->get();
+    //     return $contact->toArray();
+    // }
+
     public function summary()
-    {
-        $paginate = request('paginate');
-        $search_term = request('q', '');
-
-        $sort_direction = request('sort_direction');
-        $sort_field = request('sort_field');
-
-        $selectedStatus = request('selectedStatus');
-        $selectedForecastType = request('selectedForecastType');
-        $selectedContactType = request('selectedContactType');
-        $selectedUser = request('selectedUser');
-        $selectedYear = request('selectedYear');
-
-
-        $contact = Contact::with(
-            [
-                'forecast_summary' => function ($q) {
-                    $q->select(['id', 'forecast_type_id', 'product_id', 'contact_id', 'forecast_date', 'amount'])
-                        ->orderBy('forecast_date', 'desc');
-                },
-                'forecast_summary.forecast_type' => function ($q) {
-                    $q->select('id', 'name');
-                },
-                'forecast_summary.product' => function ($q) {
-                    $q->select('id', 'name');
-                },
-            ],
-            // 'forecast_summary'
-        )
-            // ->get();
-            ->join('contact_statuses', 'contacts.status_id', '=', 'contact_statuses.id')
-            ->join('contact_types', 'contacts.type_id', '=', 'contact_types.id')
-            // // ->join('forecast_types', 'forecasts.forecast_type_id', '=', 'forecast_types.id')
-            // // ->join('forecast_products', 'forecasts.product_id', '=', 'forecast_products.id')
-            ->join('users', 'contacts.user_id', '=', 'users.id')
-            ->select([
-                'contacts.id',
-                'contacts.name',
-                // 'contacts.created_at',
-                'contact_statuses.name as status_name',
-                'contact_types.name as type_name',
-                'users.name as user_name',
-                // 'forecast_types.name as forecast_type_name',
-                // 'forecast_products.name as forecast_product_name',
-
-            ])
-            // ->get();
-            ->when($selectedStatus, function ($query) use ($selectedStatus) {
-                $query->where('contacts.status_id', $selectedStatus);
-            })
-            ->when($selectedForecastType, function ($query) use ($selectedForecastType) {
-                $query->where('contacts.type_id', $selectedForecastType);
-            })
-            ->when($selectedContactType, function ($query) use ($selectedContactType) {
-                $query->where('contacts.type_id', $selectedContactType);
-            })
-            ->when($selectedUser, function ($query) use ($selectedUser) {
-                $query->where('contacts.user_id', $selectedUser);
-            })
-            ->when($selectedYear, function ($query) use ($selectedYear) {
-                $query->whereHas('forecast_summary', function ($q) use ($selectedYear) {
-                    $q->whereYear('forecast_date', $selectedYear);
-                });
-            })
-            ->orderBy($sort_field, $sort_direction)
-            ->search(trim($search_term))
-
-            ->paginate(5000);
-
-        // group smua todo by month
-        $contact
-            ->transform(function ($company) {
-                $company->setRelation(
-                    'forecast_summary',
-                    $company->forecast_summary->groupBy(
-                        fn ($forecast_summary) => \Carbon\Carbon::create($forecast_summary->forecast_date)->format('M-Y')
-                    ),
-                    // 'forecast_todo',
-                    // $company->summary
-                    //     ->groupBy(
-                    //         fn ($summary) => \Carbon\Carbon::create($summary->todo_date)->format('F-Y')
-                    //     )
-
-                );
-
-                return $company;
-            });
-
-        // ->get();
-        return $contact->toArray();
-    }
-
-    public function summary2()
     {
         $paginate = request('paginate');
         $search_term = request('q', '');

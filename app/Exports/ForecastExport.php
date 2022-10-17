@@ -36,7 +36,7 @@ class ForecastExport implements FromQuery, WithMapping, WithHeadings
             $forecasts->product->name,
             $forecasts->amount,
             $forecasts->forecast_date,
-            $forecasts->type->name,
+            $forecasts->forecast_type->name,
             $forecasts->result->name ?? "No result",
         ];
     }
@@ -50,7 +50,7 @@ class ForecastExport implements FromQuery, WithMapping, WithHeadings
             'Product',
             'Amount (RM)',
             'Expected Forecast',
-            'Type',
+            'Forecast Type',
             'Result'
         ];
     }

@@ -18,4 +18,8 @@ class UserCategory extends Model
     public function user(){
         return $this->hasMany(User::class, 'user_cat_id');
     }
+
+    public function benchmark(){
+        return $this->hasMany(UserCategoryBenchmark::class, 'user_cat_id')->with('task');
+    }
 }

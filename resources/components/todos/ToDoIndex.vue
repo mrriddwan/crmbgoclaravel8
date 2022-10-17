@@ -275,7 +275,10 @@
         </div>
 
         <div>
-            <table class="table table-hover table-bordered" id="example">
+            <table
+                class="table table-hover table-bordered text-center"
+                id="example"
+            >
                 <thead class="bg-slate-500">
                     <tr>
                         <th>
@@ -286,13 +289,13 @@
                             #
                             <div class="text-sm text-center h-6"></div>
                         </th>
-                        <th class="text-sm text-center">
+                        <th class="text-sm text-center w-max">
                             <a
                                 href="#"
                                 @click.prevent="change_sort('source_name')"
-                                class="text-white"
-                            >
-                                Source
+                                class="text-white inline-flex"
+                                ><div class="inline-flex" >Source</div>
+
                                 <span
                                     v-if="
                                         (!(sort_direction == 'asc') ||
@@ -308,7 +311,8 @@
                                         sort_field == 'source_name'
                                     "
                                     class="inline-block"
-                                    ><ArrowUpIcon class="h-4 w-4"
+                                    ><ArrowUpIcon
+                                        class="h-4 w-4 text-amber-400 font-extrabold"
                                 /></span>
                                 <span
                                     v-if="
@@ -316,7 +320,8 @@
                                         sort_field == 'source_name'
                                     "
                                     class="inline-block"
-                                    ><ArrowDownIcon class="h-4 w-4"
+                                    ><ArrowDownIcon
+                                        class="h-4 w-4 text-amber-400 font-extrabold"
                                 /></span>
                             </a>
                             <div class="text-sm text-center h-6">
@@ -335,14 +340,17 @@
                                 </select>
                             </div>
                         </th>
-                        <th class="text-sm text-center">
+                        <th class="text-sm text-center w-20">
                             <a
                                 href="#"
                                 @click.prevent="change_sort('todo_date')"
-                                class="text-white"
+                                class="text-white inline-flex"
                             >
-                                To Do <br />
-                                Date
+                                <div>
+                                    To Do <br />
+                                    Date
+                                </div>
+
                                 <span
                                     v-if="
                                         (!(sort_direction == 'asc') ||
@@ -357,16 +365,18 @@
                                         sort_direction == 'desc' &&
                                         sort_field == 'todo_date'
                                     "
-                                    class="inline-block"
-                                    ><ArrowUpIcon class="h-4 w-4"
+                                    class="inline-block text-amber-400 font-extrabold"
+                                    ><ArrowUpIcon
+                                        class="h-4 w-4 text-amber-400 font-extrabold"
                                 /></span>
                                 <span
                                     v-if="
                                         sort_direction == 'asc' &&
                                         sort_field == 'todo_date'
                                     "
-                                    class="inline-block"
-                                    ><ArrowDownIcon class="h-4 w-4"
+                                    class="inline-block text-amber-400 font-extrabold"
+                                    ><ArrowDownIcon
+                                        class="h-4 w-4 text-amber-400 font-extrabold"
                                 /></span>
                             </a>
                             <div class="text-sm text-center h-1"></div>
@@ -375,7 +385,7 @@
                             <a
                                 href="#"
                                 @click.prevent="change_sort('todo_deadline')"
-                                class="text-white"
+                                class="text-white inline-flex"
                             >
                                 Date<br />Deadline
                                 <span
@@ -393,7 +403,8 @@
                                         sort_field == 'todo_deadline'
                                     "
                                     class="inline-block"
-                                    ><ArrowUpIcon class="h-4 w-4"
+                                    ><ArrowUpIcon
+                                        class="h-4 w-4 text-amber-400 font-extrabold"
                                 /></span>
                                 <span
                                     v-if="
@@ -401,7 +412,8 @@
                                         sort_field == 'todo_deadline'
                                     "
                                     class="inline-block"
-                                    ><ArrowDownIcon class="h-4 w-4"
+                                    ><ArrowDownIcon
+                                        class="h-4 w-4 text-amber-400 font-extrabold"
                                 /></span>
                             </a>
                             <div class="text-sm text-center h-1"></div>
@@ -410,7 +422,7 @@
                             <a
                                 href="#"
                                 @click.prevent="change_sort('status_name')"
-                                class="text-white"
+                                class="text-white inline-flex"
                             >
                                 Status
                                 <span
@@ -428,7 +440,8 @@
                                         sort_field == 'status_name'
                                     "
                                     class="inline-block"
-                                    ><ArrowUpIcon class="h-4 w-4"
+                                    ><ArrowUpIcon
+                                        class="h-4 w-4 text-amber-400 font-extrabold"
                                 /></span>
                                 <span
                                     v-if="
@@ -436,7 +449,8 @@
                                         sort_field == 'status_name'
                                     "
                                     class="inline-block"
-                                    ><ArrowDownIcon class="h-4 w-4"
+                                    ><ArrowDownIcon
+                                        class="h-4 w-4 text-amber-400 font-extrabold"
                                 /></span>
                             </a>
                             <div class="text-sm text-center h-6">
@@ -459,7 +473,7 @@
                             <a
                                 href="#"
                                 @click.prevent="change_sort('type_name')"
-                                class="text-white"
+                                class="text-white inline-flex"
                             >
                                 Type
                                 <span
@@ -477,7 +491,8 @@
                                         sort_field == 'type_name'
                                     "
                                     class="inline-block"
-                                    ><ArrowUpIcon class="h-4 w-4"
+                                    ><ArrowUpIcon
+                                        class="h-4 w-4 text-amber-400 font-extrabold"
                                 /></span>
                                 <span
                                     v-if="
@@ -485,7 +500,8 @@
                                         sort_field == 'type_name'
                                     "
                                     class="inline-block"
-                                    ><ArrowDownIcon class="h-4 w-4"
+                                    ><ArrowDownIcon
+                                        class="h-4 w-4 text-amber-400 font-extrabold"
                                 /></span>
                             </a>
                             <div class="text-sm text-center h-6">
@@ -508,7 +524,7 @@
                             <a
                                 href="#"
                                 @click.prevent="change_sort('contact_name')"
-                                class="text-white"
+                                class="text-white inline-flex"
                             >
                                 Contact
                                 <span
@@ -526,7 +542,8 @@
                                         sort_field == 'contact_name'
                                     "
                                     class="inline-block"
-                                    ><ArrowUpIcon class="h-4 w-4"
+                                    ><ArrowUpIcon
+                                        class="h-4 w-4 text-amber-400 font-extrabold"
                                 /></span>
                                 <span
                                     v-if="
@@ -534,7 +551,8 @@
                                         sort_field == 'contact_name'
                                     "
                                     class="inline-block"
-                                    ><ArrowDownIcon class="h-4 w-4"
+                                    ><ArrowDownIcon
+                                        class="h-4 w-4 text-amber-400 font-extrabold"
                                 /></span>
                             </a>
                             <div class="text-sm text-center h-6"></div>
@@ -543,7 +561,7 @@
                             <a
                                 href="#"
                                 @click.prevent="change_sort('user_name')"
-                                class="text-white"
+                                class="text-white inline-flex"
                             >
                                 CS
                                 <span
@@ -561,7 +579,8 @@
                                         sort_field == 'user_name'
                                     "
                                     class="inline-block"
-                                    ><ArrowUpIcon class="h-4 w-4"
+                                    ><ArrowUpIcon
+                                        class="h-4 w-4 text-amber-400 font-extrabold"
                                 /></span>
                                 <span
                                     v-if="
@@ -569,7 +588,8 @@
                                         sort_field == 'user_name'
                                     "
                                     class="inline-block"
-                                    ><ArrowDownIcon class="h-4 w-4"
+                                    ><ArrowDownIcon
+                                        class="h-4 w-4 text-amber-400 font-extrabold"
                                 /></span>
                             </a>
                             <div class="text-sm text-center h-6"></div>
@@ -578,7 +598,7 @@
                             <a
                                 href="#"
                                 @click.prevent="change_sort('task_name')"
-                                class="text-white"
+                                class="text-white inline-flex"
                             >
                                 Task
                                 <span
@@ -596,7 +616,8 @@
                                         sort_field == 'task_name'
                                     "
                                     class="inline-block"
-                                    ><ArrowUpIcon class="h-4 w-4"
+                                    ><ArrowUpIcon
+                                        class="h-4 w-4 text-amber-400 font-extrabold"
                                 /></span>
                                 <span
                                     v-if="
@@ -604,7 +625,8 @@
                                         sort_field == 'task_name'
                                     "
                                     class="inline-block"
-                                    ><ArrowDownIcon class="h-4 w-4"
+                                    ><ArrowDownIcon
+                                        class="h-4 w-4 text-amber-400 font-extrabold"
                                 /></span>
                             </a>
                             <div class="text-sm text-center h-6">
@@ -629,7 +651,7 @@
                             <a
                                 href="#"
                                 @click.prevent="change_sort('todo_remark')"
-                                class="text-white"
+                                class="text-white inline-flex"
                             >
                                 Remark
                                 <span
@@ -647,7 +669,8 @@
                                         sort_field == 'todo_remark'
                                     "
                                     class="inline-block"
-                                    ><ArrowUpIcon class="h-4 w-4"
+                                    ><ArrowUpIcon
+                                        class="h-4 w-4 text-amber-400 font-extrabold"
                                 /></span>
                                 <span
                                     v-if="
@@ -655,7 +678,8 @@
                                         sort_field == 'todo_remark'
                                     "
                                     class="inline-block"
-                                    ><ArrowDownIcon class="h-4 w-4"
+                                    ><ArrowDownIcon
+                                        class="h-4 w-4 text-amber-400 font-extrabold"
                                 /></span>
                             </a>
                             <div class="text-sm text-center h-6"></div>
@@ -708,7 +732,7 @@
                         <td class="text-xs">{{ todo.user.name }}</td>
                         <td class="text-xs">{{ todo.task.name }}</td>
                         <td class="text-xs">{{ todo.todo_remark }}</td>
-                        <td class="text-center align-middle w-20">
+                        <td class="text-center align-middle w-max">
                             <div class="container">
                                 <div v-if="todo.action" class="inline-block">
                                     <div
@@ -833,6 +857,8 @@ import {
     ArrowTopRightOnSquareIcon,
     ArrowsUpDownIcon,
     PencilIcon,
+    ArrowDownIcon,
+    ArrowUpIcon,
 } from "@heroicons/vue/24/solid";
 
 export default {
@@ -848,6 +874,8 @@ export default {
         ArrowsUpDownIcon,
         PencilIcon,
         VueDatePicker,
+        ArrowDownIcon,
+        ArrowUpIcon,
     },
 
     created() {},

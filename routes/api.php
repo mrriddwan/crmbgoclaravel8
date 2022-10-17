@@ -63,13 +63,19 @@ Route::delete('/admin/delete/forecast/type/{type}', [AdminController::class, 'de
 Route::delete('/admin/delete/forecast/product/{product}', [AdminController::class, 'deleteForecastProduct'])->name('forecastProduct:delete');
 
 Route::get('/admin/users/info/{user}', [AdminController::class, 'user_info'])->name('user:info');
-Route::get('/admin/users/update/name/{user}', [AdminController::class, 'info'])->name('user:info');
-Route::get('/admin/users/update/password/{user}', [AdminController::class, 'info'])->name('user:info');
-Route::get('/admin/users/update/email/{user}', [AdminController::class, 'info'])->name('user:info');
+Route::post('admin/users/create', [AdminController::class, 'user_create'])->name('user:create');
+Route::put('/admin/users/update/{user}', [AdminController::class, 'user_update'])->name('user:update');
+Route::put('/admin/users/update/category/{user}', [AdminController::class, 'user_cat_update'])->name('user:cat_update');
 
 Route::get('/admin/users/category/index', [UserCategoryController::class, 'index'])->name('user_category:index');
 Route::get('/admin/users/category/info/{category}', [UserCategoryController::class, 'info'])->name('user_category:info');
 Route::get('/admin/users/category/user_list', [UserCategoryController::class, 'user_list'])->name('user_category:user_list');
+Route::get('/admin/users/category/benchmark', [UserCategoryController::class, 'benchmark'])->name('user_category:benchmark');
+Route::post('/admin/users/category/create', [UserCategoryController::class, 'create'])->name('user_category:create');
+Route::put('/admin/users/category/update/{category}', [UserCategoryController::class, 'update'])->name('user_category:update');
+Route::delete('/admin/users/category/delete/{category}', [UserCategoryController::class, 'delete'])->name('user_category:delete');
+
+
 
 /*Contact API*/
 
@@ -168,11 +174,11 @@ Route::put('/forecasts/update/{forecast}', [ForecastController::class, 'update']
 Route::delete('/forecasts/delete/{forecast}', [ForecastController::class, 'delete'])->name('forecast:delete');
 Route::get('/forecasts/info/{forecast}', [ForecastController::class, 'info'])->name('forecast:info');
 Route::put('/forecasts/resultSelected/{forecast}', [ForecastController::class, 'resultSelected'])->name('forecast:resultSelected');
-Route::get('/forecasts/export/{forecast}', [ForecastController::class, 'export'])->name('followup:export');
-Route::get('/forecasts/all', [ForecastController::class, 'selectAll'])->name('followup:selectAll');
-Route::get('/forecasts/summary', [ForecastController::class, 'summary'])->name('followup:summary');
-Route::get('/forecasts/exportSummary', [ForecastController::class, 'exportSummary'])->name('followup:exportSummary');
-Route::get('/forecasts/summary2', [ForecastController::class, 'summary2'])->name('followup:summary2');
+Route::get('/forecasts/export/{forecast}', [ForecastController::class, 'export'])->name('forecast:export');
+Route::get('/forecasts/all', [ForecastController::class, 'selectAll'])->name('forecast:selectAll');
+Route::get('/forecasts/summary', [ForecastController::class, 'summary'])->name('forecast:summary');
+Route::get('/forecasts/exportSummary', [ForecastController::class, 'exportSummary'])->name('forecast:exportSummary');
+Route::get('/forecasts/summary2', [ForecastController::class, 'summary2'])->name('forecast:summary2');
 
 /*Sub-Forecast API*/
 Route::get('/forecasts/product/index', [ForecastProductController::class, 'index'])->name('forecastproduct:index');

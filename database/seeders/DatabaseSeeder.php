@@ -20,13 +20,16 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $this->call([
+            UserCategorySeeder::class,
+            TaskSeeder::class,
+            UserCategoryBenchmarkSeeder::class,
             UserSeeder::class,
+            SupervisorSeeder::class,
             Contact_TypeSeeder::class,
             Contact_StatusSeeder::class,
             Contact_CategorySeeder::class,
             Contact_IndustrySeeder::class,
             ContactSeeder::class,
-            TaskSeeder::class,
             PrioritySeeder::class,
             TextColorSeeder::class,
             ActionSeeder::class,
@@ -42,9 +45,7 @@ class DatabaseSeeder extends Seeder
             BillboardSeeder::class,
             TempboardSeeder::class,
             BillboardTenureSeeder::class,
-            SupervisorSeeder::class,
-            UserCategorySeeder::class,
-            UserCategoryBenchmarkSeeder::class,
+
         ]);
     }
 }

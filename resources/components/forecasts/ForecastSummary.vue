@@ -709,7 +709,7 @@ export default {
                 User: "user_name",
                 "Contact Status": "contact_status",
                 "Contact Type": "contact_type",
-                Company: "user_name",
+                Company: "contact",
                 "Forecast Type": "forecast_type",
                 "Forecast Product": "forecast_product",
                 Jan: {
@@ -908,7 +908,7 @@ export default {
             }
             axios
                 .get(
-                    "/api/forecasts/summary2?" +
+                    "/api/forecasts/summary?" +
                         "q=" +
                         this.search +
                         "&selectedContactType=" +

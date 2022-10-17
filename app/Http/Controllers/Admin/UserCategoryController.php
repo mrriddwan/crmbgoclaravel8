@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Admin\UserCategory;
+use App\Models\Admin\UserCategoryBenchmark;
 use Illuminate\Http\Request;
 
 class UserCategoryController extends Controller
@@ -40,5 +41,82 @@ class UserCategoryController extends Controller
             'message' => 'Successfully fetch data Contact ',
             'data' => $data,
         ]);
+    }
+
+    public function benchmark()
+    {
+        $benchmark = UserCategory::with(
+            [
+                'benchmark'
+                => function ($q) {
+                    $q->select('id', 'user_cat_id', 'task_id', 'task_target');
+                },
+                'benchmark.task'
+                => function ($q) {
+                    $q->select('id', 'name');
+                },
+            ],
+        )
+            ->select(
+                'user_categories.id',
+                'user_categories.name as cat_name',
+            )
+            ->get();
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Successfully fetch data Contact ',
+            'data' => $benchmark,
+        ]);
+    }
+
+
+    public function create(Request $request)
+    {
+
+        $request->validate([
+            'name' => ['required', 'string'],
+        ], [
+            'name.required' => 'The user category name is required',
+        ]);
+
+        $user_category = UserCategory::create([
+            'name' => $request->name,
+        ]);
+
+        return response()->json([
+            'data' => $user_category,
+            'status' => true,
+            'message' => 'Successfully store user',
+        ]);
+
+    }
+
+    public function update(Request $request, UserCategory $category)
+    {
+
+        $request->validate([
+            'name' => ['required', 'string'],
+        ], [
+            'name.required' => 'The name is required',
+        ]);
+
+        $category->update([
+            'name' => $request->name,
+        ]);
+
+
+
+        return response()->json([
+            'data' => $category,
+            'status' => true,
+            'message' => 'Successfully update user category',
+        ]);
+    }
+
+    public function delete(UserCategory $category)
+    {
+        $category->delete();
+        return response()->json('User category deleted.');
     }
 }

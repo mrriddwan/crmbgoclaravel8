@@ -12,7 +12,7 @@
             </div>
         </div>
         <div class="flex w-full justify-center items-center row">
-            <div class="col-md-20">
+            <div class="col-lg-20">
                 <form
                     @submit.prevent="createContact"
                     class="rounded px-8 pt-1 pb-8 mb-4"
@@ -118,6 +118,24 @@
                             >Company Name
                             <p class="inline text-red-600 text-lg">*</p></label
                         >
+                        <div class="h-max-10">
+                            <select
+                                class="bg-slate-200 border-1 overflow-y block mt-1 w-max rounded-md border-gray-400 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                @change="getContacts"
+                            >
+                                <option value="">
+                                    Check company for duplicate
+                                </option>
+                                <option
+                                    class=""
+                                    v-for="contact in contacts"
+                                    :key="contact.id"
+                                    :value="contact.id"
+                                >
+                                    {{ contact.name }}
+                                </option>
+                            </select>
+                        </div>
                         <input
                             type="text"
                             class="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
@@ -125,7 +143,7 @@
                         />
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group mt-2">
                         <label>Address </label>
                         <input
                             type="text"
@@ -177,6 +195,7 @@ export default {
             industries: [],
             errors: "",
             contact: "",
+            contacts: [],
         };
     },
 
@@ -185,6 +204,7 @@ export default {
         this.getCategory();
         this.getType();
         this.getIndustry();
+        this.getContacts();
     },
 
     methods: {
@@ -231,6 +251,18 @@ export default {
                     console.log(error);
                 });
         },
+
+        async getContacts() {
+            await axios
+                .get("/api/contacts/list")
+                .then((res) => {
+                    this.contacts = res.data.data;
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        },
+
         async createContact() {
             try {
                 await axios
