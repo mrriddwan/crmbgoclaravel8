@@ -21,13 +21,13 @@ class CreateUserCategoryBenchmarksTable extends Migration
                 ->on('user_categories')
                 ->onDelete('cascade');
 
-            $table->unsignedBigInteger('task_id')->nullable()->constrained();
-            $table->foreign('task_id')
+            $table->unsignedBigInteger('action_id')->nullable()->constrained();
+            $table->foreign('action_id')
                 ->references('id')
-                ->on('tasks')
+                ->on('actions')
                 ->onDelete('cascade');
 
-            $table->integer('task_target');
+            $table->integer('action_target');
 
             $table->timestamps();
         });

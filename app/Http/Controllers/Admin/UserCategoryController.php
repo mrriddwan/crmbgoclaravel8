@@ -49,9 +49,9 @@ class UserCategoryController extends Controller
             [
                 'benchmark'
                 => function ($q) {
-                    $q->select('id', 'user_cat_id', 'task_id', 'task_target');
+                    $q->select('id', 'user_cat_id', 'action_id', 'action_target');
                 },
-                'benchmark.task'
+                'benchmark.action'
                 => function ($q) {
                     $q->select('id', 'name');
                 },

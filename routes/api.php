@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\SupervisorController;
+use App\Http\Controllers\Admin\UserCategoryBenchmarkController;
 use App\Http\Controllers\Admin\UserCategoryController;
 use App\Http\Controllers\Api\Billboard\BillboardController;
 use App\Http\Controllers\Api\Billboard\BillboardTenureController;
@@ -22,7 +24,6 @@ use App\Http\Controllers\Api\Project\ProjectController;
 use App\Http\Controllers\Api\ToDo\TaskController;
 use App\Http\Controllers\Api\ToDo\ToDoController;
 use App\Http\Controllers\Api\ToDo\ToDoSourceController;
-use App\Models\Admin\UserCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -65,8 +66,9 @@ Route::delete('/admin/delete/forecast/product/{product}', [AdminController::clas
 Route::get('/admin/users/info/{user}', [AdminController::class, 'user_info'])->name('user:info');
 Route::post('admin/users/create', [AdminController::class, 'user_create'])->name('user:create');
 Route::put('/admin/users/update/{user}', [AdminController::class, 'user_update'])->name('user:update');
-Route::put('/admin/users/update/category/{user}', [AdminController::class, 'user_cat_update'])->name('user:cat_update');
+Route::put('/admin/users/remove/category/{user}', [AdminController::class, 'user_cat_remove'])->name('user_cat:remove');
 
+/*Admin User Management API*/
 Route::get('/admin/users/category/index', [UserCategoryController::class, 'index'])->name('user_category:index');
 Route::get('/admin/users/category/info/{category}', [UserCategoryController::class, 'info'])->name('user_category:info');
 Route::get('/admin/users/category/user_list', [UserCategoryController::class, 'user_list'])->name('user_category:user_list');
@@ -75,7 +77,16 @@ Route::post('/admin/users/category/create', [UserCategoryController::class, 'cre
 Route::put('/admin/users/category/update/{category}', [UserCategoryController::class, 'update'])->name('user_category:update');
 Route::delete('/admin/users/category/delete/{category}', [UserCategoryController::class, 'delete'])->name('user_category:delete');
 
+Route::post('/admin/benchmarks/create', [UserCategoryBenchmarkController::class, 'create'])->name('category_benchmark:create');
+Route::delete('/admin/benchmarks/delete/{benchmark}', [UserCategoryBenchmarkController::class, 'delete'])->name('category_benchmark:delete');
+Route::get('/admin/benchmarks/category/{benchmark}', [UserCategoryBenchmarkController::class, 'info'])->name('category_benchmark:info');
+Route::put('/admin/benchmarks/target/update/{benchmark}', [UserCategoryBenchmarkController::class, 'update_target'])->name('category_benchmark:update_target');
 
+Route::get('/admin/supervisors/index', [SupervisorController::class, 'index'])->name('supervisor:index');
+Route::get('/admin/supervisors/users/{supervisor}', [SupervisorController::class, 'info'])->name('supervisor:info');
+Route::post('/admin/supervisors/create', [SupervisorController::class, 'create'])->name('supervisor:create');
+Route::delete('/admin/supervisors/delete/{supervisor}', [SupervisorController::class, 'delete'])->name('supervisor:delete');
+Route::delete('/admin/supervisors/users/remove/{supervisor}', [SupervisorController::class, 'user_remove'])->name('supervisor:user_remove');
 
 /*Contact API*/
 

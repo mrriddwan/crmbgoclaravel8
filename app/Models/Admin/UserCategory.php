@@ -20,6 +20,6 @@ class UserCategory extends Model
     }
 
     public function benchmark(){
-        return $this->hasMany(UserCategoryBenchmark::class, 'user_cat_id')->with('task');
+        return $this->hasMany(UserCategoryBenchmark::class, 'user_cat_id')->with('action');
     }
 }

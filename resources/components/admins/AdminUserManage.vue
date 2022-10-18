@@ -308,6 +308,18 @@
                     </h2>
                 </div>
 
+                <div v-if="supervisor_errors">
+                    <div v-for="(v, k) in supervisor_errors" :key="k">
+                        <p
+                            v-for="error in v"
+                            :key="error"
+                            class="text-xs bg-red-500 text-white rounded font-bold mb-1 shadow-lg py-2 px-4 pr-0 w-max"
+                        >
+                            {{ error }}
+                        </p>
+                    </div>
+                </div>
+
                 <div class="grid grid-cols-2 gap-10">
                     <div class="grid grid-cols-1 mt-2">
                         <div
@@ -326,7 +338,7 @@
                             <select
                                 class="text-center w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                                 @change="getUsers"
-                                v-model="selectedUser"
+                                v-model="add_supervisor"
                             >
                                 <option disabled value="">
                                     Please select user
@@ -345,7 +357,7 @@
                             class="container w-max h-max text-center align-middle my-2"
                         >
                             <button
-                                @click="createUser()"
+                                @click="createSupervisor()"
                                 class="border-1 border-black w-max rounded-md bg-green-300 px-2"
                             >
                                 <PlusIcon class="inline h-4 w-4" />
@@ -375,19 +387,19 @@
                         <div class="text-center">
                             <select
                                 class="text-center w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                                @change="getUsers"
-                                v-model="selectedUser"
+                                @change="getSupervisors"
+                                v-model="deleteSupervisor"
                             >
                                 <option disabled value="">
-                                    Please select user
+                                    Please select supervisor
                                 </option>
 
                                 <option
-                                    v-for="user in users"
-                                    :key="user.id"
-                                    :value="user.id"
+                                    v-for="supervisor in supervisors"
+                                    :key="supervisor.id"
+                                    :value="supervisor.id"
                                 >
-                                    {{ user.name }}
+                                    {{ supervisor.sv_name }}
                                 </option>
                             </select>
                         </div>
@@ -395,7 +407,7 @@
                             class="container w-max h-max text-center align-middle my-2"
                         >
                             <button
-                                @click="createUser()"
+                                @click="deleteItem(deleteSupervisor)"
                                 class="border-1 border-black w-max rounded-md bg-red-300 px-2"
                             >
                                 <TrashIcon class="inline h-4 w-4" />
@@ -428,19 +440,19 @@
                         <div class="text-center">
                             <select
                                 class="text-center w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                                @change="getUsers"
-                                v-model="selectedUser"
+                                @change="getSupervisors"
+                                v-model="selectedSupervisor"
                             >
                                 <option disabled value="">
-                                    Please select user
+                                    Please select supervisor
                                 </option>
 
                                 <option
-                                    v-for="user in users"
-                                    :key="user.id"
-                                    :value="user.id"
+                                    v-for="supervisor in supervisors"
+                                    :key="supervisor.id"
+                                    :value="supervisor.id"
                                 >
-                                    {{ user.name }}
+                                    {{ supervisor.sv_name }}
                                 </option>
                             </select>
                         </div>
@@ -463,29 +475,65 @@
                                 </p>
                             </span>
                         </div>
-                        <div class="grid grid-cols-4">
-                            <div class="text-sm text-center">
-                                <span>User</span>
+                        <div
+                            class="grid grid-cols-4"
+                            v-if="
+                                selectedSupervisor &&
+                                supervisor_users.users.length !== 0
+                            "
+                        >
+                            <button
+                                @click="
+                                    toggleUserSupervisorAdd(supervisor_users.id)
+                                "
+                                class="border-1 border-black w-max rounded-md bg-green-300 px-2 py-2"
+                            >
+                                <UserPlusIcon class="inline h-4 w-4" />
+                            </button>
+                            <div
+                                class="text-sm text-center"
+                                v-for="supervisor_user in supervisor_users.users"
+                            >
+                                <span
+                                    class="bg-blue-300 px-2 py-2 font-bold rounded-md"
+                                    >{{
+                                        supervisor_user.subordinate.name
+                                    }}</span
+                                >
+                                <span>
+                                    <div
+                                        class="container w-max h-max text-center align-middle my-2"
+                                    >
+                                        <button
+                                            @click="
+                                                removeUserFromSupervisor(
+                                                    supervisor_user.id
+                                                )
+                                            "
+                                            class="border-1 border-black w-max rounded-md bg-red-300 px-2"
+                                        >
+                                            <TrashIcon class="inline h-4 w-4" />
+                                        </button>
+                                    </div>
+                                </span>
                             </div>
-                            <div class="text-sm text-center">
-                                <span>User</span>
-                            </div>
-                            <div class="text-sm text-center">
-                                <span>User</span>
-                            </div>
-                            <div class="text-sm text-center">
-                                <span>User</span>
-                            </div>
-                            <div class="text-sm text-center">
-                                <span>User</span>
-                            </div>
-                            <div class="text-sm text-center">
-                                <span>User</span>
-                            </div>
+                        </div>
+                        <div v-else class="text-sm text-center">
+                            <h3
+                                class="bg-blue-300 px-2 py-2 font-bold font-mono text-sm uppercase rounded-md"
+                            >
+                                No users
+                            </h3>
                         </div>
                     </div>
                 </div>
             </div>
+
+            <AdminSupervisorUserAssign
+                v-if="supervisorUserAddVisbility"
+                @toggle-modal="toggleUserSupervisorAdd(user_cat_id)"
+                :user_cat_id="supervisorUserAdd"
+            />
 
             <!-- User Category-->
             <div class="my-4">
@@ -512,6 +560,7 @@
                 </div>
 
                 <div class="grid grid-cols-2 gap-10">
+                    <!-- Add Category -->
                     <div class="grid grid-cols-1 mt-2">
                         <div
                             class="container h-max align-middle my-1 text-lg uppercase font-mono text-center"
@@ -551,7 +600,7 @@
                         </div>
                     </div>
 
-                    <!-- Remove Supervisor-->
+                    <!-- Remove Category-->
                     <div class="grid grid-cols-1 mt-1">
                         <div
                             class="container h-max align-middle my-2 text-lg uppercase font-mono text-center"
@@ -688,7 +737,6 @@
                         class="container h-max align-middle my-3 text-lg uppercase font-mono text-center"
                     >
                         <span class="bg-slate-300 w-max py-2 px-2 rounded-md">
-                            <!-- <PencilSquareIcon class="inline h-6 w-6" /> -->
                             <p class="inline uppercase font-bold h-1">
                                 Assign User Category
                             </p>
@@ -707,17 +755,15 @@
                                 </th>
                                 <th class="text-center align-middle">
                                     <button
-                                        @click="toggleAddModal(user_category.id)"
+                                        @click="
+                                            toggleUserAddCategoryModal(
+                                                user_category.id
+                                            )
+                                        "
                                         class="border-1 border-black w-max rounded-md bg-green-300 px-2 py-2"
                                     >
                                         <UserPlusIcon class="inline h-4 w-4" />
                                     </button>
-                                    <!-- <button
-                                        @click="toggleAddModal(user_category.id)"
-                                        class="border-1 border-black w-max rounded-md bg-green-300 px-2 py-2"
-                                    >
-                                        <UserPlusIcon class="inline h-4 w-4" />
-                                    </button> -->
                                 </th>
                             </thead>
 
@@ -734,7 +780,11 @@
                                     </td>
                                     <td class="w-max text-center">
                                         <button
-                                            @click="createUser()"
+                                            @click="
+                                                removeUserFromCategory(
+                                                    user_info.id
+                                                )
+                                            "
                                             class="align-middle border-1 border-black w-max rounded-md bg-red-300 px-2"
                                         >
                                             <TrashIcon class="inline h-4 w-4" />
@@ -751,11 +801,11 @@
                         </table>
                     </div>
                 </div>
-                
 
                 <AdminUserCategoryAssign
-                    v-if="isAddVisibility"
-                    @toggle-modal="toggleAddModal()"
+                    v-if="userAddCategoryVisibility"
+                    @toggle-modal="toggleUserAddCategoryModal(user_cat_id)"
+                    :user_cat_id="userAddCategory"
                 />
 
                 <!-- Category benchmark-->
@@ -785,18 +835,26 @@
                                 </th>
                                 <th class="py-2 px-2 text-white">Target</th>
                                 <th
-                                    class="container w-max h-max text-center align-middle"
+                                    class="w-max h-max text-center align-middle"
                                 >
                                     <button
-                                        @click="createUser()"
-                                        class="border-1 border-black w-max rounded-md bg-blue-300 px-2"
+                                        @click="
+                                            toggleBenchmarkAdd(user_category.id)
+                                        "
+                                        class="w-max px-2 py-2"
                                     >
-                                        <PlusIcon class="inline h-4 w-4" />
-                                        <p
-                                            class="inline uppercase font-bold text-xs h-1"
+                                        <span
+                                            class="w-max bg-yellow-300 px-2 py-1"
                                         >
-                                            Target
-                                        </p>
+                                            <PencilIcon
+                                                class="inline h-4 w-4"
+                                            />
+                                        </span>
+                                        <span
+                                            class="w-max bg-green-300 px-2 py-1"
+                                        >
+                                            <PlusIcon class="inline h-4 w-4" />
+                                        </span>
                                     </button>
                                 </th>
 
@@ -810,22 +868,18 @@
                             >
                                 <tr>
                                     <td class="w-max text-center align-middle">
-                                        {{ benchmark.task.name }}
+                                        {{ benchmark.action.name }}
                                     </td>
                                     <td class="w-max text-center align-middle">
-                                        {{ benchmark.task_target }}
+                                        {{ benchmark.action_target }}
                                     </td>
                                     <td class="w-max text-center">
                                         <button
-                                            @click="createUser()"
-                                            class="border-1 border-black w-max rounded-md bg-yellow-300 px-2"
-                                        >
-                                            <PencilIcon
-                                                class="inline h-4 w-4"
-                                            />
-                                        </button>
-                                        <button
-                                            @click="createUser()"
+                                            @click="
+                                                removeUserFromCategory(
+                                                    benchmark.id
+                                                )
+                                            "
                                             class="align-middle border-1 border-black w-max rounded-md bg-red-300 px-2"
                                         >
                                             <TrashIcon class="inline h-4 w-4" />
@@ -845,6 +899,12 @@
                     </div>
                 </div>
             </div>
+
+            <AdminUserCategoryBenchmark
+                v-if="benchmarkAddVisbility"
+                @toggle-modal="toggleBenchmarkAdd(user_cat_id)"
+                :user_cat_id="benchmarkAdd"
+            />
 
             <!-- User List-->
             <div class="my-4">
@@ -884,6 +944,8 @@
 <script>
 import moment from "moment";
 import AdminUserCategoryAssign from "../admins/AdminUserCategoryAssign.vue";
+import AdminUserCategoryBenchmark from "./AdminUserCategoryBenchmark.vue";
+import AdminSupervisorUserAssign from "./AdminSupervisorUserAssign.vue";
 
 import {
     PencilSquareIcon,
@@ -913,6 +975,8 @@ export default {
         ListBulletIcon,
         PencilIcon,
         AdminUserCategoryAssign,
+        AdminUserCategoryBenchmark,
+        AdminSupervisorUserAssign,
     },
 
     data() {
@@ -920,9 +984,17 @@ export default {
             moment: moment,
             selectedUser: "",
             selectedCategory: "",
+            selectedSupervisor: "",
             deleteCategory: "",
+            deleteSupervisor: "",
+            add_supervisor: "",
 
-            isAddVisibility: false,
+            userAddCategory: null,
+            userAddCategoryVisibility: false,
+            benchmarkAdd: null,
+            benchmarkAddVisbility: false,
+            supervisorUserAdd: null,
+            supervisorUserAddVisbility: false,
 
             new_user: {
                 name: "",
@@ -940,6 +1012,7 @@ export default {
             },
 
             supervisors: [],
+            supervisor_users: [],
 
             new_category: "",
             user_categories: [],
@@ -956,15 +1029,18 @@ export default {
             users: [],
             errors: "",
             category_errors: "",
+            supervisor_errors: "",
         };
     },
 
     mounted() {
         this.getTasks();
+        this.getActions();
         this.getUsers();
         this.getUserCategories();
         this.getUserCategoryList();
         this.getBenchmarks();
+        this.getSupervisors();
     },
 
     watch: {
@@ -975,12 +1051,27 @@ export default {
         selectedCategory(value) {
             this.getUserCategory(value);
         },
+
+        selectedSupervisor(value) {
+            this.getSupervisorUser(value);
+        },
     },
 
     methods: {
-        toggleAddModal() {
-            this.isAddVisibility = !this.isAddVisibility;
-            this.getUsers();
+        toggleUserAddCategoryModal(user_cat_id) {
+            this.userAddCategory = user_cat_id;
+            this.userAddCategoryVisibility = !this.userAddCategoryVisibility;
+            this.getUserCategoryList();
+        },
+        toggleBenchmarkAdd(user_cat_id) {
+            this.benchmarkAdd = user_cat_id;
+            this.benchmarkAddVisbility = !this.benchmarkAddVisbility;
+            this.getBenchmarks();
+        },
+        toggleUserSupervisorAdd(sv_id) {
+            this.supervisorUserAdd = sv_id;
+            this.supervisorUserAddVisbility = !this.supervisorUserAddVisbility;
+            this.getSupervisorUser(sv_id);
         },
 
         async createUser() {
@@ -1094,6 +1185,25 @@ export default {
             }
         },
 
+        async createSupervisor() {
+            try {
+                await axios.post("/api/admin/supervisors/create", {
+                    user_id: this.add_supervisor,
+                });
+                this.add_supervisor = "";
+                this.supervisor_errors = "";
+                this.getSupervisors();
+
+                alert("Created new supervisor.");
+            } catch (e) {
+                {
+                    if (e.response.status === 422) {
+                        this.supervisor_errors = e.response.data.errors;
+                    }
+                }
+            }
+        },
+
         deleteItem(id) {
             if (!window.confirm("Are you sure?")) {
                 return;
@@ -1106,61 +1216,13 @@ export default {
                     this.deleteCategory = "";
                     this.getUserCategories();
                     alert("User Category deleted.");
-                } else if (id === this.admin.contact_status) {
-                    axios.delete(
-                        "/api/admin/delete/contact/status/" +
-                            this.admin.contact_status
-                    );
-                    this.admin.contact_category = "";
-                    alert("Contact Status deleted.");
-                    this.getContactStatuses();
-                } else if (id === this.admin.contact_type) {
-                    axios.delete(
-                        "/api/admin/delete/contact/type/" +
-                            this.admin.contact_type
-                    );
-                    this.admin.contact_type = "";
-                    alert("Contact Type deleted.");
-                    this.getContactTypes();
-                } else if (id === this.admin.contact_industry) {
-                    axios.delete(
-                        "/api/admin/delete/contact/industry/" +
-                            this.admin.contact_industry
-                    );
-                    this.admin.contact_industry = "";
-                    alert("Contact Industry deleted.");
-                    this.getContactIndustries();
-                } else if (id === this.admin.todo_task) {
-                    axios.delete(
-                        "/api/admin/delete/todo/task/" + this.admin.todo_task
-                    );
-                    this.admin.todo_task = "";
-                    alert("To Do Task deleted.");
-                    this.getToDoTasks();
-                } else if (id === this.admin.todo_action) {
-                    axios.delete(
-                        "/api/admin/delete/todo/action/" +
-                            this.admin.todo_action
-                    );
-                    this.admin.todo_action = "";
-                    alert("To Do Action deleted.");
-                    this.getToDoActions();
-                } else if (id === this.admin.forecast_product) {
-                    axios.delete(
-                        "/api/admin/delete/forecast/product/" +
-                            this.admin.forecast_product
-                    );
-                    this.admin.forecast_product = "";
-                    alert("Forecast Product deleted.");
-                    this.getForecastProducts();
                 } else {
                     axios.delete(
-                        "/api/admin/delete/forecast/type/" +
-                            this.admin.forecast_type
+                        "/api/admin/supervisors/delete/" + this.deleteSupervisor
                     );
-                    this.admin.forecast_type = "";
-                    alert("Forecast Type deleted.");
-                    this.getForecastTypes();
+                    this.deleteSupervisor = "";
+                    alert("User removed from supervisor list.");
+                    this.getSupervisors();
                 }
             }
         },
@@ -1181,6 +1243,17 @@ export default {
                 .get("/api/tasks/index")
                 .then((res) => {
                     this.tasks = res.data.data;
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        },
+
+        async getActions() {
+            await axios
+                .get("/api/actions/index")
+                .then((res) => {
+                    this.actions = res.data.data;
                 })
                 .catch((error) => {
                     console.log(error);
@@ -1240,6 +1313,85 @@ export default {
                 .catch((error) => {
                     console.log(error);
                 });
+        },
+
+        async getSupervisors() {
+            await axios
+                .get("/api/admin/supervisors/index")
+                .then((res) => {
+                    this.supervisors = res.data.data;
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        },
+
+        async getSupervisorUser(sv_id) {
+            await axios
+                .get("/api/admin/supervisors/users/" + sv_id)
+                .then((res) => {
+                    this.supervisor_users = res.data.data[0];
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        },
+
+        async removeUserFromCategory(benchmark_id) {
+            try {
+                if (!window.confirm("Are you sure?")) {
+                    return;
+                }
+                await axios.delete(
+                    "/api/admin/benchmarks/delete/" + benchmark_id
+                );
+
+                this.getBenchmarks();
+                alert("Removed action target from user category.");
+            } catch (e) {
+                {
+                    if (e.response.status === 422) {
+                        this.errors = e.response.data.errors;
+                    }
+                }
+            }
+        },
+
+        async removeTarget(benchmark_id) {
+            try {
+                await axios.put("/api/admin/users/remove/category/" + user_id, {
+                    user_cat_id: null,
+                });
+
+                this.getUserCategoryList();
+                alert("Removed user from category.");
+            } catch (e) {
+                {
+                    if (e.response.status === 422) {
+                        this.errors = e.response.data.errors;
+                    }
+                }
+            }
+        },
+
+        async removeUserFromSupervisor(pivot_id) {
+            try {
+                if (!window.confirm("Are you sure?")) {
+                    return;
+                }
+                await axios.delete(
+                    "/api/admin/supervisors/users/remove/" + pivot_id
+                );
+
+                this.getSupervisorUser(this.selectedSupervisor);
+                alert("Removed user from selected supervisor.");
+            } catch (e) {
+                {
+                    if (e.response.status === 422) {
+                        this.errors = e.response.data.errors;
+                    }
+                }
+            }
         },
     },
 };

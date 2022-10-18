@@ -4,10 +4,6 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
-use App\Models\Billboard\Billboard;
-use App\Models\Billboard\BillboardTenure;
-use App\Models\Billboard\Tempboard;
-use App\Models\Forecast\ForecastType;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -22,9 +18,11 @@ class DatabaseSeeder extends Seeder
         $this->call([
             UserCategorySeeder::class,
             TaskSeeder::class,
+            ActionSeeder::class,
             UserCategoryBenchmarkSeeder::class,
             UserSeeder::class,
             SupervisorSeeder::class,
+            SV_SB_Seeder::class,
             Contact_TypeSeeder::class,
             Contact_StatusSeeder::class,
             Contact_CategorySeeder::class,
@@ -32,7 +30,6 @@ class DatabaseSeeder extends Seeder
             ContactSeeder::class,
             PrioritySeeder::class,
             TextColorSeeder::class,
-            ActionSeeder::class,
             ToDoSourceSeeder::class,
             ForecastProductSeeder::class,
             ForecastResultSeeder::class,

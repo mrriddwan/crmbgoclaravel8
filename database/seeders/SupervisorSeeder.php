@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -17,20 +18,16 @@ class SupervisorSeeder extends Seeder
     {
         DB::table('supervisors')->insert([
             [
-                'supervisor_id' => 1,
-                'subordinate_id' => random_int(3,10),
+                'id' => 1,
+                'user_id'=> 1,
+                'sv_name' => 'Admin',
                 'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
                 'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
             ],
             [
-                'supervisor_id' => 1,
-                'subordinate_id' => random_int(3,10),
-                'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
-                'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
-            ],
-            [
-                'supervisor_id' => 2,
-                'subordinate_id' => random_int(3,10),
+                'id' => 2,
+                'user_id'=> 2,
+                'sv_name' => 'Media 3',
                 'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
                 'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
             ],

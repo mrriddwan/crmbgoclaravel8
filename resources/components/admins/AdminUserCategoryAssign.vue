@@ -34,10 +34,10 @@
                     </div>
                     <form
                         class="px-6 pb-4 space-y-6 lg:px-8 sm:pb-6 xl:pb-8"
-                        @submit.prevent="editUserCategory"
+                        @submit.prevent="editUserCategory(selectedUser)"
                     >
                         <h3
-                            class="text-xl font-medium text-gray-900 dark:text-white"
+                            class="text-xl font-medium text-slate-900 uppercase"
                         >
                             Assign New User
                         </h3>
@@ -82,11 +82,19 @@
 
 <script>
 export default {
+    props: [
+        'user_cat_id'
+    ],
+
+    created(){
+        console.log(this.$props.user_cat_id)
+    },
+
     data() {
         return {
-            form: {
-                user_cat_id: "",
-            },
+            // form: {
+            //     user_cat_id: "",
+            // },
             users: [],
 
             selectedUser: "",
@@ -99,19 +107,21 @@ export default {
 
     methods: {
         closeModal() {
+            this.getUserCategoryList();
             this.$emit("toggle-modal");
         },
 
-        async editUserCategory(id) {
+        async editUserCategory(user_id) {
             try {
                 await axios.put(
-                    "/api/admin/users/update/category/" + this.selectedUser,
+                    "/api/admin/users/update/" + user_id,
                     {
-                        user_cat_id: this.form.user_cat_id,
+                        user_cat_id: this.$props.user_cat_id,
                     }
-                );
-
-                alert("Updated user name.");
+                )      
+                ;
+                this.getUserCategoryList();
+                alert("Added user in category.");
             } catch (e) {
                 {
                     if (e.response.status === 422) {

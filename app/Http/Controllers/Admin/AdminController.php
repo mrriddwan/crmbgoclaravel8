@@ -240,6 +240,17 @@ class AdminController extends Controller
                 'email' => $request->email,
                 'email_password' => $request->email_password,
             ]);
+            
+        } else if ($request->user_cat_id) {
+            $request->validate([
+                'user_cat_id' => ['required', 'int'],
+            ], [
+                'user_cat_id.required' => ' is required.',
+            ]);
+
+            $user->update([
+                'user_cat_id' => $request->user_cat_id,
+            ]);
         } else {
             $request->validate([
                 'password' => ['required_with:confirm_password', 'min:6'],
@@ -260,6 +271,19 @@ class AdminController extends Controller
             'data' => $user,
             'status' => true,
             'message' => 'Successfully update user',
+        ]);
+    }
+
+    public function user_cat_remove(User $user)
+    {
+            $user->update([
+                'user_cat_id' => null,
+            ]);
+
+        return response()->json([
+            'data' => $user,
+            'status' => true,
+            'message' => 'Successfully remove user from respective category',
         ]);
     }
 }

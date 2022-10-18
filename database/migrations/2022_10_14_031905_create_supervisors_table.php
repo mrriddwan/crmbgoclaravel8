@@ -14,20 +14,14 @@ class CreateSupervisorsTable extends Migration
     public function up()
     {
         Schema::create('supervisors', function (Blueprint $table) {
-            $table->foreignId('supervisor_id')
-                  ->references('id')
-                  ->on('users')
-                  ->nullable()
-                  ->constrained()
-                  ->onDelete('cascade');
-
-            $table->foreignId('subordinate_id')
-                  ->references('id')
-                  ->on('users')
-                  ->nullable()
-                  ->constrained()
-                  ->onDelete('cascade');
-
+            $table->id();
+            $table->foreignId('user_id')
+                ->references('id')
+                ->on('users')
+                ->nullable()
+                ->constrained()
+                ->onDelete('cascade');
+            $table->string('sv_name');
             $table->timestamps();
         });
     }
