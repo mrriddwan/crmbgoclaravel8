@@ -11,6 +11,7 @@ use App\Models\Contact\Contact;
 use App\Models\Forecast\Forecast;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
@@ -75,7 +76,8 @@ class ForecastController extends Controller
             'forecast_date' => $request->forecast_date,
             'forecast_updatedate' => now(),
             'amount' => $request->amount,
-            'user_id' => $request->user_id ?? 2, //change to current user later
+            // 'user_id' => $request->user_id ?? 2, //change to current user later
+            'user_id' => Auth::id(),
             'forecast_type_id' => $request->forecast_type_id,
             'contact_id' => $request->contact_id,
             'product_id' => $request->product_id,
@@ -102,7 +104,7 @@ class ForecastController extends Controller
             'forecast_date' => $request->forecast_date,
             'forecast_updatedate' => now(),
             'amount' => $request->amount,
-            'user_id' => $request->user_id,
+            'user_id' => Auth::id(),
             'forecast_type_id' => $request->forecast_type_id,
             'contact_id' => $request->contact_id,
             'product_id' => $request->product_id,

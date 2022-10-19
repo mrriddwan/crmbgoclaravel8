@@ -22,7 +22,7 @@ class ContactController extends Controller
 
     public function getuserid(Request $request)
     {
-        $user = Auth::user(); // Retrieve the currently authenticated user...
+        $user = Auth::user()->name; // Retrieve the currently authenticated user...
         $id = Auth::id(); // Retrieve the currently authenticated user's ID...
 
 
@@ -37,8 +37,9 @@ class ContactController extends Controller
 
         // return $contact->where('user_id','=',$id);
         // $user = auth()->user();
-        dd($id);
+        // dd($id);
         // dd($user);
+        return $user;
     }
 
     public function index()
@@ -65,7 +66,7 @@ class ContactController extends Controller
             'contact_categories.name as category_name',
             'contact_industries.name as industry_name'
         ])
-            // ->where('contacts.user_id', '=', $id)
+            ->where('contacts.user_id', '=', $id)
 
             ->join('contact_statuses', 'contacts.status_id', '=', 'contact_statuses.id')
             ->join('contact_types', 'contacts.type_id', '=', 'contact_types.id')
@@ -115,7 +116,8 @@ class ContactController extends Controller
             'address' => $request->address ?? 'None',
             'remark' => $request->remark ?? 'None',
             'category_id' => $request->category_id,
-            'user_id' => $request->user_id ?? 2, //change to current user later
+            // 'user_id' => $request->user_id ?? 2, //change to current user later
+            'user_id' => Auth::id(), //change to current user later
             'type_id' => $request->type_id,
             'status_id' => $request->status_id,
         ]);

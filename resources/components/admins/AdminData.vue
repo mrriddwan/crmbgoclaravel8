@@ -22,6 +22,16 @@
                 </div>
 
                 <div
+                    class="bg-blue-200 px-2 py-1 rounded-md flex w-full justify-center items-center row"
+                >
+                    <h4
+                        class="text-center text-gray-800 px-8 uppercase w-max font-mono font-extrabold"
+                    >
+                        This is the user ID: {{ userID }}
+                    </h4>
+                </div>
+
+                <div
                     class="grid grid-cols-2 gap-2 text-center align-items-center"
                 >
                     <div
@@ -293,14 +303,13 @@
                         class="grid grid-cols-1 mt-2 bg-slate-300 px-2 py-1 rounded-lg w-full justify-center items-center row"
                     >
                         <div colspan="2">
-                            <h3 class="uppercase font-bold font-mono">Task</h3>
+                            <h3 class="uppercase font-bold font-mono">
+                                Task
+                            </h3>
                         </div>
 
                         <div class="grid grid-cols-2">
                             <div class="grid grid-rows-2 grid-cols-1">
-                                <!-- <div>
-                                        <label>New Contact Product</label>
-                                    </div> -->
                                 <div class="form-group">
                                     <input
                                         type="text"
@@ -319,9 +328,6 @@
                                 </div>
                             </div>
                             <div class="grid grid-rows-2 grid-cols-1 mx-3">
-                                <!-- <div>
-                                        
-                                    </div> -->
 
                                 <div class="form-group items-center">
                                     <select
@@ -599,6 +605,8 @@ export default {
                 forecast_type: "",
             },
 
+            userID: "",
+
             contact_types: [],
             contact_categories: [],
             contact_statuses: [],
@@ -623,6 +631,7 @@ export default {
 
         this.getForecastProducts();
         this.getForecastTypes();
+        this.getUserID();
     },
 
     methods: {
@@ -881,6 +890,17 @@ export default {
                     this.getForecastTypes();
                 }
             }
+        },
+
+        async getUserID(){
+            await axios
+                .get("/api/contacts/getuserid")
+                .then((res) => {
+                    this.userID = res.data;
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
         },
     },
 

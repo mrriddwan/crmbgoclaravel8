@@ -45,87 +45,86 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 /*Admin API*/
 
 /*Admin Database Add/Delete API*/
-Route::post('/admin/create/contact/category', [AdminController::class, 'createContactCategory'])->name('contactCategory:create');
-Route::post('/admin/create/contact/status', [AdminController::class, 'createContactStatus'])->name('contactStatus:create');
-Route::post('/admin/create/contact/type', [AdminController::class, 'createContactType'])->name('contactType:create');
-Route::post('/admin/create/contact/industry', [AdminController::class, 'createContactIndustry'])->name('contactIndustry:create');
-Route::post('/admin/create/todo/task', [AdminController::class, 'createToDoTask'])->name('todoTask:create');
-Route::post('/admin/create/todo/action', [AdminController::class, 'createToDoAction'])->name('todoAction:create');
-Route::post('/admin/create/forecast/type', [AdminController::class, 'createForecastType'])->name('forecastType:create');
-Route::post('/admin/create/forecast/product', [AdminController::class, 'createForecastProduct'])->name('forecastProduct:create');
+Route::middleware('auth')->group(function () {
+    Route::post('/admin/create/contact/category', [AdminController::class, 'createContactCategory'])->name('contactCategory:create');
+    Route::post('/admin/create/contact/status', [AdminController::class, 'createContactStatus'])->name('contactStatus:create');
+    Route::post('/admin/create/contact/type', [AdminController::class, 'createContactType'])->name('contactType:create');
+    Route::post('/admin/create/contact/industry', [AdminController::class, 'createContactIndustry'])->name('contactIndustry:create');
+    Route::post('/admin/create/todo/task', [AdminController::class, 'createToDoTask'])->name('todoTask:create');
+    Route::post('/admin/create/todo/action', [AdminController::class, 'createToDoAction'])->name('todoAction:create');
+    Route::post('/admin/create/forecast/type', [AdminController::class, 'createForecastType'])->name('forecastType:create');
+    Route::post('/admin/create/forecast/product', [AdminController::class, 'createForecastProduct'])->name('forecastProduct:create');
 
-Route::delete('/admin/delete/contact/category/{category}', [AdminController::class, 'deleteContactCategory'])->name('contactCategory:delete');
-Route::delete('/admin/delete/contact/status/{status}', [AdminController::class, 'deleteContactStatus'])->name('contactStatus:delete');
-Route::delete('/admin/delete/contact/type/{type}', [AdminController::class, 'deleteContactType'])->name('contactType:delete');
-Route::delete('/admin/delete/contact/industry/{industry}', [AdminController::class, 'deleteContactIndustry'])->name('contactIndustry:delete');
-Route::delete('/admin/delete/todo/task/{task}', [AdminController::class, 'deleteToDoTask'])->name('todoTask:delete');
-Route::delete('/admin/delete/todo/action/{action}', [AdminController::class, 'deleteToDoAction'])->name('todoAction:delete');
-Route::delete('/admin/delete/forecast/type/{type}', [AdminController::class, 'deleteForecastType'])->name('forecastType:delete');
-Route::delete('/admin/delete/forecast/product/{product}', [AdminController::class, 'deleteForecastProduct'])->name('forecastProduct:delete');
+    Route::delete('/admin/delete/contact/category/{category}', [AdminController::class, 'deleteContactCategory'])->name('contactCategory:delete');
+    Route::delete('/admin/delete/contact/status/{status}', [AdminController::class, 'deleteContactStatus'])->name('contactStatus:delete');
+    Route::delete('/admin/delete/contact/type/{type}', [AdminController::class, 'deleteContactType'])->name('contactType:delete');
+    Route::delete('/admin/delete/contact/industry/{industry}', [AdminController::class, 'deleteContactIndustry'])->name('contactIndustry:delete');
+    Route::delete('/admin/delete/todo/task/{task}', [AdminController::class, 'deleteToDoTask'])->name('todoTask:delete');
+    Route::delete('/admin/delete/todo/action/{action}', [AdminController::class, 'deleteToDoAction'])->name('todoAction:delete');
+    Route::delete('/admin/delete/forecast/type/{type}', [AdminController::class, 'deleteForecastType'])->name('forecastType:delete');
+    Route::delete('/admin/delete/forecast/product/{product}', [AdminController::class, 'deleteForecastProduct'])->name('forecastProduct:delete');
 
-Route::get('/admin/users/info/{user}', [AdminController::class, 'user_info'])->name('user:info');
-Route::post('admin/users/create', [AdminController::class, 'user_create'])->name('user:create');
-Route::put('/admin/users/update/{user}', [AdminController::class, 'user_update'])->name('user:update');
-Route::put('/admin/users/remove/category/{user}', [AdminController::class, 'user_cat_remove'])->name('user_cat:remove');
+    Route::get('/admin/users/info/{user}', [AdminController::class, 'user_info'])->name('user:info');
+    Route::post('admin/users/create', [AdminController::class, 'user_create'])->name('user:create');
+    Route::put('/admin/users/update/{user}', [AdminController::class, 'user_update'])->name('user:update');
+    Route::put('/admin/users/remove/category/{user}', [AdminController::class, 'user_cat_remove'])->name('user_cat:remove');
 
-/*Admin User Management API*/
-Route::get('/admin/users/category/index', [UserCategoryController::class, 'index'])->name('user_category:index');
-Route::get('/admin/users/category/info/{category}', [UserCategoryController::class, 'info'])->name('user_category:info');
-Route::get('/admin/users/category/user_list', [UserCategoryController::class, 'user_list'])->name('user_category:user_list');
-Route::get('/admin/users/category/benchmark', [UserCategoryController::class, 'benchmark'])->name('user_category:benchmark');
-Route::post('/admin/users/category/create', [UserCategoryController::class, 'create'])->name('user_category:create');
-Route::put('/admin/users/category/update/{category}', [UserCategoryController::class, 'update'])->name('user_category:update');
-Route::delete('/admin/users/category/delete/{category}', [UserCategoryController::class, 'delete'])->name('user_category:delete');
+    /*Admin User Management API*/
+    Route::get('/admin/users/category/index', [UserCategoryController::class, 'index'])->name('user_category:index');
+    Route::get('/admin/users/category/info/{category}', [UserCategoryController::class, 'info'])->name('user_category:info');
+    Route::get('/admin/users/category/user_list', [UserCategoryController::class, 'user_list'])->name('user_category:user_list');
+    Route::get('/admin/users/category/benchmark', [UserCategoryController::class, 'benchmark'])->name('user_category:benchmark');
+    Route::post('/admin/users/category/create', [UserCategoryController::class, 'create'])->name('user_category:create');
+    Route::put('/admin/users/category/update/{category}', [UserCategoryController::class, 'update'])->name('user_category:update');
+    Route::delete('/admin/users/category/delete/{category}', [UserCategoryController::class, 'delete'])->name('user_category:delete');
 
-Route::post('/admin/benchmarks/create', [UserCategoryBenchmarkController::class, 'create'])->name('category_benchmark:create');
-Route::delete('/admin/benchmarks/delete/{benchmark}', [UserCategoryBenchmarkController::class, 'delete'])->name('category_benchmark:delete');
-Route::get('/admin/benchmarks/category/{benchmark}', [UserCategoryBenchmarkController::class, 'info'])->name('category_benchmark:info');
-Route::put('/admin/benchmarks/target/update/{benchmark}', [UserCategoryBenchmarkController::class, 'update_target'])->name('category_benchmark:update_target');
+    Route::post('/admin/benchmarks/create', [UserCategoryBenchmarkController::class, 'create'])->name('category_benchmark:create');
+    Route::delete('/admin/benchmarks/delete/{benchmark}', [UserCategoryBenchmarkController::class, 'delete'])->name('category_benchmark:delete');
+    Route::get('/admin/benchmarks/category/{benchmark}', [UserCategoryBenchmarkController::class, 'info'])->name('category_benchmark:info');
+    Route::put('/admin/benchmarks/target/update/{benchmark}', [UserCategoryBenchmarkController::class, 'update_target'])->name('category_benchmark:update_target');
 
-Route::get('/admin/supervisors/index', [SupervisorController::class, 'index'])->name('supervisor:index');
-Route::get('/admin/supervisors/users/{supervisor}', [SupervisorController::class, 'info'])->name('supervisor:info');
-Route::post('/admin/supervisors/create', [SupervisorController::class, 'create'])->name('supervisor:create');
-Route::delete('/admin/supervisors/delete/{supervisor}', [SupervisorController::class, 'delete'])->name('supervisor:delete');
-Route::delete('/admin/supervisors/users/remove/{supervisor}', [SupervisorController::class, 'user_remove'])->name('supervisor:user_remove');
-Route::post('/admin/supervisors/users/add', [SupervisorController::class, 'user_add'])->name('supervisor:user_add');
-
+    Route::get('/admin/supervisors/index', [SupervisorController::class, 'index'])->name('supervisor:index');
+    Route::get('/admin/supervisors/users/{supervisor}', [SupervisorController::class, 'info'])->name('supervisor:info');
+    Route::post('/admin/supervisors/create', [SupervisorController::class, 'create'])->name('supervisor:create');
+    Route::delete('/admin/supervisors/delete/{supervisor}', [SupervisorController::class, 'delete'])->name('supervisor:delete');
+    Route::delete('/admin/supervisors/users/remove/{supervisor}', [SupervisorController::class, 'user_remove'])->name('supervisor:user_remove');
+    Route::post('/admin/supervisors/users/add', [SupervisorController::class, 'user_add'])->name('supervisor:user_add');
+});
 /*Contact API*/
 
-// Route::middleware('auth')->group(function () {
-//     Route::get('/contacts/index', [ContactController::class, 'index'])->name('contact:index');
-//     Route::get('/contacts/list', [ContactController::class, 'list'])->name('contact:list');
-//     Route::post('/contacts/store', [ContactController::class, 'store'])->name('contact:store');
-//     Route::get('/contacts/show/{contact}', [ContactController::class, 'show'])->name('contact:show');
-//     Route::put('/contacts/update/{contact}', [ContactController::class, 'update'])->name('contact:update');
-//     Route::delete('/contacts/delete/{contact}', [ContactController::class, 'delete'])->name('contact:delete');
-//     Route::get('/contacts/info/{contact}', [ContactController::class, 'info'])->name('contact:info');
-//     Route::get('/contacts/summary', [ContactController::class, 'summary'])->name('contact:summary');
-//     Route::get('/contacts/test', [ContactController::class, 'test'])->name('contact:test');
-//     Route::get('/contacts/export/{contact}', [ContactController::class, 'export'])->name('contact:export');
-//     Route::get('/contacts/all', [ContactController::class, 'selectAll'])->name('contact:selectAll');
-//     // Route::get('/contacts/exportSummary/{contact}', [ContactController::class, 'selectAll'])->name('contact:exportSummary');
-//     Route::get('/contacts/exportSummary', [ContactController::class, 'exportSummary'])->name('contact:exportSummary');
-//     Route::get('/contacts/todo', [ContactController::class, 'todo'])->name('contact:todo');
-//     Route::get('/contacts/history/{contact}', [ContactController::class, 'history'])->name('contact:history');
-//     Route::get('/contacts/getuserid', [ContactController::class, 'getuserid'])->name('contact:getuserid');
-// });
+Route::middleware('auth')->group(function () {
+    Route::get('/contacts/index', [ContactController::class, 'index'])->name('contact:index');
+    Route::get('/contacts/list', [ContactController::class, 'list'])->name('contact:list');
+    Route::post('/contacts/store', [ContactController::class, 'store'])->name('contact:store');
+    Route::get('/contacts/show/{contact}', [ContactController::class, 'show'])->name('contact:show');
+    Route::put('/contacts/update/{contact}', [ContactController::class, 'update'])->name('contact:update');
+    Route::delete('/contacts/delete/{contact}', [ContactController::class, 'delete'])->name('contact:delete');
+    Route::get('/contacts/info/{contact}', [ContactController::class, 'info'])->name('contact:info');
+    Route::get('/contacts/summary', [ContactController::class, 'summary'])->name('contact:summary');
+    Route::get('/contacts/test', [ContactController::class, 'test'])->name('contact:test');
+    Route::get('/contacts/export/{contact}', [ContactController::class, 'export'])->name('contact:export');
+    Route::get('/contacts/all', [ContactController::class, 'selectAll'])->name('contact:selectAll');
+    Route::get('/contacts/exportSummary', [ContactController::class, 'exportSummary'])->name('contact:exportSummary');
+    Route::get('/contacts/todo', [ContactController::class, 'todo'])->name('contact:todo');
+    Route::get('/contacts/history/{contact}', [ContactController::class, 'history'])->name('contact:history');
+    Route::get('/contacts/getuserid', [ContactController::class, 'getuserid'])->name('contact:getuserid');
+});
 
-Route::get('/contacts/index', [ContactController::class, 'index'])->name('contact:index');
-Route::get('/contacts/list', [ContactController::class, 'list'])->name('contact:list');
-Route::post('/contacts/store', [ContactController::class, 'store'])->name('contact:store');
-Route::get('/contacts/show/{contact}', [ContactController::class, 'show'])->name('contact:show');
-Route::put('/contacts/update/{contact}', [ContactController::class, 'update'])->name('contact:update');
-Route::delete('/contacts/delete/{contact}', [ContactController::class, 'delete'])->name('contact:delete');
-Route::get('/contacts/info/{contact}', [ContactController::class, 'info'])->name('contact:info');
-Route::get('/contacts/summary', [ContactController::class, 'summary'])->name('contact:summary');
-Route::get('/contacts/test', [ContactController::class, 'test'])->name('contact:test');
-Route::get('/contacts/export/{contact}', [ContactController::class, 'export'])->name('contact:export');
-Route::get('/contacts/all', [ContactController::class, 'selectAll'])->name('contact:selectAll');
-// Route::get('/contacts/exportSummary/{contact}', [ContactController::class, 'selectAll'])->name('contact:exportSummary');
-Route::get('/contacts/exportSummary', [ContactController::class, 'exportSummary'])->name('contact:exportSummary');
-Route::get('/contacts/todo', [ContactController::class, 'todo'])->name('contact:todo');
-Route::get('/contacts/history/{contact}', [ContactController::class, 'history'])->name('contact:history');
-Route::get('/contacts/getuserid', [ContactController::class, 'getuserid'])->name('contact:getuserid');
+// Route::get('/contacts/index', [ContactController::class, 'index'])->name('contact:index');
+// Route::get('/contacts/list', [ContactController::class, 'list'])->name('contact:list');
+// Route::post('/contacts/store', [ContactController::class, 'store'])->name('contact:store');
+// Route::get('/contacts/show/{contact}', [ContactController::class, 'show'])->name('contact:show');
+// Route::put('/contacts/update/{contact}', [ContactController::class, 'update'])->name('contact:update');
+// Route::delete('/contacts/delete/{contact}', [ContactController::class, 'delete'])->name('contact:delete');
+// Route::get('/contacts/info/{contact}', [ContactController::class, 'info'])->name('contact:info');
+// Route::get('/contacts/summary', [ContactController::class, 'summary'])->name('contact:summary');
+// Route::get('/contacts/test', [ContactController::class, 'test'])->name('contact:test');
+// Route::get('/contacts/export/{contact}', [ContactController::class, 'export'])->name('contact:export');
+// Route::get('/contacts/all', [ContactController::class, 'selectAll'])->name('contact:selectAll');
+// Route::get('/contacts/exportSummary', [ContactController::class, 'exportSummary'])->name('contact:exportSummary');
+// Route::get('/contacts/todo', [ContactController::class, 'todo'])->name('contact:todo');
+// Route::get('/contacts/history/{contact}', [ContactController::class, 'history'])->name('contact:history');
+// Route::get('/contacts/getuserid', [ContactController::class, 'getuserid'])->name('contact:getuserid');
 
 
 /*Sub-Contact API*/

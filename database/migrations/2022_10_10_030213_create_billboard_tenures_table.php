@@ -20,7 +20,7 @@ class CreateBillboardTenuresTable extends Migration
             $table->unsignedBigInteger('bboard_id')->nullable()->constrained();
             $table->foreign('bboard_id')
                 ->references('id')
-                ->on('contacts')
+                ->on('billboards')
                 ->onDelete('cascade');
             $table->unsignedBigInteger('contact_id')->nullable()->constrained();
             $table->foreign('contact_id')
@@ -30,7 +30,7 @@ class CreateBillboardTenuresTable extends Migration
                 $table->unsignedBigInteger('user_id')->nullable()->constrained();
             $table->foreign('user_id')
                 ->references('id')
-                ->on('contacts')
+                ->on('users')
                 ->onDelete('cascade');
             $table->timestamps();
         });

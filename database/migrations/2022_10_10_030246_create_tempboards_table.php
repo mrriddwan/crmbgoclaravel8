@@ -24,7 +24,7 @@ class CreateTempboardsTable extends Migration
             $table->unsignedBigInteger('user_id')->nullable()->constrained();
             $table->foreign('user_id')
                 ->references('id')
-                ->on('contacts')
+                ->on('users')
                 ->onDelete('cascade');
             $table->date('tpboard_startdate');
             $table->date('tpboard_enddate');

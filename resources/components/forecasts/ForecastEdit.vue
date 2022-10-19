@@ -201,7 +201,7 @@ export default {
                     forecast_date: this.moment(this.forecast.forecast_date).format("YYYY-MM-DD"),
                     amount: this.forecast.amount,
                     contact_id: this.forecast.contact.id,
-                    user_id: 2, //replace with current user id later
+                    // user_id: 2, //replace with current user id later
                     product_id: this.forecast.product_id,
                     forecast_type_id: this.forecast.forecast_type_id,
                 })

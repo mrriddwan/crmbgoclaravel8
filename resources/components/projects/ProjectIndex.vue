@@ -7,7 +7,7 @@
 
     <div class="py-2">
             <router-link
-                to="/projects/create"
+                to="/project/create"
                 class="inline-block items-center px-2 py-1 align-top bg-blue-800 border border-transparent rounded-md font-semibold text-m text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
             >
                 <PlusIcon class="inline h-6 w-6 mr-1" />
