@@ -83,16 +83,15 @@
 <script>
 export default {
     props: [
-        'user_id'
+        'sv_id'
     ],
 
     created(){
-        console.log(this.$props.user_id)
+        console.log(this.$props.sv_id)
     },
 
     data() {
         return {
-
             users: [],
             selectedUser: "",
         };
@@ -104,22 +103,22 @@ export default {
 
     methods: {
         closeModal() {
-            this.getUserCategoryList(this.$props.user_id);
+            this.getSupervisorUser(this.$props.sv_id);
             this.$emit("toggle-modal");
         },
 
-        async addUserForSupervisor(user_id) {
+        async addUserForSupervisor(sv_id) {
             try {
-                await axios.put(
-                    "/api/admin/users/update/" + user_id,
+                await axios.post(
+                    "/api/admin/supervisors/users/add",
                     {
-                        supervisor_id: this.$props.user_id,
+                        supervisor_id: this.$props.sv_id,
                         subordinate_id: this.selectedUser,
                     }
                 )      
                 ;
-                this.getUserCategoryList(user_id);
-                alert("Added user in category.");
+                this.getSupervisorUser(sv_id);
+                alert("Added new user for chosen supervisor.");
             } catch (e) {
                 {
                     if (e.response.status === 422) {

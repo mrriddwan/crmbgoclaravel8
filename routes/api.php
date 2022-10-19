@@ -87,6 +87,7 @@ Route::get('/admin/supervisors/users/{supervisor}', [SupervisorController::class
 Route::post('/admin/supervisors/create', [SupervisorController::class, 'create'])->name('supervisor:create');
 Route::delete('/admin/supervisors/delete/{supervisor}', [SupervisorController::class, 'delete'])->name('supervisor:delete');
 Route::delete('/admin/supervisors/users/remove/{supervisor}', [SupervisorController::class, 'user_remove'])->name('supervisor:user_remove');
+Route::post('/admin/supervisors/users/add', [SupervisorController::class, 'user_add'])->name('supervisor:user_add');
 
 /*Contact API*/
 

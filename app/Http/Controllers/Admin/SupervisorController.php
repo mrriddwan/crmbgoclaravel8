@@ -71,4 +71,24 @@ class SupervisorController extends Controller
         $supervisor->delete();
         return response()->json('User has been removed from the selected supervisor.');
     }
+
+    public function user_add(Request $request)
+    {
+        $request->validate([
+            'subordinate_id' => ['required', 'int'],
+        ], [
+            'subordinate_id.required' => 'Please select a user.',
+        ]);
+
+        $subordinate = SvSbPivot::create([
+            'supervisor_id' => $request->supervisor_id,
+            'subordinate_id' => $request->subordinate_id,
+        ]);
+
+        return response()->json([
+            'data' => $subordinate,
+            'status' => true,
+            'message' => 'Successfully added new user under supervisor',
+        ]);
+    }
 }

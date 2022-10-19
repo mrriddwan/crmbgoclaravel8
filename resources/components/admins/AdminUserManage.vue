@@ -475,27 +475,23 @@
                                 </p>
                             </span>
                         </div>
-                        <div
-                            class="grid grid-cols-4"
-                            v-if="
-                                selectedSupervisor &&
-                                supervisor_users.users.length !== 0
-                            "
-                        >
+                        <div class="grid grid-cols-4" v-if="selectedSupervisor"
+                        v-for="supervisor in supervisor_users">
                             <button
                                 @click="
-                                    toggleUserSupervisorAdd(supervisor_users.id)
+                                    toggleUserSupervisorAdd(supervisor.id)
                                 "
                                 class="border-1 border-black w-max rounded-md bg-green-300 px-2 py-2"
                             >
                                 <UserPlusIcon class="inline h-4 w-4" />
                             </button>
                             <div
-                                class="text-sm text-center"
-                                v-for="supervisor_user in supervisor_users.users"
+                                class="text-sm text-center flex"
+                                v-if="supervisor.users.length !== 0"
+                                v-for="supervisor_user in supervisor.users"
                             >
                                 <span
-                                    class="bg-blue-300 px-2 py-2 font-bold rounded-md"
+                                    class="bg-blue-300 px-2 py-2 font-bold rounded-md h-max"
                                     >{{
                                         supervisor_user.subordinate.name
                                     }}</span
@@ -517,12 +513,19 @@
                                     </div>
                                 </span>
                             </div>
+                            <div v-else class="text-sm text-center">
+                                <h3
+                                    class="bg-blue-300 px-2 py-2 font-bold font-mono text-sm uppercase rounded-md"
+                                >
+                                    No users
+                                </h3>
+                            </div>
                         </div>
                         <div v-else class="text-sm text-center">
                             <h3
                                 class="bg-blue-300 px-2 py-2 font-bold font-mono text-sm uppercase rounded-md"
                             >
-                                No users
+                                Select user
                             </h3>
                         </div>
                     </div>
@@ -531,8 +534,8 @@
 
             <AdminSupervisorUserAssign
                 v-if="supervisorUserAddVisbility"
-                @toggle-modal="toggleUserSupervisorAdd(user_cat_id)"
-                :user_cat_id="supervisorUserAdd"
+                @toggle-modal="toggleUserSupervisorAdd(sv_id)"
+                :sv_id="supervisorUserAdd"
             />
 
             <!-- User Category-->
@@ -1071,7 +1074,7 @@ export default {
         toggleUserSupervisorAdd(sv_id) {
             this.supervisorUserAdd = sv_id;
             this.supervisorUserAddVisbility = !this.supervisorUserAddVisbility;
-            this.getSupervisorUser(sv_id);
+            this.getSupervisorUser(this.selectedSupervisor);
         },
 
         async createUser() {
@@ -1330,7 +1333,7 @@ export default {
             await axios
                 .get("/api/admin/supervisors/users/" + sv_id)
                 .then((res) => {
-                    this.supervisor_users = res.data.data[0];
+                    this.supervisor_users = res.data.data;
                 })
                 .catch((error) => {
                     console.log(error);
