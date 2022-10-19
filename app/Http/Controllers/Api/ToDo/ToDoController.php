@@ -7,9 +7,11 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\ToDo\ToDoContactRequest;
 use App\Http\Requests\ToDo\ToDoInternalRequest;
 use App\Http\Resources\ToDo\ToDoResource;
+use App\Models\Admin\SvSbPivot;
 use App\Models\ToDo\ToDo;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
 
 class ToDoController extends Controller
@@ -31,6 +33,19 @@ class ToDoController extends Controller
 
         $selectedDate = request('selectedDate');
 
+        $id = Auth::id();
+        $sv_sb = "";
+        $final = [$id];
+
+        if (SvSbPivot::where('supervisor_id', '=', $id)->exists()) {
+            $sv_sb = SvSbPivot::select('subordinate_id')
+                ->where('supervisor_id', '=', $id)
+                ->pluck('subordinate_id');
+        } else {
+            $sv_sb = ["null"];
+        }
+        array_push($final, ...$sv_sb);
+
         $todo = ToDo::select([
             'to_dos.*',
             'contact_statuses.name as status_name',
@@ -43,6 +58,7 @@ class ToDoController extends Controller
             'to_do_sources.name as source_name',
             'actions.name as action_name',
         ])
+            ->whereIn('to_dos.user_id', $final) // for view under supervisor and the subordinates
             ->join('contacts', 'to_dos.contact_id', '=', 'contacts.id')
             ->join('contact_statuses', 'to_dos.status_id', '=', 'contact_statuses.id')
             ->join('contact_types', 'to_dos.type_id', '=', 'contact_types.id')
@@ -97,6 +113,20 @@ class ToDoController extends Controller
         $selectedMonth = request('selectedMonth');
         $selectedYear = request('selectedYear');
 
+        $id = Auth::id();
+        $sv_sb = "";
+        $final = [$id];
+
+        if (SvSbPivot::where('supervisor_id', '=', $id)->exists()) {
+            $sv_sb = SvSbPivot::select('subordinate_id')
+                ->where('supervisor_id', '=', $id)
+                ->pluck('subordinate_id');
+        } else {
+            $sv_sb = ["null"];
+        }
+        array_push($final, ...$sv_sb);
+
+
         $todo = ToDo::select([
             'to_dos.*',
             'contact_statuses.name as status_name',
@@ -109,6 +139,8 @@ class ToDoController extends Controller
             'to_do_sources.name as source_name',
             'actions.name as action_name',
         ])
+            ->whereIn('to_dos.user_id', $final) // for view under supervisor and the subordinates
+
             ->join('contacts', 'to_dos.contact_id', '=', 'contacts.id')
             ->join('contact_statuses', 'to_dos.status_id', '=', 'contact_statuses.id')
             ->join('contact_types', 'to_dos.type_id', '=', 'contact_types.id')
@@ -164,6 +196,20 @@ class ToDoController extends Controller
         $selectedDateStart = request('selectedDateStart');
         $selectedDateEnd = request('selectedDateEnd');
 
+        $id = Auth::id();
+        $sv_sb = "";
+        $final = [$id];
+
+        if (SvSbPivot::where('supervisor_id', '=', $id)->exists()) {
+            $sv_sb = SvSbPivot::select('subordinate_id')
+                ->where('supervisor_id', '=', $id)
+                ->pluck('subordinate_id');
+        } else {
+            $sv_sb = ["null"];
+        }
+        array_push($final, ...$sv_sb);
+
+
         $todo = ToDo::select([
             'to_dos.*',
             'contact_statuses.name as status_name',
@@ -176,6 +222,7 @@ class ToDoController extends Controller
             'to_do_sources.name as source_name',
             'actions.name as action_name',
         ])
+            ->whereIn('to_dos.user_id', $final) // for view under supervisor and the subordinates
             ->join('contacts', 'to_dos.contact_id', '=', 'contacts.id')
             ->join('contact_statuses', 'to_dos.status_id', '=', 'contact_statuses.id')
             ->join('contact_types', 'to_dos.type_id', '=', 'contact_types.id')
@@ -332,14 +379,13 @@ class ToDoController extends Controller
         ]);
     }
 
-    public function export($todo) 
+    public function export($todo)
     {
         $date = Carbon::now()->format('Y-m-d');
 
-        $todosArray = explode(',', $todo );
+        $todosArray = explode(',', $todo);
 
-        return Excel::download(new TodoExport($todosArray), ('ToDo - '. $date . '.xlsx'));
-
+        return Excel::download(new TodoExport($todosArray), ('ToDo - ' . $date . '.xlsx'));
     }
 
     public function selectAll()

@@ -6,10 +6,12 @@ use App\Exports\FollowUpExport;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ToDo\FollowUpRequest;
 use App\Http\Resources\FollowUp\FollowUpResource;
+use App\Models\Admin\SvSbPivot;
 use App\Models\FollowUp\FollowUp;
 use App\Models\ToDo;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
 
 class FollowUpController extends Controller
@@ -28,12 +30,27 @@ class FollowUpController extends Controller
 
         $selectedDate = request('selectedDate');
 
+        $id = Auth::id();
+        $sv_sb = "";
+        $final = [$id];
+
+        if (SvSbPivot::where('supervisor_id', '=', $id)->exists()) {
+            $sv_sb = SvSbPivot::select('subordinate_id')
+                ->where('supervisor_id', '=', $id)
+                ->pluck('subordinate_id');
+        } else {
+            $sv_sb = ["null"];
+        }
+
+        array_push($final, ...$sv_sb);
+
         $followup = FollowUp::select([
             'follow_ups.*',
             'users.name as user_name',
             'tasks.name as task_name',
             'contacts.name as contact_name',
         ])
+            ->whereIn('follow_ups.user_id', $final) // for view under supervisor and the subordinates
             ->join('contacts', 'follow_ups.contact_id', '=', 'contacts.id')
             ->join('tasks', 'follow_ups.task_id', '=', 'tasks.id')
             ->join('users', 'follow_ups.user_id', '=', 'users.id')
@@ -67,12 +84,28 @@ class FollowUpController extends Controller
         $selectedMonth = request('selectedMonth');
         $selectedYear = request('selectedYear');
 
+        $id = Auth::id();
+        $sv_sb = "";
+        $final = [$id];
+
+        if (SvSbPivot::where('supervisor_id', '=', $id)->exists()) {
+            $sv_sb = SvSbPivot::select('subordinate_id')
+                ->where('supervisor_id', '=', $id)
+                ->pluck('subordinate_id');
+        } else {
+            $sv_sb = ["null"];
+        }
+
+        array_push($final, ...$sv_sb);
+        // ->whereIn('contacts.user_id', $final) // for view under supervisor and the subordinates
+
         $followup = FollowUp::select([
             'follow_ups.*',
             'users.name as user_name',
             'tasks.name as task_name',
             'contacts.name as contact_name',
         ])
+            ->whereIn('follow_ups.user_id', $final) // for view under supervisor and the subordinates
             ->join('contacts', 'follow_ups.contact_id', '=', 'contacts.id')
             ->join('tasks', 'follow_ups.task_id', '=', 'tasks.id')
             ->join('users', 'follow_ups.user_id', '=', 'users.id')
@@ -110,12 +143,28 @@ class FollowUpController extends Controller
         $selectedDateStart = request('selectedDateStart');
         $selectedDateEnd = request('selectedDateEnd');
 
+        $id = Auth::id();
+        $sv_sb = "";
+        $final = [$id];
+
+        if (SvSbPivot::where('supervisor_id', '=', $id)->exists()) {
+            $sv_sb = SvSbPivot::select('subordinate_id')
+                ->where('supervisor_id', '=', $id)
+                ->pluck('subordinate_id');
+        } else {
+            $sv_sb = ["null"];
+        }
+
+        array_push($final, ...$sv_sb);
+
+
         $followup = FollowUp::select([
             'follow_ups.*',
             'users.name as user_name',
             'tasks.name as task_name',
             'contacts.name as contact_name',
         ])
+            ->whereIn('follow_ups.user_id', $final) // for view under supervisor and the subordinates
             ->join('contacts', 'follow_ups.contact_id', '=', 'contacts.id')
             ->join('tasks', 'follow_ups.task_id', '=', 'tasks.id')
             ->join('users', 'follow_ups.user_id', '=', 'users.id')
@@ -156,24 +205,23 @@ class FollowUpController extends Controller
         ]);
 
         $followup = FollowUp::create([
-                'priority_id' => $request->priority_id,
-                'followup_date' => $request->followup_date,
-                'followup_time' => $request->followup_time,
-                'followup_remark' => $request->followup_remark,
-                'contact_id' => $request->contact_id,
-                'user_id' => $request->user_id,
-                'task_id' => $request->task_id,
-                'status_id' => $request->status_id,
-                'type_id' => $request->type_id,
-                'todo_id' => $request->todo_id,
-            ]);
+            'priority_id' => $request->priority_id,
+            'followup_date' => $request->followup_date,
+            'followup_time' => $request->followup_time,
+            'followup_remark' => $request->followup_remark,
+            'contact_id' => $request->contact_id,
+            'user_id' => $request->user_id,
+            'task_id' => $request->task_id,
+            'status_id' => $request->status_id,
+            'type_id' => $request->type_id,
+            'todo_id' => $request->todo_id,
+        ]);
 
         return response()->json([
             'data' => $followup,
             'status' => true,
             'message' => 'Successfully store new follow up time:',
         ]);
-
     }
 
     public function update(Request $request, followup $followup)
@@ -232,14 +280,13 @@ class FollowUpController extends Controller
         ]);
     }
 
-    public function export($followup) 
+    public function export($followup)
     {
         $date = Carbon::now()->format('Y-m-d');
 
-        $folowupsArray = explode(',', $followup );
+        $folowupsArray = explode(',', $followup);
 
-        return Excel::download(new FollowUpExport($folowupsArray), ('Follow Up - '. $date . '.xlsx'));
-
+        return Excel::download(new FollowUpExport($folowupsArray), ('Follow Up - ' . $date . '.xlsx'));
     }
 
     public function selectAll()

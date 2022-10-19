@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Admin\SvSbPivot;
 use App\Models\Contact\ContactCategory;
 use App\Models\Contact\ContactIndustry;
 use App\Models\Contact\ContactStatus;
@@ -13,6 +14,7 @@ use App\Models\Forecast\ForecastType;
 use App\Models\ToDo\Task;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Validation\Rules;
@@ -240,7 +242,6 @@ class AdminController extends Controller
                 'email' => $request->email,
                 'email_password' => $request->email_password,
             ]);
-            
         } else if ($request->user_cat_id) {
             $request->validate([
                 'user_cat_id' => ['required', 'int'],
@@ -276,14 +277,42 @@ class AdminController extends Controller
 
     public function user_cat_remove(User $user)
     {
-            $user->update([
-                'user_cat_id' => null,
-            ]);
+        $user->update([
+            'user_cat_id' => null,
+        ]);
 
         return response()->json([
             'data' => $user,
             'status' => true,
             'message' => 'Successfully remove user from respective category',
+        ]);
+    }
+
+    public function check_supervisor(Request $request)
+    {
+
+        $id = Auth::id(); // Retrieve the currently authenticated user's ID...
+
+
+        // $userArray = [$id];
+
+        $sv_sb = "";
+        $final = [1];
+
+        if (SvSbPivot::where('supervisor_id', '=', 1)->exists()) {
+            $sv_sb = SvSbPivot::select('subordinate_id')
+                ->where('supervisor_id', '=', 1)
+                ->pluck('subordinate_id');
+        } else {
+            $sv_sb = ["null"];
+        }
+
+        array_push($final, ...$sv_sb);
+
+        return response()->json([
+            'data' => $final,
+            'status' => true,
+            'message' => 'This is the subordinate id(s)',
         ]);
     }
 }

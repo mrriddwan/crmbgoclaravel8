@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Api\Billboard;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Billboard\TempboardResource;
+use App\Models\Admin\SvSbPivot;
 use App\Models\Billboard\Tempboard;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class TempboardController extends Controller
 {
@@ -20,6 +22,19 @@ class TempboardController extends Controller
         $selectedUser = request('selectedUser');
         $selectedYear = request('selectedYear');
 
+        $id = Auth::id();
+        $sv_sb = "";
+        $final = [$id];
+
+        if (SvSbPivot::where('supervisor_id', '=', $id)->exists()) {
+            $sv_sb = SvSbPivot::select('subordinate_id')
+                ->where('supervisor_id', '=', $id)
+                ->pluck('subordinate_id');
+        } else {
+            $sv_sb = ["null"];
+        }
+
+        array_push($final, ...$sv_sb);
 
         $tempboard = Tempboard::with([
             'contact' => function ($q) {
@@ -55,6 +70,8 @@ class TempboardController extends Controller
                 // 'contacts.id',
                 // 'contacts.name',
             ])
+            ->whereIn('tempboards.user_id', $final) // for view under supervisor and the subordinates
+
             ->join('users', 'tempboards.user_id', '=', 'users.id')
             ->join('contacts', 'tempboards.contact_id', '=', 'contacts.id')
 
@@ -176,7 +193,7 @@ class TempboardController extends Controller
             // 'tpboard_size2.required' => 'The second dimension is required.',
         ]);
 
-        $tempboard ->update([
+        $tempboard->update([
             'tpboard_entrydate' => $request->tpboard_entrydate,
             'contact_id' => $request->contact_id,
             'user_id' => $request->user_id,
@@ -190,7 +207,7 @@ class TempboardController extends Controller
             'tpboard_installation' => $request->tpboard_installation,
             'tpboard_remark' => $request->tpboard_remark,
 
-            'tpboard_size' => ($request->tpboard_size1 && $request->tpboard_size2 ) ? $request->tpboard_size1 . ' x ' . $request->tpboard_size2 : $request->tpboard_size,
+            'tpboard_size' => ($request->tpboard_size1 && $request->tpboard_size2) ? $request->tpboard_size1 . ' x ' . $request->tpboard_size2 : $request->tpboard_size,
         ]);
 
         return response()->json([
@@ -209,7 +226,8 @@ class TempboardController extends Controller
     public function info(Tempboard $tempboard)
     {
         $tempboard = Tempboard::with(
-            'contact', 'user'
+            'contact',
+            'user'
         )
             ->where('id', $tempboard->id)
             ->get();

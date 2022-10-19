@@ -27,7 +27,7 @@
                     <h4
                         class="text-center text-gray-800 px-8 uppercase w-max font-mono font-extrabold"
                     >
-                        This is the user ID: {{ userID }}
+                        User: {{ userID }}
                     </h4>
                 </div>
 
@@ -621,6 +621,7 @@ export default {
     },
 
     created() {
+        this.getUserID();
         this.getContactStatuses();
         this.getContactCategories();
         this.getContactTypes();
@@ -631,7 +632,7 @@ export default {
 
         this.getForecastProducts();
         this.getForecastTypes();
-        this.getUserID();
+        
     },
 
     methods: {

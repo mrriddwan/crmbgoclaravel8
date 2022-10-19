@@ -6,6 +6,7 @@ use App\Exports\ContactExport;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Contact\ContactRequest;
 use App\Http\Resources\Contact\ContactResource;
+use App\Models\Admin\SvSbPivot;
 use App\Models\Contact\Contact;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -22,7 +23,7 @@ class ContactController extends Controller
 
     public function getuserid(Request $request)
     {
-        $user = Auth::user()->name; // Retrieve the currently authenticated user...
+        $user = Auth::user()->id; // Retrieve the currently authenticated user...
         $id = Auth::id(); // Retrieve the currently authenticated user's ID...
 
 
@@ -42,9 +43,10 @@ class ContactController extends Controller
         return $user;
     }
 
+
     public function index()
     {
-        $id = Auth::id();
+        
 
         $paginate = request('paginate');
         $search_term = request('q', '');
@@ -58,6 +60,22 @@ class ContactController extends Controller
         $selectedType = request('selectedType');
         $selectedIndustry = request('selectedIndustry');
 
+        $id = Auth::id();
+        $sv_sb = "";
+        $final = [$id];
+
+        if (SvSbPivot::where('supervisor_id', '=', $id)->exists()) {
+            $sv_sb = SvSbPivot::select('subordinate_id')
+                ->where('supervisor_id', '=', $id)
+                ->pluck('subordinate_id');
+        } else {
+            $sv_sb = ["null"];
+        }
+
+        array_push($final, ...$sv_sb);
+        // ->whereIn('contacts.user_id', $final) // for view under supervisor and the subordinates
+
+
         $contact = Contact::select([
             'contacts.*',
             'contact_statuses.name as status_name',
@@ -66,8 +84,9 @@ class ContactController extends Controller
             'contact_categories.name as category_name',
             'contact_industries.name as industry_name'
         ])
-            ->where('contacts.user_id', '=', $id)
-
+            // ->where('contacts.user_id', '=', $id) // for view under user only
+            ->whereIn('contacts.user_id', $final) // for view under supervisor and the subordinates
+            // ->whereIn('contacts.user_id', [1])
             ->join('contact_statuses', 'contacts.status_id', '=', 'contact_statuses.id')
             ->join('contact_types', 'contacts.type_id', '=', 'contact_types.id')
             ->join('contact_categories', 'contacts.category_id', '=', 'contact_categories.id')

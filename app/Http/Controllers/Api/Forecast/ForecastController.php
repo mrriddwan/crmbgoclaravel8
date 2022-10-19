@@ -7,6 +7,7 @@ use App\Exports\ForecastExport;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Forecast\ForecastRequest;
 use App\Http\Resources\Forecast\ForecastResource;
+use App\Models\Admin\SvSbPivot;
 use App\Models\Contact\Contact;
 use App\Models\Forecast\Forecast;
 use Carbon\Carbon;
@@ -31,6 +32,21 @@ class ForecastController extends Controller
         $selectedUser = request('selectedUser');
         $filterResult = request('filterResult');
 
+        $id = Auth::id();
+        $sv_sb = "";
+        $final = [$id];
+
+        if (SvSbPivot::where('supervisor_id', '=', $id)->exists()) {
+            $sv_sb = SvSbPivot::select('subordinate_id')
+                ->where('supervisor_id', '=', $id)
+                ->pluck('subordinate_id');
+        } else {
+            $sv_sb = ["null"];
+        }
+
+        array_push($final, ...$sv_sb);
+
+
         $forecast = Forecast::select([
             'forecasts.*',
             'forecast_products.name as product_name',
@@ -39,6 +55,7 @@ class ForecastController extends Controller
             'forecast_results.name as result_name',
             'forecast_types.name as forecast_type_name',
         ])
+            ->whereIn('forecasts.user_id', $final) // for view under supervisor and the subordinates
             ->join('forecast_products', 'forecasts.product_id', '=', 'forecast_products.id')
             ->join('contacts', 'forecasts.contact_id', '=', 'contacts.id')
             ->join('users', 'forecasts.user_id', '=', 'users.id')
@@ -333,7 +350,7 @@ class ForecastController extends Controller
             // ->groupBy('contact_name')
             // ->groupBy('month')
             // ->toArray()
-            ;
+        ;
 
         // $data = Tutorial::where('completed', 0)->get();
         // $groups = $data->groupBy('subj_id');

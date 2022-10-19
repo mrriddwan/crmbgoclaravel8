@@ -45,7 +45,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 /*Admin API*/
 
 /*Admin Database Add/Delete API*/
-Route::middleware('auth')->group(function () {
+
+// Route::middleware('auth')->group(function () {
     Route::post('/admin/create/contact/category', [AdminController::class, 'createContactCategory'])->name('contactCategory:create');
     Route::post('/admin/create/contact/status', [AdminController::class, 'createContactStatus'])->name('contactStatus:create');
     Route::post('/admin/create/contact/type', [AdminController::class, 'createContactType'])->name('contactType:create');
@@ -89,42 +90,47 @@ Route::middleware('auth')->group(function () {
     Route::delete('/admin/supervisors/delete/{supervisor}', [SupervisorController::class, 'delete'])->name('supervisor:delete');
     Route::delete('/admin/supervisors/users/remove/{supervisor}', [SupervisorController::class, 'user_remove'])->name('supervisor:user_remove');
     Route::post('/admin/supervisors/users/add', [SupervisorController::class, 'user_add'])->name('supervisor:user_add');
-});
+
+    Route::get('/admin/checksupervisor', [AdminController::class, 'check_supervisor'])->name('admin:check_supervisor');
+
+// });
+
+
 /*Contact API*/
 
-Route::middleware('auth')->group(function () {
-    Route::get('/contacts/index', [ContactController::class, 'index'])->name('contact:index');
-    Route::get('/contacts/list', [ContactController::class, 'list'])->name('contact:list');
-    Route::post('/contacts/store', [ContactController::class, 'store'])->name('contact:store');
-    Route::get('/contacts/show/{contact}', [ContactController::class, 'show'])->name('contact:show');
-    Route::put('/contacts/update/{contact}', [ContactController::class, 'update'])->name('contact:update');
-    Route::delete('/contacts/delete/{contact}', [ContactController::class, 'delete'])->name('contact:delete');
-    Route::get('/contacts/info/{contact}', [ContactController::class, 'info'])->name('contact:info');
-    Route::get('/contacts/summary', [ContactController::class, 'summary'])->name('contact:summary');
-    Route::get('/contacts/test', [ContactController::class, 'test'])->name('contact:test');
-    Route::get('/contacts/export/{contact}', [ContactController::class, 'export'])->name('contact:export');
-    Route::get('/contacts/all', [ContactController::class, 'selectAll'])->name('contact:selectAll');
-    Route::get('/contacts/exportSummary', [ContactController::class, 'exportSummary'])->name('contact:exportSummary');
-    Route::get('/contacts/todo', [ContactController::class, 'todo'])->name('contact:todo');
-    Route::get('/contacts/history/{contact}', [ContactController::class, 'history'])->name('contact:history');
-    Route::get('/contacts/getuserid', [ContactController::class, 'getuserid'])->name('contact:getuserid');
-});
+// Route::middleware('auth')->group(function () {
+//     Route::get('/contacts/index', [ContactController::class, 'index'])->name('contact:index');
+//     Route::get('/contacts/list', [ContactController::class, 'list'])->name('contact:list');
+//     Route::post('/contacts/store', [ContactController::class, 'store'])->name('contact:store');
+//     Route::get('/contacts/show/{contact}', [ContactController::class, 'show'])->name('contact:show');
+//     Route::put('/contacts/update/{contact}', [ContactController::class, 'update'])->name('contact:update');
+//     Route::delete('/contacts/delete/{contact}', [ContactController::class, 'delete'])->name('contact:delete');
+//     Route::get('/contacts/info/{contact}', [ContactController::class, 'info'])->name('contact:info');
+//     Route::get('/contacts/summary', [ContactController::class, 'summary'])->name('contact:summary');
+//     Route::get('/contacts/test', [ContactController::class, 'test'])->name('contact:test');
+//     Route::get('/contacts/export/{contact}', [ContactController::class, 'export'])->name('contact:export');
+//     Route::get('/contacts/all', [ContactController::class, 'selectAll'])->name('contact:selectAll');
+//     Route::get('/contacts/exportSummary', [ContactController::class, 'exportSummary'])->name('contact:exportSummary');
+//     Route::get('/contacts/todo', [ContactController::class, 'todo'])->name('contact:todo');
+//     Route::get('/contacts/history/{contact}', [ContactController::class, 'history'])->name('contact:history');
+//     Route::get('/contacts/getuserid', [ContactController::class, 'getuserid'])->name('contact:getuserid');
+// });
 
-// Route::get('/contacts/index', [ContactController::class, 'index'])->name('contact:index');
-// Route::get('/contacts/list', [ContactController::class, 'list'])->name('contact:list');
-// Route::post('/contacts/store', [ContactController::class, 'store'])->name('contact:store');
-// Route::get('/contacts/show/{contact}', [ContactController::class, 'show'])->name('contact:show');
-// Route::put('/contacts/update/{contact}', [ContactController::class, 'update'])->name('contact:update');
-// Route::delete('/contacts/delete/{contact}', [ContactController::class, 'delete'])->name('contact:delete');
-// Route::get('/contacts/info/{contact}', [ContactController::class, 'info'])->name('contact:info');
-// Route::get('/contacts/summary', [ContactController::class, 'summary'])->name('contact:summary');
-// Route::get('/contacts/test', [ContactController::class, 'test'])->name('contact:test');
-// Route::get('/contacts/export/{contact}', [ContactController::class, 'export'])->name('contact:export');
-// Route::get('/contacts/all', [ContactController::class, 'selectAll'])->name('contact:selectAll');
-// Route::get('/contacts/exportSummary', [ContactController::class, 'exportSummary'])->name('contact:exportSummary');
-// Route::get('/contacts/todo', [ContactController::class, 'todo'])->name('contact:todo');
-// Route::get('/contacts/history/{contact}', [ContactController::class, 'history'])->name('contact:history');
-// Route::get('/contacts/getuserid', [ContactController::class, 'getuserid'])->name('contact:getuserid');
+Route::get('/contacts/index', [ContactController::class, 'index'])->name('contact:index');
+Route::get('/contacts/list', [ContactController::class, 'list'])->name('contact:list');
+Route::post('/contacts/store', [ContactController::class, 'store'])->name('contact:store');
+Route::get('/contacts/show/{contact}', [ContactController::class, 'show'])->name('contact:show');
+Route::put('/contacts/update/{contact}', [ContactController::class, 'update'])->name('contact:update');
+Route::delete('/contacts/delete/{contact}', [ContactController::class, 'delete'])->name('contact:delete');
+Route::get('/contacts/info/{contact}', [ContactController::class, 'info'])->name('contact:info');
+Route::get('/contacts/summary', [ContactController::class, 'summary'])->name('contact:summary');
+Route::get('/contacts/test', [ContactController::class, 'test'])->name('contact:test');
+Route::get('/contacts/export/{contact}', [ContactController::class, 'export'])->name('contact:export');
+Route::get('/contacts/all', [ContactController::class, 'selectAll'])->name('contact:selectAll');
+Route::get('/contacts/exportSummary', [ContactController::class, 'exportSummary'])->name('contact:exportSummary');
+Route::get('/contacts/todo', [ContactController::class, 'todo'])->name('contact:todo');
+Route::get('/contacts/history/{contact}', [ContactController::class, 'history'])->name('contact:history');
+Route::get('/contacts/getuserid', [ContactController::class, 'getuserid'])->name('contact:getuserid');
 
 
 /*Sub-Contact API*/
