@@ -46,7 +46,7 @@ class ContactController extends Controller
 
     public function index()
     {
-        
+
 
         $paginate = request('paginate');
         $search_term = request('q', '');
@@ -244,6 +244,20 @@ class ContactController extends Controller
         $selectedIndustry = request('selectedIndustry');
         $selectedYear = request('selectedYear');
 
+        $id = Auth::id();
+        $sv_sb = "";
+        $final = [$id];
+
+        if (SvSbPivot::where('supervisor_id', '=', $id)->exists()) {
+            $sv_sb = SvSbPivot::select('subordinate_id')
+                ->where('supervisor_id', '=', $id)
+                ->pluck('subordinate_id');
+        } else {
+            $sv_sb = ["null"];
+        }
+
+        array_push($final, ...$sv_sb);
+
 
         $contact = Contact::with(
             [
@@ -271,6 +285,7 @@ class ContactController extends Controller
                 'contact_industries.name as industry_name',
 
             ])
+            ->whereIn('contacts.user_id', $final) // for view under supervisor and the subordinates
             ->when($selectedStatus, function ($query) use ($selectedStatus) {
                 $query->where('contacts.status_id', $selectedStatus);
             })

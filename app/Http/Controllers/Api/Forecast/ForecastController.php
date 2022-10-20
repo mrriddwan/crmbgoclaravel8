@@ -300,6 +300,20 @@ class ForecastController extends Controller
         $selectedUser = request('selectedUser');
         $selectedYear = request('selectedYear');
 
+        $id = Auth::id();
+        $sv_sb = "";
+        $final = [$id];
+
+        if (SvSbPivot::where('supervisor_id', '=', $id)->exists()) {
+            $sv_sb = SvSbPivot::select('subordinate_id')
+                ->where('supervisor_id', '=', $id)
+                ->pluck('subordinate_id');
+        } else {
+            $sv_sb = ["null"];
+        }
+
+        array_push($final, ...$sv_sb);
+
 
         $forecast = Forecast::select(
             'forecasts.id',
@@ -315,6 +329,7 @@ class ForecastController extends Controller
             DB::raw("DATE_FORMAT(forecasts.forecast_date, '%M-%Y') as month"),
             // DB::raw("MAX(forecasts.forecast_date, '%M %Y') as last"),
         )
+            ->whereIn('forecasts.user_id', $final) // for view under supervisor and the subordinates
             ->join('contacts', 'forecasts.contact_id', '=', 'contacts.id')
             ->join('contact_statuses', 'forecasts.contact_status_id', '=', 'contact_statuses.id')
             ->join('contact_types', 'forecasts.contact_type_id', '=', 'contact_types.id')

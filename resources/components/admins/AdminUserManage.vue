@@ -475,12 +475,13 @@
                                 </p>
                             </span>
                         </div>
-                        <div class="grid grid-cols-4" v-if="selectedSupervisor"
-                        v-for="supervisor in supervisor_users">
+                        <div
+                            class="grid grid-cols-4"
+                            v-if="selectedSupervisor"
+                            v-for="supervisor in supervisor_users"
+                        >
                             <button
-                                @click="
-                                    toggleUserSupervisorAdd(supervisor.id)
-                                "
+                                @click="toggleUserSupervisorAdd(supervisor.id)"
                                 class="border-1 border-black w-max rounded-md bg-green-300 px-2 py-2"
                             >
                                 <UserPlusIcon class="inline h-4 w-4" />
@@ -1109,8 +1110,9 @@ export default {
                             name: this.edit_user.name,
                         }
                     );
-                    (this.errors = ""),
-                        (this.edit_user.name = this.edit_user.name);
+                    this.errors = "";
+                    this.edit_user.name = this.edit_user.name;
+                    this.selectedUser = "";
                     alert("Updated user name.");
                 } else if (value === this.edit_user.password) {
                     await axios.put(
@@ -1120,8 +1122,9 @@ export default {
                             confirm_password: this.edit_user.confirm_password,
                         }
                     );
-                    (this.errors = ""), (this.edit_user.password = "");
+                    this.errors = ""; this.edit_user.password = "";
                     this.edit_user.confirm_password = "";
+                    this.selectedUser = "";
                     alert("Updated password.");
                 } else {
                     await axios.put(
@@ -1131,7 +1134,9 @@ export default {
                             email_password: this.edit_user.email_password,
                         }
                     );
-                    (this.errors = ""), (this.edit_user.email_password = "");
+                    this.errors = "";
+                    this.edit_user.email_password = "";
+                    this.selectedUser = "";
                     alert("Updated user email.");
                 }
 
