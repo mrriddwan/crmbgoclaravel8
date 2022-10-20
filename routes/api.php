@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\PermissionController;
+use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\SupervisorController;
 use App\Http\Controllers\Admin\UserCategoryBenchmarkController;
 use App\Http\Controllers\Admin\UserCategoryController;
@@ -92,6 +94,14 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     Route::post('/admin/supervisors/users/add', [SupervisorController::class, 'user_add'])->name('supervisor:user_add');
 
     Route::get('/admin/checksupervisor', [AdminController::class, 'check_supervisor'])->name('admin:check_supervisor');
+
+    Route::get('/admin/roles/index', [RoleController::class, 'index'])->name('role:index');
+    Route::get('/admin/roles/info/{role}', [RoleController::class, 'info'])->name('role:info');
+    Route::get('/admin/roles/permissions/{role}', [RoleController::class, 'role_permissions'])->name('role:permissions');
+
+    Route::get('/admin/permissions/index', [PermissionController::class, 'index'])->name('permission:index');
+    Route::get('/admin/permissions/info/{permission}', [PermissionController::class, 'info'])->name('permission:info');
+    Route::get('/admin/users/role_permissions', [AdminController::class, 'role_permissions'])->name('admin:role_permissions');
 
 // });
 

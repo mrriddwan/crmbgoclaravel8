@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             SupervisorSeeder::class,
             SV_SB_Seeder::class,
+            RolesAndPermissionSeeder::class,
             Contact_TypeSeeder::class,
             Contact_StatusSeeder::class,
             Contact_CategorySeeder::class,
