@@ -15,7 +15,7 @@ class Supervisor extends Model
     ];
 
     public function users(){
-        return $this->hasMany(SvSbPivot::class, 'supervisor_id')->with('subordinate');
+        return $this->hasMany(SvSbPivot::class, 'supervisor_id', 'user_id')->with('subordinate');
     }
 
 }

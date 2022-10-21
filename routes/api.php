@@ -96,12 +96,23 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     Route::get('/admin/checksupervisor', [AdminController::class, 'check_supervisor'])->name('admin:check_supervisor');
 
     Route::get('/admin/roles/index', [RoleController::class, 'index'])->name('role:index');
+    Route::post('admin/roles/create', [RoleController::class, 'role_create'])->name('role:create');
+    Route::put('admin/roles/update/{role}', [RoleController::class, 'role_update'])->name('role:update');
+    Route::delete('admin/roles/delete/{role}', [RoleController::class, 'role_delete'])->name('role:delete');
     Route::get('/admin/roles/info/{role}', [RoleController::class, 'info'])->name('role:info');
-    Route::get('/admin/roles/permissions/{role}', [RoleController::class, 'role_permissions'])->name('role:permissions');
+    Route::get('/admin/roles/permissions', [RoleController::class, 'role_permissions'])->name('role:permissions');
+    Route::post('/admin/roles/add/permission/{role}', [RoleController::class, 'add_permission'])->name('role:add_permission');
+    // Route::delete('/admin/roles/remove/permission/{role}', [RoleController::class, 'remove_permission'])->name('role:remove_permission');
+    Route::delete('/admin/roles/remove/permission/{permission}', [RoleController::class, 'remove_permission'])->name('role:remove_permission');
+
 
     Route::get('/admin/permissions/index', [PermissionController::class, 'index'])->name('permission:index');
+    Route::post('admin/permissions/create', [PermissionController::class, 'permission_create'])->name('permission:create');
+    Route::delete('admin/permissions/delete/{permission}', [PermissionController::class, 'permission_delete'])->name('permission:delete');
+    Route::put('admin/permissions/update/{permission}', [PermissionController::class, 'permission_update'])->name('permission:update');
     Route::get('/admin/permissions/info/{permission}', [PermissionController::class, 'info'])->name('permission:info');
-    Route::get('/admin/users/role_permissions', [AdminController::class, 'role_permissions'])->name('admin:role_permissions');
+
+    Route::get('/admin/users/role_permissions', [AdminController::class, 'user_role_permissions'])->name('admin:user_role_permissions');
 
 // });
 

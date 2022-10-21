@@ -315,4 +315,28 @@ class AdminController extends Controller
             'message' => 'This is the subordinate id(s)',
         ]);
     }
+
+    public function user_role_permissions()
+    {
+        $summary = User::with([
+            'roles' => function ($q) {
+                $q->select('id', 'name');
+            },
+            'roles.permissions' => function ($q) {
+                $q->select('id', 'name');
+            },
+            'permissions'
+        ])
+            // ->join('')
+            // ->join('roles', 'roles.id', '=', 'model_has_roles.role_id')
+            ->select('users.id', 'users.name',)
+            ->get();
+
+        return response()->json([
+
+            'status' => true,
+            'message' => 'User-Role-Permissions attained',
+            'data' => $summary,
+        ]);
+    }
 }

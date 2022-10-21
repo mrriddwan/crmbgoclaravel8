@@ -44,7 +44,7 @@
                             >
                                 <UserPlusIcon class="inline h-6 w-6" />
                                 <p class="inline uppercase font-bold h-1">
-                                    Roles
+                                    Role
                                 </p>
                             </span>
                         </div>
@@ -106,7 +106,7 @@
                             >
                                 <ListBulletIcon class="inline h-6 w-6" />
                                 <p class="inline uppercase font-bold h-1">
-                                    Roles
+                                    Role
                                 </p>
                             </span>
                         </div>
@@ -142,7 +142,7 @@
                                 >
                                     <PencilSquareIcon class="inline h-6 w-6" />
                                     <p class="inline uppercase font-bold h-1">
-                                        Permissions
+                                        Role
                                     </p>
                                 </span>
                             </div>
@@ -180,14 +180,14 @@
                             class="container w-max h-max text-center align-middle my-2"
                         >
                             <button
-                                @click="updateItem(edit_role.name)"
+                                @click="updateItem(edit_role)"
                                 class="border-1 border-black w-max rounded-md bg-blue-300 px-2"
                             >
                                 <LockClosedIcon class="inline h-4 w-4" />
                                 <p
                                     class="inline uppercase font-bold text-sm h-1"
                                 >
-                                    Roles
+                                    Role
                                 </p>
                             </button>
                         </div>
@@ -245,7 +245,7 @@
                 </div>
             </div>
 
-            <AdminSupervisorUserAssign
+            <AdminPermissionAddViaRole
                 v-if="rolePermissionAddVisbility"
                 @toggle-modal="toggleRolePermissionAdd(role_id)"
                 :role_id="rolePermissionAdd"
@@ -277,7 +277,7 @@
                                 <th class="text-center align-middle">
                                     <button
                                         @click="
-                                            toggleUserAddCategoryModal(role.id)
+                                            toggleRolePermissionAdd(role.id)
                                         "
                                         class="border-1 border-black w-max rounded-md bg-green-300 px-2 py-2"
                                     >
@@ -287,21 +287,21 @@
                             </thead>
 
                             <tbody
-                                v-if="role.permission.length !== 0"
-                                v-for="permission_info in role.permission"
-                                :key="permission_info.id"
+                                v-if="role.permissions.length !== 0"
+                                v-for="permission in role.permissions"
+                                :key="permission.id"
                             >
-                                <tr class="">
+                                <tr class="text-xs">
                                     <td
                                         class="w-max text-center align-middle px-2 py-2"
                                     >
-                                        {{ permission_info.name }}
+                                        {{ permission.name }}
                                     </td>
                                     <td class="w-max text-center">
                                         <button
                                             @click="
-                                                removeUserFromCategory(
-                                                    permission_info.id
+                                                removePermissionFromRole(
+                                                    role.id, permission.name
                                                 )
                                             "
                                             class="align-middle border-1 border-black w-max rounded-md bg-red-300 px-2"
@@ -323,7 +323,7 @@
 
                 <!-- Permissions section-->
                 <div
-                    class="bg-blue-200 px-2 py-1 rounded-md flex w-full justify-center items-center row"
+                    class="bg-blue-200 px-2 py-1 rounded-md flex w-full justify-center items-center row my-3"
                 >
                     <h2
                         class="text-center text-gray-800 px-8 uppercase w-max font-mono font-extrabold"
@@ -331,6 +331,7 @@
                         Permissions
                     </h2>
                 </div>
+                <!-- permission errors -->
                 <div v-if="permission_errors">
                     <div v-for="(v, k) in permission_errors" :key="k">
                         <p
@@ -403,6 +404,8 @@
                                 </button>
                             </div>
                         </div>
+
+                        <!-- Select Permission-->
                         <div class="grid grid-cols-1 mt-1">
                             <div
                                 class="container h-max align-middle my-2 text-lg uppercase font-mono text-center"
@@ -416,8 +419,6 @@
                                     </p>
                                 </span>
                             </div>
-
-                            <!-- Select Permission-->
                             <div class="text-center">
                                 <select
                                     class="text-center w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
@@ -493,7 +494,7 @@
                                 class="container w-max h-max text-center align-middle my-2"
                             >
                                 <button
-                                    @click="updateItem(edit_permission.name)"
+                                    @click="updateItem(edit_permission)"
                                     class="border-1 border-black w-max rounded-md bg-blue-300 px-2"
                                 >
                                     <LockClosedIcon class="inline h-4 w-4" />
@@ -556,6 +557,8 @@
                             </div>
                         </div>
                     </div>
+
+                    <!-- Permission List -->
                     <div class="container items-center text-center">
                         <table class="w-full table-bordered">
                             <thead class="bg-slate-400">
@@ -565,7 +568,7 @@
                             <tbody>
                                 <tr v-for="permission in permissions">
                                     <td>{{ permission.name }}</td>
-                                    <td>Permission description</td>
+                                    <td>{{ permission.description }}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -579,7 +582,7 @@
             />
             -->
 
-            <!-- User List-->
+            <!-- User Role Permission List-->
             <div class="my-4">
                 <div
                     class="bg-cyan-200 px-2 py-1 rounded-md flex w-full justify-center items-center row"
@@ -616,33 +619,85 @@
                         <thead class="bg-slate-400">
                             <th>User</th>
                             <th>Role</th>
-                            <th>Permission</th>
+                            <th>Permissions Via Roles</th>
+                            <th>Direct Permissions</th>
                         </thead>
                         <tbody>
                             <tr
                                 v-for="user in user_role_permissions"
                                 :key="user.id"
+                                class="py-3"
                             >
-                                <td>{{ user.name }}</td>
-                                <td>{{ user.role }}</td>
-                                <td
-                                    v-for="permission in user.permissions"
-                                    :key="permission.id"
-                                >
-                                    <span>{{ permission.name }}</span>
-                                    <span>User permission</span>
-                                    <span>User permission</span>
+                                <td class="text-xs">{{ user.name }}</td>
+                                <td class="text-xs">
+                                    <div
+                                        v-for="role in user.roles"
+                                        :key="role.id"
+                                        class="px-1 py-1 bg-green-300 rounded-md w-max flex"
+                                    >
+                                        {{ role.name }}
+                                        <div class="w-max text-center mx-2">
+                                            <button
+                                                @click="
+                                                    removeUserFromCategory(
+                                                        role.id
+                                                    )
+                                                "
+                                                class="align-middle border-1 border-black w-max rounded-md bg-yellow-300 px-2"
+                                            >
+                                                <PencilIcon
+                                                    class="inline h-4 w-4"
+                                                />
+                                            </button>
+                                        </div>
+                                    </div>
+                                </td>
+
+                                <!-- Via Role - Permission -->
+                                <td class="text-xs w-max">
+                                    <div
+                                        v-for="role in user.roles"
+                                        :key="role.id"
+                                        class="grid grid-cols-3 gap-2 py-2 px-1"
+                                    >
+                                        <div
+                                            v-for="permission in role.permissions"
+                                            :key="permission.id"
+                                            class="px-1 py-1 bg-purple-400 rounded-md w-max flex"
+                                        >
+                                            {{ permission.name }}
+                                        </div>
+                                    </div>
+                                </td>
+
+                                <!-- Direct Permission -->
+                                <td>
+                                    <div
+                                        v-for="permission in user.permissions"
+                                        :key="permission.id"
+                                        class="px-1 py-1 bg-cyan-400 rounded-md w-max flex"
+                                    >
+                                        {{ permission.name }}
+                                        <div class="w-max text-center mx-2">
+                                            <button
+                                                @click="
+                                                    removeUserFromCategory(
+                                                        permission.id
+                                                    )
+                                                "
+                                                class="align-middle border-1 border-black w-max rounded-md bg-red-300 px-2"
+                                            >
+                                                <TrashIcon
+                                                    class="inline h-4 w-4"
+                                                />
+                                            </button>
+                                        </div>
+                                    </div>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
-
-                <AdminUserCategoryBenchmark
-                    v-if="userPermissionAddVisbility"
-                    @toggle-modal="toggleUserPermissionAdd(user_id)"
-                    :user_id="userPermissionAdd"
-                />
             </div>
         </div>
     </div>
@@ -650,9 +705,7 @@
 
 <script>
 import moment from "moment";
-import AdminUserCategoryAssign from "../admins/AdminUserCategoryAssign.vue";
-import AdminUserCategoryBenchmark from "./AdminUserCategoryBenchmark.vue";
-import AdminSupervisorUserAssign from "./AdminSupervisorUserAssign.vue";
+import AdminPermissionAddViaRole from "../admins/AdminPermissionAddViaRole.vue";
 
 import {
     PencilSquareIcon,
@@ -681,9 +734,7 @@ export default {
         UserPlusIcon,
         ListBulletIcon,
         PencilIcon,
-        AdminUserCategoryAssign,
-        AdminUserCategoryBenchmark,
-        AdminSupervisorUserAssign,
+        AdminPermissionAddViaRole,
     },
 
     data() {
@@ -738,6 +789,7 @@ export default {
         this.getUsers();
         this.getRoles();
         this.getPermissions();
+        this.getRolePermissions();
         this.getUserRolePermissions();
     },
 
@@ -759,7 +811,7 @@ export default {
         toggleRolePermissionAdd(role_id) {
             this.rolePermissionAdd = role_id;
             this.rolePermissionAddVisbility = !this.rolePermissionAddVisbility;
-            this.getRoles();
+            this.getRolePermissions();
         },
         toggleUserPermissionAdd(user_id) {
             this.userPermissionAdd = user_id;
@@ -769,13 +821,15 @@ export default {
 
         async createItem(value) {
             try {
-                if (value === this.new_role.name) {
+                if (value === this.new_role) {
                     await axios.post("/api/admin/roles/create", {
                         name: this.new_role.name,
                         description: this.new_role.description,
                     });
                     this.role_errors = "";
                     this.new_role = "";
+                    this.getRoles();
+                    this.getRolePermissions();
                     alert("Created new role.");
                 } else {
                     await axios.post("/api/admin/permissions/create", {
@@ -784,12 +838,13 @@ export default {
                     });
                     this.permission_errors = "";
                     this.new_permission = "";
+                    this.getPermissions();
                     alert("Created new permission.");
                 }
             } catch (e) {
                 {
                     if (e.response.status === 422) {
-                        this.errors = e.response.data.errors;
+                        this.role_errors = e.response.data.errors;
                     }
                 }
             }
@@ -797,7 +852,7 @@ export default {
 
         async updateItem(value) {
             try {
-                if (value === this.edit_role.name) {
+                if (value === this.edit_role) {
                     await axios.put(
                         "/api/admin/roles/update/" + this.selectedRole,
                         {
@@ -806,8 +861,11 @@ export default {
                         }
                     );
                     this.role_errors = "";
+                    this.selectedRole = "";
                     this.edit_role.name = "";
                     this.edit_role.description = "";
+                    this.getRoles();
+                    this.getRolePermissions();
                     alert("Updated selected role.");
                 } else {
                     await axios.put(
@@ -819,8 +877,11 @@ export default {
                         }
                     );
                     this.permission_errors = "";
+                    this.selectedPermission = "";
                     this.edit_permission.name = "";
                     this.edit_permission.description = "";
+                    this.getPermissions();
+                    this.getRolePermissions();
                     alert("Updated selected permission.");
                 }
             } catch (e) {
@@ -842,14 +903,16 @@ export default {
                     );
                     this.deleteRole = "";
                     this.getRoles();
+                    this.getRolePermissions();
                     alert("Role deleted.");
                 } else {
                     await axios.delete(
                         "/api/admin/permissions/delete/" + this.deletePermission
                     );
                     this.deletePermission = "";
-                    alert("Permission deleted.");
                     this.getPermissions();
+                    this.getRolePermissions();
+                    alert("Permission deleted.");
                 }
             }
         },
@@ -909,7 +972,7 @@ export default {
                 });
         },
 
-        async getRolePermissions(){
+        async getRolePermissions() {
             await axios
                 .get("/api/admin/roles/permissions")
                 .then((res) => {
@@ -931,7 +994,23 @@ export default {
                 });
         },
 
-        async removeRole(user_id) {
+        async removePermissionFromRole(role_id, permission_name) {
+            if (!window.confirm("Are you sure?")) {
+                return;
+            } else {
+                await axios.delete(
+                    "/api/admin/roles/remove/permission/" + role_id,
+                    { 
+                        role_id: role_id,
+                        permission_name: permission_name,
+                     }
+                );
+                this.getRolePermissions();
+                alert("Permission removed from selected Role.");
+            }
+        },
+
+        async removeRoleFromUser(user_id) {
             try {
                 if (!window.confirm("Are you sure?")) {
                     return;
@@ -949,7 +1028,7 @@ export default {
             }
         },
 
-        async removePermission(user_id) {
+        async removePermissionFromUser(user_id) {
             try {
                 if (!window.confirm("Are you sure?")) {
                     return;

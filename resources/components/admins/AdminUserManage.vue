@@ -482,7 +482,7 @@
                             v-for="supervisor in supervisor_users"
                         >
                             <button
-                                @click="toggleUserSupervisorAdd(supervisor.id)"
+                                @click="toggleUserSupervisorAdd(supervisor.user_id)"
                                 class="border-1 border-black w-max rounded-md bg-green-300 px-2 py-2"
                             >
                                 <UserPlusIcon class="inline h-4 w-4" />

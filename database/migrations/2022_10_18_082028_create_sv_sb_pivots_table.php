@@ -16,7 +16,7 @@ class CreateSvSbPivotsTable extends Migration
         Schema::create('sv_sb_pivots', function (Blueprint $table) {
             $table->id();
             $table->foreignId('supervisor_id')
-                ->references('id')
+                ->references('user_id')
                 ->on('supervisors')
                 ->nullable()
                 ->constrained()

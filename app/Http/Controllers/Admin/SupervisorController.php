@@ -29,7 +29,7 @@ class SupervisorController extends Controller
                 $q->select('id', 'name');
             },
         ])
-            ->select('supervisors.id', 'supervisors.sv_name')
+            ->select('supervisors.id', 'supervisors.sv_name', 'supervisors.user_id')
             // ->join('users', 'sv_sb_pivots.subordinate_id' , '=', 'users.id')
             ->where('supervisors.id', $id)
             ->get();

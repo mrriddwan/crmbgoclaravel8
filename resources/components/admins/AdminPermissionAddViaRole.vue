@@ -34,35 +34,46 @@
                     </div>
                     <form
                         class="px-6 pb-4 space-y-6 lg:px-8 sm:pb-6 xl:pb-8"
-                        @submit.prevent="addUserForSupervisor(selectedUser)"
+                        @submit.prevent="addPermissionToRole(selectedPermission)"
                     >
                         <h3
                             class="text-xl font-medium text-slate-900 uppercase"
                         >
-                            Add New User
+                            Add Permission
                         </h3>
+                        <div v-if="errors">
+                            <div v-for="(v, k) in errors" :key="k">
+                                <p
+                                    v-for="error in v"
+                                    :key="error"
+                                    class="text-xs text-red-500 rounded font-bold mb-1 shadow-lg py-2 px-4 pr-0 w-max"
+                                >
+                                    {{ error }}
+                                </p>
+                            </div>
+                        </div>
                         <div>
                             <label
                                 for="name"
-                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-                                >User</label
+                                class="block mb-2 text-sm font-medium text-slate-900 dark:text-slate-400"
+                                >Permission</label
                             >
                             <div class="form-group">
                                 <select
                                     class="text-center w-fullrounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                                    @change="getUsers"
-                                    v-model="selectedUser"
+                                    @change="getPermissions"
+                                    v-model="selectedPermission"
                                 >
                                     <option disabled value="">
-                                        Please select user
+                                        Please select a permission
                                     </option>
 
                                     <option
-                                        v-for="user in users"
-                                        :key="user.id"
-                                        :value="user.id"
+                                        v-for="permission in permissions"
+                                        :key="permission.id"
+                                        :value="permission.name"
                                     >
-                                        {{ user.name }}
+                                        {{ permission.name }}
                                     </option>
                                 </select>
                             </div>
@@ -82,43 +93,38 @@
 
 <script>
 export default {
-    props: [
-        'sv_id'
-    ],
+    props: ["role_id"],
 
-    created(){
-        console.log("this is the supervisor id:" + this.$props.sv_id)
+    created() {
+        console.log("This is the role_id: " + this.$props.role_id);
     },
 
     data() {
         return {
-            users: [],
-            selectedUser: "",
+            permissions: [],
+            selectedPermission: "",
+            errors: "",
         };
     },
 
     mounted() {
-        this.getUsers();
+        this.getPermissions();
     },
 
     methods: {
         closeModal() {
-            this.getSupervisorUser(this.$props.sv_id);
+            this.getRolePermissions();
             this.$emit("toggle-modal");
         },
 
-        async addUserForSupervisor(sv_id) {
+        async addPermissionToRole() {
             try {
-                await axios.post(
-                    "/api/admin/supervisors/users/add",
-                    {
-                        supervisor_id: this.$props.sv_id,
-                        subordinate_id: this.selectedUser,
-                    }
-                )      
-                ;
-                this.getSupervisorUser(sv_id);
-                alert("Added new user for chosen supervisor.");
+                await axios.post("/api/admin/roles/add/permission/" + this.$props.role_id, {
+                    role_id: this.$props.role_id,
+                    permission_name: this.selectedPermission,
+                });
+                this.getRolePermissions();
+                alert("Added permission in selected Role.");
             } catch (e) {
                 {
                     if (e.response.status === 422) {
@@ -128,22 +134,22 @@ export default {
             }
         },
 
-        async getSupervisorUser(sv_id) {
+        async getPermissions() {
             await axios
-                .get("/api/admin/supervisors/users/" + sv_id)
+                .get("/api/admin/permissions/index")
                 .then((res) => {
-                    this.supervisor_users = res.data.data[0];
+                    this.permissions = res.data.data;
                 })
                 .catch((error) => {
                     console.log(error);
                 });
         },
 
-        async getUsers() {
+        async getRolePermissions() {
             await axios
-                .get("/api/users/index")
+                .get("/api/admin/roles/permissions")
                 .then((res) => {
-                    this.users = res.data.data;
+                    this.role_permissions = res.data.data;
                 })
                 .catch((error) => {
                     console.log(error);
