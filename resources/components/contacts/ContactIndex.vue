@@ -16,7 +16,10 @@
                 >
             </div>
 
-            <div class="py-2 ml-3 inline-block">
+            <div
+                class="py-2 ml-3 inline-block"
+                v-if="can('view contact summary') || is('super-admin')"
+            >
                 <router-link
                     to="/contact/summary"
                     class="inline-block items-center px-2 py-1 bg-slate-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
@@ -37,7 +40,11 @@
                             <ArrowTopRightOnSquareIcon
                                 class="h-5 w-5 mr-1 inline-block"
                             />
-                            <p class="inline-block text-black uppercase font-extrabold">Export</p>
+                            <p
+                                class="inline-block text-black uppercase font-extrabold"
+                            >
+                                Export
+                            </p>
                         </button>
                     </a>
 
@@ -137,7 +144,6 @@
                                 <div class="text-sm text-center h-6 w-max">
                                     <a
                                         href="#"
-                                        
                                         @click.prevent="
                                             change_sort('created_at')
                                         "
@@ -215,6 +221,9 @@
                                     </a>
                                 </div>
                                 <div
+                                    v-if="
+                                        is('admin | supervisor | super-admin')
+                                    "
                                     class="items-center text-xs text-center h-6 w-24"
                                 >
                                     <select
@@ -299,7 +308,7 @@
                                         "
                                         class="text-white"
                                     >
-                                    Type
+                                        Type
                                         <span
                                             v-if="
                                                 (!(sort_direction == 'asc') ||
@@ -351,10 +360,12 @@
                                 <div class="text-sm text-center h-6">
                                     <a
                                         href="#"
-                                        @click.prevent="change_sort('industry_name')"
+                                        @click.prevent="
+                                            change_sort('industry_name')
+                                        "
                                         class="text-white"
                                     >
-                                    Industry
+                                        Industry
                                         <span
                                             v-if="
                                                 (!(sort_direction == 'asc') ||
@@ -625,32 +636,53 @@
                             <td class="text-xs">{{ contact.address }}</td>
                             <td class="text-xs">{{ contact.remark }}</td>
                             <td class="text-xs">
-                                <router-link
-                                    :to="{
-                                        name: 'todo_insert',
-                                        params: { id: contact.id },
-                                    }"
-                                    class="mr-2 mb-2 inline-flex items-center px-2 py-1 bg-green-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
+                                <div
+                                    v-if="
+                                        can('insert todo') || is('super-admin')
+                                    "
                                 >
-                                    <PlusIcon class="h-5 w-5 mr-1" /> To
-                                    Do</router-link
-                                >
+                                    <router-link
+                                        :to="{
+                                            name: 'todo_insert',
+                                            params: { id: contact.id },
+                                        }"
+                                        class="mr-2 mb-2 inline-flex items-center px-2 py-1 bg-green-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
+                                    >
+                                        <PlusIcon class="h-5 w-5 mr-1" /> To
+                                        Do</router-link
+                                    >
+                                </div>
+
                                 <br />
-                                <router-link
-                                    :to="{
-                                        name: 'contacts_edit',
-                                        params: { id: contact.id },
-                                    }"
-                                    class="mr-2 mb-2 inline-flex items-center px-2 py-1 bg-yellow-400 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
+                                <div
+                                    v-if="
+                                        can('edit contact') || is('super-admin')
+                                    "
                                 >
-                                    <PencilSquareIcon class="h-3 w-3"
-                                /></router-link>
-                                <button
-                                    class="mr-2 mb-2 inline-flex items-center px-2 py-1 bg-red-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
-                                    @click="deletecontact(contact.id)"
+                                    <router-link
+                                        :to="{
+                                            name: 'contacts_edit',
+                                            params: { id: contact.id },
+                                        }"
+                                        class="mr-2 mb-2 inline-flex items-center px-2 py-1 bg-yellow-400 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
+                                    >
+                                        <PencilSquareIcon class="h-3 w-3"
+                                    /></router-link>
+                                </div>
+
+                                <div
+                                    v-if="
+                                        can('delete contact') ||
+                                        is('super-admin')
+                                    "
                                 >
-                                    <TrashIcon class="h-3 w-3" />
-                                </button>
+                                    <button
+                                        class="mr-2 mb-2 inline-flex items-center px-2 py-1 bg-red-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
+                                        @click="deletecontact(contact.id)"
+                                    >
+                                        <TrashIcon class="h-3 w-3" />
+                                    </button>
+                                </div>
                             </td>
                         </tr>
                     </tbody>

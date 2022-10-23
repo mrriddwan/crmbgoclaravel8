@@ -106,11 +106,20 @@
                                         class="grid grid-cols-3 gap-2 py-2 px-1"
                                     >
                                         <div
-                                            v-for="permission in role.permissions"
+                                            v-for="(
+                                                permission, index
+                                            ) in role.permissions"
                                             :key="permission.id"
-                                            class="px-1 py-1 bg-purple-400 rounded-md w-max flex"
+                                            class="flex"
                                         >
-                                            {{ permission.name }}
+                                            <span
+                                                class="px-1 py-1 bg-blue-200 rounded-md w-max flex"
+                                                >{{ index + 1 }}</span
+                                            >
+                                            <span
+                                                class="px-1 py-1 bg-purple-300 rounded-md w-max flex"
+                                                >{{ permission.name }}</span
+                                            >
                                         </div>
                                     </div>
                                 </td>
@@ -171,6 +180,7 @@
                 </div>
 
                 <div class="grid grid-cols-4 gap-10">
+                    <!-- Create Roles-->
                     <div class="grid grid-cols-1 mt-2">
                         <div
                             class="container h-max align-middle my-2 text-lg uppercase font-mono text-center"
@@ -185,7 +195,6 @@
                             </span>
                         </div>
 
-                        <!-- Create Roles-->
                         <div class="grid grid-cols-2 py-1">
                             <div>
                                 <label>Name</label>
@@ -328,54 +337,55 @@
                             </button>
                         </div>
                     </div>
-
-                    <!-- Remove Roles-->
-                    <div class="grid grid-cols-1 mt-1">
-                        <div
-                            class="container h-max align-middle my-2 text-lg uppercase font-mono text-center"
-                        >
-                            <span
-                                class="bg-slate-300 w-max py-2 px-2 rounded-md"
+                    <div v-if="is('super-admin')">
+                        <!-- Remove Roles-->
+                        <div class="grid grid-cols-1 mt-1">
+                            <div
+                                class="container h-max align-middle my-2 text-lg uppercase font-mono text-center"
                             >
-                                <TrashIcon class="inline h-6 w-6" />
-                                <p class="inline uppercase font-bold h-1">
-                                    Role
-                                </p>
-                            </span>
-                        </div>
-                        <div class="text-center">
-                            <select
-                                class="text-center w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                                @change="getRoles"
-                                v-model="deleteRole"
-                            >
-                                <option disabled value="">
-                                    Please select a role
-                                </option>
-
-                                <option
-                                    v-for="role in roles"
-                                    :key="role.id"
-                                    :value="role.id"
+                                <span
+                                    class="bg-slate-300 w-max py-2 px-2 rounded-md"
                                 >
-                                    {{ role.name }}
-                                </option>
-                            </select>
-                        </div>
-                        <div
-                            class="container w-max h-max text-center align-middle my-2"
-                        >
-                            <button
-                                @click="deleteItem(deleteRole)"
-                                class="border-1 border-black w-max rounded-md bg-red-300 px-2"
-                            >
-                                <TrashIcon class="inline h-4 w-4" />
-                                <p
-                                    class="inline uppercase font-bold text-sm h-1"
+                                    <TrashIcon class="inline h-6 w-6" />
+                                    <p class="inline uppercase font-bold h-1">
+                                        Role
+                                    </p>
+                                </span>
+                            </div>
+                            <div class="text-center">
+                                <select
+                                    class="text-center w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                    @change="getRoles"
+                                    v-model="deleteRole"
                                 >
-                                    Roles
-                                </p>
-                            </button>
+                                    <option disabled value="">
+                                        Please select a role
+                                    </option>
+
+                                    <option
+                                        v-for="role in roles"
+                                        :key="role.id"
+                                        :value="role.id"
+                                    >
+                                        {{ role.name }}
+                                    </option>
+                                </select>
+                            </div>
+                            <div
+                                class="container w-max h-max text-center align-middle my-2"
+                            >
+                                <button
+                                    @click="deleteItem(deleteRole)"
+                                    class="border-1 border-black w-max rounded-md bg-red-300 px-2"
+                                >
+                                    <TrashIcon class="inline h-4 w-4" />
+                                    <p
+                                        class="inline uppercase font-bold text-sm h-1"
+                                    >
+                                        Roles
+                                    </p>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -413,6 +423,9 @@
                             class="table-auto table-bordered text-center"
                         >
                             <thead class="bg-slate-500 border-b px-2 py-2">
+                                <th
+                                    class="text-amber-200 uppercase text-xs"
+                                ></th>
                                 <th class="text-amber-200 uppercase text-xs">
                                     {{ role.name }}
                                 </th>
@@ -430,10 +443,15 @@
 
                             <tbody
                                 v-if="role.permissions.length !== 0"
-                                v-for="permission in role.permissions"
+                                v-for="(permission, index) in role.permissions"
                                 :key="permission.id"
                             >
                                 <tr class="text-xs">
+                                    <td
+                                        class="w-max text-center align-middle px-2 py-2"
+                                    >
+                                        {{ index + 1 }}
+                                    </td>
                                     <td
                                         class="w-max text-center align-middle px-2 py-2"
                                     >
@@ -474,6 +492,7 @@
                         Permissions
                     </h2>
                 </div>
+
                 <!-- permission errors -->
                 <div v-if="permission_errors">
                     <div v-for="(v, k) in permission_errors" :key="k">
@@ -488,66 +507,73 @@
                 </div>
                 <div class="grid grid-cols-1">
                     <div class="grid grid-cols-4 gap-10">
-                        <!-- Create Permission -->
-                        <div class="grid grid-cols-1 mt-2">
-                            <div
-                                class="container h-max align-middle my-1 text-lg uppercase font-mono text-center"
-                            >
-                                <span
-                                    class="bg-slate-300 w-max py-2 px-2 rounded-md"
+                        <div v-if="is('super-admin')">
+                            <!-- Create Permission -->
+                            <div class="grid grid-cols-1 mt-2">
+                                <div
+                                    class="container h-max align-middle my-1 text-lg uppercase font-mono text-center"
                                 >
-                                    <UserPlusIcon class="inline h-6 w-6" />
-                                    <p class="inline uppercase font-bold h-1">
-                                        Permission
-                                    </p>
-                                </span>
-                            </div>
-                            <div class="grid grid-cols-2 py-1">
-                                <div>
-                                    <label>Name</label>
+                                    <span
+                                        class="bg-slate-300 w-max py-2 px-2 rounded-md"
+                                    >
+                                        <UserPlusIcon class="inline h-6 w-6" />
+                                        <p
+                                            class="inline uppercase font-bold h-1"
+                                        >
+                                            Permission
+                                        </p>
+                                    </span>
                                 </div>
-                                <div>
+                                <div class="grid grid-cols-2 py-1">
+                                    <div>
+                                        <label>Name</label>
+                                    </div>
+                                    <div>
+                                        <div class="form-group">
+                                            <div class="form-group">
+                                                <input
+                                                    v-model="
+                                                        new_permission.name
+                                                    "
+                                                    type="text"
+                                                    class="block mt-1 w-full text-center rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label>Description</label>
+                                    </div>
+
                                     <div class="form-group">
                                         <div class="form-group">
                                             <input
-                                                v-model="new_permission.name"
+                                                v-model="
+                                                    new_permission.description
+                                                "
                                                 type="text"
                                                 class="block mt-1 w-full text-center rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                                             />
                                         </div>
                                     </div>
                                 </div>
-                                <div>
-                                    <label>Description</label>
-                                </div>
-
-                                <div class="form-group">
-                                    <div class="form-group">
-                                        <input
-                                            v-model="new_permission.description"
-                                            type="text"
-                                            class="block mt-1 w-full text-center rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                                        />
-                                    </div>
-                                </div>
-                            </div>
-                            <div
-                                class="container w-max h-max text-center align-middle my-2"
-                            >
-                                <button
-                                    @click="createItem(new_permission)"
-                                    class="border-1 border-black w-max rounded-md bg-green-300 px-2"
+                                <div
+                                    class="container w-max h-max text-center align-middle my-2"
                                 >
-                                    <PlusIcon class="inline h-4 w-4" />
-                                    <p
-                                        class="inline uppercase font-bold text-sm h-1"
+                                    <button
+                                        @click="createItem(new_permission)"
+                                        class="border-1 border-black w-max rounded-md bg-green-300 px-2"
                                     >
-                                        Permission
-                                    </p>
-                                </button>
+                                        <PlusIcon class="inline h-4 w-4" />
+                                        <p
+                                            class="inline uppercase font-bold text-sm h-1"
+                                        >
+                                            Permission
+                                        </p>
+                                    </button>
+                                </div>
                             </div>
                         </div>
-
                         <!-- Select Permission-->
                         <div class="grid grid-cols-1 mt-1">
                             <div
@@ -601,23 +627,30 @@
                                     </p>
                                 </span>
                             </div>
+
                             <div class="grid grid-cols-2 py-1">
-                                <div>
-                                    <label>Name</label>
-                                </div>
-                                <div>
-                                    <div class="form-group">
+                                <div v-if="is('super-admin')">
+                                    <div>
+                                        <label>Name</label>
+                                    </div>
+                                    <div>
                                         <div class="form-group">
-                                            <input
-                                                v-model="edit_permission.name"
-                                                type="text"
-                                                class="block mt-1 w-full text-center rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                                            />
+                                            <div class="form-group">
+                                                <input
+                                                    v-model="
+                                                        edit_permission.name
+                                                    "
+                                                    type="text"
+                                                    class="block mt-1 w-full text-center rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                                />
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div>
-                                    <label>Description</label>
+                                <div class="container align-middle text-center">
+                                    <div>
+                                        <label class="pt-2">Description</label>
+                                    </div>
                                 </div>
 
                                 <div class="form-group">
@@ -650,53 +683,57 @@
                             </div>
                         </div>
 
-                        <!-- Remove  Permission -->
-                        <div class="grid grid-cols-1 mt-1">
-                            <div
-                                class="container h-max align-middle my-2 text-lg uppercase font-mono text-center"
-                            >
-                                <span
-                                    class="bg-slate-300 w-max py-2 px-2 rounded-md"
+                        <div v-if="is('super-admin')">
+                            <!-- Remove  Permission -->
+                            <div class="grid grid-cols-1 mt-1">
+                                <div
+                                    class="container h-max align-middle my-2 text-lg uppercase font-mono text-center"
                                 >
-                                    <TrashIcon class="inline h-6 w-6" />
-                                    <p class="inline uppercase font-bold h-1">
-                                        Permissions
-                                    </p>
-                                </span>
-                            </div>
-                            <div class="text-center">
-                                <select
-                                    class="text-center w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                                    @change="getPermissions"
-                                    v-model="deletePermission"
-                                >
-                                    <option disabled value="">
-                                        Please select a permission
-                                    </option>
+                                    <span
+                                        class="bg-slate-300 w-max py-2 px-2 rounded-md"
+                                    >
+                                        <TrashIcon class="inline h-6 w-6" />
+                                        <p
+                                            class="inline uppercase font-bold h-1"
+                                        >
+                                            Permissions
+                                        </p>
+                                    </span>
+                                </div>
+                                <div class="text-center">
+                                    <select
+                                        class="text-center w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                        @change="getPermissions"
+                                        v-model="deletePermission"
+                                    >
+                                        <option disabled value="">
+                                            Please select a permission
+                                        </option>
 
-                                    <option
-                                        v-for="permission in permissions"
-                                        :key="permission.id"
-                                        :value="permission.id"
-                                    >
-                                        {{ permission.name }}
-                                    </option>
-                                </select>
-                            </div>
-                            <div
-                                class="container w-max h-max text-center align-middle my-2"
-                            >
-                                <button
-                                    @click="deleteItem(deletePermission)"
-                                    class="border-1 border-black w-max rounded-md bg-red-300 px-2"
+                                        <option
+                                            v-for="permission in permissions"
+                                            :key="permission.id"
+                                            :value="permission.id"
+                                        >
+                                            {{ permission.name }}
+                                        </option>
+                                    </select>
+                                </div>
+                                <div
+                                    class="container w-max h-max text-center align-middle my-2"
                                 >
-                                    <TrashIcon class="inline h-4 w-4" />
-                                    <p
-                                        class="inline uppercase font-bold text-sm h-1"
+                                    <button
+                                        @click="deleteItem(deletePermission)"
+                                        class="border-1 border-black w-max rounded-md bg-red-300 px-2"
                                     >
-                                        Permission
-                                    </p>
-                                </button>
+                                        <TrashIcon class="inline h-4 w-4" />
+                                        <p
+                                            class="inline uppercase font-bold text-sm h-1"
+                                        >
+                                            Permission
+                                        </p>
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -705,11 +742,13 @@
                     <div class="container items-center text-center">
                         <table class="w-full table-bordered">
                             <thead class="bg-slate-400">
+                                <th></th>
                                 <th>Permission</th>
                                 <th>Description</th>
                             </thead>
                             <tbody>
-                                <tr v-for="permission in permissions">
+                                <tr v-for="(permission, index) in permissions">
+                                    <td>{{ index + 1 }}</td>
                                     <td>{{ permission.name }}</td>
                                     <td>{{ permission.description }}</td>
                                 </tr>

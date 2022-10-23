@@ -31,14 +31,16 @@
                                 </button>
                             </x-slot>
 
-                            <x-slot name="content" class="w-max">
+                            <x-slot name="content" class="w-full">
                                 <x-nav-link :href="route('contact')" :active="request()->routeIs('contact')">
                                     {{ __('List') }}
                                 </x-nav-link>
                                 <br>
+                                @can('view contact summary')
                                 <x-nav-link :href="route('contact-summary')" :active="request()->routeIs('contact-summary')">
                                     {{ __('Summary') }}
                                 </x-nav-link>
+                                @endcan
                             </x-slot>
                         </x-dropdown>
                     </div>
@@ -86,9 +88,11 @@
                                         {{ __('List') }}
                                     </x-nav-link>
                                     <br>
+                                    @can('view forecast summary')
                                     <x-nav-link :href="route('forecast-summary')" :active="request()->routeIs('forecast-summary')">
                                         {{ __('Summary') }}
                                     </x-nav-link>
+                                    @endcan
                                 </x-slot>
                             </x-dropdown>
                         </div>

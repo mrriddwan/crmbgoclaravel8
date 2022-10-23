@@ -20,7 +20,14 @@
     <script src="https://unpkg.com/vue@latest"></script>
     <script src="https://unpkg.com/@vuepic/vue-datepicker@latest"></script>
     <script type="text/javascript" src="https://unpkg.com/xlsx@0.15.1/dist/xlsx.full.min.js"></script>
-
+    <script type="text/javascript">
+        window.Laravel = {
+            csrfToken: "{{ csrf_token() }}",
+            jsPermissions: {!! auth()->check()
+                ? auth()->user()->jsPermissions()
+                : 0 !!}
+        }
+    </script>
 
     <script src="{{ asset('js/app.js') }}" defer></script>
 </head>

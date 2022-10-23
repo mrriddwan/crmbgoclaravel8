@@ -81,7 +81,7 @@
                         placeholder="Search by any..."
                     />
                 </div>
-                <div class="m-1 inline-block items-center px-1 py-1">
+                <div class="m-1 inline-block items-center px-1 py-1" v-if="is('supervisor | admin | super-admin')">
                     <p>Select user</p>
                     <select v-model="selectedUser" class="form-control">
                         <option value="">All User</option>
@@ -105,7 +105,7 @@
                 </div>
 
                 <div class="inline-block ml-2">
-                    <div>
+                    <div v-if="can('create todo') || is('super-admin | admin')">
                         <router-link
                             to="/todo/create"
                             class="inline-block items-center px-2 py-1 align-top bg-blue-800 border-transparent rounded-md font-semibold text-m text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
@@ -294,7 +294,7 @@
                                 href="#"
                                 @click.prevent="change_sort('source_name')"
                                 class="text-white inline-flex"
-                                ><div class="inline-flex" >Source</div>
+                                ><div class="inline-flex">Source</div>
 
                                 <span
                                     v-if="
@@ -806,34 +806,56 @@
                             </div>
                         </td>
                         <td>
-                            <!-- params: { id: contactId, todoId: toDoId } -->
-                            <router-link
-                                v-show="todo.action"
-                                class="px-1 py-1 m-2 uppercase font-semibold bg-purple-200 text-xs rounded-md"
-                                :to="{
-                                    name: 'followup_create',
-                                    params: {
-                                        id: todo.contact.id,
-                                        todo_id: todo.id,
-                                    },
-                                }"
-                                >+Follow Up</router-link
+                            <div
+                                v-if="
+                                    can('create followup') ||
+                                    is('super-admin | admin')
+                                "
                             >
-                            <router-link
-                                :to="{
-                                    name: 'todo_edit',
-                                    params: { id: todo.id },
-                                }"
-                                class="m-2 inline-flex items-center px-2 py-1 bg-yellow-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
+                                <router-link
+                                    v-show="todo.action"
+                                    class="px-1 py-1 m-2 uppercase font-semibold bg-purple-200 text-xs rounded-md"
+                                    :to="{
+                                        name: 'followup_create',
+                                        params: {
+                                            id: todo.contact.id,
+                                            todo_id: todo.id,
+                                        },
+                                    }"
+                                    >+Follow Up</router-link
+                                >
+                            </div>
+
+                            <div
+                                v-if="
+                                    can('edit todo') ||
+                                    is('super-admin | admin')
+                                "
                             >
-                                <PencilSquareIcon class="h-3 w-3"
-                            /></router-link>
-                            <button
-                                class="m-2 inline-flex items-center px-2 py-1 bg-red-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
-                                @click="deleteToDo(todo.id)"
+                                <router-link
+                                    :to="{
+                                        name: 'todo_edit',
+                                        params: { id: todo.id },
+                                    }"
+                                    class="m-2 inline-flex items-center px-2 py-1 bg-yellow-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
+                                >
+                                    <PencilSquareIcon class="h-3 w-3"
+                                /></router-link>
+                            </div>
+
+                            <div
+                                v-if="
+                                    can('delete todo') ||
+                                    is('super-admin | admin')
+                                "
                             >
-                                <TrashIcon class="h-3 w-3" />
-                            </button>
+                                <button
+                                    class="m-2 inline-flex items-center px-2 py-1 bg-red-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
+                                    @click="deleteToDo(todo.id)"
+                                >
+                                    <TrashIcon class="h-3 w-3" />
+                                </button>
+                            </div>
                         </td>
                     </tr>
                 </tbody>

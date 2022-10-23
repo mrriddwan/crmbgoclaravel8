@@ -14,12 +14,14 @@ use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasPermissions;
 use Spatie\Permission\Traits\HasRoles;
 use Spatie\Permission\Models\Permission;
+use LaravelAndVueJS\Traits\LaravelPermissionToVueJS;
 
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
     use HasRoles, HasPermissions;
+    use LaravelPermissionToVueJS;
 
     /**
      * The attributes that are mass assignable.
@@ -66,14 +68,14 @@ class User extends Authenticatable
         return $this -> hasMany(ToDo::class, 'user_id')->with('action');
     }
 
-    public function getAllPermissionsAttribute()
-    {
-        $permission = [];
-        foreach(Permission::all() as $permission) {
-            if(Auth::user()->can($permission->name)) {
-                $permission[] = $permission->name;
-            }
-        }
-        return $permission;
-    }
+    // public function getAllPermissionsAttribute()
+    // {
+    //     $permission = [];
+    //     foreach(Permission::all() as $permission) {
+    //         if(Auth::user()->can($permission->name)) {
+    //             $permission[] = $permission->name;
+    //         }
+    //     }
+    //     return $permission;
+    // }
 }
