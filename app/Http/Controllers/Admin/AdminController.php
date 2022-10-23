@@ -327,8 +327,7 @@ class AdminController extends Controller
             },
             'permissions'
         ])
-            // ->join('')
-            // ->join('roles', 'roles.id', '=', 'model_has_roles.role_id')
+            ->whereKeyNot(1)
             ->select('users.id', 'users.name',)
             ->get();
 
@@ -337,6 +336,78 @@ class AdminController extends Controller
             'status' => true,
             'message' => 'User-Role-Permissions attained',
             'data' => $summary,
+        ]);
+    }
+
+    public function user_role_permissions_info($user_id)
+    {
+        $summary = User::with([
+            'roles' => function ($q) {
+                $q->select('id', 'name');
+            },
+            'roles.permissions' => function ($q) {
+                $q->select('id', 'name');
+            },
+            'permissions'
+        ])
+            // ->join('')
+            // ->join('roles', 'roles.id', '=', 'model_has_roles.role_id')
+            ->select('users.id', 'users.name',)
+            ->where('users.id', $user_id)
+            ->get();
+
+        return response()->json([
+
+            'status' => true,
+            'message' => 'User-Role-Permissions attained',
+            'data' => $summary,
+        ]);
+    }
+
+    public function user_role_update(User $user, Request $request)
+    {
+        $user->syncRoles([$request->role_name]);
+
+        return response()->json([
+            'status' => true,
+            'message' => 'User Role updated',
+            'data' => $user,
+        ]);
+    }
+
+    public function user_permission_update(User $user, Request $request)
+    {
+        $request->validate([
+            'permission_name' => ['required', 'string'],
+        ], [
+            'permission_name.required' => 'Please select a permission.',
+        ]);
+
+        $user->givePermissionTo($request->permission_name);
+
+        return response()->json([
+            'status' => true,
+            'message' => 'User permission updated',
+            'data' => $user,
+        ]);
+    }
+
+    public function user_permission_remove(User $user, Request $request)
+    {
+        // $request->validate([
+        //     'permission_name' => ['required', 'string'],
+        // ], [
+        //     'permission_name.required' => 'Please select a permission.',
+        // ]);
+
+        echo ($request->permission_name);
+
+        $user->revokePermissionTo($request->permission_name);
+
+        return response()->json([
+            'status' => true,
+            'message' => 'User permission removed',
+            'data' => $user,
         ]);
     }
 }

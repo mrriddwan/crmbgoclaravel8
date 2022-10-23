@@ -105,7 +105,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     // Route::delete('/admin/roles/remove/permission/{role}', [RoleController::class, 'remove_permission'])->name('role:remove_permission');
     Route::delete('/admin/roles/remove/permission/{permission}', [RoleController::class, 'remove_permission'])->name('role:remove_permission');
 
-
     Route::get('/admin/permissions/index', [PermissionController::class, 'index'])->name('permission:index');
     Route::post('admin/permissions/create', [PermissionController::class, 'permission_create'])->name('permission:create');
     Route::delete('admin/permissions/delete/{permission}', [PermissionController::class, 'permission_delete'])->name('permission:delete');
@@ -113,6 +112,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     Route::get('/admin/permissions/info/{permission}', [PermissionController::class, 'info'])->name('permission:info');
 
     Route::get('/admin/users/role_permissions', [AdminController::class, 'user_role_permissions'])->name('admin:user_role_permissions');
+    Route::get('/admin/users/role_permissions/{user_id}', [AdminController::class, 'user_role_permissions_info'])->name('admin:user_role_permissions_info');
+    Route::put('/admin/roles/user/update/{user}', [AdminController::class, 'user_role_update'])->name('user:role_update');
+    Route::post('/admin/roles/user/update/permission/{user}', [AdminController::class, 'user_permission_update'])->name('user:direct_permission_update');
+    Route::delete('/admin/user/permissions/delete/{user}', [AdminController::class, 'user_permission_remove'])->name('user:direct_permission_remove');
 
 // });
 

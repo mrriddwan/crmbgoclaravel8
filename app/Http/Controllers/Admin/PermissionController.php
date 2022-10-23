@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Admin\Permission;
+use App\Models\Admin\Role;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class PermissionController extends Controller
@@ -28,15 +30,18 @@ class PermissionController extends Controller
             'name.required' => 'The name is required',
         ]);
 
-        $role = Permission::create([
+        $permission = Permission::create([
             'name' => $request->name,
             'description' => $request->description,
         ]);
 
+        $role = Role::where('id', 2)->first();
+        $role->givePermissionTo($request->name);
+
         return response()->json([
-            'data' => $role,
+            'data' => $permission,
             'status' => true,
-            'message' => 'Successfully create new role',
+            'message' => 'Successfully create new permission',
         ]);
     }
 

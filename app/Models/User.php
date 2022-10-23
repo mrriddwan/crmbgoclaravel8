@@ -4,13 +4,16 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
+// use App\Models\Admin\Permission;
 use App\Models\ToDo\ToDo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Auth;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasPermissions;
 use Spatie\Permission\Traits\HasRoles;
+use Spatie\Permission\Models\Permission;
 
 class User extends Authenticatable
 {
@@ -61,5 +64,16 @@ class User extends Authenticatable
 
     public function performance(){
         return $this -> hasMany(ToDo::class, 'user_id')->with('action');
+    }
+
+    public function getAllPermissionsAttribute()
+    {
+        $permission = [];
+        foreach(Permission::all() as $permission) {
+            if(Auth::user()->can($permission->name)) {
+                $permission[] = $permission->name;
+            }
+        }
+        return $permission;
     }
 }

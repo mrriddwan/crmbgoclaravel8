@@ -10,6 +10,142 @@
             </h1>
         </div>
         <div>
+            <!-- User Role Permission List-->
+            <div class="my-4">
+                <div
+                    class="bg-cyan-200 px-2 py-1 rounded-md flex w-full justify-center items-center row"
+                >
+                    <h2
+                        class="text-center text-gray-800 px-8 uppercase w-max font-mono font-extrabold"
+                    >
+                        User Roles and Permissions
+                    </h2>
+                </div>
+                <div class="text-md text-center mt-3">Select User</div>
+                <div class="text-md text-center">
+                    <div class="form-group">
+                        <select
+                            class="text-center w-fullrounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                            @change="getUsers"
+                            v-model="selectedUser"
+                        >
+                            <option value="">All</option>
+
+                            <option
+                                v-for="user in users"
+                                :key="user.id"
+                                :value="user.id"
+                            >
+                                {{ user.name }}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="container items-center text-center my-10">
+                    <table class="w-full table-bordered">
+                        <thead class="bg-slate-400">
+                            <th>User</th>
+                            <th class="w-max">Role</th>
+                            <th>Permissions Via Roles</th>
+                            <th>Direct Permissions</th>
+                        </thead>
+                        <tbody>
+                            <tr
+                                v-for="user in user_role_permissions"
+                                :key="user.id"
+                                class="py-3"
+                            >
+                                <td class="text-xs">{{ user.name }}</td>
+                                <td
+                                    class="text-xs w-max"
+                                    v-if="user.roles.length !== 0"
+                                >
+                                    <div
+                                        v-for="role in user.roles"
+                                        :key="role.id"
+                                        class="px-1 py-1 bg-green-300 rounded-md w-max flex"
+                                    >
+                                        {{ role.name }}
+                                        <div class="w-max text-center mx-2">
+                                            <button
+                                                @click="
+                                                    toggleUserPermissionAdd(
+                                                        user.id
+                                                    )
+                                                "
+                                                class="align-middle border-1 border-black w-max rounded-md bg-yellow-300 px-2"
+                                            >
+                                                <PencilIcon
+                                                    class="inline h-4 w-4"
+                                                />
+                                            </button>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td v-else class="w-28">
+                                    <div class="text-center">
+                                        <button
+                                            @click="
+                                                toggleUserPermissionAdd(user.id)
+                                            "
+                                            class="align-middle border-1 border-black w-max rounded-md bg-yellow-300 px-2"
+                                        >
+                                            <PencilIcon
+                                                class="inline h-4 w-4"
+                                            />
+                                        </button>
+                                    </div>
+                                </td>
+
+                                <!-- Via Role - Permission -->
+                                <td class="text-xs w-max">
+                                    <div
+                                        v-for="role in user.roles"
+                                        :key="role.id"
+                                        class="grid grid-cols-3 gap-2 py-2 px-1"
+                                    >
+                                        <div
+                                            v-for="permission in role.permissions"
+                                            :key="permission.id"
+                                            class="px-1 py-1 bg-purple-400 rounded-md w-max flex"
+                                        >
+                                            {{ permission.name }}
+                                        </div>
+                                    </div>
+                                </td>
+
+                                <!-- Direct Permission -->
+                                <td class="grid grid-cols-2 gap-2 px-1 py-1">
+                                    <div
+                                        v-for="permission in user.permissions"
+                                        :key="permission.id"
+                                        class="bg-cyan-400 rounded-md text-xs w-max flex px-1 py-1"
+                                    >
+                                        {{ permission.name }}
+                                        <div class="text-center mx-2">
+                                            <button
+                                                @click="
+                                                    removePermissionFromUser(
+                                                        user.id,
+                                                        permission.name
+                                                    )
+                                                "
+                                                class="align-middle border-1 border-black w-max rounded-md bg-red-300 px-1"
+                                            >
+                                                <TrashIcon
+                                                    class="inline h-4 w-4"
+                                                />
+                                            </button>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
             <!-- Roles section-->
             <div class="my-4">
                 <div
@@ -251,8 +387,14 @@
                 :role_id="rolePermissionAdd"
             />
 
-            <!-- Role Permission List-->
+            <AdminUserRolePermissionEdit
+                v-if="userPermissionAddVisbility"
+                @toggle-modal="toggleUserPermissionAdd(user_id)"
+                :user_id="userPermissionAdd"
+            />
+
             <div class="my-4">
+                <!-- Role Permission List-->
                 <div class="grid grid-cols-1">
                     <div
                         class="container h-max align-middle my-3 text-lg uppercase font-mono text-center"
@@ -301,7 +443,8 @@
                                         <button
                                             @click="
                                                 removePermissionFromRole(
-                                                    role.id, permission.name
+                                                    role.id,
+                                                    permission.name
                                                 )
                                             "
                                             class="align-middle border-1 border-black w-max rounded-md bg-red-300 px-2"
@@ -575,130 +718,6 @@
                     </div>
                 </div>
             </div>
-            <!-- <AdminUserCategoryAssign
-                v-if="userAddCategoryVisibility"
-                @toggle-modal="toggleUserAddCategoryModal(user_cat_id)"
-                :user_cat_id="userAddCategory"
-            />
-            -->
-
-            <!-- User Role Permission List-->
-            <div class="my-4">
-                <div
-                    class="bg-cyan-200 px-2 py-1 rounded-md flex w-full justify-center items-center row"
-                >
-                    <h2
-                        class="text-center text-gray-800 px-8 uppercase w-max font-mono font-extrabold"
-                    >
-                        User Roles and Permissions
-                    </h2>
-                </div>
-                <div class="text-md text-center mt-3">Select User</div>
-                <div class="text-md text-center">
-                    <div class="form-group">
-                        <select
-                            class="text-center w-fullrounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                            @change="getUsers"
-                            v-model="selectedUser"
-                        >
-                            <option value="">All</option>
-
-                            <option
-                                v-for="user in users"
-                                :key="user.id"
-                                :value="user.id"
-                            >
-                                {{ user.name }}
-                            </option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="container items-center text-center my-10">
-                    <table class="w-full table-bordered">
-                        <thead class="bg-slate-400">
-                            <th>User</th>
-                            <th>Role</th>
-                            <th>Permissions Via Roles</th>
-                            <th>Direct Permissions</th>
-                        </thead>
-                        <tbody>
-                            <tr
-                                v-for="user in user_role_permissions"
-                                :key="user.id"
-                                class="py-3"
-                            >
-                                <td class="text-xs">{{ user.name }}</td>
-                                <td class="text-xs">
-                                    <div
-                                        v-for="role in user.roles"
-                                        :key="role.id"
-                                        class="px-1 py-1 bg-green-300 rounded-md w-max flex"
-                                    >
-                                        {{ role.name }}
-                                        <div class="w-max text-center mx-2">
-                                            <button
-                                                @click="
-                                                    removeUserFromCategory(
-                                                        role.id
-                                                    )
-                                                "
-                                                class="align-middle border-1 border-black w-max rounded-md bg-yellow-300 px-2"
-                                            >
-                                                <PencilIcon
-                                                    class="inline h-4 w-4"
-                                                />
-                                            </button>
-                                        </div>
-                                    </div>
-                                </td>
-
-                                <!-- Via Role - Permission -->
-                                <td class="text-xs w-max">
-                                    <div
-                                        v-for="role in user.roles"
-                                        :key="role.id"
-                                        class="grid grid-cols-3 gap-2 py-2 px-1"
-                                    >
-                                        <div
-                                            v-for="permission in role.permissions"
-                                            :key="permission.id"
-                                            class="px-1 py-1 bg-purple-400 rounded-md w-max flex"
-                                        >
-                                            {{ permission.name }}
-                                        </div>
-                                    </div>
-                                </td>
-
-                                <!-- Direct Permission -->
-                                <td>
-                                    <div
-                                        v-for="permission in user.permissions"
-                                        :key="permission.id"
-                                        class="px-1 py-1 bg-cyan-400 rounded-md w-max flex"
-                                    >
-                                        {{ permission.name }}
-                                        <div class="w-max text-center mx-2">
-                                            <button
-                                                @click="
-                                                    removeUserFromCategory(
-                                                        permission.id
-                                                    )
-                                                "
-                                                class="align-middle border-1 border-black w-max rounded-md bg-red-300 px-2"
-                                            >
-                                                <TrashIcon
-                                                    class="inline h-4 w-4"
-                                                />
-                                            </button>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
         </div>
     </div>
 </template>
@@ -706,6 +725,7 @@
 <script>
 import moment from "moment";
 import AdminPermissionAddViaRole from "../admins/AdminPermissionAddViaRole.vue";
+import AdminUserRolePermissionEdit from "../admins/AdminUserRolePermissionEdit.vue";
 
 import {
     PencilSquareIcon,
@@ -735,6 +755,7 @@ export default {
         ListBulletIcon,
         PencilIcon,
         AdminPermissionAddViaRole,
+        AdminUserRolePermissionEdit,
     },
 
     data() {
@@ -786,11 +807,11 @@ export default {
     },
 
     mounted() {
+        this.getUserRolePermissions();
         this.getUsers();
         this.getRoles();
         this.getPermissions();
         this.getRolePermissions();
-        this.getUserRolePermissions();
     },
 
     watch: {
@@ -812,6 +833,7 @@ export default {
             this.rolePermissionAdd = role_id;
             this.rolePermissionAddVisbility = !this.rolePermissionAddVisbility;
             this.getRolePermissions();
+            this.getUserRolePermissions();
         },
         toggleUserPermissionAdd(user_id) {
             this.userPermissionAdd = user_id;
@@ -837,8 +859,10 @@ export default {
                         description: this.new_permission.description,
                     });
                     this.permission_errors = "";
-                    this.new_permission = "";
+                    this.new_permission.name = "";
+                    this.new_permission.description = "";
                     this.getPermissions();
+                    this.getRolePermissions();
                     alert("Created new permission.");
                 }
             } catch (e) {
@@ -1000,10 +1024,10 @@ export default {
             } else {
                 await axios.delete(
                     "/api/admin/roles/remove/permission/" + role_id,
-                    { 
+                    {
                         role_id: role_id,
                         permission_name: permission_name,
-                     }
+                    }
                 );
                 this.getRolePermissions();
                 alert("Permission removed from selected Role.");
@@ -1028,12 +1052,15 @@ export default {
             }
         },
 
-        async removePermissionFromUser(user_id) {
+        async removePermissionFromUser(user_id, permission_name) {
             try {
                 if (!window.confirm("Are you sure?")) {
                     return;
                 }
-                await axios.delete("/api/admin/permissions/delete/" + user_id);
+                await axios.delete(
+                    "/api/admin/user/permissions/delete/" + user_id,
+                    { permission_name: permission_name }
+                );
 
                 this.getUserRolePermissions();
                 alert("Removed permission from user.");

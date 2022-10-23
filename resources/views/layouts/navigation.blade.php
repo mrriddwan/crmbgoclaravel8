@@ -11,7 +11,7 @@
                 </div>
 
                 <!-- Navigation Links -->
-
+                @can('view contact')
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                     <div class="hidden sm:flex sm:items-center sm:ml-0 px-1">
                         <x-dropdown align="right" width="w-max">
@@ -43,93 +43,112 @@
                         </x-dropdown>
                     </div>
                 </div>
+                @endcan
 
+                @can('view todo')
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                     <x-nav-link :href="route('todo')" :active="request()->routeIs('todo')">
                         {{ __('To Do') }}
                     </x-nav-link>
                 </div>
+                @endcan
 
+                @can('view followup')
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                     <x-nav-link :href="route('followup')" :active="request()->routeIs('followup')">
                         {{ __('Follow Up') }}
                     </x-nav-link>
                 </div>
+                @endcan
 
-                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                    <div class="hidden sm:flex sm:items-center sm:ml-0 px-1">
-                        <x-dropdown align="right" width="w-max">
-                            <x-slot name="trigger">
-                                <button
-                                    class="flex items-center text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out">
-                                    <div>{{ __('Forecast') }} </div>
+                @can('view forecast')
+                    <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                        <div class="hidden sm:flex sm:items-center sm:ml-0 px-1">
+                            <x-dropdown align="right" width="w-max">
+                                <x-slot name="trigger">
+                                    <button
+                                        class="flex items-center text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out">
+                                        <div>{{ __('Forecast') }} </div>
 
-                                    <div class="ml-1">
-                                        <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
-                                            viewBox="0 0 20 20">
-                                            <path fill-rule="evenodd"
-                                                d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                                clip-rule="evenodd" />
-                                        </svg>
-                                    </div>
-                                </button>
-                            </x-slot>
+                                        <div class="ml-1">
+                                            <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
+                                                viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd"
+                                                    d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                                    clip-rule="evenodd" />
+                                            </svg>
+                                        </div>
+                                    </button>
+                                </x-slot>
 
-                            <x-slot name="content" class="">
-                                <x-nav-link :href="route('forecast')" :active="request()->routeIs('forecast')">
-                                    {{ __('List') }}
-                                </x-nav-link>
-                                <br>
-                                <x-nav-link :href="route('forecast-summary')" :active="request()->routeIs('forecast-summary')">
-                                    {{ __('Summary') }}
-                                </x-nav-link>
-                            </x-slot>
-                        </x-dropdown>
+                                <x-slot name="content" class="">
+                                    <x-nav-link :href="route('forecast')" :active="request()->routeIs('forecast')">
+                                        {{ __('List') }}
+                                    </x-nav-link>
+                                    <br>
+                                    <x-nav-link :href="route('forecast-summary')" :active="request()->routeIs('forecast-summary')">
+                                        {{ __('Summary') }}
+                                    </x-nav-link>
+                                </x-slot>
+                            </x-dropdown>
+                        </div>
                     </div>
-                </div>
+                @endcan
 
-                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                    <x-nav-link :href="route('project')" :active="request()->routeIs('project')">
-                        {{ __('Project') }}
-                    </x-nav-link>
-                </div>
-
-                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                    <x-nav-link :href="route('performance')" :active="request()->routeIs('performance')">
-                        {{ __('Performance') }}
-                    </x-nav-link>
-                </div>
-                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                    <div class="hidden sm:flex sm:items-center sm:ml-0 px-1">
-                        <x-dropdown align="right" width="w-max">
-                            <x-slot name="trigger">
-                                <button
-                                    class="flex items-center text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out">
-                                    <div>{{ __('BB / TP') }} </div>
-
-                                    <div class="ml-1">
-                                        <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
-                                            viewBox="0 0 20 20">
-                                            <path fill-rule="evenodd"
-                                                d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                                clip-rule="evenodd" />
-                                        </svg>
-                                    </div>
-                                </button>
-                            </x-slot>
-
-                            <x-slot name="content" class="">
-                                <x-nav-link :href="route('billboard')" :active="request()->routeIs('billboard')">
-                                    {{ __('Billboard') }}
-                                </x-nav-link>
-                                <br>
-                                <x-nav-link :href="route('tempboard')" :active="request()->routeIs('tempboard')">
-                                    {{ __('Tempboard') }}
-                                </x-nav-link>
-                            </x-slot>
-                        </x-dropdown>
+                @can('view project')
+                    <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                        <x-nav-link :href="route('project')" :active="request()->routeIs('project')">
+                            {{ __('Project') }}
+                        </x-nav-link>
                     </div>
-                </div>
+                @endcan
+
+                @can('view performance')
+                    <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                        <x-nav-link :href="route('performance')" :active="request()->routeIs('performance')">
+                            {{ __('Performance') }}
+                        </x-nav-link>
+                    </div>
+                @endcan
+
+                @can('view bb/tb')
+                    <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                        <div class="hidden sm:flex sm:items-center sm:ml-0 px-1">
+                            <x-dropdown align="right" width="w-max">
+                                <x-slot name="trigger">
+                                    <button
+                                        class="flex items-center text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out">
+                                        <div>{{ __('BB / TP') }} </div>
+
+                                        <div class="ml-1">
+                                            <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
+                                                viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd"
+                                                    d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                                    clip-rule="evenodd" />
+                                            </svg>
+                                        </div>
+                                    </button>
+                                </x-slot>
+
+
+
+
+                                <x-slot name="content" class="">
+                                    <x-nav-link :href="route('billboard')" :active="request()->routeIs('billboard')">
+                                        {{ __('Billboard') }}
+                                    </x-nav-link>
+                                    <br>
+                                    <x-nav-link :href="route('tempboard')" :active="request()->routeIs('tempboard')">
+                                        {{ __('Tempboard') }}
+                                    </x-nav-link>
+                                </x-slot>
+                            </x-dropdown>
+                        </div>
+                    </div>
+                @endcan
+
+                @can('view admin')
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                     <div class="hidden sm:flex sm:items-center sm:ml-0 px-1">
                         <x-dropdown align="right" width="w-max">
@@ -166,6 +185,7 @@
                     </div>
                 </div>
             </div>
+            @endcan
 
             <!-- Settings Dropdown -->
             <div class="hidden sm:flex sm:items-center sm:ml-6">
@@ -210,7 +230,8 @@
                             stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M4 6h16M4 12h16M4 18h16" />
                         <path x-bind:class="{ 'hidden': !open, 'inline-flex': open }" class="hidden"
-                            stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                            stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M6 18L18 6M6 6l12 12" />
                     </svg>
                 </button>
             </div>
