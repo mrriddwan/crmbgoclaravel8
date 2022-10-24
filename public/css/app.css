@@ -811,6 +811,18 @@ select {
   margin-left: 0.25rem;
   margin-right: 0.25rem;
 }
+.my-0\.5 {
+  margin-top: 0.125rem;
+  margin-bottom: 0.125rem;
+}
+.my-0 {
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+.my-px {
+  margin-top: 1px;
+  margin-bottom: 1px;
+}
 .ml-3 {
   margin-left: 0.75rem;
 }
@@ -986,6 +998,9 @@ select {
 .w-48 {
   width: 12rem;
 }
+.w-28 {
+  width: 7rem;
+}
 .w-3 {
   width: 0.75rem;
 }
@@ -1009,9 +1024,6 @@ select {
 }
 .w-60 {
   width: 15rem;
-}
-.w-28 {
-  width: 7rem;
 }
 .max-w-7xl {
   max-width: 80rem;
@@ -1118,6 +1130,12 @@ select {
 }
 .gap-4 {
   gap: 1rem;
+}
+.gap-1 {
+  gap: 0.25rem;
+}
+.gap-y-2 {
+  row-gap: 0.5rem;
 }
 .space-x-8 > :not([hidden]) ~ :not([hidden]) {
   --tw-space-x-reverse: 0;
@@ -1235,6 +1253,15 @@ select {
   --tw-border-opacity: 1;
   border-color: rgb(31 41 55 / var(--tw-border-opacity));
 }
+.border-slate-500 {
+  --tw-border-opacity: 1;
+  border-color: rgb(100 116 139 / var(--tw-border-opacity));
+}
+.border-x-orange-800 {
+  --tw-border-opacity: 1;
+  border-left-color: rgb(154 52 18 / var(--tw-border-opacity));
+  border-right-color: rgb(154 52 18 / var(--tw-border-opacity));
+}
 .bg-white {
   --tw-bg-opacity: 1;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity));
@@ -1305,9 +1332,9 @@ select {
   --tw-bg-opacity: 1;
   background-color: rgb(253 224 71 / var(--tw-bg-opacity));
 }
-.bg-purple-400 {
+.bg-purple-300 {
   --tw-bg-opacity: 1;
-  background-color: rgb(192 132 252 / var(--tw-bg-opacity));
+  background-color: rgb(216 180 254 / var(--tw-bg-opacity));
 }
 .bg-cyan-400 {
   --tw-bg-opacity: 1;
@@ -1340,6 +1367,10 @@ select {
 .bg-orange-200 {
   --tw-bg-opacity: 1;
   background-color: rgb(254 215 170 / var(--tw-bg-opacity));
+}
+.bg-purple-400 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(192 132 252 / var(--tw-bg-opacity));
 }
 .bg-cyan-700 {
   --tw-bg-opacity: 1;
@@ -1397,9 +1428,13 @@ select {
   --tw-bg-opacity: 1;
   background-color: rgb(234 179 8 / var(--tw-bg-opacity));
 }
-.bg-purple-300 {
+.bg-orange-800 {
   --tw-bg-opacity: 1;
-  background-color: rgb(216 180 254 / var(--tw-bg-opacity));
+  background-color: rgb(154 52 18 / var(--tw-bg-opacity));
+}
+.bg-gray-500 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(107 114 128 / var(--tw-bg-opacity));
 }
 .bg-clip-padding {
   background-clip: padding-box;
@@ -1723,6 +1758,10 @@ select {
 .text-amber-400 {
   --tw-text-opacity: 1;
   color: rgb(251 191 36 / var(--tw-text-opacity));
+}
+.text-blue-300 {
+  --tw-text-opacity: 1;
+  color: rgb(147 197 253 / var(--tw-text-opacity));
 }
 .underline {
   -webkit-text-decoration-line: underline;

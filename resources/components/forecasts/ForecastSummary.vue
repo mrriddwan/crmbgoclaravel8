@@ -119,6 +119,9 @@
                                     </a>
                                 </div>
                                 <div
+                                    v-if="
+                                        is('supervisor | admin | super-admin')
+                                    "
                                     class="items-center text-xs text-center h-6 w-24"
                                 >
                                     <select

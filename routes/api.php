@@ -117,6 +117,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     Route::post('/admin/roles/user/update/permission/{user}', [AdminController::class, 'user_permission_update'])->name('user:direct_permission_update');
     Route::delete('/admin/user/permissions/delete/{user}', [AdminController::class, 'user_permission_remove'])->name('user:direct_permission_remove');
 
+
 // });
 
 
@@ -147,7 +148,6 @@ Route::get('/contacts/show/{contact}', [ContactController::class, 'show'])->name
 Route::put('/contacts/update/{contact}', [ContactController::class, 'update'])->name('contact:update');
 Route::delete('/contacts/delete/{contact}', [ContactController::class, 'delete'])->name('contact:delete');
 Route::get('/contacts/info/{contact}', [ContactController::class, 'info'])->name('contact:info');
-Route::get('/contacts/summary', [ContactController::class, 'summary'])->name('contact:summary');
 Route::get('/contacts/test', [ContactController::class, 'test'])->name('contact:test');
 Route::get('/contacts/export/{contact}', [ContactController::class, 'export'])->name('contact:export');
 Route::get('/contacts/all', [ContactController::class, 'selectAll'])->name('contact:selectAll');
@@ -155,6 +155,9 @@ Route::get('/contacts/exportSummary', [ContactController::class, 'exportSummary'
 Route::get('/contacts/todo', [ContactController::class, 'todo'])->name('contact:todo');
 Route::get('/contacts/history/{contact}', [ContactController::class, 'history'])->name('contact:history');
 Route::get('/contacts/getuserid', [ContactController::class, 'getuserid'])->name('contact:getuserid');
+
+Route::get('/contacts/summary_action', [ContactController::class, 'summary_action'])->name('contact:summary_action');
+Route::get('/contacts/summary_todo', [ContactController::class, 'summary_todo'])->name('contact:summary_todo');
 
 
 /*Sub-Contact API*/

@@ -33,57 +33,104 @@ class ForecastController extends Controller
         $filterResult = request('filterResult');
 
         $id = Auth::id();
-        $sv_sb = "";
-        $final = [$id];
 
-        if (SvSbPivot::where('supervisor_id', '=', $id)->exists()) {
-            $sv_sb = SvSbPivot::select('subordinate_id')
-                ->where('supervisor_id', '=', $id)
-                ->pluck('subordinate_id');
+        if (
+            (DB::table('model_has_roles')
+                ->where('model_id', '=', $id)
+                ->where('role_id', '=', 2)
+                ->exists()) ||
+            (DB::table('model_has_roles')
+                ->where('model_id', '=', $id)
+                ->where('role_id', '=', 1)
+                ->exists())
+        ) {
+            $forecast = Forecast::select([
+                'forecasts.*',
+                'forecast_products.name as product_name',
+                'users.name as user_name',
+                'contacts.name as contact_name',
+                'forecast_results.name as result_name',
+                'forecast_types.name as forecast_type_name',
+            ])
+                ->join('forecast_products', 'forecasts.product_id', '=', 'forecast_products.id')
+                ->join('contacts', 'forecasts.contact_id', '=', 'contacts.id')
+                ->join('users', 'forecasts.user_id', '=', 'users.id')
+                ->join('forecast_types', 'forecasts.forecast_type_id', '=', 'forecast_types.id')
+                ->leftJoin('forecast_results', 'forecasts.result_id', '=', 'forecast_results.id')
+                ->when($selectedForecastType, function ($query) use ($selectedForecastType) {
+                    $query->where('forecasts.forecast_type_id', $selectedForecastType);
+                })
+                ->when($selectedProduct, function ($query) use ($selectedProduct) {
+                    $query->where('forecasts.product_id', $selectedProduct);
+                })
+                ->when($selectedUser, function ($query) use ($selectedUser) {
+                    $query->where('forecasts.user_id', $selectedUser);
+                })
+                ->when($filterResult, function ($query) use ($filterResult) {
+                    if ($filterResult === "null") {
+                        $query->whereNull('forecasts.result_id');
+                    } else {
+                        $query->where('forecasts.result_id', $filterResult);
+                    }
+                })
+                ->orderBy($sort_field, $sort_direction)
+                ->search(trim($search_term))
+                ->distinct()
+                ->paginate($paginate);
+
+            return ForecastResource::collection($forecast);
         } else {
-            $sv_sb = ["null"];
+            $sv_sb = "";
+            $final = [$id];
+
+            if (SvSbPivot::where('supervisor_id', '=', $id)->exists()) {
+                $sv_sb = SvSbPivot::select('subordinate_id')
+                    ->where('supervisor_id', '=', $id)
+                    ->pluck('subordinate_id');
+            } else {
+                $sv_sb = ["null"];
+            }
+
+            array_push($final, ...$sv_sb);
+
+
+            $forecast = Forecast::select([
+                'forecasts.*',
+                'forecast_products.name as product_name',
+                'users.name as user_name',
+                'contacts.name as contact_name',
+                'forecast_results.name as result_name',
+                'forecast_types.name as forecast_type_name',
+            ])
+                ->whereIn('forecasts.user_id', $final) // for view under supervisor and the subordinates
+                ->join('forecast_products', 'forecasts.product_id', '=', 'forecast_products.id')
+                ->join('contacts', 'forecasts.contact_id', '=', 'contacts.id')
+                ->join('users', 'forecasts.user_id', '=', 'users.id')
+                ->join('forecast_types', 'forecasts.forecast_type_id', '=', 'forecast_types.id')
+                ->leftJoin('forecast_results', 'forecasts.result_id', '=', 'forecast_results.id')
+                ->when($selectedForecastType, function ($query) use ($selectedForecastType) {
+                    $query->where('forecasts.forecast_type_id', $selectedForecastType);
+                })
+                ->when($selectedProduct, function ($query) use ($selectedProduct) {
+                    $query->where('forecasts.product_id', $selectedProduct);
+                })
+                ->when($selectedUser, function ($query) use ($selectedUser) {
+                    $query->where('forecasts.user_id', $selectedUser);
+                })
+                ->when($filterResult, function ($query) use ($filterResult) {
+                    if ($filterResult === "null") {
+                        $query->whereNull('forecasts.result_id');
+                    } else {
+                        $query->where('forecasts.result_id', $filterResult);
+                    }
+                })
+                ->orderBy($sort_field, $sort_direction)
+                ->search(trim($search_term))
+                ->distinct()
+                ->paginate($paginate);
+
+            return ForecastResource::collection($forecast);
         }
-
-        array_push($final, ...$sv_sb);
-
-
-        $forecast = Forecast::select([
-            'forecasts.*',
-            'forecast_products.name as product_name',
-            'users.name as user_name',
-            'contacts.name as contact_name',
-            'forecast_results.name as result_name',
-            'forecast_types.name as forecast_type_name',
-        ])
-            ->whereIn('forecasts.user_id', $final) // for view under supervisor and the subordinates
-            ->join('forecast_products', 'forecasts.product_id', '=', 'forecast_products.id')
-            ->join('contacts', 'forecasts.contact_id', '=', 'contacts.id')
-            ->join('users', 'forecasts.user_id', '=', 'users.id')
-            ->join('forecast_types', 'forecasts.forecast_type_id', '=', 'forecast_types.id')
-            ->leftJoin('forecast_results', 'forecasts.result_id', '=', 'forecast_results.id')
-            ->when($selectedForecastType, function ($query) use ($selectedForecastType) {
-                $query->where('forecasts.forecast_type_id', $selectedForecastType);
-            })
-            ->when($selectedProduct, function ($query) use ($selectedProduct) {
-                $query->where('forecasts.product_id', $selectedProduct);
-            })
-            ->when($selectedUser, function ($query) use ($selectedUser) {
-                $query->where('forecasts.user_id', $selectedUser);
-            })
-            ->when($filterResult, function ($query) use ($filterResult) {
-                if ($filterResult === "null") {
-                    $query->whereNull('forecasts.result_id');
-                } else {
-                    $query->where('forecasts.result_id', $filterResult);
-                }
-            })
-            ->orderBy($sort_field, $sort_direction)
-            ->search(trim($search_term))
-            ->distinct()
-            ->paginate($paginate);
-
-        return ForecastResource::collection($forecast);
-        // return ForecastResource::collection(Forecast::all());
     }
 
     public function store(ForecastRequest $request)
@@ -191,99 +238,6 @@ class ForecastController extends Controller
         return Forecast::pluck('id');
     }
 
-    // public function summary2()
-    // {
-    //     $paginate = request('paginate');
-    //     $search_term = request('q', '');
-
-    //     $sort_direction = request('sort_direction');
-    //     $sort_field = request('sort_field');
-
-    //     $selectedStatus = request('selectedStatus');
-    //     $selectedForecastType = request('selectedForecastType');
-    //     $selectedContactType = request('selectedContactType');
-    //     $selectedUser = request('selectedUser');
-    //     $selectedYear = request('selectedYear');
-
-
-    //     $contact = Contact::with(
-    //         [
-    //             'forecast_summary' => function ($q) {
-    //                 $q->select(['id', 'forecast_type_id', 'product_id', 'contact_id', 'forecast_date', 'amount'])
-    //                     ->orderBy('forecast_date', 'desc');
-    //             },
-    //             'forecast_summary.forecast_type' => function ($q) {
-    //                 $q->select('id', 'name');
-    //             },
-    //             'forecast_summary.product' => function ($q) {
-    //                 $q->select('id', 'name');
-    //             },
-    //         ],
-    //         // 'forecast_summary'
-    //     )
-    //         // ->get();
-    //         ->join('contact_statuses', 'contacts.status_id', '=', 'contact_statuses.id')
-    //         ->join('contact_types', 'contacts.type_id', '=', 'contact_types.id')
-    //         // // ->join('forecast_types', 'forecasts.forecast_type_id', '=', 'forecast_types.id')
-    //         // // ->join('forecast_products', 'forecasts.product_id', '=', 'forecast_products.id')
-    //         ->join('users', 'contacts.user_id', '=', 'users.id')
-    //         ->select([
-    //             'contacts.id',
-    //             'contacts.name',
-    //             // 'contacts.created_at',
-    //             'contact_statuses.name as status_name',
-    //             'contact_types.name as type_name',
-    //             'users.name as user_name',
-    //             // 'forecast_types.name as forecast_type_name',
-    //             // 'forecast_products.name as forecast_product_name',
-
-    //         ])
-    //         // ->get();
-    //         ->when($selectedStatus, function ($query) use ($selectedStatus) {
-    //             $query->where('contacts.status_id', $selectedStatus);
-    //         })
-    //         ->when($selectedForecastType, function ($query) use ($selectedForecastType) {
-    //             $query->where('contacts.type_id', $selectedForecastType);
-    //         })
-    //         ->when($selectedContactType, function ($query) use ($selectedContactType) {
-    //             $query->where('contacts.type_id', $selectedContactType);
-    //         })
-    //         ->when($selectedUser, function ($query) use ($selectedUser) {
-    //             $query->where('contacts.user_id', $selectedUser);
-    //         })
-    //         ->when($selectedYear, function ($query) use ($selectedYear) {
-    //             $query->whereHas('forecast_summary', function ($q) use ($selectedYear) {
-    //                 $q->whereYear('forecast_date', $selectedYear);
-    //             });
-    //         })
-    //         ->orderBy($sort_field, $sort_direction)
-    //         ->search(trim($search_term))
-
-    //         ->paginate(5000);
-
-    //     // group smua todo by month
-    //     $contact
-    //         ->transform(function ($company) {
-    //             $company->setRelation(
-    //                 'forecast_summary',
-    //                 $company->forecast_summary->groupBy(
-    //                     fn ($forecast_summary) => \Carbon\Carbon::create($forecast_summary->forecast_date)->format('M-Y')
-    //                 ),
-    //                 // 'forecast_todo',
-    //                 // $company->summary
-    //                 //     ->groupBy(
-    //                 //         fn ($summary) => \Carbon\Carbon::create($summary->todo_date)->format('F-Y')
-    //                 //     )
-
-    //             );
-
-    //             return $company;
-    //         });
-
-    //     // ->get();
-    //     return $contact->toArray();
-    // }
-
     public function summary()
     {
         $paginate = request('paginate');
@@ -301,90 +255,133 @@ class ForecastController extends Controller
         $selectedYear = request('selectedYear');
 
         $id = Auth::id();
-        $sv_sb = "";
-        $final = [$id];
 
-        if (SvSbPivot::where('supervisor_id', '=', $id)->exists()) {
-            $sv_sb = SvSbPivot::select('subordinate_id')
-                ->where('supervisor_id', '=', $id)
-                ->pluck('subordinate_id');
+        if (
+            (DB::table('model_has_roles')
+                ->where('model_id', '=', $id)
+                ->where('role_id', '=', 2)
+                ->exists()) ||
+            (DB::table('model_has_roles')
+                ->where('model_id', '=', $id)
+                ->where('role_id', '=', 1)
+                ->exists())
+        ) {
+            $forecast = Forecast::select(
+                'forecasts.id',
+                'forecasts.contact_id',
+                'forecasts.forecast_date',
+                'forecasts.amount',
+                'contacts.name as contact',
+                'contact_statuses.name as contact_status',
+                'contact_types.name as contact_type',
+                'users.name as user_name',
+                'forecast_types.name as forecast_type',
+                'forecast_products.name as forecast_product',
+                DB::raw("DATE_FORMAT(forecasts.forecast_date, '%M-%Y') as month"),
+                // DB::raw("MAX(forecasts.forecast_date, '%M %Y') as last"),
+            )
+                ->join('contacts', 'forecasts.contact_id', '=', 'contacts.id')
+                ->join('contact_statuses', 'forecasts.contact_status_id', '=', 'contact_statuses.id')
+                ->join('contact_types', 'forecasts.contact_type_id', '=', 'contact_types.id')
+                ->join('forecast_types', 'forecasts.forecast_type_id', '=', 'forecast_types.id')
+                ->join('forecast_products', 'forecasts.product_id', '=', 'forecast_products.id')
+                ->join('users', 'forecasts.user_id', '=', 'users.id')
+                ->when($selectedContactStatus, function ($query) use ($selectedContactStatus) {
+                    $query->where('contact_status_id', $selectedContactStatus);
+                })
+                ->when($selectedForecastProduct, function ($query) use ($selectedForecastProduct) {
+                    $query->where('product_id', $selectedForecastProduct);
+                })
+                ->when($selectedForecastType, function ($query) use ($selectedForecastType) {
+                    $query->where('forecast_type_id', $selectedForecastType);
+                })
+                ->when($selectedContactType, function ($query) use ($selectedContactType) {
+                    $query->where('contact_type_id', $selectedContactType);
+                })
+                ->when($selectedUser, function ($query) use ($selectedUser) {
+                    $query->where('forecasts.user_id', $selectedUser);
+                })
+                ->when($selectedtContact, function ($query) use ($selectedtContact) {
+                    $query->where('contact_id', $selectedtContact);
+                })
+                ->when($selectedYear, function ($query) use ($selectedYear) {
+                    $query->whereHas('forecast_summary', function ($q) use ($selectedYear) {
+                        $q->whereYear('forecast_date', $selectedYear);
+                    });
+                })
+                ->orderBy($sort_field, $sort_direction)
+                ->search(trim($search_term))
+                ->paginate(5000);
+            return $forecast->toArray();
         } else {
-            $sv_sb = ["null"];
+            $sv_sb = "";
+            $final = [$id];
+
+            if (SvSbPivot::where('supervisor_id', '=', $id)->exists()) {
+                $sv_sb = SvSbPivot::select('subordinate_id')
+                    ->where('supervisor_id', '=', $id)
+                    ->pluck('subordinate_id');
+            } else {
+                $sv_sb = ["null"];
+            }
+
+            array_push($final, ...$sv_sb);
+
+
+            $forecast = Forecast::select(
+                'forecasts.id',
+                'forecasts.contact_id',
+                'forecasts.forecast_date',
+                'forecasts.amount',
+                'contacts.name as contact',
+                'contact_statuses.name as contact_status',
+                'contact_types.name as contact_type',
+                'users.name as user_name',
+                'forecast_types.name as forecast_type',
+                'forecast_products.name as forecast_product',
+                DB::raw("DATE_FORMAT(forecasts.forecast_date, '%M-%Y') as month"),
+                // DB::raw("MAX(forecasts.forecast_date, '%M %Y') as last"),
+            )
+                ->whereIn('forecasts.user_id', $final) // for view under supervisor and the subordinates
+                ->join('contacts', 'forecasts.contact_id', '=', 'contacts.id')
+                ->join('contact_statuses', 'forecasts.contact_status_id', '=', 'contact_statuses.id')
+                ->join('contact_types', 'forecasts.contact_type_id', '=', 'contact_types.id')
+                ->join('forecast_types', 'forecasts.forecast_type_id', '=', 'forecast_types.id')
+                ->join('forecast_products', 'forecasts.product_id', '=', 'forecast_products.id')
+                ->join('users', 'forecasts.user_id', '=', 'users.id')
+                ->when($selectedContactStatus, function ($query) use ($selectedContactStatus) {
+                    $query->where('contact_status_id', $selectedContactStatus);
+                })
+                ->when($selectedForecastProduct, function ($query) use ($selectedForecastProduct) {
+                    $query->where('product_id', $selectedForecastProduct);
+                })
+                ->when($selectedForecastType, function ($query) use ($selectedForecastType) {
+                    $query->where('forecast_type_id', $selectedForecastType);
+                })
+                ->when($selectedContactType, function ($query) use ($selectedContactType) {
+                    $query->where('contact_type_id', $selectedContactType);
+                })
+                ->when($selectedUser, function ($query) use ($selectedUser) {
+                    $query->where('forecasts.user_id', $selectedUser);
+                })
+                ->when($selectedtContact, function ($query) use ($selectedtContact) {
+                    $query->where('contact_id', $selectedtContact);
+                })
+                ->when($selectedYear, function ($query) use ($selectedYear) {
+                    $query->whereHas('forecast_summary', function ($q) use ($selectedYear) {
+                        $q->whereYear('forecast_date', $selectedYear);
+                    });
+                })
+                ->orderBy($sort_field, $sort_direction)
+                ->search(trim($search_term))
+                ->paginate(5000)
+                // ->groupBy('contact_name')
+                // ->groupBy('month')
+                // ->toArray()
+            ;
+
+            return $forecast->toArray();
         }
-
-        array_push($final, ...$sv_sb);
-
-
-        $forecast = Forecast::select(
-            'forecasts.id',
-            'forecasts.contact_id',
-            'forecasts.forecast_date',
-            'forecasts.amount',
-            'contacts.name as contact',
-            'contact_statuses.name as contact_status',
-            'contact_types.name as contact_type',
-            'users.name as user_name',
-            'forecast_types.name as forecast_type',
-            'forecast_products.name as forecast_product',
-            DB::raw("DATE_FORMAT(forecasts.forecast_date, '%M-%Y') as month"),
-            // DB::raw("MAX(forecasts.forecast_date, '%M %Y') as last"),
-        )
-            ->whereIn('forecasts.user_id', $final) // for view under supervisor and the subordinates
-            ->join('contacts', 'forecasts.contact_id', '=', 'contacts.id')
-            ->join('contact_statuses', 'forecasts.contact_status_id', '=', 'contact_statuses.id')
-            ->join('contact_types', 'forecasts.contact_type_id', '=', 'contact_types.id')
-            ->join('forecast_types', 'forecasts.forecast_type_id', '=', 'forecast_types.id')
-            ->join('forecast_products', 'forecasts.product_id', '=', 'forecast_products.id')
-            ->join('users', 'forecasts.user_id', '=', 'users.id')
-            ->when($selectedContactStatus, function ($query) use ($selectedContactStatus) {
-                $query->where('contact_status_id', $selectedContactStatus);
-            })
-            ->when($selectedForecastProduct, function ($query) use ($selectedForecastProduct) {
-                $query->where('product_id', $selectedForecastProduct);
-            })
-            ->when($selectedForecastType, function ($query) use ($selectedForecastType) {
-                $query->where('forecast_type_id', $selectedForecastType);
-            })
-            ->when($selectedContactType, function ($query) use ($selectedContactType) {
-                $query->where('contact_type_id', $selectedContactType);
-            })
-            ->when($selectedUser, function ($query) use ($selectedUser) {
-                $query->where('forecasts.user_id', $selectedUser);
-            })
-            ->when($selectedtContact, function ($query) use ($selectedtContact) {
-                $query->where('contact_id', $selectedtContact);
-            })
-            ->when($selectedYear, function ($query) use ($selectedYear) {
-                $query->whereHas('forecast_summary', function ($q) use ($selectedYear) {
-                    $q->whereYear('forecast_date', $selectedYear);
-                });
-            })
-            ->orderBy($sort_field, $sort_direction)
-            ->search(trim($search_term))
-            ->paginate(5000)
-            // ->groupBy('contact_name')
-            // ->groupBy('month')
-            // ->toArray()
-        ;
-
-        // $data = Tutorial::where('completed', 0)->get();
-        // $groups = $data->groupBy('subj_id');
-
-        // $results = [];
-        // foreach ($forecast as $group) {
-        //     $forecast['month'] = head($group);
-        // }
-        // return $results;
-
-        // return head($forecast);
-
-        // return response()->json([
-        //     'status' => true,
-        //     'message' => 'Successfully fetch data forecast ',
-        //     'data' => $forecast,
-        // ]);
-
-        return $forecast->toArray();
     }
 
 

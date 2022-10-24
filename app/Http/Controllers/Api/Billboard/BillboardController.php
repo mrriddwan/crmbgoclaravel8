@@ -23,51 +23,9 @@ class BillboardController extends Controller
         $selectedYear = request('selectedYear');
 
 
-        // $billboard = Billboard::select([
-        //     'billboards.id as billboard_id',
-        //     'billboards.site_id',
-        //     'billboards.bboard_location',
-        //     'billboards.bboard_size',
-        //     'contacts.id as company_id',
-        //     'contacts.name as company_name',
-        //     'billboard_tenures.id as tenure_id',
-        //     "billboard_tenures.tenure_startdate",
-        //     "billboard_tenures.tenure_enddate",
-        // ])
-        //     ->leftJoin('billboard_tenures', 'billboard_tenures.bboard_id', '=', 'billboards.id')
-        //     ->leftJoin('contacts', 'billboard_tenures.contact_id', '=', 'contacts.id')
-
         $billboard = Billboard::with('summary')
             ->select('id', 'site_id', 'bboard_location', 'bboard_size')
 
-            // ->select([
-            //     'billboards.id as billboard_id',
-            //     'billboards.site_id',
-            //     'billboards.bboard_location',
-            //     'billboards.bboard_size',
-            //     'contacts.id as company_id',
-            //     'contacts.name as company_name',
-            //     'billboard_tenures.id as tenure_id',
-            //     "billboard_tenures.tenure_startdate",
-            //     "billboard_tenures.tenure_enddate",
-            // ])
-
-            //     ->when($selectedSite, function ($query) use ($selectedSite) {
-            //         $query->where('billboards.site_id', $selectedSite);
-            //     })
-            //     ->when($selectedSize, function ($query) use ($selectedSize) {
-            //         $query->where('billboards.bboard_size', $selectedSize);
-            //     })
-            // ->when($selectedYear, function ($query) use ($selectedYear) {
-            //     $query->whereYear('tenure_startdate', $selectedYear);
-            // })
-            // ->when($selectedYear, function ($query) use ($selectedYear) {
-            //     $query->whereYear('tenure_enddate', $selectedYear);
-            // })
-            // ->orderBy('billboard_id', 'desc')
-            // ->search(trim($search_term))
-            // ->paginate($paginate)
-            // ->get();
             ->paginate(1000);
 
         // return BillboardResource::collection($billboard);

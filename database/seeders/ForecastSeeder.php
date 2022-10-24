@@ -15,6 +15,6 @@ class ForecastSeeder extends Seeder
      */
     public function run()
     {
-        Forecast::factory(100)->create();
+        Forecast::factory(10)->create();
     }
 }

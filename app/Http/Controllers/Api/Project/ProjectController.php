@@ -9,6 +9,7 @@ use App\Models\Admin\SvSbPivot;
 use App\Models\Project\Project;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class ProjectController extends Controller
 {
@@ -27,47 +28,84 @@ class ProjectController extends Controller
         $searchEntryDate = request('searchEntryDate');
 
         $id = Auth::id();
-        $sv_sb = "";
-        $final = [$id];
 
-        if (SvSbPivot::where('supervisor_id', '=', $id)->exists()) {
-            $sv_sb = SvSbPivot::select('subordinate_id')
-                ->where('supervisor_id', '=', $id)
-                ->pluck('subordinate_id');
+        if (
+            (DB::table('model_has_roles')
+                ->where('model_id', '=', $id)
+                ->where('role_id', '=', 2)
+                ->exists()) ||
+            (DB::table('model_has_roles')
+                ->where('model_id', '=', $id)
+                ->where('role_id', '=', 1)
+                ->exists())
+        ) {
+            $project = Project::select([
+                'projects.*',
+                'users.name as user_name',
+                'contacts.name as contact_name',
+            ])
+                ->join('contacts', 'projects.contact_id', '=', 'contacts.id')
+                ->join('users', 'projects.user_id', '=', 'users.id')
+                ->when($searchStartDate, function ($query) use ($searchStartDate) {
+                    $query->where('projects.project_startdate', $searchStartDate);
+                })
+                ->when($searchEndDate, function ($query) use ($searchEndDate) {
+                    $query->where('projects.project_enddate', $searchEndDate);
+                })
+                // ->when($searchDuration, function ($query) use ($searchDuration) {
+                //     $query->where('projects.project_duration', $searchDuration);
+                // })
+                ->when($searchEntryDate, function ($query) use ($searchEntryDate) {
+                    $query->where('projects.created_at', $searchEntryDate);
+                })
+                ->orderBy($sort_field, $sort_direction)
+                ->search(trim($search_term))
+                ->distinct()
+                ->paginate($paginate);
+
+            return ProjectResource::collection($project);
         } else {
-            $sv_sb = ["null"];
+            $sv_sb = "";
+            $final = [$id];
+
+            if (SvSbPivot::where('supervisor_id', '=', $id)->exists()) {
+                $sv_sb = SvSbPivot::select('subordinate_id')
+                    ->where('supervisor_id', '=', $id)
+                    ->pluck('subordinate_id');
+            } else {
+                $sv_sb = ["null"];
+            }
+
+            array_push($final, ...$sv_sb);
+
+
+            $project = Project::select([
+                'projects.*',
+                'users.name as user_name',
+                'contacts.name as contact_name',
+            ])
+                ->whereIn('projects.user_id', $final) // for view under supervisor and the subordinates
+                ->join('contacts', 'projects.contact_id', '=', 'contacts.id')
+                ->join('users', 'projects.user_id', '=', 'users.id')
+                ->when($searchStartDate, function ($query) use ($searchStartDate) {
+                    $query->where('projects.project_startdate', $searchStartDate);
+                })
+                ->when($searchEndDate, function ($query) use ($searchEndDate) {
+                    $query->where('projects.project_enddate', $searchEndDate);
+                })
+                // ->when($searchDuration, function ($query) use ($searchDuration) {
+                //     $query->where('projects.project_duration', $searchDuration);
+                // })
+                ->when($searchEntryDate, function ($query) use ($searchEntryDate) {
+                    $query->where('projects.created_at', $searchEntryDate);
+                })
+                ->orderBy($sort_field, $sort_direction)
+                ->search(trim($search_term))
+                ->distinct()
+                ->paginate($paginate);
+
+            return ProjectResource::collection($project);
         }
-
-        array_push($final, ...$sv_sb);
-
-
-        $project = Project::select([
-            'projects.*',
-            'users.name as user_name',
-            'contacts.name as contact_name',
-        ])
-            ->whereIn('projects.user_id', $final) // for view under supervisor and the subordinates
-            ->join('contacts', 'projects.contact_id', '=', 'contacts.id')
-            ->join('users', 'projects.user_id', '=', 'users.id')
-            ->when($searchStartDate, function ($query) use ($searchStartDate) {
-                $query->where('projects.project_startdate', $searchStartDate);
-            })
-            ->when($searchEndDate, function ($query) use ($searchEndDate) {
-                $query->where('projects.project_enddate', $searchEndDate);
-            })
-            // ->when($searchDuration, function ($query) use ($searchDuration) {
-            //     $query->where('projects.project_duration', $searchDuration);
-            // })
-            ->when($searchEntryDate, function ($query) use ($searchEntryDate) {
-                $query->where('projects.created_at', $searchEntryDate);
-            })
-            ->orderBy($sort_field, $sort_direction)
-            ->search(trim($search_term))
-            ->distinct()
-            ->paginate($paginate);
-
-        return ProjectResource::collection($project);
-        // return projectResource::collection(project::all());
     }
 
     // public function list (){

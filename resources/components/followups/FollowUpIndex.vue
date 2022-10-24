@@ -81,7 +81,10 @@
                         placeholder="Search by any..."
                     />
                 </div>
-                <div class="m-1 inline-block items-center px-1 py-1">
+                <div
+                    class="m-1 inline-block items-center px-1 py-1"
+                    v-if="is('supervisor | admin | super-admin')"
+                >
                     <p>Select user</p>
                     <select v-model="selectedUser" class="form-control">
                         <option value="">All User</option>
@@ -535,12 +538,19 @@
                         <td>{{ followup.task.name }}</td>
                         <td>{{ followup.followup_remark }}</td>
                         <td>
-                            <button
-                                class="mr-2 mb-2 inline-flex items-center px-2 py-1 bg-red-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
-                                @click="deleteFollowUp(followup.id)"
+                            <div
+                                v-if="
+                                    can('delete followup') ||
+                                    is('supervisor | admin | super-admin')
+                                "
                             >
-                                <TrashIcon class="h-3 w-3" />
-                            </button>
+                                <button
+                                    class="mr-2 mb-2 inline-flex items-center px-2 py-1 bg-red-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
+                                    @click="deleteFollowUp(followup.id)"
+                                >
+                                    <TrashIcon class="h-3 w-3" />
+                                </button>
+                            </div>
 
                             <router-link
                                 :to="{

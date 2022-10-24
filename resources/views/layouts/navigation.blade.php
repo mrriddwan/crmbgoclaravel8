@@ -115,7 +115,7 @@
                     </div>
                 @endcan
 
-                @can('view bb/tb')
+                @can('view billboard/tempboard')
                     <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                         <div class="hidden sm:flex sm:items-center sm:ml-0 px-1">
                             <x-dropdown align="right" width="w-max">

@@ -8,6 +8,7 @@ use App\Models\Admin\SvSbPivot;
 use App\Models\Billboard\Tempboard;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class TempboardController extends Controller
 {
@@ -23,79 +24,151 @@ class TempboardController extends Controller
         $selectedYear = request('selectedYear');
 
         $id = Auth::id();
-        $sv_sb = "";
-        $final = [$id];
 
-        if (SvSbPivot::where('supervisor_id', '=', $id)->exists()) {
-            $sv_sb = SvSbPivot::select('subordinate_id')
-                ->where('supervisor_id', '=', $id)
-                ->pluck('subordinate_id');
+        if (
+            (DB::table('model_has_roles')
+                ->where('model_id', '=', $id)
+                ->where('role_id', '=', 2)
+                ->exists()) ||
+            (DB::table('model_has_roles')
+                ->where('model_id', '=', $id)
+                ->where('role_id', '=', 1)
+                ->exists())
+        ) {
+            $tempboard = Tempboard::with([
+                'contact' => function ($q) {
+                    $q->select([
+                        'id',
+                        'name'
+                    ]);
+                },
+                'user' => function ($q) {
+                    $q->select([
+                        'id',
+                        'name'
+                    ]);
+                },
+            ])
+                ->select([
+                    'tempboards.id',
+                    'tempboards.tpboard_entrydate',
+                    'tempboards.contact_id',
+                    'tempboards.user_id',
+                    'tempboards.tpboard_startdate',
+                    'tempboards.tpboard_enddate',
+                    'tempboards.tpboard_size',
+                    'tempboards.tpboard_location',
+                    'tempboards.tpboard_unit',
+                    'tempboards.tpboard_collection',
+                    'tempboards.tpboard_material',
+                    'tempboards.tpboard_printing',
+                    'tempboards.tpboard_installation',
+                    'tempboards.tpboard_remark',
+                    // 'users.id',
+                    // 'users.name',
+                    // 'contacts.id',
+                    // 'contacts.name',
+                ])
+                ->join('users', 'tempboards.user_id', '=', 'users.id')
+                ->join('contacts', 'tempboards.contact_id', '=', 'contacts.id')
+
+                ->when($selectedUser, function ($query) use ($selectedUser) {
+                    $query->where('tempboards.user_id', $selectedUser);
+                })
+                ->when($selectedYear, function ($query) use ($selectedYear) {
+                    $query->whereYear('tempboards.tpboard_entrydate', $selectedYear);
+                })
+                ->when($selectedYear, function ($query) use ($selectedYear) {
+                    $query->whereYear('tempboards.tpboard_startdate', $selectedYear);
+                })
+                ->when($selectedYear, function ($query) use ($selectedYear) {
+                    $query->whereYear('tempboards.tpboard_enddate', $selectedYear);
+                })
+                //     ->when($selectedSize, function ($query) use ($selectedSize) {
+                //         $query->where('billboards.bboard_size', $selectedSize);
+                //     })
+                ->orderBy($sort_field, $sort_direction)
+                ->search(trim($search_term))
+                //     ->paginate($paginate);
+                ->get();
+
+            return TempboardResource::collection($tempboard);
         } else {
-            $sv_sb = ["null"];
+            $sv_sb = "";
+            $final = [$id];
+
+            if (SvSbPivot::where('supervisor_id', '=', $id)->exists()) {
+                $sv_sb = SvSbPivot::select('subordinate_id')
+                    ->where('supervisor_id', '=', $id)
+                    ->pluck('subordinate_id');
+            } else {
+                $sv_sb = ["null"];
+            }
+
+            array_push($final, ...$sv_sb);
+
+            $tempboard = Tempboard::with([
+                'contact' => function ($q) {
+                    $q->select([
+                        'id',
+                        'name'
+                    ]);
+                },
+                'user' => function ($q) {
+                    $q->select([
+                        'id',
+                        'name'
+                    ]);
+                },
+            ])
+                ->select([
+                    'tempboards.id',
+                    'tempboards.tpboard_entrydate',
+                    'tempboards.contact_id',
+                    'tempboards.user_id',
+                    'tempboards.tpboard_startdate',
+                    'tempboards.tpboard_enddate',
+                    'tempboards.tpboard_size',
+                    'tempboards.tpboard_location',
+                    'tempboards.tpboard_unit',
+                    'tempboards.tpboard_collection',
+                    'tempboards.tpboard_material',
+                    'tempboards.tpboard_printing',
+                    'tempboards.tpboard_installation',
+                    'tempboards.tpboard_remark',
+                    // 'users.id',
+                    // 'users.name',
+                    // 'contacts.id',
+                    // 'contacts.name',
+                ])
+                ->whereIn('tempboards.user_id', $final) // for view under supervisor and the subordinates
+
+                ->join('users', 'tempboards.user_id', '=', 'users.id')
+                ->join('contacts', 'tempboards.contact_id', '=', 'contacts.id')
+
+                ->when($selectedUser, function ($query) use ($selectedUser) {
+                    $query->where('tempboards.user_id', $selectedUser);
+                })
+                ->when($selectedYear, function ($query) use ($selectedYear) {
+                    $query->whereYear('tempboards.tpboard_entrydate', $selectedYear);
+                })
+                ->when($selectedYear, function ($query) use ($selectedYear) {
+                    $query->whereYear('tempboards.tpboard_startdate', $selectedYear);
+                })
+                ->when($selectedYear, function ($query) use ($selectedYear) {
+                    $query->whereYear('tempboards.tpboard_enddate', $selectedYear);
+                })
+                //     ->when($selectedSize, function ($query) use ($selectedSize) {
+                //         $query->where('billboards.bboard_size', $selectedSize);
+                //     })
+                ->orderBy($sort_field, $sort_direction)
+                ->search(trim($search_term))
+                //     ->paginate($paginate);
+                ->get();
+
+            return TempboardResource::collection($tempboard);
         }
 
-        array_push($final, ...$sv_sb);
-
-        $tempboard = Tempboard::with([
-            'contact' => function ($q) {
-                $q->select([
-                    'id',
-                    'name'
-                ]);
-            },
-            'user' => function ($q) {
-                $q->select([
-                    'id',
-                    'name'
-                ]);
-            },
-        ])
-            ->select([
-                'tempboards.id',
-                'tempboards.tpboard_entrydate',
-                'tempboards.contact_id',
-                'tempboards.user_id',
-                'tempboards.tpboard_startdate',
-                'tempboards.tpboard_enddate',
-                'tempboards.tpboard_size',
-                'tempboards.tpboard_location',
-                'tempboards.tpboard_unit',
-                'tempboards.tpboard_collection',
-                'tempboards.tpboard_material',
-                'tempboards.tpboard_printing',
-                'tempboards.tpboard_installation',
-                'tempboards.tpboard_remark',
-                // 'users.id',
-                // 'users.name',
-                // 'contacts.id',
-                // 'contacts.name',
-            ])
-            ->whereIn('tempboards.user_id', $final) // for view under supervisor and the subordinates
-
-            ->join('users', 'tempboards.user_id', '=', 'users.id')
-            ->join('contacts', 'tempboards.contact_id', '=', 'contacts.id')
-
-            ->when($selectedUser, function ($query) use ($selectedUser) {
-                $query->where('tempboards.user_id', $selectedUser);
-            })
-            ->when($selectedYear, function ($query) use ($selectedYear) {
-                $query->whereYear('tempboards.tpboard_entrydate', $selectedYear);
-            })
-            ->when($selectedYear, function ($query) use ($selectedYear) {
-                $query->whereYear('tempboards.tpboard_startdate', $selectedYear);
-            })
-            ->when($selectedYear, function ($query) use ($selectedYear) {
-                $query->whereYear('tempboards.tpboard_enddate', $selectedYear);
-            })
-            //     ->when($selectedSize, function ($query) use ($selectedSize) {
-            //         $query->where('billboards.bboard_size', $selectedSize);
-            //     })
-            ->orderBy($sort_field, $sort_direction)
-            ->search(trim($search_term))
-            //     ->paginate($paginate);
-            ->get();
-
-        return TempboardResource::collection($tempboard);
         // return $tempboard;
     }
 

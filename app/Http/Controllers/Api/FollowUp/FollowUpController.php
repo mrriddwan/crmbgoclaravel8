@@ -12,6 +12,7 @@ use App\Models\ToDo;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 
 class FollowUpController extends Controller
@@ -31,43 +32,106 @@ class FollowUpController extends Controller
         $selectedDate = request('selectedDate');
 
         $id = Auth::id();
-        $sv_sb = "";
-        $final = [$id];
 
-        if (SvSbPivot::where('supervisor_id', '=', $id)->exists()) {
+        if (
+            (DB::table('model_has_roles')
+                ->where('model_id', '=', $id)
+                ->where('role_id', '=', 2)
+                ->exists()) ||
+            (DB::table('model_has_roles')
+                ->where('model_id', '=', $id)
+                ->where('role_id', '=', 1)
+                ->exists())
+        ) {
+            $followup = FollowUp::select([
+                'follow_ups.*',
+                'users.name as user_name',
+                'tasks.name as task_name',
+                'contacts.name as contact_name',
+            ])
+                ->join('contacts', 'follow_ups.contact_id', '=', 'contacts.id')
+                ->join('tasks', 'follow_ups.task_id', '=', 'tasks.id')
+                ->join('users', 'follow_ups.user_id', '=', 'users.id')
+                ->when($selectedTask, function ($query) use ($selectedTask) {
+                    $query->where('follow_ups.task_id', $selectedTask);
+                })
+                ->when($selectedUser, function ($query) use ($selectedUser) {
+                    $query->where('follow_ups.user_id', $selectedUser);
+                })
+                ->when($selectedDate, function ($query) use ($selectedDate) {
+                    $query->whereDate('follow_ups.followup_date', ('='), ($selectedDate));
+                })
+                ->orderBy($sort_field, $sort_direction)
+                ->search(trim($search_term))
+                ->paginate($paginate);
+
+            return FollowUpResource::collection($followup);
+        } else if (SvSbPivot::where('supervisor_id', '=', $id)->exists()) {
+
+            $sv_sb = "";
+            $final = [$id];
+
             $sv_sb = SvSbPivot::select('subordinate_id')
                 ->where('supervisor_id', '=', $id)
                 ->pluck('subordinate_id');
+
+            array_push($final, ...$sv_sb);
+
+            $followup = FollowUp::select([
+                'follow_ups.*',
+                'users.name as user_name',
+                'tasks.name as task_name',
+                'contacts.name as contact_name',
+            ])
+                ->whereIn('follow_ups.user_id', $final) // for view under supervisor and the subordinates
+                ->join('contacts', 'follow_ups.contact_id', '=', 'contacts.id')
+                ->join('tasks', 'follow_ups.task_id', '=', 'tasks.id')
+                ->join('users', 'follow_ups.user_id', '=', 'users.id')
+                ->when($selectedTask, function ($query) use ($selectedTask) {
+                    $query->where('follow_ups.task_id', $selectedTask);
+                })
+                ->when($selectedUser, function ($query) use ($selectedUser) {
+                    $query->where('follow_ups.user_id', $selectedUser);
+                })
+                ->when($selectedDate, function ($query) use ($selectedDate) {
+                    $query->whereDate('follow_ups.followup_date', ('='), ($selectedDate));
+                })
+                ->orderBy($sort_field, $sort_direction)
+                ->search(trim($search_term))
+                ->paginate($paginate);
+
+            return FollowUpResource::collection($followup);
         } else {
             $sv_sb = ["null"];
+            $final = [$id];
+
+            array_push($final, ...$sv_sb);
+
+            $followup = FollowUp::select([
+                'follow_ups.*',
+                'users.name as user_name',
+                'tasks.name as task_name',
+                'contacts.name as contact_name',
+            ])
+                ->whereIn('follow_ups.user_id', $final) // for view under supervisor and the subordinates
+                ->join('contacts', 'follow_ups.contact_id', '=', 'contacts.id')
+                ->join('tasks', 'follow_ups.task_id', '=', 'tasks.id')
+                ->join('users', 'follow_ups.user_id', '=', 'users.id')
+                ->when($selectedTask, function ($query) use ($selectedTask) {
+                    $query->where('follow_ups.task_id', $selectedTask);
+                })
+                ->when($selectedUser, function ($query) use ($selectedUser) {
+                    $query->where('follow_ups.user_id', $selectedUser);
+                })
+                ->when($selectedDate, function ($query) use ($selectedDate) {
+                    $query->whereDate('follow_ups.followup_date', ('='), ($selectedDate));
+                })
+                ->orderBy($sort_field, $sort_direction)
+                ->search(trim($search_term))
+                ->paginate($paginate);
+
+            return FollowUpResource::collection($followup);
         }
-
-        array_push($final, ...$sv_sb);
-
-        $followup = FollowUp::select([
-            'follow_ups.*',
-            'users.name as user_name',
-            'tasks.name as task_name',
-            'contacts.name as contact_name',
-        ])
-            ->whereIn('follow_ups.user_id', $final) // for view under supervisor and the subordinates
-            ->join('contacts', 'follow_ups.contact_id', '=', 'contacts.id')
-            ->join('tasks', 'follow_ups.task_id', '=', 'tasks.id')
-            ->join('users', 'follow_ups.user_id', '=', 'users.id')
-            ->when($selectedTask, function ($query) use ($selectedTask) {
-                $query->where('follow_ups.task_id', $selectedTask);
-            })
-            ->when($selectedUser, function ($query) use ($selectedUser) {
-                $query->where('follow_ups.user_id', $selectedUser);
-            })
-            ->when($selectedDate, function ($query) use ($selectedDate) {
-                $query->whereDate('follow_ups.followup_date', ('='), ($selectedDate));
-            })
-            ->orderBy($sort_field, $sort_direction)
-            ->search(trim($search_term))
-            ->paginate($paginate);
-
-        return FollowUpResource::collection($followup);
     }
 
     public function monthrange()
@@ -85,49 +149,118 @@ class FollowUpController extends Controller
         $selectedYear = request('selectedYear');
 
         $id = Auth::id();
-        $sv_sb = "";
-        $final = [$id];
 
-        if (SvSbPivot::where('supervisor_id', '=', $id)->exists()) {
+        if (
+            (DB::table('model_has_roles')
+                ->where('model_id', '=', $id)
+                ->where('role_id', '=', 2)
+                ->exists()) ||
+            (DB::table('model_has_roles')
+                ->where('model_id', '=', $id)
+                ->where('role_id', '=', 1)
+                ->exists())
+        ) {
+            $followup = FollowUp::select([
+                'follow_ups.*',
+                'users.name as user_name',
+                'tasks.name as task_name',
+                'contacts.name as contact_name',
+            ])
+                ->join('contacts', 'follow_ups.contact_id', '=', 'contacts.id')
+                ->join('tasks', 'follow_ups.task_id', '=', 'tasks.id')
+                ->join('users', 'follow_ups.user_id', '=', 'users.id')
+                ->when($selectedTask, function ($query) use ($selectedTask) {
+                    $query->where('follow_ups.task_id', $selectedTask);
+                })
+                ->when($selectedUser, function ($query) use ($selectedUser) {
+                    $query->where('follow_ups.user_id', $selectedUser);
+                })
+                ->when($selectedMonth, function ($query) use ($selectedMonth) {
+                    $query->whereMonth('follow_ups.followup_date', '=', ($selectedMonth));
+                })
+                ->when($selectedYear, function ($query) use ($selectedYear) {
+                    $query->whereYear('follow_ups.followup_date', '=', ($selectedYear));
+                })
+                ->orderBy($sort_field, $sort_direction)
+                ->search(trim($search_term))
+                ->paginate($paginate);
+
+            return FollowUpResource::collection($followup);
+        } else if (SvSbPivot::where('supervisor_id', '=', $id)->exists()) {
+
+            $sv_sb = "";
+            $final = [$id];
+
             $sv_sb = SvSbPivot::select('subordinate_id')
                 ->where('supervisor_id', '=', $id)
                 ->pluck('subordinate_id');
+
+            array_push($final, ...$sv_sb);
+
+            $followup = FollowUp::select([
+                'follow_ups.*',
+                'users.name as user_name',
+                'tasks.name as task_name',
+                'contacts.name as contact_name',
+            ])
+                ->whereIn('follow_ups.user_id', $final) // for view under supervisor and the subordinates
+                ->join('contacts', 'follow_ups.contact_id', '=', 'contacts.id')
+                ->join('tasks', 'follow_ups.task_id', '=', 'tasks.id')
+                ->join('users', 'follow_ups.user_id', '=', 'users.id')
+                ->when($selectedTask, function ($query) use ($selectedTask) {
+                    $query->where('follow_ups.task_id', $selectedTask);
+                })
+                ->when($selectedUser, function ($query) use ($selectedUser) {
+                    $query->where('follow_ups.user_id', $selectedUser);
+                })
+                ->when($selectedMonth, function ($query) use ($selectedMonth) {
+                    $query->whereMonth('follow_ups.followup_date', '=', ($selectedMonth));
+                })
+                ->when($selectedYear, function ($query) use ($selectedYear) {
+                    $query->whereYear('follow_ups.followup_date', '=', ($selectedYear));
+                })
+                ->orderBy($sort_field, $sort_direction)
+                ->search(trim($search_term))
+                ->paginate($paginate);
+
+            return FollowUpResource::collection($followup);
         } else {
             $sv_sb = ["null"];
+            $final = [$id];
+
+            array_push($final, ...$sv_sb);
+
+            $followup = FollowUp::select([
+                'follow_ups.*',
+                'users.name as user_name',
+                'tasks.name as task_name',
+                'contacts.name as contact_name',
+            ])
+                ->whereIn('follow_ups.user_id', $final) // for view under supervisor and the subordinates
+                ->join('contacts', 'follow_ups.contact_id', '=', 'contacts.id')
+                ->join('tasks', 'follow_ups.task_id', '=', 'tasks.id')
+                ->join('users', 'follow_ups.user_id', '=', 'users.id')
+                ->when($selectedTask, function ($query) use ($selectedTask) {
+                    $query->where('follow_ups.task_id', $selectedTask);
+                })
+                ->when($selectedUser, function ($query) use ($selectedUser) {
+                    $query->where('follow_ups.user_id', $selectedUser);
+                })
+                ->when($selectedMonth, function ($query) use ($selectedMonth) {
+                    $query->whereMonth('follow_ups.followup_date', '=', ($selectedMonth));
+                })
+                ->when($selectedYear, function ($query) use ($selectedYear) {
+                    $query->whereYear('follow_ups.followup_date', '=', ($selectedYear));
+                })
+                ->orderBy($sort_field, $sort_direction)
+                ->search(trim($search_term))
+                ->paginate($paginate);
+
+            return FollowUpResource::collection($followup);
         }
-
-        array_push($final, ...$sv_sb);
-        // ->whereIn('contacts.user_id', $final) // for view under supervisor and the subordinates
-
-        $followup = FollowUp::select([
-            'follow_ups.*',
-            'users.name as user_name',
-            'tasks.name as task_name',
-            'contacts.name as contact_name',
-        ])
-            ->whereIn('follow_ups.user_id', $final) // for view under supervisor and the subordinates
-            ->join('contacts', 'follow_ups.contact_id', '=', 'contacts.id')
-            ->join('tasks', 'follow_ups.task_id', '=', 'tasks.id')
-            ->join('users', 'follow_ups.user_id', '=', 'users.id')
-            ->when($selectedTask, function ($query) use ($selectedTask) {
-                $query->where('follow_ups.task_id', $selectedTask);
-            })
-            ->when($selectedUser, function ($query) use ($selectedUser) {
-                $query->where('follow_ups.user_id', $selectedUser);
-            })
-            ->when($selectedMonth, function ($query) use ($selectedMonth) {
-                $query->whereMonth('follow_ups.followup_date', '=', ($selectedMonth));
-            })
-            ->when($selectedYear, function ($query) use ($selectedYear) {
-                $query->whereYear('follow_ups.followup_date', '=', ($selectedYear));
-            })
-
-            ->orderBy($sort_field, $sort_direction)
-            ->search(trim($search_term))
-            ->paginate($paginate);
-
-        return FollowUpResource::collection($followup);
     }
+
+
 
     public function daterange()
     {
@@ -144,46 +277,109 @@ class FollowUpController extends Controller
         $selectedDateEnd = request('selectedDateEnd');
 
         $id = Auth::id();
-        $sv_sb = "";
-        $final = [$id];
 
-        if (SvSbPivot::where('supervisor_id', '=', $id)->exists()) {
+        if (
+            (DB::table('model_has_roles')
+                ->where('model_id', '=', $id)
+                ->where('role_id', '=', 2)
+                ->exists()) ||
+            (DB::table('model_has_roles')
+                ->where('model_id', '=', $id)
+                ->where('role_id', '=', 1)
+                ->exists())
+        ) {
+            $followup = FollowUp::select([
+                'follow_ups.*',
+                'users.name as user_name',
+                'tasks.name as task_name',
+                'contacts.name as contact_name',
+            ])
+                ->join('contacts', 'follow_ups.contact_id', '=', 'contacts.id')
+                ->join('tasks', 'follow_ups.task_id', '=', 'tasks.id')
+                ->join('users', 'follow_ups.user_id', '=', 'users.id')
+                ->when($selectedTask, function ($query) use ($selectedTask) {
+                    $query->where('follow_ups.task_id', $selectedTask);
+                })
+                ->when($selectedUser, function ($query) use ($selectedUser) {
+                    $query->where('follow_ups.user_id', $selectedUser);
+                })
+                ->when($selectedDateStart && $selectedDateEnd, function ($query) use ($selectedDateStart, $selectedDateEnd) {
+                    $query->whereBetween('follow_ups.followup_date', [$selectedDateStart, $selectedDateEnd]);
+                })
+                ->orderBy($sort_field, $sort_direction)
+                ->search(trim($search_term))
+                ->paginate($paginate);
+
+            return FollowUpResource::collection($followup);
+        } else if (SvSbPivot::where('supervisor_id', '=', $id)->exists()) {
+
+            $sv_sb = "";
+            $final = [$id];
+
             $sv_sb = SvSbPivot::select('subordinate_id')
                 ->where('supervisor_id', '=', $id)
                 ->pluck('subordinate_id');
+
+            array_push($final, ...$sv_sb);
+
+            $followup = FollowUp::select([
+                'follow_ups.*',
+                'users.name as user_name',
+                'tasks.name as task_name',
+                'contacts.name as contact_name',
+            ])
+                ->whereIn('follow_ups.user_id', $final) // for view under supervisor and the subordinates
+                ->join('contacts', 'follow_ups.contact_id', '=', 'contacts.id')
+                ->join('tasks', 'follow_ups.task_id', '=', 'tasks.id')
+                ->join('users', 'follow_ups.user_id', '=', 'users.id')
+                ->when($selectedTask, function ($query) use ($selectedTask) {
+                    $query->where('follow_ups.task_id', $selectedTask);
+                })
+                ->when($selectedUser, function ($query) use ($selectedUser) {
+                    $query->where('follow_ups.user_id', $selectedUser);
+                })
+                ->when($selectedDateStart && $selectedDateEnd, function ($query) use ($selectedDateStart, $selectedDateEnd) {
+                    $query->whereBetween('follow_ups.followup_date', [$selectedDateStart, $selectedDateEnd]);
+                })
+                ->orderBy($sort_field, $sort_direction)
+                ->search(trim($search_term))
+                ->paginate($paginate);
+
+            return FollowUpResource::collection($followup);
         } else {
             $sv_sb = ["null"];
+            $final = [$id];
+
+            array_push($final, ...$sv_sb);
+
+            $followup = FollowUp::select([
+                'follow_ups.*',
+                'users.name as user_name',
+                'tasks.name as task_name',
+                'contacts.name as contact_name',
+            ])
+                ->whereIn('follow_ups.user_id', $final) // for view under supervisor and the subordinates
+                ->join('contacts', 'follow_ups.contact_id', '=', 'contacts.id')
+                ->join('tasks', 'follow_ups.task_id', '=', 'tasks.id')
+                ->join('users', 'follow_ups.user_id', '=', 'users.id')
+                ->when($selectedTask, function ($query) use ($selectedTask) {
+                    $query->where('follow_ups.task_id', $selectedTask);
+                })
+                ->when($selectedUser, function ($query) use ($selectedUser) {
+                    $query->where('follow_ups.user_id', $selectedUser);
+                })
+                ->when($selectedDateStart && $selectedDateEnd, function ($query) use ($selectedDateStart, $selectedDateEnd) {
+                    $query->whereBetween('follow_ups.followup_date', [$selectedDateStart, $selectedDateEnd]);
+                })
+                ->orderBy($sort_field, $sort_direction)
+                ->search(trim($search_term))
+                ->paginate($paginate);
+
+            return FollowUpResource::collection($followup);
         }
-
-        array_push($final, ...$sv_sb);
-
-
-        $followup = FollowUp::select([
-            'follow_ups.*',
-            'users.name as user_name',
-            'tasks.name as task_name',
-            'contacts.name as contact_name',
-        ])
-            ->whereIn('follow_ups.user_id', $final) // for view under supervisor and the subordinates
-            ->join('contacts', 'follow_ups.contact_id', '=', 'contacts.id')
-            ->join('tasks', 'follow_ups.task_id', '=', 'tasks.id')
-            ->join('users', 'follow_ups.user_id', '=', 'users.id')
-            ->when($selectedTask, function ($query) use ($selectedTask) {
-                $query->where('follow_ups.task_id', $selectedTask);
-            })
-            ->when($selectedUser, function ($query) use ($selectedUser) {
-                $query->where('follow_ups.user_id', $selectedUser);
-            })
-            ->when($selectedDateStart && $selectedDateEnd, function ($query) use ($selectedDateStart, $selectedDateEnd) {
-                $query->whereBetween('follow_ups.followup_date', [$selectedDateStart, $selectedDateEnd]);
-            })
-
-            ->orderBy($sort_field, $sort_direction)
-            ->search(trim($search_term))
-            ->paginate($paginate);
-
-        return FollowUpResource::collection($followup);
     }
+
+
 
     public function store(Request $request)
     {

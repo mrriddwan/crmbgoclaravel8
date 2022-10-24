@@ -21,20 +21,46 @@ class RolesAndPermissionSeeder extends Seeder
         app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
 
         // create permissions
-        Permission::create(['name' => 'create contacts']);
-        Permission::create(['name' => 'edit contacts']);
-        Permission::create(['name' => 'delete contacts']);
+        Permission::create(['name' => 'create contact']);
+        Permission::create(['name' => 'edit contact']);
+        Permission::create(['name' => 'delete contact']);
        
-        Permission::create(['name' => 'create todos']);
-        Permission::create(['name' => 'edit todos']);
-        Permission::create(['name' => 'delete todos']);
+        Permission::create(['name' => 'create todo']);
+        Permission::create(['name' => 'insert todo']);
+        Permission::create(['name' => 'edit todo']);
+        Permission::create(['name' => 'delete todo']);
+
+        Permission::create(['name' => 'create followup']);
+        Permission::create(['name' => 'edit followup']);
+        Permission::create(['name' => 'delete followup']);
+
+        Permission::create(['name' => 'create forecast']);
+        Permission::create(['name' => 'edit forecast']);
+        Permission::create(['name' => 'delete forecast']);
+
+        Permission::create(['name' => 'create project']);
+        Permission::create(['name' => 'edit project']);
+        Permission::create(['name' => 'delete project']);
+
+        Permission::create(['name' => 'create billboard']);
+        Permission::create(['name' => 'edit billboard']);
+        Permission::create(['name' => 'delete billboard']);
+
+        Permission::create(['name' => 'create tempboard']);
+        Permission::create(['name' => 'edit tempboard']);
+        Permission::create(['name' => 'delete tempboard']);
 
         Permission::create(['name' => 'view admin']);
-        Permission::create(['name' => 'view contactSummary']);
-        Permission::create(['name' => 'view forecastSummary']);
+        Permission::create(['name' => 'view contact']);
+        Permission::create(['name' => 'view todo']);
+        Permission::create(['name' => 'view followup']);
         Permission::create(['name' => 'view forecast']);
         Permission::create(['name' => 'view project']);
-        Permission::create(['name' => 'view bb/tb']);
+        Permission::create(['name' => 'view performance']);
+
+        Permission::create(['name' => 'view contact summary']);
+        Permission::create(['name' => 'view forecast summary']);
+        Permission::create(['name' => 'view billboard/tempboard']);
 
         // create roles and assign created permissions
 
@@ -52,14 +78,74 @@ class RolesAndPermissionSeeder extends Seeder
         $user1->assignRole($role1);
 
         $role2 = Role::create(['name' => 'supervisor']);
-        $role2->givePermissionTo(['create contacts', 'edit contacts', 'delete contacts']);
+        $role2->givePermissionTo(
+            'create contact',
+            'edit contact',
+            'delete contact',
+
+            'create todo',
+            'insert todo',
+            'edit todo',
+            'delete todo',
+
+            'create followup',
+            'edit followup',
+            'delete followup',
+
+            'create forecast',
+            'edit forecast',
+            'delete forecast',
+
+            'create project',
+            'edit project',
+            'delete project',
+
+            'create billboard',
+            'edit billboard',
+            'delete billboard',
+
+            'create tempboard',
+            'edit tempboard',
+            'delete tempboard',
+
+            'view contact',
+            'view todo',
+            'view followup',
+            'view forecast',
+            'view project',
+            'view performance',
+            'view contact summary',
+            'view forecast summary',
+            'view billboard/tempboard',
+            );
 
         $user2 = User::where('id','=', 3)->first();
         $user2->assignRole($role2);
 
 
         $role3 = Role::create(['name' => 'user']);
-        $role3->givePermissionTo('create contacts', 'edit contacts');
+        $role3->givePermissionTo(
+            'create contact',
+            'edit contact',
+            'delete contact',
+
+            'insert todo',
+            'edit todo',
+            'delete todo',
+
+            'create followup',
+            'edit followup',
+            'delete followup',
+
+            'create forecast',
+            'edit forecast',
+            'delete forecast',
+
+            'view contact',
+            'view todo',
+            'view followup',
+            'view forecast',
+        );
 
         $user3 = User::where('id','=', 4)->first();
         $user3->assignRole($role3);

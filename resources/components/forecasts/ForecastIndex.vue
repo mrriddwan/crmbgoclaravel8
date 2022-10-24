@@ -6,7 +6,13 @@
     </h1>
 
     <div class="py-2">
-        <div class="inline-block">
+        <div
+            class="inline-block"
+            v-if="
+                can('view forecast summary') ||
+                is('supervisor | admin | super-admin')
+            "
+        >
             <router-link
                 to="/forecast/summary"
                 class="inline-block items-center px-2 py-1 bg-purple-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
@@ -108,7 +114,7 @@
         <div
             class="table-wrp block max-h-screen overflow-y-auto overflow-x-auto"
         >
-            <table class="table table-hover table-bordered w-full mt-0 ">
+            <table class="table table-hover table-bordered w-full mt-0">
                 <thead class="bg-slate-500 border-b sticky top-0 text-xs">
                     <tr>
                         <th>
@@ -237,6 +243,7 @@
                             </div>
                             <div
                                 class="items-center text-xs text-center h-6 w-24"
+                                v-if="is('supervisor | admin | super-admin')"
                             >
                                 <select
                                     v-model="selectedUser"
@@ -568,12 +575,20 @@
                                 >
                                     {{ forecast.result.name }}
                                 </span>
-                                <button
-                                    class="bg-blue-300 py-1 px-1 ml-2 text-xs rounded-md inline-block"
-                                    @click="toggleResult()"
+                                <div
+                                    v-if="
+                                        can('edit forecast') ||
+                                        is('supervisor | admin | super-admin')
+                                    "
                                 >
-                                    <PencilIcon class="h-3 w-3" />
-                                </button>
+                                    <button
+                                        class="bg-blue-300 py-1 px-1 ml-2 text-xs rounded-md inline-block"
+                                        @click="toggleResult()"
+                                    >
+                                        <PencilIcon class="h-3 w-3" />
+                                    </button>
+                                </div>
+
                                 <!-- <button
                                     class="bg-blue-300 py-1 px-1 ml-2 text-xs rounded-md inline-block"
                                     @click="hideEditResult(forecast.id)"
@@ -643,12 +658,19 @@
                             >
                                 <PencilSquareIcon class="h-3 w-3"
                             /></router-link>
-                            <button
-                                class="mr-2 mb-2 inline-flex items-center px-2 py-1 bg-red-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
-                                @click="deleteForecast(forecast.id)"
+                            <div
+                                v-if="
+                                    can('delete forecast') ||
+                                    is('supervisor | admin | super-admin')
+                                "
                             >
-                                <TrashIcon class="h-3 w-3" />
-                            </button>
+                                <button
+                                    class="mr-2 mb-2 inline-flex items-center px-2 py-1 bg-red-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
+                                    @click="deleteForecast(forecast.id)"
+                                >
+                                    <TrashIcon class="h-3 w-3" />
+                                </button>
+                            </div>
                         </td>
                     </tr>
                 </tbody>

@@ -34,6 +34,23 @@
                         placeholder="Search by any..."
                     />
                 </div>
+                <div
+                    v-if="is('supervisor | admin | super-admin')"
+                    class="grid grid-cols-1 items-left m-2 w-60"
+                >
+                    <label>View by</label>
+                    <select
+                        v-model="viewType"
+                        class="form-control form-control-md text-md h-max w-60"
+                    >
+                        <option class="text-md w-48" value="todo">
+                            Latest To Do
+                        </option>
+                        <option class="text-md w-48" value="action">
+                            Latest Action
+                        </option>
+                    </select>
+                </div>
 
                 <div>
                     <div>
@@ -54,7 +71,7 @@
                 <div class="py-1 inline-block">
                     <Pagination
                         :data="contacts"
-                        @pagination-change-page="getContacts"
+                        @pagination-change-page="getContactsByTodo"
                         :size="'small'"
                         :align="'right'"
                         class="pagination"
@@ -95,6 +112,9 @@
                                     >
                                 </div>
                                 <div
+                                    v-if="
+                                        is('supervisor | admin | super-admin')
+                                    "
                                     class="items-center text-xs text-center h-6 4"
                                 >
                                     <select
@@ -694,7 +714,7 @@ export default {
 
     mounted() {
         this.getSelectedYear(this.getCurrentDate());
-        this.getContacts();
+        this.getContactsByTodo();
         this.getStatus();
         this.getTypes();
         this.getUsers();
@@ -716,6 +736,7 @@ export default {
             selectAll: false,
             checked: [],
             url: "",
+            viewType: "todo",
 
             search: "",
             selectedYear: "",
@@ -742,7 +763,11 @@ export default {
                         if (!value.summary[`Jan` + this.selectedYear]) {
                             return " ";
                         } else {
-                            return `${value.summary[`Jan` + this.selectedYear][0]["todo_date"]}`;
+                            return `${
+                                value.summary[`Jan` + this.selectedYear][0][
+                                    "todo_date"
+                                ]
+                            }`;
                         }
                     },
                 },
@@ -751,7 +776,11 @@ export default {
                         if (!value.summary[`Feb` + this.selectedYear]) {
                             return " ";
                         } else {
-                            return `${value.summary[`Feb` + this.selectedYear][0]["todo_date"]}`;
+                            return `${
+                                value.summary[`Feb` + this.selectedYear][0][
+                                    "todo_date"
+                                ]
+                            }`;
                         }
                     },
                 },
@@ -760,7 +789,11 @@ export default {
                         if (!value.summary[`Mar` + this.selectedYear]) {
                             return " ";
                         } else {
-                            return `${value.summary[`Mar` + this.selectedYear][0]["todo_date"]}`;
+                            return `${
+                                value.summary[`Mar` + this.selectedYear][0][
+                                    "todo_date"
+                                ]
+                            }`;
                         }
                     },
                 },
@@ -769,7 +802,11 @@ export default {
                         if (!value.summary[`Apr` + this.selectedYear]) {
                             return " ";
                         } else {
-                            return `${value.summary[`Apr` + this.selectedYear][0]["todo_date"]}`;
+                            return `${
+                                value.summary[`Apr` + this.selectedYear][0][
+                                    "todo_date"
+                                ]
+                            }`;
                         }
                     },
                 },
@@ -778,7 +815,11 @@ export default {
                         if (!value.summary[`May` + this.selectedYear]) {
                             return " ";
                         } else {
-                            return `${value.summary[`May` + this.selectedYear][0]["todo_date"]}`;
+                            return `${
+                                value.summary[`May` + this.selectedYear][0][
+                                    "todo_date"
+                                ]
+                            }`;
                         }
                     },
                 },
@@ -787,7 +828,11 @@ export default {
                         if (!value.summary[`Jun` + this.selectedYear]) {
                             return " ";
                         } else {
-                            return `${value.summary[`Jun` + this.selectedYear][0]["todo_date"]}`;
+                            return `${
+                                value.summary[`Jun` + this.selectedYear][0][
+                                    "todo_date"
+                                ]
+                            }`;
                         }
                     },
                 },
@@ -796,7 +841,11 @@ export default {
                         if (!value.summary[`Jul` + this.selectedYear]) {
                             return " ";
                         } else {
-                            return `${value.summary[`Jul` + this.selectedYear][0]["todo_date"]}`;
+                            return `${
+                                value.summary[`Jul` + this.selectedYear][0][
+                                    "todo_date"
+                                ]
+                            }`;
                         }
                     },
                 },
@@ -805,7 +854,11 @@ export default {
                         if (!value.summary[`Aug` + this.selectedYear]) {
                             return " ";
                         } else {
-                            return `${value.summary[`Aug` + this.selectedYear][0]["todo_date"]}`;
+                            return `${
+                                value.summary[`Aug` + this.selectedYear][0][
+                                    "todo_date"
+                                ]
+                            }`;
                         }
                     },
                 },
@@ -814,7 +867,11 @@ export default {
                         if (!value.summary[`Sep` + this.selectedYear]) {
                             return " ";
                         } else {
-                            return `${value.summary[`Sep` + this.selectedYear][0]["todo_date"]}`;
+                            return `${
+                                value.summary[`Sep` + this.selectedYear][0][
+                                    "todo_date"
+                                ]
+                            }`;
                         }
                     },
                 },
@@ -823,7 +880,11 @@ export default {
                         if (!value.summary[`Oct` + this.selectedYear]) {
                             return " ";
                         } else {
-                            return `${value.summary[`Oct` + this.selectedYear][0]["todo_date"]}`;
+                            return `${
+                                value.summary[`Oct` + this.selectedYear][0][
+                                    "todo_date"
+                                ]
+                            }`;
                         }
                     },
                 },
@@ -832,7 +893,11 @@ export default {
                         if (!value.summary[`Nov` + this.selectedYear]) {
                             return " ";
                         } else {
-                            return `${value.summary[`Nov` + this.selectedYear][0]["todo_date"]}`;
+                            return `${
+                                value.summary[`Nov` + this.selectedYear][0][
+                                    "todo_date"
+                                ]
+                            }`;
                         }
                     },
                 },
@@ -841,7 +906,11 @@ export default {
                         if (!value.summary[`Dec` + this.selectedYear]) {
                             return " ";
                         } else {
-                            return `${value.summary[`Dec` + this.selectedYear][0]["todo_date"]}`;
+                            return `${
+                                value.summary[`Dec` + this.selectedYear][0][
+                                    "todo_date"
+                                ]
+                            }`;
                         }
                     },
                 },
@@ -850,25 +919,25 @@ export default {
     },
     watch: {
         paginate: function (value) {
-            this.getContacts();
+            this.getContactsByTodo();
         },
         search: function (value) {
-            this.getContacts();
+            this.getContactsByTodo();
         },
         selectedStatus: function (value) {
-            this.getContacts();
+            this.getContactsByTodo();
         },
         selectedUser: function (value) {
-            this.getContacts();
+            this.getContactsByTodo();
         },
         selectedType: function (value) {
-            this.getContacts();
+            this.getContactsByTodo();
         },
         selectedCategory: function (value) {
-            this.getContacts();
+            this.getContactsByTodo();
         },
         selectedIndustry: function (value) {
-            this.getContacts();
+            this.getContactsByTodo();
         },
 
         selectPage: function (value) {
@@ -891,35 +960,79 @@ export default {
     computed: {},
 
     methods: {
-        getContacts(page = 1) {
+        getContactsByTodo(page = 1) {
             if (typeof page === "undefined") {
                 page = 1;
             }
             axios
                 .get(
-                    "/api/contacts/summary?" +
-                        "q=" +
-                        this.search +
-                        "&selectedYear=" +
-                        this.selectedYear +
-                        "&selectedStatus=" +
-                        this.selectedStatus +
-                        "&selectedUser=" +
-                        this.selectedUser +
-                        "&selectedType=" +
-                        this.selectedType +
-                        "&selectedCategory=" +
-                        this.selectedCategory +
-                        "&selectedIndustry=" +
-                        this.selectedIndustry +
-                        "&paginate=" +
-                        this.paginate +
-                        "&page=" +
-                        page +
-                        "&sort_direction=" +
-                        this.sort_direction +
-                        "&sort_field=" +
-                        this.sort_field
+                    "/api/contacts/summary_todo?"
+                    +
+                    "q=" +
+                    this.search +
+                    "&selectedYear=" +
+                    this.selectedYear
+                    +
+                    "&selectedStatus=" +
+                    this.selectedStatus +
+                    "&selectedUser=" +
+                    this.selectedUser +
+                    "&selectedType=" +
+                    this.selectedType +
+                    "&selectedCategory=" +
+                    this.selectedCategory +
+                    "&selectedIndustry=" +
+                    this.selectedIndustry
+                    +
+                    "&paginate=" +
+                    this.paginate +
+                    "&page=" +
+                    page +
+                    "&sort_direction=" +
+                    this.sort_direction +
+                    "&sort_field=" +
+                    this.sort_field
+                )
+                .then((res) => {
+                    this.contacts = res.data;
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        },
+
+        getContactsByAction(page = 1) {
+            if (typeof page === "undefined") {
+                page = 1;
+            }
+            axios
+                .get(
+                    "/api/contacts/summary_action?"
+                    +
+                    "q=" +
+                    this.search +
+                    "&selectedYear=" +
+                    this.selectedYear
+                    +
+                    "&selectedStatus=" +
+                    this.selectedStatus +
+                    "&selectedUser=" +
+                    this.selectedUser +
+                    "&selectedType=" +
+                    this.selectedType +
+                    "&selectedCategory=" +
+                    this.selectedCategory +
+                    "&selectedIndustry=" +
+                    this.selectedIndustry
+                    +
+                    "&paginate=" +
+                    this.paginate +
+                    "&page=" +
+                    page +
+                    "&sort_direction=" +
+                    this.sort_direction +
+                    "&sort_field=" +
+                    this.sort_field
                 )
                 .then((res) => {
                     this.contacts = res.data;
@@ -991,7 +1104,7 @@ export default {
             } else {
                 this.sort_field = field;
             }
-            await this.getContacts();
+            await this.getContactsByTodo();
         },
 
         getCurrentDate() {
@@ -1009,8 +1122,6 @@ export default {
             let day = moment(date).format("DD-MM-YY");
             return day;
         },
-
-
     },
 };
 </script>

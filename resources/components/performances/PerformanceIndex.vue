@@ -25,7 +25,7 @@
             </span>
         </div>
 
-        <div class="m-1 inline-block items-center px-1 py-1">
+        <div class="m-1 inline-block items-center px-1 py-1" v-if="is('supervisor | admin | super-admin')">
             <p>Select user</p>
             <select v-model="selectedUser" class="form-control">
                 <option value="">All User</option>
