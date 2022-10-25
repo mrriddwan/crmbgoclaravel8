@@ -16,12 +16,6 @@ class ContactStatusController extends Controller
 
     public function dropdown()
     {
-        // $status = ContactStatusResource::collection(ContactStatus::all());
-
-        // $data = ([
-        //     'value' => $status -> id,
-        //     'text' => $status -> name
-        // ]);
         $status = ContactStatus::all('id', 'name');
 
         $data = collect($status)->map(function ($item) {
@@ -34,6 +28,24 @@ class ContactStatusController extends Controller
         return response()->json([
             'status' => true,
             'message' => 'Successfully fetch data status ',
+            'data' => $data,
+        ]);
+    }
+
+    public function info(ContactStatus $status)
+    {
+        $status = ContactStatus::select(
+            'id',
+            'name'
+        )
+            ->where('id', $status->id)
+            ->get();
+
+        $data = $status->toArray();
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Successfully fetch data Contact ',
             'data' => $data,
         ]);
     }

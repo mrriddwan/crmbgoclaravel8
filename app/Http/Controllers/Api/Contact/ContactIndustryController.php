@@ -14,5 +14,23 @@ class ContactIndustryController extends Controller
     {
         return ContactIndustryResource::collection(ContactIndustry::all()->sortBy('name'));
     }
+
+    public function info(ContactIndustry $industry)
+    {
+        $industry = ContactIndustry::select(
+            'id',
+            'name'
+        )
+            ->where('id', $industry->id)
+            ->get();
+
+        $data = $industry->toArray();
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Successfully fetch data Contact ',
+            'data' => $data,
+        ]);
+    }
     
 }

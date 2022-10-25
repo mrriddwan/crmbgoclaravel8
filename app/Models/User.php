@@ -68,6 +68,11 @@ class User extends Authenticatable
         return $this -> hasMany(ToDo::class, 'user_id')->with('action');
     }
 
+    public function billboard()
+    {
+        return $this->belongsTo(Billboard::class);
+    }
+
     // public function getAllPermissionsAttribute()
     // {
     //     $permission = [];

@@ -134,6 +134,166 @@ class AdminController extends Controller
         ]);
     }
 
+    public function updateContactCategory(Request $request, ContactCategory $category)
+    {
+
+        $request->validate([
+            'name' => ['required', 'string'],
+        ], [
+            'name.required' => 'The contact product is required',
+        ]);
+
+        $category->update([
+            'name' => $request->name,
+        ]);
+
+        return response()->json([
+            'data' => $category,
+            'status' => true,
+            'message' => 'Successfully update contact category',
+        ]);
+    }
+
+    public function updateContactStatus(Request $request, ContactStatus $status)
+    {
+
+        $request->validate([
+            'name' => ['required', 'string'],
+        ], [
+            'name.required' => 'The contact status is required',
+        ]);
+
+        $status->update([
+            'name' => $request->name,
+        ]);
+
+        return response()->json([
+            'data' => $status,
+            'status' => true,
+            'message' => 'Successfully update contact status',
+        ]);
+    }
+
+    public function updateContactType(Request $request, ContactType $type)
+    {
+
+        $request->validate([
+            'name' => ['required', 'string'],
+        ], [
+            'name.required' => 'The contact type is required',
+        ]);
+
+        $type->update([
+            'name' => $request->name,
+        ]);
+
+        return response()->json([
+            'data' => $type,
+            'status' => true,
+            'message' => 'Successfully update contact type',
+        ]);
+    }
+
+    public function updateContactIndustry(Request $request, ContactIndustry $industry)
+    {
+
+        $request->validate([
+            'name' => ['required', 'string'],
+        ], [
+            'name.required' => 'The contact industry is required',
+        ]);
+
+        $industry->update([
+            'name' => $request->name,
+        ]);
+
+        return response()->json([
+            'data' => $industry,
+            'status' => true,
+            'message' => 'Successfully update contact industry',
+        ]);
+    }
+
+    public function updateToDoTask(Request $request, Task $task)
+    {
+
+        $request->validate([
+            'name' => ['required', 'string'],
+        ], [
+            'name.required' => 'The task is required',
+        ]);
+
+        $task->update([
+            'name' => $request->name,
+        ]);
+
+        return response()->json([
+            'data' => $task,
+            'status' => true,
+            'message' => 'Successfully update task',
+        ]);
+    }
+
+    public function updateToDoAction(Request $request, Action $action)
+    {
+
+        $request->validate([
+            'name' => ['required', 'string'],
+        ], [
+            'name.required' => 'The action is required',
+        ]);
+
+        $action->update([
+            'name' => $request->name,
+        ]);
+
+        return response()->json([
+            'data' => $action,
+            'status' => true,
+            'message' => 'Successfully update action.',
+        ]);
+    }
+
+    public function updateForecastProduct(Request $request, ForecastProduct $product)
+    {
+
+        $request->validate([
+            'name' => ['required', 'string'],
+        ], [
+            'name.required' => 'The forecast product is required',
+        ]);
+
+        $product->update([
+            'name' => $request->name,
+        ]);
+
+        return response()->json([
+            'data' => $product,
+            'status' => true,
+            'message' => 'Successfully update forecast product.',
+        ]);
+    }
+
+    public function updateForecastType(Request $request, ForecastType $type)
+    {
+
+        $request->validate([
+            'name' => ['required', 'string'],
+        ], [
+            'name.required' => 'The forecast type is required',
+        ]);
+
+        $type->update([
+            'name' => $request->name,
+        ]);
+
+        return response()->json([
+            'data' => $type,
+            'status' => true,
+            'message' => 'Successfully update forecast type.',
+        ]);
+    }
+
     public function deleteContactCategory(ContactCategory $category)
     {
         $category->delete();
@@ -209,6 +369,8 @@ class AdminController extends Controller
             'password' => Hash::make($request->password),
             'email_password' => 'Unset yet'
         ]);
+
+        $user->syncRoles('user');
 
         return response()->json([
             'data' => $user,
@@ -318,9 +480,12 @@ class AdminController extends Controller
 
     public function user_role_permissions()
     {
+        $selectedUser = request('selectedUser');
+
         $summary = User::with([
             'roles' => function ($q) {
-                $q->select('id', 'name');
+                $q->select('id', 'name')
+                ->orderBy('id', 'asc');
             },
             'roles.permissions' => function ($q) {
                 $q->select('id', 'name');
@@ -329,7 +494,11 @@ class AdminController extends Controller
         ])
             ->whereKeyNot(1)
             ->select('users.id', 'users.name',)
-            ->get();
+            ->when($selectedUser, function ($query) use ($selectedUser) {
+                $query->where('users.id', $selectedUser);
+            })
+            ->get()
+            ;
 
         return response()->json([
 
@@ -354,7 +523,9 @@ class AdminController extends Controller
             // ->join('roles', 'roles.id', '=', 'model_has_roles.role_id')
             ->select('users.id', 'users.name',)
             ->where('users.id', $user_id)
-            ->get();
+            ->get()
+            ->orderBy('roles.id')
+            ;
 
         return response()->json([
 
@@ -394,6 +565,10 @@ class AdminController extends Controller
 
     public function user_permission_remove(User $user, Request $request)
     {
+
+        //current issue it removes all permissions
+
+
         // $request->validate([
         //     'permission_name' => ['required', 'string'],
         // ], [

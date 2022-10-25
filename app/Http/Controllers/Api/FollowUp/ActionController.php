@@ -13,4 +13,22 @@ class ActionController extends Controller
     {
         return ActionResource::collection(Action::all()->sortBy('name'));
     }
+
+    public function info(Action $action)
+    {
+        $action = Action::select(
+            'id',
+            'name'
+        )
+            ->where('id', $action->id)
+            ->get();
+
+        $data = $action->toArray();
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Successfully fetch action info ',
+            'data' => $data,
+        ]);
+    }
 }

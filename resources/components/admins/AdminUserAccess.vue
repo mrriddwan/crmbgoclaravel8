@@ -1048,7 +1048,11 @@ export default {
 
         async getUserRolePermissions() {
             await axios
-                .get("/api/admin/users/role_permissions")
+                .get(
+                    "/api/admin/users/role_permissions?" +
+                        "&selectedUser=" +
+                        this.selectedUser
+                )
                 .then((res) => {
                     this.user_role_permissions = res.data.data;
                 })

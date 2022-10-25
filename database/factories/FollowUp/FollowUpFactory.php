@@ -28,7 +28,7 @@ class FollowUpFactory extends Factory
             'followup_date' => $this->faker ->dateTimeThisYear('+12 month'),
             'followup_time' => $this->faker ->time($format = 'H:i', $max = 'now'),
             'followup_remark' => $this->faker ->realText($maxNbChars = 50),
-            'todo_id' => random_int(1, 150),
+            'todo_id' => random_int(1, 50),
             'contact_id' => random_int(1, 100),
             'user_id' => random_int(1, 10),
             'task_id' => random_int(1, 5),

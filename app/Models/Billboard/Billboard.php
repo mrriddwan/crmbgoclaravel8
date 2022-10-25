@@ -3,6 +3,7 @@
 namespace App\Models\Billboard;
 
 use App\Models\Contact\Contact;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -46,8 +47,39 @@ class Billboard extends Model
             "users.name as user_name",
             "users.id as user_id",
         )
-        // ->with('contact', 'user')
-        ->join('contacts', 'billboard_tenures.contact_id', '=', 'contacts.id')
-        ->join('users', 'billboard_tenures.user_id', '=', 'users.id');
+            // ->with('contact', 'user')
+            ->join('contacts', 'billboard_tenures.contact_id', '=', 'contacts.id')
+            ->join('users', 'billboard_tenures.user_id', '=', 'users.id');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function contact()
+    {
+        return $this->belongsTo(Contact::class);
+    }
+
+    public function scopeSearch($query, $term)
+    {
+        $term = "%$term%";
+
+        $query->where(function ($query) use ($term) {
+            $query->where('billboards.site_id', 'like', $term)
+                ->orWhere('billboards.bboard_location', 'like', $term)
+                ->orWhere('billboards.bboard_size', 'like', $term)
+                ->orWhereHas('summary', function ($query) use ($term) {
+                    $query->where('billboard_tenures.tenure_startdate', 'like', $term)
+                        ->orWhere('billboard_tenures.tenure_enddate', 'like', $term)
+                        ->orWhereHas('contact', function ($query) use ($term) {
+                            $query->where('contacts.name', 'like', $term);
+                        })
+                        ->orWhereHas('user', function ($query) use ($term) {
+                            $query->where('users.name', 'like', $term);
+                        });
+                });
+        });
     }
 }

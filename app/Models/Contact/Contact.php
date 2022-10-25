@@ -81,9 +81,14 @@ class Contact extends Model
         return $this->belongsTo(Billboard::class);
     }
 
-    public function summary()
+    public function summary_action()
     {
         return $this->hasMany(ToDo::class)->whereNotNull('action_id');
+    }
+
+    public function summary_todo()
+    {
+        return $this->hasMany(ToDo::class);
     }
 
     public function forecast_summary()

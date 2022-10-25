@@ -20,19 +20,8 @@
                         Contact
                     </h2>
                 </div>
-
                 <div
-                    class="bg-blue-200 px-2 py-1 rounded-md flex w-full justify-center items-center row"
-                >
-                    <h4
-                        class="text-center text-gray-800 px-8 uppercase w-max font-mono font-extrabold"
-                    >
-                        User: {{ userID }}
-                    </h4>
-                </div>
-
-                <div
-                    class="grid grid-cols-2 gap-2 text-center align-items-center"
+                    class="grid grid-cols-1 gap-2 text-center align-items-center"
                 >
                     <div
                         class="mt-2 grid grid-cols-1 bg-slate-300 px-2 py-1 rounded-lg w-full justify-center items-center row"
@@ -43,8 +32,9 @@
                             </h3>
                         </div>
 
-                        <div class="grid grid-cols-2">
-                            <div class="grid grid-rows-2 grid-cols-1">
+                        <div class="grid grid-cols-4">
+                            <!-- Create Contact Product -->
+                            <div class="grid grid-rows-2 grid-cols-1 mx-1">
                                 <div class="form-group">
                                     <input
                                         type="text"
@@ -64,7 +54,54 @@
                                     </button>
                                 </div>
                             </div>
-                            <div class="grid grid-rows-2 grid-cols-1 mx-3">
+                            <!-- Select Contact Product -->
+                            <div class="form-group items-center mx-1">
+                                <select
+                                    class="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                    v-model="editContactCategory"
+                                >
+                                    <option disabled value="">
+                                        Please select one
+                                    </option>
+                                    <option
+                                        v-for="contact_category in contact_categories"
+                                        :key="contact_category.id"
+                                        :value="contact_category.id"
+                                    >
+                                        {{ contact_category.name }}
+                                    </option>
+                                </select>
+                            </div>
+
+                            <!-- Update Contact Product -->
+                            <div class="items-center mx-1">
+                                <div>
+                                    <div class="form-group">
+                                        <div class="form-group">
+                                            <input
+                                                v-model="contact_category.name"
+                                                type="text"
+                                                class="block mt-1 w-full text-center rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                            />
+                                        </div>
+                                    </div>
+                                    <button
+                                        @click="
+                                            updateItem(contact_category.name)
+                                        "
+                                        type="submit"
+                                        class="inline-flex mt-2 items-center px-4 py-2 bg-blue-400 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
+                                    >
+                                        Update
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!--Delete Contact Product-->
+                            <div
+                                class="grid grid-rows-2 grid-cols-1 mx-3"
+                                v-if="is('super-admin')"
+                            >
                                 <div class="form-group items-center">
                                     <select
                                         class="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
@@ -106,7 +143,8 @@
                             </h3>
                         </div>
 
-                        <div class="grid grid-cols-2">
+                        <div class="grid grid-cols-4">
+                            <!-- Create Contact Status -->
                             <div class="grid grid-rows-2 grid-cols-1">
                                 <div class="form-group">
                                     <input
@@ -125,7 +163,50 @@
                                     </button>
                                 </div>
                             </div>
-                            <div class="grid grid-rows-2 grid-cols-1 mx-3">
+                            <!-- Select Contact Status -->
+                            <div class="form-group items-center mx-1">
+                                <select
+                                    class="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                    v-model="editContactStatus"
+                                >
+                                    <option disabled value="">
+                                        Please select one
+                                    </option>
+                                    <option
+                                        v-for="contact_status in contact_statuses"
+                                        :key="contact_status.id"
+                                        :value="contact_status.id"
+                                    >
+                                        {{ contact_status.name }}
+                                    </option>
+                                </select>
+                            </div>
+                            <!-- Edit Contact Status -->
+                            <div class="items-center mx-1">
+                                <div>
+                                    <div class="form-group">
+                                        <div class="form-group">
+                                            <input
+                                                v-model="contact_status.name"
+                                                type="text"
+                                                class="block mt-1 w-full text-center rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                            />
+                                        </div>
+                                    </div>
+                                    <button
+                                        @click="updateItem(contact_status.name)"
+                                        type="submit"
+                                        class="inline-flex mt-2 items-center px-4 py-2 bg-blue-400 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
+                                    >
+                                        Update
+                                    </button>
+                                </div>
+                            </div>
+                            <!-- Delete Contact Status -->
+                            <div
+                                class="grid grid-rows-2 grid-cols-1 mx-3"
+                                v-if="is('super-admin')"
+                            >
                                 <div class="form-group items-center">
                                     <select
                                         class="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
@@ -167,7 +248,8 @@
                             </h3>
                         </div>
 
-                        <div class="grid grid-cols-2">
+                        <div class="grid grid-cols-4">
+                            <!-- Create Contact Type -->
                             <div class="grid grid-rows-2 grid-cols-1">
                                 <div class="form-group">
                                     <input
@@ -186,7 +268,52 @@
                                     </button>
                                 </div>
                             </div>
-                            <div class="grid grid-rows-2 grid-cols-1 mx-3">
+
+                            <!-- Select Contact Type -->
+                            <div class="form-group items-center mx-1">
+                                <select
+                                    class="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                    v-model="editContactType"
+                                >
+                                    <option disabled value="">
+                                        Please select one
+                                    </option>
+                                    <option
+                                        v-for="contact_type in contact_types"
+                                        :key="contact_type.id"
+                                        :value="contact_type.id"
+                                    >
+                                        {{ contact_type.name }}
+                                    </option>
+                                </select>
+                            </div>
+
+                            <!-- Edit Contact Type -->
+                            <div class="items-center mx-1">
+                                <div>
+                                    <div class="form-group">
+                                        <div class="form-group">
+                                            <input
+                                                v-model="contact_type.name"
+                                                type="text"
+                                                class="block mt-1 w-full text-center rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                            />
+                                        </div>
+                                    </div>
+                                    <button
+                                        @click="updateItem(contact_type.name)"
+                                        type="submit"
+                                        class="inline-flex mt-2 items-center px-4 py-2 bg-blue-400 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
+                                    >
+                                        Update
+                                    </button>
+                                </div>
+                            </div>
+                            <!-- Delete Contact Type -->
+                            <div
+                                class="grid grid-rows-2 grid-cols-1 mx-3"
+                                v-if="is('super-admin')"
+                            >
                                 <div class="form-group items-center">
                                     <select
                                         class="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
@@ -225,7 +352,8 @@
                             </h3>
                         </div>
 
-                        <div class="grid grid-cols-2">
+                        <div class="grid grid-cols-4">
+                            <!-- Create Contact Industry -->
                             <div class="grid grid-rows-2 grid-cols-1">
                                 <div class="form-group">
                                     <input
@@ -246,7 +374,52 @@
                                     </button>
                                 </div>
                             </div>
-                            <div class="grid grid-rows-2 grid-cols-1 mx-3">
+                            <!-- Select Contact Industry-->
+                            <div class="form-group items-center mx-1">
+                                <select
+                                    class="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                    v-model="editContactIndustry"
+                                >
+                                    <option disabled value="">
+                                        Please select one
+                                    </option>
+                                    <option
+                                        v-for="contact_industry in contact_industries"
+                                        :key="contact_industry.id"
+                                        :value="contact_industry.id"
+                                    >
+                                        {{ contact_industry.name }}
+                                    </option>
+                                </select>
+                            </div>
+                            <!-- Edit Contact Category -->
+                            <div class="items-center mx-1">
+                                <div>
+                                    <div class="form-group">
+                                        <div class="form-group">
+                                            <input
+                                                v-model="contact_industry.name"
+                                                type="text"
+                                                class="block mt-1 w-full text-center rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                            />
+                                        </div>
+                                    </div>
+                                    <button
+                                        @click="
+                                            updateItem(contact_industry.name)
+                                        "
+                                        type="submit"
+                                        class="inline-flex mt-2 items-center px-4 py-2 bg-blue-400 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
+                                    >
+                                        Update
+                                    </button>
+                                </div>
+                            </div>
+                            <!-- Delete Contact Category -->
+                            <div
+                                class="grid grid-rows-2 grid-cols-1 mx-3"
+                                v-if="is('super-admin')"
+                            >
                                 <div class="form-group items-center">
                                     <select
                                         class="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
@@ -297,18 +470,17 @@
                 </div>
 
                 <div
-                    class="grid grid-cols-2 gap-2 text-center align-items-center"
+                    class="grid grid-cols-1 gap-2 text-center align-items-center"
                 >
                     <div
                         class="grid grid-cols-1 mt-2 bg-slate-300 px-2 py-1 rounded-lg w-full justify-center items-center row"
                     >
                         <div colspan="2">
-                            <h3 class="uppercase font-bold font-mono">
-                                Task
-                            </h3>
+                            <h3 class="uppercase font-bold font-mono">Task</h3>
                         </div>
 
-                        <div class="grid grid-cols-2">
+                        <div class="grid grid-cols-4">
+                            <!-- Create To Do Task -->
                             <div class="grid grid-rows-2 grid-cols-1">
                                 <div class="form-group">
                                     <input
@@ -327,8 +499,50 @@
                                     </button>
                                 </div>
                             </div>
-                            <div class="grid grid-rows-2 grid-cols-1 mx-3">
-
+                            <!-- Select To Do Task -->
+                            <div class="form-group items-center mx-1">
+                                <select
+                                    class="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                    v-model="editTodoTask"
+                                >
+                                    <option disabled value="">
+                                        Please select one
+                                    </option>
+                                    <option
+                                        v-for="todo_task in todo_tasks"
+                                        :key="todo_task.id"
+                                        :value="todo_task.id"
+                                    >
+                                        {{ todo_task.name }}
+                                    </option>
+                                </select>
+                            </div>
+                            <!-- Edit To Do Task -->
+                            <div class="items-center mx-1">
+                                <div>
+                                    <div class="form-group">
+                                        <div class="form-group">
+                                            <input
+                                                v-model="todo_task.name"
+                                                type="text"
+                                                class="block mt-1 w-full text-center rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                            />
+                                        </div>
+                                    </div>
+                                    <button
+                                        @click="updateItem(todo_task.name)"
+                                        type="submit"
+                                        class="inline-flex mt-2 items-center px-4 py-2 bg-blue-400 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
+                                    >
+                                        Update
+                                    </button>
+                                </div>
+                            </div>
+                            <!-- Delete To Do Task -->
+                            <div
+                                class="grid grid-rows-2 grid-cols-1 mx-3"
+                                v-if="is('super-admin')"
+                            >
                                 <div class="form-group items-center">
                                     <select
                                         class="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
@@ -368,11 +582,9 @@
                             </h3>
                         </div>
 
-                        <div class="grid grid-cols-2">
+                        <div class="grid grid-cols-4">
+                            <!-- Create To Do Action -->
                             <div class="grid grid-rows-2 grid-cols-1">
-                                <!-- <div>
-                                        <label>New Contact Product</label>
-                                    </div> -->
                                 <div class="form-group">
                                     <input
                                         type="text"
@@ -390,11 +602,51 @@
                                     </button>
                                 </div>
                             </div>
-                            <div class="grid grid-rows-2 grid-cols-1 mx-3">
-                                <!-- <div>
-                                        
-                                    </div> -->
 
+                            <!-- Select To Do Action -->
+                            <div class="form-group items-center mx-1">
+                                <select
+                                    class="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                    v-model="editTodoAction"
+                                >
+                                    <option disabled value="">
+                                        Please select one
+                                    </option>
+                                    <option
+                                        v-for="todo_action in todo_actions"
+                                        :key="todo_action.id"
+                                        :value="todo_action.id"
+                                    >
+                                        {{ todo_action.name }}
+                                    </option>
+                                </select>
+                            </div>
+
+                            <div class="items-center mx-1">
+                                <div>
+                                    <div class="form-group">
+                                        <div class="form-group">
+                                            <input
+                                                v-model="todo_action.name"
+                                                type="text"
+                                                class="block mt-1 w-full text-center rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                            />
+                                        </div>
+                                    </div>
+                                    <button
+                                        @click="updateItem(todo_action.name)"
+                                        type="submit"
+                                        class="inline-flex mt-2 items-center px-4 py-2 bg-blue-400 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
+                                    >
+                                        Update
+                                    </button>
+                                </div>
+                            </div>
+                            <!-- Delete To Do Action -->
+                            <div
+                                class="grid grid-rows-2 grid-cols-1 mx-3"
+                                v-if="is('super-admin')"
+                            >
                                 <div class="form-group items-center">
                                     <select
                                         class="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
@@ -443,7 +695,7 @@
                 </div>
 
                 <div
-                    class="grid grid-cols-2 gap-2 text-center align-items-center"
+                    class="grid grid-cols-1 gap-2 text-center align-items-center"
                 >
                     <div
                         class="mt-2 grid grid-cols-1 bg-slate-300 px-2 py-1 rounded-lg w-full justify-center items-center row"
@@ -454,7 +706,8 @@
                             </h3>
                         </div>
 
-                        <div class="grid grid-cols-2">
+                        <div class="grid grid-cols-4">
+                            <!-- Create Forecast Product -->
                             <div class="grid grid-rows-2 grid-cols-1">
                                 <div class="form-group">
                                     <input
@@ -475,7 +728,53 @@
                                     </button>
                                 </div>
                             </div>
-                            <div class="grid grid-rows-2 grid-cols-1 mx-3">
+
+                            <!-- Select Forecast Product-->
+                            <div class="form-group items-center mx-1">
+                                <select
+                                    class="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                    v-model="editForecastProduct"
+                                >
+                                    <option disabled value="">
+                                        Please select one
+                                    </option>
+                                    <option
+                                        v-for="forecast_product in forecast_products"
+                                        :key="forecast_product.id"
+                                        :value="forecast_product.id"
+                                    >
+                                        {{ forecast_product.name }}
+                                    </option>
+                                </select>
+                            </div>
+                            <!-- Edit Forecast Product -->
+                            <div class="items-center mx-1">
+                                <div>
+                                    <div class="form-group">
+                                        <div class="form-group">
+                                            <input
+                                                v-model="forecast_product.name"
+                                                type="text"
+                                                class="block mt-1 w-full text-center rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                            />
+                                        </div>
+                                    </div>
+                                    <button
+                                        @click="
+                                            updateItem(forecast_product.name)
+                                        "
+                                        type="submit"
+                                        class="inline-flex mt-2 items-center px-4 py-2 bg-blue-400 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
+                                    >
+                                        Update
+                                    </button>
+                                </div>
+                            </div>
+                            <!-- Delete Forecast Product -->
+                            <div
+                                class="grid grid-rows-2 grid-cols-1 mx-3"
+                                v-if="is('super-admin')"
+                            >
                                 <div class="form-group items-center">
                                     <select
                                         class="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
@@ -517,7 +816,8 @@
                             </h3>
                         </div>
 
-                        <div class="grid grid-cols-2">
+                        <div class="grid grid-cols-4">
+                            <!-- Create Forecast Type -->
                             <div class="grid grid-rows-2 grid-cols-1">
                                 <div class="form-group">
                                     <input
@@ -536,7 +836,48 @@
                                     </button>
                                 </div>
                             </div>
-                            <div class="grid grid-rows-2 grid-cols-1 mx-3">
+                            <!-- Select Forecast Type -->
+                            <div class="form-group items-center mx-1">
+                                <select
+                                    class="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                    v-model="editForecastType"
+                                >
+                                    <option disabled value="">
+                                        Please select one
+                                    </option>
+                                    <option
+                                        v-for="forecast_type in forecast_types"
+                                        :key="forecast_type.id"
+                                        :value="forecast_type.id"
+                                    >
+                                        {{ forecast_type.name }}
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="items-center mx-1">
+                                <div>
+                                    <div class="form-group">
+                                        <div class="form-group">
+                                            <input
+                                                v-model="forecast_type.name"
+                                                type="text"
+                                                class="block mt-1 w-full text-center rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                            />
+                                        </div>
+                                    </div>
+                                    <button
+                                        @click="updateItem(forecast_type.name)"
+                                        type="submit"
+                                        class="inline-flex mt-2 items-center px-4 py-2 bg-blue-400 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
+                                    >
+                                        Update
+                                    </button>
+                                </div>
+                            </div>
+                            <div
+                                class="grid grid-rows-2 grid-cols-1 mx-3"
+                                v-if="is('super-admin')"
+                            >
                                 <div class="form-group items-center">
                                     <select
                                         class="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
@@ -594,6 +935,48 @@ export default {
                 forecast_type: "",
             },
 
+            editContactCategory: "",
+            editContactStatus: "",
+            editContactType: "",
+            editContactIndustry: "",
+            editTodoTask: "",
+            editTodoAction: "",
+            editForecastProduct: "",
+            editForecastType: "",
+
+            contact_category: {
+                id: "",
+                name: "",
+            },
+            contact_status: {
+                id: "",
+                name: "",
+            },
+            contact_type: {
+                id: "",
+                name: "",
+            },
+            contact_industry: {
+                id: "",
+                name: "",
+            },
+            todo_task: {
+                id: "",
+                name: "",
+            },
+            todo_action: {
+                id: "",
+                name: "",
+            },
+            forecast_product: {
+                id: "",
+                name: "",
+            },
+            forecast_type: {
+                id: "",
+                name: "",
+            },
+
             admin: {
                 contact_category: "",
                 contact_status: "",
@@ -620,6 +1003,33 @@ export default {
         };
     },
 
+    watch: {
+        editContactCategory() {
+            this.getContactCategoryInfo();
+        },
+        editContactStatus() {
+            this.getContactStatusInfo();
+        },
+        editContactType() {
+            this.getContactTypeInfo();
+        },
+        editContactIndustry() {
+            this.getContactIndustryInfo();
+        },
+        editTodoTask() {
+            this.getTodoTaskInfo();
+        },
+        editTodoAction() {
+            this.getTodoActionInfo();
+        },
+        editForecastProduct() {
+            this.getForecastProductInfo();
+        },
+        editForecastType() {
+            this.getForecastTypeInfo();
+        },
+    },
+
     created() {
         this.getUserID();
         this.getContactStatuses();
@@ -632,7 +1042,6 @@ export default {
 
         this.getForecastProducts();
         this.getForecastTypes();
-        
     },
 
     methods: {
@@ -822,6 +1231,128 @@ export default {
             }
         },
 
+        async updateItem(text) {
+            if (!window.confirm("Confirm update item?")) {
+                return;
+            } else {
+                try {
+                    if (text === this.contact_category.name) {
+                        await axios
+                            .put("/api/admin/update/contact/category/" + this.editContactCategory,
+                            {
+                                name: this.contact_category.name,
+                            })
+                            .then((res) => {
+                                this.contact_category.name = "";
+                                this.getContactCategories();
+                                this.editContactCategory = "";
+                                
+                                alert("Contact product updated.");
+                            });
+                    } else if (text === this.contact_status.name) {
+                        await axios
+                            .put("/api/admin/update/contact/status/" + this.editContactStatus, 
+                            {
+                                name: this.contact_status.name,
+                            })
+                            .then((res) => {
+                                this.contact_status.name = "";
+                                this.getContactStatuses();
+                                this.editContactStatus = "";
+                                
+                                alert("Contact status updated.");
+                            });
+                    } else if (text === this.contact_type.name) {
+                        await axios
+                            .put("/api/admin/update/contact/type/" + this.editContactType, 
+                            {
+                                name: this.contact_type.name,
+                            })
+                            .then((res) => {
+                                this.contact_type.name = "";
+                                this.getContactTypes();
+                                this.editContactType = "";
+                                
+                                alert("Contact type updated.");
+                            });
+                    } else if (text === this.contact_industry.name) {
+                        await axios
+                            .put("/api/admin/update/contact/industry/" + this.editContactIndustry, 
+                            {
+                                name: this.contact_industry.name,
+                            })
+                            .then((res) => {
+                                this.contact_industry.name = "";
+                                this.getContactIndustries();
+                                this.editContactIndustry = "";
+                                
+                                alert("Contact industry updated.");
+                            });
+                    } else if (text === this.todo_task.name) {
+                        await axios
+                            .put("/api/admin/update/todo/task/" + this.editTodoTask, 
+                            {
+                                name: this.todo_task.name,
+                            })
+                            .then((res) => {
+                                this.todo_task.name = "";
+                                this.getToDoTasks();
+                                this.editTodoTask = "";
+                                
+                                alert("Todo task updated.");
+                            });
+                    } else if (text === this.todo_action.name) {
+                        await axios
+                            .put("/api/admin/update/todo/action/" + this.editTodoAction, 
+                            {
+                                name: this.todo_action.name,
+                            })
+                            .then((res) => {
+                                this.todo_action.name = "";
+                                this.getToDoActions();
+                                this.editTodoAction = "";
+                                
+                                alert("Todo action updated.");
+                            });
+                    } else if (text === this.forecast_product.name) {
+                        await axios
+                            .put("/api/admin/update/forecast/product/" + this.editForecastProduct, 
+                            {
+                                name: this.forecast_product.name,
+                            })
+                            .then((res) => {
+                                this.forecast_product.name = "";
+                                this.getForecastProducts();
+                                this.editForecastProduct = "";
+                                
+                                alert("Forecast product updated.");
+                            });
+                    } else {
+                        await axios
+                            .put("/api/admin/update/forecast/type/" + this.editForecastType, 
+                            {
+                                name: this.forecast_type.name,
+                            })
+                            .then((res) => {
+                                this.forecast_type.name = "";
+                                this.getForecastTypes();
+                                this.editForecastType = "";
+                                
+                                alert("Forecast type updated.");
+                            });
+                    }
+                } catch (e) {
+                    {
+                        if (e.response.status === 422) {
+                            this.errors = e.response.data.errors;
+                        } else {
+                            return "no error response";
+                        }
+                    }
+                }
+            }
+        },
+
         deleteItem(id) {
             if (!window.confirm("Are you sure?")) {
                 return;
@@ -893,11 +1424,92 @@ export default {
             }
         },
 
-        async getUserID(){
+        async getUserID() {
             await axios
                 .get("/api/contacts/getuserid")
                 .then((res) => {
                     this.userID = res.data;
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        },
+
+        async getContactCategoryInfo() {
+            await axios
+                .get("/api/contacts/category/info/" + this.editContactCategory)
+                .then((res) => {
+                    this.contact_category = res.data.data[0];
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        },
+        async getContactStatusInfo() {
+            await axios
+                .get("/api/contacts/status/info/" + this.editContactStatus)
+                .then((res) => {
+                    this.contact_status = res.data.data[0];
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        },
+        async getContactTypeInfo() {
+            await axios
+                .get("/api/contacts/type/info/" + this.editContactType)
+                .then((res) => {
+                    this.contact_type = res.data.data[0];
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        },
+        async getContactIndustryInfo() {
+            await axios
+                .get("/api/contacts/industry/info/" + this.editContactIndustry)
+                .then((res) => {
+                    this.contact_industry = res.data.data[0];
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        },
+        async getTodoTaskInfo() {
+            await axios
+                .get("/api/tasks/info/" + this.editTodoTask)
+                .then((res) => {
+                    this.todo_task = res.data.data[0];
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        },
+        async getTodoActionInfo() {
+            await axios
+                .get("/api/actions/info/" + this.editTodoAction)
+                .then((res) => {
+                    this.todo_action = res.data.data[0];
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        },
+        async getForecastProductInfo() {
+            await axios
+                .get("/api/forecasts/product/info/" + this.editForecastProduct)
+                .then((res) => {
+                    this.forecast_product = res.data.data[0];
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        },
+        async getForecastTypeInfo() {
+            await axios
+                .get("/api/forecasts/type/info/" + this.editForecastType)
+                .then((res) => {
+                    this.forecast_type = res.data.data[0];
                 })
                 .catch((error) => {
                     console.log(error);

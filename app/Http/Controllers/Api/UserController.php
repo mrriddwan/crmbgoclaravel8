@@ -13,7 +13,7 @@ class UserController extends Controller
 {
     public function index()
     {
-        return UserResource::collection(User::all()->sortBy('name'));
+        return UserResource::collection(User::all()->sortBy('name')->where('id','!=', 1));
     }
 
 

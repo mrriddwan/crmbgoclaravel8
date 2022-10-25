@@ -1112,7 +1112,11 @@ export default {
                         }
                     );
                     this.errors = "";
-                    this.edit_user.name = this.edit_user.name;
+                    this.edit_user.name = "";
+                    this.edit_user.password = "";
+                    this.edit_user.confirm_password = "";
+                    this.edit_user.email = "";
+                    this.edit_user.email_password = "";
                     this.selectedUser = "";
                     alert("Updated user name.");
                 } else if (value === this.edit_user.password) {
@@ -1123,8 +1127,10 @@ export default {
                             confirm_password: this.edit_user.confirm_password,
                         }
                     );
-                    this.errors = ""; this.edit_user.password = "";
+                    this.errors = ""; this.edit_user.name = ""; this.edit_user.password = "";
                     this.edit_user.confirm_password = "";
+                    this.edit_user.email = "";
+                    this.edit_user.email_password = "";
                     this.selectedUser = "";
                     alert("Updated password.");
                 } else {
@@ -1136,17 +1142,14 @@ export default {
                         }
                     );
                     this.errors = "";
+                    this.edit_user.name = "";
+                    this.edit_user.password = "";
+                    this.edit_user.confirm_password = "";
+                    this.edit_user.email = "";
                     this.edit_user.email_password = "";
                     this.selectedUser = "";
                     alert("Updated user email.");
                 }
-
-                // await this.$router.push({
-                //     name: "todo_index",
-                //     params: {
-                //         selectedDate: this.form.todo_date,
-                //     },
-                // });
             } catch (e) {
                 {
                     if (e.response.status === 422) {

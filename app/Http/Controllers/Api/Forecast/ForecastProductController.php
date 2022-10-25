@@ -14,4 +14,22 @@ class ForecastProductController extends Controller
         return ForecastProductResource::collection(ForecastProduct::all()->sortBy('name'));
         // return ContactCategory::all()->only('id', 'name');
     }
+
+    public function info(ForecastProduct $product)
+    {
+        $product = ForecastProduct::select(
+            'id',
+            'name'
+        )
+            ->where('id', $product->id)
+            ->get();
+
+        $data = $product->toArray();
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Successfully fetch task info ',
+            'data' => $data,
+        ]);
+    }
 }

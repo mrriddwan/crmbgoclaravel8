@@ -13,4 +13,22 @@ class ContactTypeController extends Controller
     {
         return ContactTypeResource::collection(ContactType::all()->sortBy('name'));
     }
+
+    public function info(ContactType $type)
+    {
+        $type = ContactType::select(
+            'id',
+            'name'
+        )
+            ->where('id', $type->id)
+            ->get();
+
+        $data = $type->toArray();
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Successfully fetch data Contact ',
+            'data' => $data,
+        ]);
+    }
 }

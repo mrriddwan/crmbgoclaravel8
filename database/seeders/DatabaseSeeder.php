@@ -38,7 +38,7 @@ class DatabaseSeeder extends Seeder
             ForecastSeeder::class,
             Contact_InchargeSeeder::class,
             ToDoSeeder::class,
-            // FollowUpSeeder::class,
+            FollowUpSeeder::class,
             ProjectSeeder::class,
             BillboardSeeder::class,
             TempboardSeeder::class,

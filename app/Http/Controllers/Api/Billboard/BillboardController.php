@@ -25,7 +25,15 @@ class BillboardController extends Controller
 
         $billboard = Billboard::with('summary')
             ->select('id', 'site_id', 'bboard_location', 'bboard_size')
-
+            // ->when($selectedYear, function ($query) use ($selectedYear) {
+            //     $query->whereHas('summary', function ($q) use ($selectedYear) {
+            //         $q->whereYear('tenure_startdate', $selectedYear)
+            //             ->orWhere(function ($query) use ($selectedYear) {
+            //                 $query->whereYear('tenure_enddate', '=', $selectedYear);
+            //             });
+            //     });
+            // })
+            ->search(trim($search_term))
             ->paginate(1000);
 
         // return BillboardResource::collection($billboard);

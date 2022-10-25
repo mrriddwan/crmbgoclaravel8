@@ -50,13 +50,28 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 // Route::middleware('auth')->group(function () {
     Route::post('/admin/create/contact/category', [AdminController::class, 'createContactCategory'])->name('contactCategory:create');
+    Route::put('/admin/update/contact/category/{category}', [AdminController::class, 'updateContactCategory'])->name('contactCategory:update');
+
     Route::post('/admin/create/contact/status', [AdminController::class, 'createContactStatus'])->name('contactStatus:create');
+    Route::put('/admin/update/contact/status/{status}', [AdminController::class, 'updateContactStatus'])->name('contactStatus:update');
+
     Route::post('/admin/create/contact/type', [AdminController::class, 'createContactType'])->name('contactType:create');
+    Route::put('/admin/update/contact/type/{type}', [AdminController::class, 'updateContactType'])->name('contactType:update');
+
     Route::post('/admin/create/contact/industry', [AdminController::class, 'createContactIndustry'])->name('contactIndustry:create');
+    Route::put('/admin/update/contact/industry/{industry}', [AdminController::class, 'updateContactIndustry'])->name('contactIndustry:update');
+
     Route::post('/admin/create/todo/task', [AdminController::class, 'createToDoTask'])->name('todoTask:create');
+    Route::put('/admin/update/todo/task/{task}', [AdminController::class, 'updateToDoTask'])->name('todoTask:update');
+
     Route::post('/admin/create/todo/action', [AdminController::class, 'createToDoAction'])->name('todoAction:create');
+    Route::put('/admin/update/todo/action/{action}', [AdminController::class, 'updateToDoAction'])->name('todoTask:update');
+
     Route::post('/admin/create/forecast/type', [AdminController::class, 'createForecastType'])->name('forecastType:create');
+    Route::put('/admin/update/forecast/type/{type}', [AdminController::class, 'updateForecastType'])->name('forecastType:update');
+
     Route::post('/admin/create/forecast/product', [AdminController::class, 'createForecastProduct'])->name('forecastProduct:create');
+    Route::put('/admin/update/forecast/product/{product}', [AdminController::class, 'updateForecastProduct'])->name('forecastProduct:update');
 
     Route::delete('/admin/delete/contact/category/{category}', [AdminController::class, 'deleteContactCategory'])->name('contactCategory:delete');
     Route::delete('/admin/delete/contact/status/{status}', [AdminController::class, 'deleteContactStatus'])->name('contactStatus:delete');
@@ -162,9 +177,17 @@ Route::get('/contacts/summary_todo', [ContactController::class, 'summary_todo'])
 
 /*Sub-Contact API*/
 Route::get('/contacts/category/index', [ContactCategoryController::class, 'index'])->name('category:index');
+Route::get('/contacts/category/info/{category}', [ContactCategoryController::class, 'info'])->name('category:info');
+
 Route::get('/contacts/type/index', [ContactTypeController::class, 'index'])->name('type:index');
-Route::get('/contacts/status/index', [ContactStatusController::class, 'index'])->name('status:index');
+Route::get('/contacts/type/info/{type}', [ContactTypeController::class, 'info'])->name('type:info');
+
+Route::get('/contacts/status/index', [ContactStatusController::class, 'index'])->name('status:info');
+Route::get('/contacts/status/info/{status}', [ContactStatusController::class, 'info'])->name('status:info');
+
 Route::get('/contacts/industry/index', [ContactIndustryController::class, 'index'])->name('industry:index');
+Route::get('/contacts/industry/info/{industry}', [ContactIndustryController::class, 'info'])->name('industry:info');
+
 // Route::get('/contactstatus/dropdown', [ContactStatusController::class, 'dropdown'])->name('status:dropdown');
 
 Route::get('/users/index', [UserController::class, 'index'])->name('user:index');
@@ -197,7 +220,11 @@ Route::get('/todos/all', [ToDoController::class, 'selectAll'])->name('todo:selec
 
 /*Sub-To Do API*/
 Route::get('/tasks/index', [TaskController::class, 'index'])->name('task:index');
+Route::get('/tasks/info/{task}', [TaskController::class, 'info'])->name('task:info');
+
 Route::get('/actions/index', [ActionController::class, 'index'])->name('action:index');
+Route::get('/actions/info/{action}', [ActionController::class, 'info'])->name('action:info');
+
 Route::get('/sources/index', [ToDoSourceController::class, 'index'])->name('source:index');
 
 /*Follow Up API*/
@@ -226,8 +253,12 @@ Route::get('/forecasts/summary2', [ForecastController::class, 'summary2'])->name
 
 /*Sub-Forecast API*/
 Route::get('/forecasts/product/index', [ForecastProductController::class, 'index'])->name('forecastproduct:index');
-Route::get('/forecasts/result/index', [ForecastResultController::class, 'index'])->name('forecastresult:index');
+Route::get('/forecasts/product/info/{product}', [ForecastProductController::class, 'info'])->name('forecastproduct:info');
+
 Route::get('/forecasts/type/index', [ForecastTypeController::class, 'index'])->name('forecasttype:index');
+Route::get('/forecasts/type/info/{type}', [ForecastTypeController::class, 'info'])->name('forecasttype:info');
+
+Route::get('/forecasts/result/index', [ForecastResultController::class, 'index'])->name('forecastresult:index');
 
 /*Forecast API*/
 Route::get('/projects/index', [ProjectController::class, 'index'])->name('project:index');

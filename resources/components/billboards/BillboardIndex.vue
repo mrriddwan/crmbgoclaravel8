@@ -17,7 +17,7 @@
                     </select>
                 </div> -->
 
-                <div class="items-center" v-if="can('create billboard')">
+                <div class="items-center" v-if="can('create billboard') || is('supervisor | admin | super-admin')">
                     <router-link
                         to="/billboard/create"
                         class="inline-block items-center px-2 py-1 align-top bg-blue-800 border-transparent rounded-md font-semibold text-m text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
@@ -1212,7 +1212,7 @@ export default {
             sort_field: "site_id",
             currentDate: "",
 
-            // contact_fields: {
+            contact_fields: {
             //     ID: "id",
             //     Company: "name",
             //     Status: "status_name",
@@ -1328,61 +1328,61 @@ export default {
             //             }
             //         },
             //     },
-            // },
+            },
         };
     },
     watch: {
         paginate: function (value) {
-            this.getTenures();
+            this.getBillboards();
         },
         search: function (value) {
-            this.getTenures();
+            this.getBillboardsWithParam();
         },
         selectedYear: function (value) {
-            this.getTenures();
+            this.getBillboardsWithParam();
         },
         selectedSite: function (value) {
-            this.getTenures();
+            this.getBillboards();
         },
         selectedSize: function (value) {
-            this.getTenures();
+            this.getBillboards();
         },
     },
 
     computed: {},
 
     methods: {
-        getTenures(page = 1) {
-            if (typeof page === "undefined") {
-                page = 1;
-            }
-            axios
-                .get(
-                    "/api/billboards/tenure?" +
-                        "q=" +
-                        this.search +
-                        "&selectedYear=" +
-                        this.selectedYear +
-                        "&selectedSite=" +
-                        this.selectedSite +
-                        "&selectedSize=" +
-                        this.selectedSize +
-                        "&paginate=" +
-                        this.paginate +
-                        "&page=" +
-                        page +
-                        "&sort_direction=" +
-                        this.sort_direction +
-                        "&sort_field=" +
-                        this.sort_field
-                )
-                .then((res) => {
-                    this.tenures = res.data;
-                })
-                .catch((error) => {
-                    console.log(error);
-                });
-        },
+        // getTenures(page = 1) {
+        //     if (typeof page === "undefined") {
+        //         page = 1;
+        //     }
+        //     axios
+        //         .get(
+        //             "/api/billboards/tenure?" +
+        //                 "q=" +
+        //                 this.search +
+        //                 "&selectedYear=" +
+        //                 this.selectedYear +
+        //                 "&selectedSite=" +
+        //                 this.selectedSite +
+        //                 "&selectedSize=" +
+        //                 this.selectedSize +
+        //                 "&paginate=" +
+        //                 this.paginate +
+        //                 "&page=" +
+        //                 page +
+        //                 "&sort_direction=" +
+        //                 this.sort_direction +
+        //                 "&sort_field=" +
+        //                 this.sort_field
+        //         )
+        //         .then((res) => {
+        //             this.tenures = res.data;
+        //         })
+        //         .catch((error) => {
+        //             console.log(error);
+        //         });
+        // },
 
         getBillboards(page = 1) {
             if (typeof page === "undefined") {
@@ -1391,11 +1391,29 @@ export default {
             axios
                 .get(
                     "/api/billboards/index"
+                )
+                .then((res) => {
+                    this.billboards = res.data;
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        },
+
+        getBillboardsWithParam(page = 1) {
+            if (typeof page === "undefined") {
+                page = 1;
+            }
+            axios
+                .get(
+                    "/api/billboards/index?"
+                    +
+                    "q=" +
+                    this.search
+                     +
+                    "&selectedYear=" +
+                    this.selectedYear 
                     // +
-                    // "q=" +
-                    // this.search +
-                    // "&selectedYear=" +
-                    // this.selectedYear +
                     // "&selectedSite=" +
                     // this.selectedSite +
                     // "&selectedSize=" +

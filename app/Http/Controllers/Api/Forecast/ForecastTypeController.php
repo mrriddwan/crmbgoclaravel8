@@ -13,4 +13,22 @@ class ForecastTypeController extends Controller
     {
         return ForecastTypeResource::collection(ForecastType::all()->sortBy('name'));
     }
+
+    public function info(ForecastType $type)
+    {
+        $type = ForecastType::select(
+            'id',
+            'name'
+        )
+            ->where('id', $type->id)
+            ->get();
+
+        $data = $type->toArray();
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Successfully fetch task info ',
+            'data' => $data,
+        ]);
+    }
 }
