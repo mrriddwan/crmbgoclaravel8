@@ -118,7 +118,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     Route::get('/admin/roles/permissions', [RoleController::class, 'role_permissions'])->name('role:permissions');
     Route::post('/admin/roles/add/permission/{role}', [RoleController::class, 'add_permission'])->name('role:add_permission');
     // Route::delete('/admin/roles/remove/permission/{role}', [RoleController::class, 'remove_permission'])->name('role:remove_permission');
-    Route::delete('/admin/roles/remove/permission/{permission}', [RoleController::class, 'remove_permission'])->name('role:remove_permission');
+    Route::post('/admin/roles/remove/permission/{role}', [RoleController::class, 'remove_permission'])->name('role:remove_permission');
 
     Route::get('/admin/permissions/index', [PermissionController::class, 'index'])->name('permission:index');
     Route::post('admin/permissions/create', [PermissionController::class, 'permission_create'])->name('permission:create');
@@ -130,7 +130,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     Route::get('/admin/users/role_permissions/{user_id}', [AdminController::class, 'user_role_permissions_info'])->name('admin:user_role_permissions_info');
     Route::put('/admin/roles/user/update/{user}', [AdminController::class, 'user_role_update'])->name('user:role_update');
     Route::post('/admin/roles/user/update/permission/{user}', [AdminController::class, 'user_permission_update'])->name('user:direct_permission_update');
-    Route::delete('/admin/user/permissions/delete/{user}', [AdminController::class, 'user_permission_remove'])->name('user:direct_permission_remove');
+    Route::post('/admin/users/remove/permission/{user}', [AdminController::class, 'user_permission_remove'])->name('user:direct_permission_remove');
 
 
 // });
@@ -139,21 +139,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 /*Contact API*/
 
 // Route::middleware('auth')->group(function () {
-//     Route::get('/contacts/index', [ContactController::class, 'index'])->name('contact:index');
-//     Route::get('/contacts/list', [ContactController::class, 'list'])->name('contact:list');
-//     Route::post('/contacts/store', [ContactController::class, 'store'])->name('contact:store');
-//     Route::get('/contacts/show/{contact}', [ContactController::class, 'show'])->name('contact:show');
-//     Route::put('/contacts/update/{contact}', [ContactController::class, 'update'])->name('contact:update');
-//     Route::delete('/contacts/delete/{contact}', [ContactController::class, 'delete'])->name('contact:delete');
-//     Route::get('/contacts/info/{contact}', [ContactController::class, 'info'])->name('contact:info');
-//     Route::get('/contacts/summary', [ContactController::class, 'summary'])->name('contact:summary');
-//     Route::get('/contacts/test', [ContactController::class, 'test'])->name('contact:test');
-//     Route::get('/contacts/export/{contact}', [ContactController::class, 'export'])->name('contact:export');
-//     Route::get('/contacts/all', [ContactController::class, 'selectAll'])->name('contact:selectAll');
-//     Route::get('/contacts/exportSummary', [ContactController::class, 'exportSummary'])->name('contact:exportSummary');
-//     Route::get('/contacts/todo', [ContactController::class, 'todo'])->name('contact:todo');
-//     Route::get('/contacts/history/{contact}', [ContactController::class, 'history'])->name('contact:history');
-//     Route::get('/contacts/getuserid', [ContactController::class, 'getuserid'])->name('contact:getuserid');
 // });
 
 Route::get('/contacts/index', [ContactController::class, 'index'])->name('contact:index');
@@ -191,6 +176,7 @@ Route::get('/contacts/industry/info/{industry}', [ContactIndustryController::cla
 // Route::get('/contactstatus/dropdown', [ContactStatusController::class, 'dropdown'])->name('status:dropdown');
 
 Route::get('/users/index', [UserController::class, 'index'])->name('user:index');
+Route::get('/users/users_list', [UserController::class, 'users_list'])->name('user:users_list');
 // Route::get('/users/action/{id}', [UserController::class, 'action'])->name('user:action');
 Route::get('/users/action', [UserController::class, 'action'])->name('user:action');
 
@@ -217,6 +203,7 @@ Route::get('/todos/new/{todo}', [ToDoController::class, 'new'])->name('todo:new'
 Route::get('/todos/info/{todo}', [ToDoController::class, 'info'])->name('todo:info');
 Route::get('/todos/export/{todo}', [ToDoController::class, 'export'])->name('todo:export');
 Route::get('/todos/all', [ToDoController::class, 'selectAll'])->name('todo:selectAll');
+Route::get('/todos/test_api', [ToDoController::class, 'test_api'])->name('todo:test_api');
 
 /*Sub-To Do API*/
 Route::get('/tasks/index', [TaskController::class, 'index'])->name('task:index');

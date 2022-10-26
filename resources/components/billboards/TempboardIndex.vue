@@ -815,10 +815,11 @@ export default {
     },
 
     mounted() {
+        this.selectedUser = document.querySelector('meta[name="user-id"]').getAttribute('content');
+        this.getUsers();
         this.getSelectedYear(this.getCurrentDate());
         this.getTempboards();
         // this.getBillboardSizes();
-        this.getUsers();
     },
     data() {
         return {
@@ -1016,7 +1017,7 @@ export default {
 
         async getUsers() {
             await axios
-                .get("/api/users/index")
+                .get("/api/users/users_list")
                 .then((res) => {
                     this.users = res.data;
                 })

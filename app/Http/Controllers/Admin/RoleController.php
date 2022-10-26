@@ -11,7 +11,7 @@ class RoleController extends Controller
 {
     public function index()
     {
-        $role = Role::all()->whereNotIn('id', 1);
+        $role = Role::all()->whereNotIn('id', [1,2]);
 
         return response()->json([
             'status' => true,
@@ -110,16 +110,10 @@ class RoleController extends Controller
     public function remove_permission(Role $role, Request $request)
     {
 
-        // $roles = Role::all();
-        // $permissions = Permission::all();
-        // $permission = Permission::where('id', $request->permission_id)->get();
-        // $role = Role::where('id', '=', $request->role_id);
 
 
-
-        // $permission->removeRole($roles);
-        $role->revokePermissionTo('create todos');
-        // $role->revokePermissionTo($request->permission_name); //this will remove all permission from role
+        // $role->revokePermissionTo('create todos');
+        $role->revokePermissionTo($request->permission_name); 
 
         return response()->json([
             'data' => $role,

@@ -613,6 +613,7 @@ export default {
     mounted() {
         this.getActions();
         this.getUsers();
+        this.selectedUser = document.querySelector('meta[name="user-id"]').getAttribute('content');
         this.getTasks();
         console.log(
             "this is the route params from follow up, month?:" +
@@ -693,7 +694,7 @@ export default {
             selectedDateEnd: "",
 
             sort_direction: "desc",
-            sort_field: "followup_date",
+            sort_field: "created_at",
             actions: "",
         };
     },
@@ -919,7 +920,7 @@ export default {
 
         getUsers() {
             axios
-                .get("/api/users/index")
+                .get("/api/users/users_list")
                 .then((res) => {
                     this.users = res.data.data;
                 })

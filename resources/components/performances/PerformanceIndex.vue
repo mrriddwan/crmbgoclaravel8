@@ -206,6 +206,7 @@ export default {
     mounted() {
         this.getActions();
         this.getUsers();
+        this.selectedUser = document.querySelector('meta[name="user-id"]').getAttribute('content');
         this.getCurrentDate();
         this.getDates(this.currentDate);
 
@@ -341,7 +342,7 @@ export default {
 
         getUsers() {
             axios
-                .get("/api/users/index")
+                .get("/api/users/users_list")
                 .then((res) => {
                     this.users = res.data.data;
                 })

@@ -712,11 +712,13 @@ export default {
     },
 
     mounted() {
-        this.getForecasts();
+        
         this.getUsers();
+        this.selectedUser = document.querySelector('meta[name="user-id"]').getAttribute('content');
         this.getProducts();
         this.getForecastTypes();
         this.getResults();
+        this.getForecasts();
     },
     data() {
         return {
@@ -830,7 +832,7 @@ export default {
         },
         getUsers() {
             axios
-                .get("/api/users/index")
+                .get("/api/users/users_list")
                 .then((res) => {
                     this.users = res.data;
                 })

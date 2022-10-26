@@ -44,6 +44,9 @@
             </header> --}}
 
         <!-- Page Content -->
+        @if (Auth::check())
+            <meta name="user-id" content="{{ Auth::user()->id }}" />
+        @endif
         <main>
             {{ $slot }}
         </main>

@@ -84,7 +84,7 @@
                     class="table table-hover table-bordered w-max"
                     id="summary_table"
                 >
-                    <thead class="bg-slate-400 border-b sticky top-0">
+                    <thead class="bg-slate-500 border-b sticky top-0">
                         <tr class="w-full">
                             <th class="w-10">
                                 <div class="text-xs text-center h-6">
@@ -93,23 +93,39 @@
                                         @click.prevent="
                                             change_sort('user_name')
                                         "
+                                        class="text-white inline-flex"
                                     >
                                         CS
+                                        <span
+                                            v-if="
+                                                (!(sort_direction == 'asc') ||
+                                                    !(
+                                                        sort_direction == 'desc'
+                                                    )) &&
+                                                !(sort_field == 'user_name')
+                                            "
+                                            class="inline-block"
+                                            ><ArrowsUpDownIcon class="h-4 w-4"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'desc' &&
+                                                sort_field == 'user_name'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowUpIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'asc' &&
+                                                sort_field == 'user_name'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowDownIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
                                     </a>
-                                    <span
-                                        v-if="
-                                            sort_direction == 'desc' &&
-                                            sort_field == 'user_name'
-                                        "
-                                        >&uarr;</span
-                                    >
-                                    <span
-                                        v-if="
-                                            sort_direction == 'asc' &&
-                                            sort_field == 'user_name'
-                                        "
-                                        >&darr;</span
-                                    >
                                 </div>
                                 <div
                                     v-if="
@@ -142,23 +158,39 @@
                                         @click.prevent="
                                             change_sort('status_name')
                                         "
+                                        class="text-white inline-flex"
                                     >
                                         Status
+                                        <span
+                                            v-if="
+                                                (!(sort_direction == 'asc') ||
+                                                    !(
+                                                        sort_direction == 'desc'
+                                                    )) &&
+                                                !(sort_field == 'status_name')
+                                            "
+                                            class="inline-block"
+                                            ><ArrowsUpDownIcon class="h-4 w-4"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'desc' &&
+                                                sort_field == 'status_name'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowUpIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'asc' &&
+                                                sort_field == 'status_name'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowDownIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
                                     </a>
-                                    <span
-                                        v-if="
-                                            sort_direction == 'desc' &&
-                                            sort_field == 'status_name'
-                                        "
-                                        >&uarr;</span
-                                    >
-                                    <span
-                                        v-if="
-                                            sort_direction == 'asc' &&
-                                            sort_field == 'status_name'
-                                        "
-                                        >&darr;</span
-                                    >
                                 </div>
                                 <div class="text-xs text-center h-6">
                                     <select
@@ -183,23 +215,39 @@
                                         @click.prevent="
                                             change_sort('type_name')
                                         "
+                                        class="text-white inline-flex"
                                     >
                                         Type
+                                        <span
+                                            v-if="
+                                                (!(sort_direction == 'asc') ||
+                                                    !(
+                                                        sort_direction == 'desc'
+                                                    )) &&
+                                                !(sort_field == 'type_name')
+                                            "
+                                            class="inline-block"
+                                            ><ArrowsUpDownIcon class="h-4 w-4"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'desc' &&
+                                                sort_field == 'type_name'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowUpIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'asc' &&
+                                                sort_field == 'type_name'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowDownIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
                                     </a>
-                                    <span
-                                        v-if="
-                                            sort_direction == 'desc' &&
-                                            sort_field == 'type_name'
-                                        "
-                                        >&uarr;</span
-                                    >
-                                    <span
-                                        v-if="
-                                            sort_direction == 'asc' &&
-                                            sort_field == 'type_name'
-                                        "
-                                        >&darr;</span
-                                    >
                                 </div>
                                 <div class="text-xs text-center h-6">
                                     <div class="text-xs text-center h-6">
@@ -227,23 +275,39 @@
                                         @click.prevent="
                                             change_sort('category_name')
                                         "
+                                        class="text-white inline-flex"
                                     >
-                                        Category
+                                        Product
+                                        <span
+                                            v-if="
+                                                (!(sort_direction == 'asc') ||
+                                                    !(
+                                                        sort_direction == 'desc'
+                                                    )) &&
+                                                !(sort_field == 'category_name')
+                                            "
+                                            class="inline-block"
+                                            ><ArrowsUpDownIcon class="h-4 w-4"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'desc' &&
+                                                sort_field == 'category_name'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowUpIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'asc' &&
+                                                sort_field == 'category_name'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowDownIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
                                     </a>
-                                    <span
-                                        v-if="
-                                            sort_direction == 'desc' &&
-                                            sort_field == 'type_name'
-                                        "
-                                        >&uarr;</span
-                                    >
-                                    <span
-                                        v-if="
-                                            sort_direction == 'asc' &&
-                                            sort_field == 'type_name'
-                                        "
-                                        >&darr;</span
-                                    >
                                 </div>
                                 <div class="text-xs text-center h-6">
                                     <div class="text-xs text-center h-6">
@@ -270,23 +334,39 @@
                                         @click.prevent="
                                             change_sort('industry_name')
                                         "
+                                        class="text-white inline-flex"
                                     >
                                         Industry
+                                        <span
+                                            v-if="
+                                                (!(sort_direction == 'asc') ||
+                                                    !(
+                                                        sort_direction == 'desc'
+                                                    )) &&
+                                                !(sort_field == 'industry_name')
+                                            "
+                                            class="inline-block"
+                                            ><ArrowsUpDownIcon class="h-4 w-4"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'desc' &&
+                                                sort_field == 'industry_name'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowUpIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'asc' &&
+                                                sort_field == 'industry_name'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowDownIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
                                     </a>
-                                    <span
-                                        v-if="
-                                            sort_direction == 'desc' &&
-                                            sort_field == 'industry_name'
-                                        "
-                                        >&uarr;</span
-                                    >
-                                    <span
-                                        v-if="
-                                            sort_direction == 'asc' &&
-                                            sort_field == 'industry_name'
-                                        "
-                                        >&darr;</span
-                                    >
                                 </div>
                                 <div class="text-xs text-center h-6">
                                     <div class="text-xs text-center h-6">
@@ -312,59 +392,75 @@
                                     <a
                                         href="#"
                                         @click.prevent="change_sort('name')"
+                                        class="text-white inline-flex"
                                     >
-                                        Contact
+                                        Company
+                                        <span
+                                            v-if="
+                                                (!(sort_direction == 'asc') ||
+                                                    !(
+                                                        sort_direction == 'desc'
+                                                    )) &&
+                                                !(sort_field == 'name')
+                                            "
+                                            class="inline-block"
+                                            ><ArrowsUpDownIcon class="h-4 w-4"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'desc' &&
+                                                sort_field == 'name'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowUpIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'asc' &&
+                                                sort_field == 'name'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowDownIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
                                     </a>
-                                    <span
-                                        v-if="
-                                            sort_direction == 'desc' &&
-                                            sort_field == 'name'
-                                        "
-                                        >&uarr;</span
-                                    >
-                                    <span
-                                        v-if="
-                                            sort_direction == 'asc' &&
-                                            sort_field == 'name'
-                                        "
-                                        >&darr;</span
-                                    >
                                 </div>
                             </th>
-                            <th class="">
+                            <th class="text-white">
                                 <div class="text-xs text-center">Jan</div>
                             </th>
-                            <th class="">
+                            <th class="text-white">
                                 <div class="text-xs text-center">Feb</div>
                             </th>
-                            <th class="">
+                            <th class="text-white">
                                 <div class="text-xs text-center">Mar</div>
                             </th>
-                            <th class="">
+                            <th class="text-white">
                                 <div class="text-xs text-center">Apr</div>
                             </th>
-                            <th class="">
+                            <th class="text-white">
                                 <div class="text-xs text-center">May</div>
                             </th>
-                            <th class="">
+                            <th class="text-white">
                                 <div class="text-xs text-center">June</div>
                             </th>
-                            <th class="">
+                            <th class="text-white">
                                 <div class="text-xs text-center">July</div>
                             </th>
-                            <th class="">
+                            <th class="text-white">
                                 <div class="text-xs text-center">Aug</div>
                             </th>
-                            <th class="">
+                            <th class="text-white">
                                 <div class="text-xs text-center">Sept</div>
                             </th>
-                            <th class="">
+                            <th class="text-white">
                                 <div class="text-xs text-center">Oct</div>
                             </th>
-                            <th class="">
+                            <th class="text-white">
                                 <div class="text-xs text-center">Nov</div>
                             </th>
-                            <th class="">
+                            <th class="text-white">
                                 <div class="text-xs text-center">Dec</div>
                             </th>
                         </tr>
@@ -854,6 +950,8 @@ import {
     PlusIcon,
     ArrowTopRightOnSquareIcon,
     ArrowsUpDownIcon,
+    ArrowUpIcon,
+    ArrowDownIcon,
 } from "@heroicons/vue/24/solid";
 import moment from "moment";
 
@@ -866,16 +964,20 @@ export default {
         PlusIcon,
         ArrowTopRightOnSquareIcon,
         ArrowsUpDownIcon,
+        ArrowUpIcon,
+        ArrowDownIcon,
     },
 
     mounted() {
+        
         this.getSelectedYear(this.getCurrentDate());
-        this.getContactsByTodo();
         this.getStatus();
         this.getTypes();
+        this.selectedUser = document.querySelector('meta[name="user-id"]').getAttribute('content');
         this.getUsers();
         this.getCategories();
         this.getIndustries();
+        this.getContactsByTodo();
     },
     data() {
         return {
@@ -903,7 +1005,7 @@ export default {
             selectedIndustry: "",
 
             sort_direction: "asc",
-            sort_field: "id",
+            sort_field: "name",
             currentDate: "",
 
             contact_fields: {
@@ -1193,7 +1295,7 @@ export default {
 
         async getUsers() {
             await axios
-                .get("/api/users/index")
+                .get("/api/users/users_list")
                 .then((res) => {
                     this.users = res.data;
                 })

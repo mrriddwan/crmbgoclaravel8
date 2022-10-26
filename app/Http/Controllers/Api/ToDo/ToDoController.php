@@ -581,4 +581,56 @@ class ToDoController extends Controller
     {
         return ToDo::pluck('id');
     }
+
+    public function test_api()
+    {
+        $todo = ToDo::select([
+            'to_dos.*',
+            'contact_statuses.name as status_name',
+            'contact_types.name as type_name',
+            'users.name as user_name',
+            'tasks.name as task_name',
+            'priorities.name as priority_name',
+            'text_colors.color_code as color_name',
+            'contacts.name as contact_name',
+            'to_do_sources.name as source_name',
+            'actions.name as action_name',
+        ])
+            ->join('contacts', 'to_dos.contact_id', '=', 'contacts.id')
+            ->join('contact_statuses', 'to_dos.status_id', '=', 'contact_statuses.id')
+            ->join('contact_types', 'to_dos.type_id', '=', 'contact_types.id')
+            ->join('tasks', 'to_dos.task_id', '=', 'tasks.id')
+            ->join('priorities', 'to_dos.priority_id', '=', 'priorities.id')
+            ->join('users', 'to_dos.user_id', '=', 'users.id')
+            ->join('text_colors', 'to_dos.color_id', '=', 'text_colors.id')
+            ->leftJoin('to_do_sources', 'to_dos.source_id', '=', 'to_do_sources.id')
+            ->leftJoin('actions', 'to_dos.action_id', '=', 'actions.id')
+            // ->when($selectedStatus, function ($query) use ($selectedStatus) {
+            //     $query->where('to_dos.status_id', $selectedStatus);
+            // })
+            // // ->when($selectedContact, function ($query) use ($selectedContact) {
+            // //     $query->where('to_dos.contact_id', $selectedContact);
+            // // })
+            // ->when($selectedSource, function ($query) use ($selectedSource) {
+            //     $query->where('to_dos.source_id', $selectedSource);
+            // })
+            // ->when($selectedTask, function ($query) use ($selectedTask) {
+            //     $query->where('to_dos.task_id', $selectedTask);
+            // })
+            // ->when($selectedType, function ($query) use ($selectedType) {
+            //     $query->where('to_dos.type_id', $selectedType);
+            // })
+            // ->when($selectedUser, function ($query) use ($selectedUser) {
+            //     $query->where('to_dos.user_id', $selectedUser);
+            // })
+            // ->when($selectedDateStart && $selectedDateEnd, function ($query) use ($selectedDateStart, $selectedDateEnd) {
+            //     $query->whereBetween('to_dos.todo_date', [$selectedDateStart, $selectedDateEnd]);
+            // })
+            // ->orderBy($sort_field, $sort_direction)
+            // ->search(trim($search_term))
+            // ->paginate($paginate);
+            ->paginate(5000);
+
+        return ToDoResource::collection($todo);
+    }
 }

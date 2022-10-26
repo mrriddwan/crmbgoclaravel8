@@ -464,7 +464,7 @@
                                         "
                                         class="text-white"
                                     >
-                                        Category
+                                        Product
                                         <span
                                             v-if="
                                                 (!(sort_direction == 'asc') ||
@@ -720,12 +720,13 @@ export default {
     },
 
     mounted() {
-        this.getContacts();
         this.getStatus();
-        this.getUsers();
+        this.selectedUser = document.querySelector('meta[name="user-id"]').getAttribute('content');
+        this.getUsers();        
         this.getIndustries();
         this.getTypes();
         this.getCategories();
+        this.getContacts();
     },
     data() {
         return {
@@ -845,7 +846,7 @@ export default {
 
         getUsers() {
             axios
-                .get("/api/users/index")
+                .get("/api/users/users_list")
                 .then((res) => {
                     this.users = res.data;
                 })

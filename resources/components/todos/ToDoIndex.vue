@@ -908,6 +908,7 @@ export default {
         );
         this.getStatus();
         this.getActions();
+        this.selectedUser = document.querySelector('meta[name="user-id"]').getAttribute('content');
         this.getUsers();
         this.getSources();
         this.getTasks();
@@ -992,7 +993,7 @@ export default {
             selectedDateEnd: "",
 
             sort_direction: "desc",
-            sort_field: "todo_date",
+            sort_field: "created_at",
             actions: "",
             todo_action: {
                 action_id: "",
@@ -1318,7 +1319,7 @@ export default {
 
         getUsers() {
             axios
-                .get("/api/users/index")
+                .get("/api/users/users_list")
                 .then((res) => {
                     this.users = res.data.data;
                 })

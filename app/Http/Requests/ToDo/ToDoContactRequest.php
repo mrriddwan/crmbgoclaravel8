@@ -3,6 +3,7 @@
 namespace App\Http\Requests\ToDo;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Carbon;
 
 class ToDoContactRequest extends FormRequest
 {
@@ -24,7 +25,7 @@ class ToDoContactRequest extends FormRequest
     public function rules()
     {
         return [
-            'todo_date' => ['required', 'date'],
+            'todo_date' => ['required', 'date', 'after_or_equal:'. Carbon::today()->format('Y-m-d')],
             'contact_id'=> ['required', 'int'],
             'user_id' => ['required', 'int'],
             'task_id'=> ['required', 'int'],

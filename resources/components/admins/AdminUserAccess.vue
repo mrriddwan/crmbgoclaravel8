@@ -132,12 +132,13 @@
                                         class="bg-cyan-400 rounded-md text-xs w-max flex px-1 py-1"
                                     >
                                         {{ permission.name }}
+
                                         <div class="text-center mx-2">
                                             <button
                                                 @click="
-                                                    removePermissionFromUser(
+                                                    removeDirectPermissionFromUser(
                                                         user.id,
-                                                        permission.name
+                                                        permission.id
                                                     )
                                                 "
                                                 class="align-middle border-1 border-black w-max rounded-md bg-red-300 px-1"
@@ -277,6 +278,7 @@
                         ></div>
                     </div>
 
+                    <!-- Select Roles-->
                     <div class="grid grid-cols-1 mt-1">
                         <div class="grid grid-cols-1 mt-1">
                             <div
@@ -337,55 +339,52 @@
                             </button>
                         </div>
                     </div>
-                    <div v-if="is('super-admin')">
-                        <!-- Remove Roles-->
-                        <div class="grid grid-cols-1 mt-1">
-                            <div
-                                class="container h-max align-middle my-2 text-lg uppercase font-mono text-center"
-                            >
-                                <span
-                                    class="bg-slate-300 w-max py-2 px-2 rounded-md"
-                                >
-                                    <TrashIcon class="inline h-6 w-6" />
-                                    <p class="inline uppercase font-bold h-1">
-                                        Role
-                                    </p>
-                                </span>
-                            </div>
-                            <div class="text-center">
-                                <select
-                                    class="text-center w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                                    @change="getRoles"
-                                    v-model="deleteRole"
-                                >
-                                    <option disabled value="">
-                                        Please select a role
-                                    </option>
 
-                                    <option
-                                        v-for="role in roles"
-                                        :key="role.id"
-                                        :value="role.id"
-                                    >
-                                        {{ role.name }}
-                                    </option>
-                                </select>
-                            </div>
-                            <div
-                                class="container w-max h-max text-center align-middle my-2"
+                    <!-- Remove Roles-->
+                    <div class="grid grid-cols-1 mt-1">
+                        <div
+                            class="container h-max align-middle my-2 text-lg uppercase font-mono text-center"
+                        >
+                            <span
+                                class="bg-slate-300 w-max py-2 px-2 rounded-md"
                             >
-                                <button
-                                    @click="deleteItem(deleteRole)"
-                                    class="border-1 border-black w-max rounded-md bg-red-300 px-2"
+                                <TrashIcon class="inline h-6 w-6" />
+                                <p class="inline uppercase font-bold h-1">
+                                    Role
+                                </p>
+                            </span>
+                        </div>
+                        <div class="text-center mt-1">
+                            <select
+                                class="text-center w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                @change="getRoles"
+                                v-model="deleteRole"
+                            >
+                                <option value="">Please select a role</option>
+
+                                <option
+                                    v-for="role in roles"
+                                    :key="role.id"
+                                    :value="role.id"
                                 >
-                                    <TrashIcon class="inline h-4 w-4" />
-                                    <p
-                                        class="inline uppercase font-bold text-sm h-1"
-                                    >
-                                        Roles
-                                    </p>
-                                </button>
-                            </div>
+                                    {{ role.name }}
+                                </option>
+                            </select>
+                        </div>
+                        <div
+                            class="container w-max h-max text-center align-middle my-2"
+                        >
+                            <button
+                                @click="deleteItem(deleteRole)"
+                                class="border-1 border-black w-max rounded-md bg-red-300 px-2"
+                            >
+                                <TrashIcon class="inline h-4 w-4" />
+                                <p
+                                    class="inline uppercase font-bold text-sm h-1"
+                                >
+                                    Roles
+                                </p>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -457,7 +456,11 @@
                                     >
                                         {{ permission.name }}
                                     </td>
-                                    <td class="w-max text-center">
+                                    <td
+                                        class="w-max text-center"
+                                        v-if="role.id === 2"
+                                    ></td>
+                                    <td v-else>
                                         <button
                                             @click="
                                                 removePermissionFromRole(
@@ -506,8 +509,11 @@
                     </div>
                 </div>
                 <div class="grid grid-cols-1">
-                    <div class="grid grid-cols-4 gap-10">
-                        <div v-if="is('super-admin')">
+                    <div
+                        class="grid grid-cols-4 gap-10"
+                        v-if="is('super-admin')"
+                    >
+                        <div>
                             <!-- Create Permission -->
                             <div class="grid grid-cols-1 mt-2">
                                 <div
@@ -629,28 +635,22 @@
                             </div>
 
                             <div class="grid grid-cols-2 py-1">
-                                <div v-if="is('super-admin')">
-                                    <div>
-                                        <label>Name</label>
-                                    </div>
-                                    <div>
+                                <div>
+                                    <label>Name</label>
+                                </div>
+                                <div>
+                                    <div class="form-group">
                                         <div class="form-group">
-                                            <div class="form-group">
-                                                <input
-                                                    v-model="
-                                                        edit_permission.name
-                                                    "
-                                                    type="text"
-                                                    class="block mt-1 w-full text-center rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                                                />
-                                            </div>
+                                            <input
+                                                v-model="edit_permission.name"
+                                                type="text"
+                                                class="block mt-1 w-full text-center rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                            />
                                         </div>
                                     </div>
                                 </div>
-                                <div class="container align-middle text-center">
-                                    <div>
-                                        <label class="pt-2">Description</label>
-                                    </div>
+                                <div>
+                                    <label>Description</label>
                                 </div>
 
                                 <div class="form-group">
@@ -683,57 +683,56 @@
                             </div>
                         </div>
 
-                        <div v-if="is('super-admin')">
-                            <!-- Remove  Permission -->
-                            <div class="grid grid-cols-1 mt-1">
-                                <div
-                                    class="container h-max align-middle my-2 text-lg uppercase font-mono text-center"
+                        <!-- Remove  Permission -->
+                        <div
+                            class="grid grid-cols-1 mt-1"
+                            v-if="is('super-admin')"
+                        >
+                            <div
+                                class="container h-max align-middle my-2 text-lg uppercase font-mono text-center"
+                            >
+                                <span
+                                    class="bg-slate-300 w-max py-2 px-2 rounded-md"
                                 >
-                                    <span
-                                        class="bg-slate-300 w-max py-2 px-2 rounded-md"
-                                    >
-                                        <TrashIcon class="inline h-6 w-6" />
-                                        <p
-                                            class="inline uppercase font-bold h-1"
-                                        >
-                                            Permissions
-                                        </p>
-                                    </span>
-                                </div>
-                                <div class="text-center">
-                                    <select
-                                        class="text-center w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                                        @change="getPermissions"
-                                        v-model="deletePermission"
-                                    >
-                                        <option disabled value="">
-                                            Please select a permission
-                                        </option>
+                                    <TrashIcon class="inline h-6 w-6" />
+                                    <p class="inline uppercase font-bold h-1">
+                                        Permissions
+                                    </p>
+                                </span>
+                            </div>
+                            <div class="text-center">
+                                <select
+                                    class="text-center w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                    @change="getPermissions"
+                                    v-model="deletePermission"
+                                >
+                                    <option disabled value="">
+                                        Please select a permission
+                                    </option>
 
-                                        <option
-                                            v-for="permission in permissions"
-                                            :key="permission.id"
-                                            :value="permission.id"
-                                        >
-                                            {{ permission.name }}
-                                        </option>
-                                    </select>
-                                </div>
-                                <div
-                                    class="container w-max h-max text-center align-middle my-2"
-                                >
-                                    <button
-                                        @click="deleteItem(deletePermission)"
-                                        class="border-1 border-black w-max rounded-md bg-red-300 px-2"
+                                    <option
+                                        v-for="permission in permissions"
+                                        :key="permission.id"
+                                        :value="permission.id"
                                     >
-                                        <TrashIcon class="inline h-4 w-4" />
-                                        <p
-                                            class="inline uppercase font-bold text-sm h-1"
-                                        >
-                                            Permission
-                                        </p>
-                                    </button>
-                                </div>
+                                        {{ permission.name }}
+                                    </option>
+                                </select>
+                            </div>
+                            <div
+                                class="container w-max h-max text-center align-middle my-2"
+                            >
+                                <button
+                                    @click="deleteItem(deletePermission)"
+                                    class="border-1 border-black w-max rounded-md bg-red-300 px-2"
+                                >
+                                    <TrashIcon class="inline h-4 w-4" />
+                                    <p
+                                        class="inline uppercase font-bold text-sm h-1"
+                                    >
+                                        Permission
+                                    </p>
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -1065,7 +1064,7 @@ export default {
             if (!window.confirm("Are you sure?")) {
                 return;
             } else {
-                await axios.delete(
+                await axios.post(
                     "/api/admin/roles/remove/permission/" + role_id,
                     {
                         role_id: role_id,
@@ -1077,36 +1076,24 @@ export default {
             }
         },
 
-        async removeRoleFromUser(user_id) {
+        async removeDirectPermissionFromUser(user_id, permission_id) {
             try {
                 if (!window.confirm("Are you sure?")) {
                     return;
+                } else {
+                    console.log("this is the user_id: " + user_id);
+                    console.log("this is the permission_id: " + permission_id);
+                    await axios.post(
+                        "/api/admin/users/remove/permission/" + user_id,
+                        {
+                            user_id: user_id,
+                            permission_id: permission_id,
+                        }
+                    );
                 }
-                await axios.delete("/api/admin/roles/delete/" + user_id);
 
                 this.getUserRolePermissions();
                 alert("Removed role from user.");
-            } catch (e) {
-                {
-                    if (e.response.status === 422) {
-                        this.errors = e.response.data.errors;
-                    }
-                }
-            }
-        },
-
-        async removePermissionFromUser(user_id, permission_name) {
-            try {
-                if (!window.confirm("Are you sure?")) {
-                    return;
-                }
-                await axios.delete(
-                    "/api/admin/user/permissions/delete/" + user_id,
-                    { permission_name: permission_name }
-                );
-
-                this.getUserRolePermissions();
-                alert("Removed permission from user.");
             } catch (e) {
                 {
                     if (e.response.status === 422) {

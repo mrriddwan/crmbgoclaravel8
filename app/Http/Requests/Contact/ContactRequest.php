@@ -25,7 +25,7 @@ class ContactRequest extends FormRequest
     {
         return [
             
-            'name' => ['required', 'string'],
+            'name' => ['required', 'string', 'unique:contacts'],
             'address' => ['nullable', 'string'],
             'industry_id' =>  ['required', 'int'],
             'status_id' =>  ['required', 'int'],

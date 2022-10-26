@@ -4,16 +4,90 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Resources\UserResource;
 use App\Http\Controllers\Controller;
-use App\Models\ToDo\ToDo;
-use Illuminate\Http\Request;
+use App\Models\Admin\SvSbPivot;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
     public function index()
     {
-        return UserResource::collection(User::all()->sortBy('name')->where('id','!=', 1));
+        $user = User::orderBy('name', 'asc')
+            ->select('id', 'name')
+            ->get()
+            ;
+
+        return response()->json([
+            'data' => $user,
+            'status' => true,
+            'message' => 'Successfully store contact',
+        ]);
+    }
+
+    public function users_list()
+    {
+        $id = Auth::id();
+
+
+        if ((DB::table('model_has_roles')
+                ->where('model_id', '=', $id)
+                ->where('role_id', '=', 2)
+                ->exists()) ||
+            (DB::table('model_has_roles')
+                ->where('model_id', '=', $id)
+                ->where('role_id', '=', 1)
+                ->exists())
+        ) {
+            $user = User::select('id', 'name')
+                ->orderBy('name', 'asc')
+                ->get()
+                ->toArray();
+
+            return response()->json([
+                'data' => $user,
+                'status' => true,
+                'message' => 'Successfully store contact',
+            ]);
+        } else {
+            $sv_sb = "";
+            $final = [$id];
+
+            $sv_sb = SvSbPivot::select('subordinate_id')
+                ->where('supervisor_id', '=', $id)
+                ->pluck('subordinate_id');
+
+
+            array_push($final, ...$sv_sb);
+
+            $user = User::whereIn('id', $final)->select('id', 'name')
+                ->orderBy('name', 'asc')
+                ->get()
+                ->toArray();
+
+            return response()->json([
+                'data' => $user,
+                'status' => true,
+                'message' => 'Successfully store contact',
+            ]);
+        }
+
+
+        // $id = 3;
+        // $sv_sb = "";
+        // $final = [$id];
+
+        // $sv_sb = SvSbPivot::select('subordinate_id')
+        //     ->where('supervisor_id', '=', $id)
+        //     ->pluck('subordinate_id');
+
+
+        // array_push($final, ...$sv_sb);
+
+        // return User::whereIn('id', $final)->select('id', 'name')
+        //                                 ->orderBy('name', 'asc')
+        //                                 ->get()
+        //                                 ->toArray();
     }
 
 

@@ -273,7 +273,7 @@ export default {
 
         getUser() {
             axios
-                .get("/api/users/index")
+                .get("/api/users/users_list")
                 .then((res) => {
                     this.users = res.data.data;
                 })

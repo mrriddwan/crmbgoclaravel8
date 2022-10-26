@@ -25,6 +25,7 @@ class FollowUpResource extends JsonResource
             'status' => $this->status->only('id', 'name'),
             'type' => $this->type->only('id', 'name'),
             'priority' => $this->priority->only('id', 'name'),
+            'created_at' => $this->created_at,
             
         ];
     }

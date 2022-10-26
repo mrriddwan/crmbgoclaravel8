@@ -417,40 +417,40 @@
                                 </div>
                             </th>
 
-                            <th class="py-3">
+                            <th class="py-3 text-white">
                                 <div class="text-xs text-center">Jan</div>
                             </th>
-                            <th class="py-3">
+                            <th class="py-3 text-white">
                                 <div class="text-xs text-center">Feb</div>
                             </th>
-                            <th class="py-3">
+                            <th class="py-3 text-white">
                                 <div class="text-xs text-center">Mar</div>
                             </th>
-                            <th class="py-3">
+                            <th class="py-3 text-white">
                                 <div class="text-xs text-center">Apr</div>
                             </th>
-                            <th class="py-3">
+                            <th class="py-3 text-white">
                                 <div class="text-xs text-center">May</div>
                             </th>
-                            <th class="py-3">
+                            <th class="py-3 text-white">
                                 <div class="text-xs text-center">June</div>
                             </th>
-                            <th class="py-3">
+                            <th class="py-3 text-white">
                                 <div class="text-xs text-center">July</div>
                             </th>
-                            <th class="py-3">
+                            <th class="py-3 text-white">
                                 <div class="text-xs text-center">Aug</div>
                             </th>
-                            <th class="py-3">
+                            <th class="py-3 text-white">
                                 <div class="text-xs text-center">Sept</div>
                             </th>
-                            <th class="py-3">
+                            <th class="py-3 text-white">
                                 <div class="text-xs text-center">Oct</div>
                             </th>
-                            <th class="py-3">
+                            <th class="py-3 text-white">
                                 <div class="text-xs text-center">Nov</div>
                             </th>
-                            <th class="py-3">
+                            <th class="py-3 text-white">
                                 <div class="text-xs text-center">Dec</div>
                             </th>
                         </tr>
@@ -495,7 +495,7 @@
                                     this.selectedYear + '-01'
                                 "
                             >
-                                {{ forecast.amount }}
+                                {{ forecast.amount.toLocaleString("en-US") }}
                             </td>
                             <td v-else></td>
 
@@ -506,7 +506,7 @@
                                     this.selectedYear + '-02'
                                 "
                             >
-                                {{ forecast.amount }}
+                                {{ forecast.amount.toLocaleString("en-US") }}
                             </td>
                             <td v-else></td>
 
@@ -517,7 +517,7 @@
                                     this.selectedYear + '-03'
                                 "
                             >
-                                {{ forecast.amount }}
+                                {{ forecast.amount.toLocaleString("en-US") }}
                             </td>
                             <td v-else></td>
 
@@ -528,7 +528,7 @@
                                     this.selectedYear + '-04'
                                 "
                             >
-                                {{ forecast.amount }}
+                                {{ forecast.amount.toLocaleString("en-US") }}
                             </td>
                             <td v-else></td>
 
@@ -539,7 +539,7 @@
                                     this.selectedYear + '-05'
                                 "
                             >
-                                {{ forecast.amount }}
+                                {{ forecast.amount.toLocaleString("en-US") }}
                             </td>
                             <td v-else></td>
 
@@ -550,7 +550,7 @@
                                     this.selectedYear + '-06'
                                 "
                             >
-                                {{ forecast.amount }}
+                                {{ forecast.amount.toLocaleString("en-US") }}
                             </td>
                             <td v-else></td>
 
@@ -561,7 +561,7 @@
                                     this.selectedYear + '-07'
                                 "
                             >
-                                {{ forecast.amount }}
+                                {{ forecast.amount.toLocaleString("en-US") }}
                             </td>
                             <td v-else></td>
 
@@ -572,7 +572,7 @@
                                     this.selectedYear + '-08'
                                 "
                             >
-                                {{ forecast.amount }}
+                                {{ forecast.amount.toLocaleString("en-US") }}
                             </td>
                             <td v-else></td>
 
@@ -583,7 +583,7 @@
                                     this.selectedYear + '-09'
                                 "
                             >
-                                {{ forecast.amount }}
+                                {{ forecast.amount.toLocaleString("en-US") }}
                             </td>
                             <td v-else></td>
 
@@ -594,7 +594,7 @@
                                     this.selectedYear + '-10'
                                 "
                             >
-                                {{ forecast.amount }}
+                                {{ forecast.amount.toLocaleString("en-US") }}
                             </td>
                             <td v-else></td>
 
@@ -605,7 +605,7 @@
                                     this.selectedYear + '-11'
                                 "
                             >
-                                {{ forecast.amount }}
+                                {{ forecast.amount.toLocaleString("en-US") }}
                             </td>
                             <td v-else></td>
 
@@ -616,7 +616,7 @@
                                     this.selectedYear + '-12'
                                 "
                             >
-                                {{ forecast.amount }}
+                                {{ forecast.amount.toLocaleString("en-US") }}
                             </td>
                             <td v-else></td>
                         </tr>
@@ -671,12 +671,14 @@ export default {
     },
 
     mounted() {
+        this.getUsers();
+        this.selectedUser = document.querySelector('meta[name="user-id"]').getAttribute('content');
         this.getSelectedYear(this.getCurrentDate());
         // this.getForecasts();
         this.getStatus();
         this.getContactTypes();
         this.getForecastTypes();
-        this.getUsers();
+        
         this.getProducts();
     },
     data() {
@@ -945,7 +947,7 @@ export default {
 
         async getUsers() {
             await axios
-                .get("/api/users/index")
+                .get("/api/users/users_list")
                 .then((res) => {
                     this.users = res.data;
                 })

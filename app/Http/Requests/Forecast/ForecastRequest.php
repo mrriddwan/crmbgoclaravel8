@@ -18,7 +18,7 @@ class ForecastRequest extends FormRequest
             'forecast_updatedate' => ['nullable', 'date'],
             'amount' => ['required', 'int'],
             'contact_id' => ['required', 'int'],
-            'user_id' => ['required', 'int'],
+            // 'user_id' => ['required', 'int'],
             'forecast_type_id' => ['required', 'int'],
             'product_id' => ['required', 'int'],
         ];

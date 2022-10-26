@@ -28,6 +28,7 @@ class ToDoResource extends JsonResource
             'action' => $this->action,
             'priority' => $this->priority->only('id', 'name'),
             'source' => $this->source->only('id', 'name'),
+            'created_at' => $this->created_at,
             
         ];
     }

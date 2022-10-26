@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Admin\Permission;
 use App\Models\Admin\SvSbPivot;
 use App\Models\Contact\ContactCategory;
 use App\Models\Contact\ContactIndustry;
@@ -15,6 +16,7 @@ use App\Models\ToDo\Task;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Validation\Rules;
@@ -485,7 +487,7 @@ class AdminController extends Controller
         $summary = User::with([
             'roles' => function ($q) {
                 $q->select('id', 'name')
-                ->orderBy('id', 'asc');
+                    ->orderBy('id', 'asc');
             },
             'roles.permissions' => function ($q) {
                 $q->select('id', 'name');
@@ -497,8 +499,7 @@ class AdminController extends Controller
             ->when($selectedUser, function ($query) use ($selectedUser) {
                 $query->where('users.id', $selectedUser);
             })
-            ->get()
-            ;
+            ->get();
 
         return response()->json([
 
@@ -523,9 +524,7 @@ class AdminController extends Controller
             // ->join('roles', 'roles.id', '=', 'model_has_roles.role_id')
             ->select('users.id', 'users.name',)
             ->where('users.id', $user_id)
-            ->get()
-            ->orderBy('roles.id')
-            ;
+            ->get();
 
         return response()->json([
 
@@ -565,24 +564,15 @@ class AdminController extends Controller
 
     public function user_permission_remove(User $user, Request $request)
     {
+        $permission = Permission::findOrFail($request->permission_id);
 
-        //current issue it removes all permissions
-
-
-        // $request->validate([
-        //     'permission_name' => ['required', 'string'],
-        // ], [
-        //     'permission_name.required' => 'Please select a permission.',
-        // ]);
-
-        echo ($request->permission_name);
-
-        $user->revokePermissionTo($request->permission_name);
+        $user->permissions()->detach($permission);
 
         return response()->json([
             'status' => true,
             'message' => 'User permission removed',
             'data' => $user,
         ]);
+
     }
 }
