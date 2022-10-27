@@ -1018,8 +1018,8 @@ export default {
         selectPage: function (value) {
             this.checked = [];
             if (value) {
-                this.followups.data.forEach((followup) => {
-                    this.checked.push(followup.id);
+                this.todos.data.forEach((todo) => {
+                    this.checked.push(todo.id);
                 });
             } else {
                 this.checked = [];
