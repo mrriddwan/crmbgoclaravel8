@@ -179,6 +179,7 @@ Route::get('/users/index', [UserController::class, 'index'])->name('user:index')
 Route::get('/users/users_list', [UserController::class, 'users_list'])->name('user:users_list');
 // Route::get('/users/action/{id}', [UserController::class, 'action'])->name('user:action');
 Route::get('/users/action', [UserController::class, 'action'])->name('user:action');
+Route::get('/users/performance', [UserController::class, 'performance'])->name('user:performance');
 
 
 /*Incharge API*/

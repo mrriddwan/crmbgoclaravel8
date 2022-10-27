@@ -238,7 +238,7 @@ export default {
             this.selectedYear + "-" + this.selectedMonth + "-" + "01";
         this.currentMonth = this.selectedYear + "-" + this.selectedMonth;
         //initialise date range
-        this.displayWeek();
+        this.displayWeek( this.selectedYear,this.selectedMonth);
         // this.incrementDate();
         // this.decrementDate();
 
@@ -482,9 +482,18 @@ export default {
                     .add(1, "M")
                     .format("YYYY-MM-DD");
 
-                // console.log("monthYearAdd : " + monthYearAfterAdd);
+                console.log("monthYearAdd : " + monthYearAdd);
 
                 this.selectedMonthYear = monthYearAdd;
+                var selected_month = this.getSelectedMonth(monthYearAdd)
+                var selected_year = this.getSelectedYear(monthYearAdd)
+
+                console.log("selected_month : " + selected_month);
+                console.log("selected_month : " + selected_year);
+
+                this.weekInMonth = [];
+                this.displayWeek(selected_year, selected_month);
+
                 var month = this.getSelectedMonth(monthYearAdd);
                 var year = this.getSelectedYear(monthYearAdd);
                 return (this.currentMonth = year + "-" + month);
@@ -510,9 +519,15 @@ export default {
                     .subtract(1, "M")
                     .format("YYYY-MM-DD");
 
-                // console.log("monthYearMinus : " + monthYearAfterMinus);
-
+                console.log("monthYearMinus : " + monthYearMinus);
                 this.selectedMonthYear = monthYearMinus;
+
+                var new_month_year = new Date(monthYearMinus)
+
+                var selected_month = this.getSelectedMonth(new_month_year)
+                var selected_year = this.getSelectedYear(new_month_year)
+                this.weekInMonth = [];
+                this.displayWeek(selected_year, selected_month);
                 var month = this.getSelectedMonth(monthYearMinus);
                 var year = this.getSelectedYear(monthYearMinus);
                 return (this.currentMonth = year + "-" + month);
@@ -573,26 +588,34 @@ export default {
         //     });
         // },
 
-        displayWeek() {
-            let monthYear = this.selectedYear + "-" + this.selectedMonth + "-01";
+        displayWeek(selected_year,selected_month) {
+            let monthYear = selected_year + "-" + selected_month + "-01";
+            console.log("monthYear", monthYear)
+
             let y = parseInt(this.getSelectedYear(monthYear));
             let m = parseInt(this.getSelectedMonth(monthYear));
+            console.log("y", y)
+            console.log("m", m)
 
             const month = moment([y, m - 1]);
+            console.log("month", month)
+
             const weekList = this.weeks(month);
             // console.log("weekNumbers", weekNumbers);
-            // console.log("weekList", weekList);
-            // weekList.forEach((date) => {
-            //     console.log(
-            //         "start - " + date.startDate.format("DD-MM--YY"),
-            //         "end - " + date.endDate.format("DD-MM--YY")
-            //     );
-            // });
+            console.log("weekList", weekList);
+            weekList.forEach((date) => {
+                console.log(
+                    "start - " + date.startDate.format("DD-MM-YY"),
+                    "end - " + date.endDate.format("DD-MM-YY")
+                );
+            });
             return this.weekInMonth.push(...weekList);
         },
 
         returnM(date){
+            console.log('return M is executed');
             return this.m = parseInt(this.getSelectedMonth(date));
+            
 
         },
 
