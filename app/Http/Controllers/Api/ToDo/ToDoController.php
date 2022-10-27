@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\ToDo;
 
+use App\Exports\ForecastExport;
 use App\Exports\TodoExport;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ToDo\ToDoContactRequest;
@@ -570,11 +571,17 @@ class ToDoController extends Controller
 
     public function export($todo)
     {
-        $date = Carbon::now()->format('Y-m-d');
+        // $date = Carbon::now()->format('Ymd');
 
-        $todosArray = explode(',', $todo);
+        // $todoArray = explode(',', $todo);
 
-        return Excel::download(new TodoExport($todosArray), ('ToDo - ' . $date . '.xlsx'));
+        // return Excel::download(new TodoExport($todoArray), ('ToDo-' . $date . '.xlsx'));
+
+        $date = Carbon::now()->format('Ymd');
+
+        $forecastsArray = explode(',', $todo);
+
+        return Excel::download(new TodoExport($forecastsArray), ('ToDo - ' . $date . '.xlsx'));
     }
 
     public function selectAll()

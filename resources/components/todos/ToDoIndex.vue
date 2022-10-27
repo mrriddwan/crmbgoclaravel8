@@ -81,7 +81,10 @@
                         placeholder="Search by any..."
                     />
                 </div>
-                <div class="m-1 inline-block items-center px-1 py-1" v-if="is('supervisor | admin | super-admin')">
+                <div
+                    class="m-1 inline-block items-center px-1 py-1"
+                    v-if="is('supervisor | admin | super-admin')"
+                >
                     <p>Select user</p>
                     <select v-model="selectedUser" class="form-control">
                         <option value="">All User</option>
@@ -158,14 +161,14 @@
                 :href="url"
                 download="file.xlsx"
             >
-                <button @click="exportSelected()" class="h-1">
+                <div class="h-5">
                     <ArrowTopRightOnSquareIcon
                         class="h-5 w-5 mr-1 inline-block"
                     />
                     <p class="inline-block text-black uppercase font-extrabold">
-                        Export
+                        Export(?)
                     </p>
-                </button>
+                </div>
             </a>
 
             <div v-if="checked.length > 0 && !selectPage" class="inline-block">
@@ -692,7 +695,11 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="(todo, index) in todos.data" :key="todo.id">
+                    <tr
+                        v-for="(todo, index) in todos.data"
+                        :key="todo.id"
+                        :class="isChecked(todo.id) ? 'table-primary' : ''"
+                    >
                         <td>
                             <input
                                 type="checkbox"
@@ -908,8 +915,11 @@ export default {
         );
         this.getStatus();
         this.getActions();
-        this.selectedUser = document.querySelector('meta[name="user-id"]').getAttribute('content');
+
         this.getUsers();
+        this.selectedUser = document
+            .querySelector('meta[name="user-id"]')
+            .getAttribute("content");
         this.getSources();
         this.getTasks();
         this.getTypes();
@@ -1008,8 +1018,8 @@ export default {
         selectPage: function (value) {
             this.checked = [];
             if (value) {
-                this.todos.data.forEach((todo) => {
-                    this.checked.push(todo.id);
+                this.followups.data.forEach((followup) => {
+                    this.checked.push(followup.id);
                 });
             } else {
                 this.checked = [];
@@ -1549,13 +1559,13 @@ export default {
             }
         },
 
-        exportSelected() {
-            if (this.checked.length === 0) {
-                return alert("Need select record.");
-            } else {
-                axios.get("/api/todos/export");
-            }
-        },
+        // exportSelected() {
+        //     if (this.checked.length === 0) {
+        //         return alert("Need select record.");
+        //     } else {
+        //         axios.get("/api/todos/export");
+        //     }
+        // },
 
         isChecked(todo_id) {
             return this.checked.includes(todo_id);

@@ -21,7 +21,6 @@ class ForecastExport implements FromQuery, WithMapping, WithHeadings
 
     public function query()
     {
-        // return Contact::query()->whereKey($this->contact->exportContact())
         return Forecast::query()
         ->whereKey($this->forecast)
         ;

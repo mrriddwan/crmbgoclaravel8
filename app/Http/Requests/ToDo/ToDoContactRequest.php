@@ -25,7 +25,7 @@ class ToDoContactRequest extends FormRequest
     public function rules()
     {
         return [
-            'todo_date' => ['required', 'date', 'after_or_equal:'. Carbon::today()->format('Y-m-d')],
+            'todo_date' => ['required', 'date',],
             'contact_id'=> ['required', 'int'],
             'user_id' => ['required', 'int'],
             'task_id'=> ['required', 'int'],
