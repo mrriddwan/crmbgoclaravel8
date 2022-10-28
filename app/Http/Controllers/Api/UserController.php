@@ -7,8 +7,10 @@ use App\Http\Controllers\Controller;
 use App\Models\Admin\SvSbPivot;
 use App\Models\ToDo\ToDo;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use PhpOffice\PhpSpreadsheet\Calculation\MathTrig\Sum;
 
 class UserController extends Controller
 {
@@ -256,7 +258,9 @@ class UserController extends Controller
         //test 4
 
         $performances = ToDo::select(
+            DB::raw('DATE_FORMAT(todo_date, "%Y") as year'),
             DB::raw('MONTH(todo_date) as month'),
+            DB::raw('DATE_FORMAT(todo_date, "%M") as bulan'),
             DB::raw('WEEK(todo_date) as week'),
             // DB::raw("SUM(action_id) as action_total"),
             // DB::raw("action_id"),
@@ -275,17 +279,28 @@ class UserController extends Controller
             // ->groupBy('week')
             // ->groupBy('month')
             // ->groupBy('action_total')
-            ->groupBy('action_name');
+            ->groupBy('action_name')
+            // ->groupBy('week')
+            // ->groupBy('action_total')
+            ;
 
-        foreach($performances as $performance){
-            $performance->groupBy(
-                fn ($query) => count($query->action_id)
-            );
+        // foreach($performances as $performance){
+        //     $arr = [];
+        //     $count = "";
+        //     $performance->groupBy(
+        //         fn ($query) => array_push($arr, $query->action_id)
+                
+        //     );
+        //     $count = count($arr);
 
-            return $performance;
-        }
+        //     return $performance;
+        // }
 
-        return $performances;
+        return response()->json([
+            'status' => true,
+            'message' => 'Successfully get user performance',
+            'data' => $performances,            
+        ]);
 
 
 

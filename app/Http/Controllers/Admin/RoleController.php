@@ -23,7 +23,7 @@ class RoleController extends Controller
     public function role_create(Request $request)
     {
         $request->validate([
-            'name' => ['required', 'string'],
+            'name' => ['required', 'string', 'unique:roles'],
             'description' => ['nullable', 'string'],
         ], [
             'name.required' => 'The name is required',

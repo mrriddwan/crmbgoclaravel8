@@ -176,6 +176,7 @@
                     Selected:
                     <strong>{{ checked.length }}</strong> record(s)
                     <a
+                    v-if="can('export followup all') || is('admin | super-admin')"
                         @click.prevent="selectAllRecords"
                         href="#"
                         class="ml-1 rounded-md bg-yellow-400 border-2 border-black uppercase text-black text-xs"
@@ -192,6 +193,7 @@
                     Selected:
                     <strong>{{ checked.length }}</strong> record(s).
                     <a
+                    v-if="can('export followup all') || is('admin | super-admin')"
                         @click.prevent="selectAllRecords"
                         href="#"
                         class="ml-1 rounded-md bg-yellow-400 border-2 border-black uppercase text-black text-xs px-1"
@@ -202,6 +204,7 @@
                     Selected:
                     <strong>{{ checked.length }}</strong> record(s)
                     <a
+                    v-if="can('export followup all') || is('admin | super-admin')"
                         @click.prevent="selectAllRecords"
                         href="#"
                         class="ml-1 rounded-md bg-yellow-400 border-2 border-black uppercase text-black text-xs px-1"
@@ -274,7 +277,7 @@
             <table class="table table-hover table-bordered" id="example">
                 <thead class="bg-slate-500">
                     <tr>
-                        <th>
+                        <th v-if="can('export followup') || is('admin | super-admin')">
                             <input type="checkbox" v-model="selectPage" />
                         </th>
                         <th>#</th>
@@ -508,7 +511,7 @@
                         v-for="(followup, index) in followups.data"
                         :key="followup.id"
                     >
-                        <td>
+                        <td v-if="can('export followup') || is('admin | super-admin')">
                             <input
                                 type="checkbox"
                                 :value="followup.id"

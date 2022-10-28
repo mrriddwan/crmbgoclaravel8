@@ -183,6 +183,9 @@
                     Selected:
                     <strong>{{ checked.length }}</strong> record(s)
                     <a
+                        v-if="
+                            can('export todo all') || is('admin | super-admin')
+                        "
                         @click.prevent="selectAllRecords"
                         href="#"
                         class="ml-1 rounded-md bg-yellow-400 border-2 border-black uppercase text-black text-xs"
@@ -199,6 +202,9 @@
                     Selected:
                     <strong>{{ checked.length }}</strong> record(s).
                     <a
+                        v-if="
+                            can('export todo all') || is('admin | super-admin')
+                        "
                         @click.prevent="selectAllRecords"
                         href="#"
                         class="ml-1 rounded-md bg-yellow-400 border-2 border-black uppercase text-black text-xs px-1"
@@ -209,6 +215,9 @@
                     Selected:
                     <strong>{{ checked.length }}</strong> record(s)
                     <a
+                        v-if="
+                            can('export todo all') || is('admin | super-admin')
+                        "
                         @click.prevent="selectAllRecords"
                         href="#"
                         class="ml-1 rounded-md bg-yellow-400 border-2 border-black uppercase text-black text-xs px-1"
@@ -284,7 +293,11 @@
             >
                 <thead class="bg-slate-500">
                     <tr>
-                        <th>
+                        <th
+                            v-if="
+                                can('export todo') || is('admin | super-admin')
+                            "
+                        >
                             <input type="checkbox" v-model="selectPage" />
                             <div class="text-sm text-center h-6"></div>
                         </th>
@@ -700,7 +713,11 @@
                         :key="todo.id"
                         :class="isChecked(todo.id) ? 'table-primary' : ''"
                     >
-                        <td>
+                        <td
+                            v-if="
+                                can('export todo') || is('admin | super-admin')
+                            "
+                        >
                             <input
                                 type="checkbox"
                                 :value="todo.id"

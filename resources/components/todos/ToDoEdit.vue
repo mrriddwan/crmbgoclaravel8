@@ -156,6 +156,7 @@
                     <div class="form-group">
                         <label>Remark</label>
                         <textarea
+                            maxlength="65000"
                             type="text"
                             class="block mt-1 w-96 h-40 rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                             v-model="todo.todo_remark"
@@ -218,8 +219,12 @@ export default {
                 .put("/api/todos/update/" + this.$route.params.id, {
                     priority_id: this.todo.priority_id,
                     user_id: this.todo.user_id,
-                    todo_date: this.moment(this.todo.todo_date).format("YYYY-MM-DD"),
-                    todo_deadline: this.moment(this.todo.todo_deadline).format("YYYY-MM-DD"),
+                    todo_date: this.moment(this.todo.todo_date).format(
+                        "YYYY-MM-DD"
+                    ),
+                    todo_deadline: this.moment(this.todo.todo_deadline).format(
+                        "YYYY-MM-DD"
+                    ),
                     status_id: this.todo.status_id,
                     type_id: this.todo.type_id,
                     contact_id: this.todo.contact_id,

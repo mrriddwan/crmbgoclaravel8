@@ -50,6 +50,10 @@
                     Selected:
                     <strong>{{ checked.length }}</strong> record(s)
                     <a
+                        v-if="
+                            can('export forecast all') ||
+                            is('supervisor | admin | super-admin')
+                        "
                         @click.prevent="selectAllRecords"
                         href="#"
                         class="ml-1 rounded-md bg-yellow-400 border-2 border-black uppercase text-black text-xs"
@@ -70,6 +74,10 @@
                     Selected:
                     <strong>{{ checked.length }}</strong> record(s)
                     <a
+                        v-if="
+                            can('export forecast all') ||
+                            is('supervisor | admin | super-admin')
+                        "
                         @click.prevent="selectAllRecords"
                         href="#"
                         class="ml-1 rounded-md bg-yellow-400 border-2 border-black uppercase text-black text-xs px-1"
@@ -117,7 +125,12 @@
             <table class="table table-hover table-bordered w-full mt-0">
                 <thead class="bg-slate-500 border-b sticky top-0 text-xs">
                     <tr>
-                        <th>
+                        <th
+                            v-if="
+                                can('export forecast') ||
+                                is('admin | super-admin')
+                            "
+                        >
                             <input type="checkbox" v-model="selectPage" />
                             <div class="text-sm text-center h-6"></div>
                         </th>
@@ -518,7 +531,13 @@
                         :key="forecast.id"
                         :class="isChecked(forecast.id) ? 'table-primary' : ''"
                     >
-                        <td class="text-center">
+                        <td
+                            class="text-center"
+                            v-if="
+                                can('export forecast') ||
+                                is('admin | super-admin')
+                            "
+                        >
                             <input
                                 type="checkbox"
                                 :value="forecast.id"
@@ -712,9 +731,10 @@ export default {
     },
 
     mounted() {
-        
         this.getUsers();
-        this.selectedUser = document.querySelector('meta[name="user-id"]').getAttribute('content');
+        this.selectedUser = document
+            .querySelector('meta[name="user-id"]')
+            .getAttribute("content");
         this.getProducts();
         this.getForecastTypes();
         this.getResults();

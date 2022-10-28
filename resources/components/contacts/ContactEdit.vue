@@ -92,6 +92,7 @@
                     <div class="mt-1 mb-4">
                         <label class="font-bold">Name</label>
                         <input
+                            maxlength="100"
                             type="text"
                             name="name"
                             id="name"
@@ -120,10 +121,11 @@
                     <div class="form-group mb-4">
                         <label class="font-bold">Address</label>
                         <textarea
+                            maxlength="65000"
                             type="text"
                             name="address"
                             id="address"
-                            class="form-control block  w-96 h-40 px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                            class="form-control block w-96 h-40 px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                             rows="3"
                             placeholder="Your message"
                             v-model="contact.address"
@@ -132,10 +134,11 @@
                     <div class="form-group mb-4">
                         <label class="font-bold">Remark</label>
                         <textarea
+                            maxlength="65000"
                             type="text"
                             name="remark"
                             id="remark"
-                            class="form-control block  w-96 h-40 px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                            class="form-control block w-96 h-40 px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                             rows="3"
                             placeholder="Your message"
                             v-model="contact.remark"

@@ -168,8 +168,8 @@
                     </h2>
                 </div>
 
-                <div v-if="role_errors">
-                    <div v-for="(v, k) in role_errors" :key="k">
+                <div v-if="create_errors">
+                    <div v-for="(v, k) in create_errors" :key="k">
                         <p
                             v-for="error in v"
                             :key="error"
@@ -180,7 +180,7 @@
                     </div>
                 </div>
 
-                <div class="grid grid-cols-4 gap-10">
+                <div class="grid grid-cols-2 gap-10">
                     <!-- Create Roles-->
                     <div class="grid grid-cols-1 mt-2">
                         <div
@@ -242,7 +242,57 @@
                         </div>
                     </div>
 
-                    <!-- Edit Roles-->
+                    <!-- Remove Roles-->
+                    <div class="grid grid-cols-1 mt-1">
+                        <div
+                            class="container h-max align-middle my-2 text-lg uppercase font-mono text-center"
+                        >
+                            <span
+                                class="bg-slate-300 w-max py-2 px-2 rounded-md"
+                            >
+                                <TrashIcon class="inline h-6 w-6" />
+                                <p class="inline uppercase font-bold h-1">
+                                    Role
+                                </p>
+                            </span>
+                        </div>
+                        <div class="text-center mt-1">
+                            <select
+                                class="text-center w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                @change="getRoles"
+                                v-model="deleteRole"
+                            >
+                                <option value="">
+                                    Select a role to delete
+                                </option>
+
+                                <option
+                                    v-for="role in roles"
+                                    :key="role.id"
+                                    :value="role.id"
+                                >
+                                    {{ role.name }}
+                                </option>
+                            </select>
+                        </div>
+                        <div
+                            class="container w-max h-max text-center align-middle my-2"
+                        >
+                            <button
+                                @click="deleteItem(deleteRole)"
+                                class="border-1 border-black w-max rounded-md bg-red-300 px-2"
+                            >
+                                <TrashIcon class="inline h-4 w-4" />
+                                <p
+                                    class="inline uppercase font-bold text-sm h-1"
+                                >
+                                    Roles
+                                </p>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Select Roles-->
                     <div class="grid grid-cols-1 mt-3">
                         <div
                             class="container h-max align-middle text-lg uppercase font-mono text-center"
@@ -262,7 +312,7 @@
                                 @change="getRoles"
                                 v-model="selectedRole"
                             >
-                                <option value="">Please select a role</option>
+                                <option value="">Select a role to edit</option>
 
                                 <option
                                     v-for="role in roles"
@@ -278,7 +328,7 @@
                         ></div>
                     </div>
 
-                    <!-- Select Roles-->
+                    <!-- Edit Roles-->
                     <div class="grid grid-cols-1 mt-1">
                         <div class="grid grid-cols-1 mt-1">
                             <div
@@ -335,54 +385,6 @@
                                     class="inline uppercase font-bold text-sm h-1"
                                 >
                                     Role
-                                </p>
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Remove Roles-->
-                    <div class="grid grid-cols-1 mt-1">
-                        <div
-                            class="container h-max align-middle my-2 text-lg uppercase font-mono text-center"
-                        >
-                            <span
-                                class="bg-slate-300 w-max py-2 px-2 rounded-md"
-                            >
-                                <TrashIcon class="inline h-6 w-6" />
-                                <p class="inline uppercase font-bold h-1">
-                                    Role
-                                </p>
-                            </span>
-                        </div>
-                        <div class="text-center mt-1">
-                            <select
-                                class="text-center w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                                @change="getRoles"
-                                v-model="deleteRole"
-                            >
-                                <option value="">Please select a role</option>
-
-                                <option
-                                    v-for="role in roles"
-                                    :key="role.id"
-                                    :value="role.id"
-                                >
-                                    {{ role.name }}
-                                </option>
-                            </select>
-                        </div>
-                        <div
-                            class="container w-max h-max text-center align-middle my-2"
-                        >
-                            <button
-                                @click="deleteItem(deleteRole)"
-                                class="border-1 border-black w-max rounded-md bg-red-300 px-2"
-                            >
-                                <TrashIcon class="inline h-4 w-4" />
-                                <p
-                                    class="inline uppercase font-bold text-sm h-1"
-                                >
-                                    Roles
                                 </p>
                             </button>
                         </div>
@@ -497,8 +499,8 @@
                 </div>
 
                 <!-- permission errors -->
-                <div v-if="permission_errors">
-                    <div v-for="(v, k) in permission_errors" :key="k">
+                <div v-if="create_errors">
+                    <div v-for="(v, k) in create_errors" :key="k">
                         <p
                             v-for="error in v"
                             :key="error"
@@ -510,7 +512,7 @@
                 </div>
                 <div class="grid grid-cols-1">
                     <div
-                        class="grid grid-cols-4 gap-10"
+                        class="grid grid-cols-2 gap-10"
                         v-if="is('super-admin')"
                     >
                         <div>
@@ -580,6 +582,60 @@
                                 </div>
                             </div>
                         </div>
+
+                        <!-- Remove  Permission -->
+                        <div
+                            class="grid grid-cols-1 mt-1"
+                            v-if="is('super-admin')"
+                        >
+                            <div
+                                class="container h-max align-middle my-2 text-lg uppercase font-mono text-center"
+                            >
+                                <span
+                                    class="bg-slate-300 w-max py-2 px-2 rounded-md"
+                                >
+                                    <TrashIcon class="inline h-6 w-6" />
+                                    <p class="inline uppercase font-bold h-1">
+                                        Permissions
+                                    </p>
+                                </span>
+                            </div>
+                            <div class="text-center">
+                                <select
+                                    class="text-center w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                    @change="getPermissions"
+                                    v-model="deletePermission"
+                                >
+                                    <option disabled value="">
+                                        Select a permission to delete
+                                    </option>
+
+                                    <option
+                                        v-for="permission in permissions"
+                                        :key="permission.id"
+                                        :value="permission.id"
+                                    >
+                                        {{ permission.name }}
+                                    </option>
+                                </select>
+                            </div>
+                            <div
+                                class="container w-max h-max text-center align-middle my-2"
+                            >
+                                <button
+                                    @click="deleteItem(deletePermission)"
+                                    class="border-1 border-black w-max rounded-md bg-red-300 px-2"
+                                >
+                                    <TrashIcon class="inline h-4 w-4" />
+                                    <p
+                                        class="inline uppercase font-bold text-sm h-1"
+                                    >
+                                        Permission
+                                    </p>
+                                </button>
+                            </div>
+                        </div>
+
                         <!-- Select Permission-->
                         <div class="grid grid-cols-1 mt-1">
                             <div
@@ -601,7 +657,7 @@
                                     v-model="selectedPermission"
                                 >
                                     <option disabled value="">
-                                        Please select permission
+                                        Select permission to edit
                                     </option>
 
                                     <option
@@ -674,59 +730,6 @@
                                     class="border-1 border-black w-max rounded-md bg-blue-300 px-2"
                                 >
                                     <LockClosedIcon class="inline h-4 w-4" />
-                                    <p
-                                        class="inline uppercase font-bold text-sm h-1"
-                                    >
-                                        Permission
-                                    </p>
-                                </button>
-                            </div>
-                        </div>
-
-                        <!-- Remove  Permission -->
-                        <div
-                            class="grid grid-cols-1 mt-1"
-                            v-if="is('super-admin')"
-                        >
-                            <div
-                                class="container h-max align-middle my-2 text-lg uppercase font-mono text-center"
-                            >
-                                <span
-                                    class="bg-slate-300 w-max py-2 px-2 rounded-md"
-                                >
-                                    <TrashIcon class="inline h-6 w-6" />
-                                    <p class="inline uppercase font-bold h-1">
-                                        Permissions
-                                    </p>
-                                </span>
-                            </div>
-                            <div class="text-center">
-                                <select
-                                    class="text-center w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                                    @change="getPermissions"
-                                    v-model="deletePermission"
-                                >
-                                    <option disabled value="">
-                                        Please select a permission
-                                    </option>
-
-                                    <option
-                                        v-for="permission in permissions"
-                                        :key="permission.id"
-                                        :value="permission.id"
-                                    >
-                                        {{ permission.name }}
-                                    </option>
-                                </select>
-                            </div>
-                            <div
-                                class="container w-max h-max text-center align-middle my-2"
-                            >
-                                <button
-                                    @click="deleteItem(deletePermission)"
-                                    class="border-1 border-black w-max rounded-md bg-red-300 px-2"
-                                >
-                                    <TrashIcon class="inline h-4 w-4" />
                                     <p
                                         class="inline uppercase font-bold text-sm h-1"
                                     >
@@ -838,7 +841,7 @@ export default {
             user: [],
             actions: [],
             users: [],
-            role_errors: "",
+            create_errors: "",
             permission_errors: "",
             user_permission_errors: "",
         };
@@ -886,10 +889,11 @@ export default {
                         name: this.new_role.name,
                         description: this.new_role.description,
                     });
-                    this.role_errors = "";
+                    this.create_errors = "";
                     this.new_role = "";
                     this.getRoles();
                     this.getRolePermissions();
+                    this.getUserRolePermissions();
                     alert("Created new role.");
                 } else {
                     await axios.post("/api/admin/permissions/create", {
@@ -901,12 +905,13 @@ export default {
                     this.new_permission.description = "";
                     this.getPermissions();
                     this.getRolePermissions();
+                    this.getUserRolePermissions();
                     alert("Created new permission.");
                 }
             } catch (e) {
                 {
                     if (e.response.status === 422) {
-                        this.role_errors = e.response.data.errors;
+                        this.create_errors = e.response.data.errors;
                     }
                 }
             }
@@ -922,12 +927,13 @@ export default {
                             description: this.edit_role.description,
                         }
                     );
-                    this.role_errors = "";
-                    this.selectedRole = "";
+                    this.create_errors = "";
                     this.edit_role.name = "";
                     this.edit_role.description = "";
+                    // this.selectedRole = "";
                     this.getRoles();
                     this.getRolePermissions();
+                    this.getUserRolePermissions();
                     alert("Updated selected role.");
                 } else {
                     await axios.put(
@@ -939,11 +945,12 @@ export default {
                         }
                     );
                     this.permission_errors = "";
-                    this.selectedPermission = "";
                     this.edit_permission.name = "";
                     this.edit_permission.description = "";
+                    // this.selectedPermission = "";
                     this.getPermissions();
                     this.getRolePermissions();
+                    this.getUserRolePermissions();
                     alert("Updated selected permission.");
                 }
             } catch (e) {
@@ -966,6 +973,7 @@ export default {
                     this.deleteRole = "";
                     this.getRoles();
                     this.getRolePermissions();
+                    this.getUserRolePermissions();
                     alert("Role deleted.");
                 } else {
                     await axios.delete(
@@ -974,6 +982,7 @@ export default {
                     this.deletePermission = "";
                     this.getPermissions();
                     this.getRolePermissions();
+                    this.getUserRolePermissions();
                     alert("Permission deleted.");
                 }
             }
@@ -1072,6 +1081,7 @@ export default {
                     }
                 );
                 this.getRolePermissions();
+                this.getUserRolePermissions();
                 alert("Permission removed from selected Role.");
             }
         },

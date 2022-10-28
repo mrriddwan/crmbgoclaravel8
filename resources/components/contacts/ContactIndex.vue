@@ -66,6 +66,10 @@
                             Selected:
                             <strong>{{ checked.length }}</strong> record(s)
                             <a
+                                v-if="
+                                    can('export contact all') ||
+                                    is('admin | super-admin')
+                                "
                                 @click.prevent="selectAllRecords"
                                 href="#"
                                 class="ml-1 rounded-md bg-yellow-400 border-2 border-black uppercase text-black text-xs"
@@ -89,6 +93,10 @@
                             Selected:
                             <strong>{{ checked.length }}</strong> record(s)
                             <a
+                                v-if="
+                                    can('export contact all') ||
+                                    is('admin | super-admin')
+                                "
                                 @click.prevent="selectAllRecords"
                                 href="#"
                                 class="ml-1 rounded-md bg-yellow-400 border-2 border-black uppercase text-black text-xs px-1"
@@ -137,7 +145,12 @@
                 <table class="table table-hover table-bordered w-full">
                     <thead class="bg-slate-500 border-b sticky top-0">
                         <tr>
-                            <th>
+                            <th
+                                v-if="
+                                    can('export contact') ||
+                                    is('admin | super-admin')
+                                "
+                            >
                                 <input type="checkbox" v-model="selectPage" />
                             </th>
                             <th class="py-3">
@@ -609,7 +622,12 @@
                                 isChecked(contact.id) ? 'table-primary' : ''
                             "
                         >
-                            <td>
+                            <td
+                                v-if="
+                                    can('export contact') ||
+                                    is('admin | super-admin')
+                                "
+                            >
                                 <input
                                     type="checkbox"
                                     :value="contact.id"
@@ -721,8 +739,10 @@ export default {
 
     mounted() {
         this.getStatus();
-        this.selectedUser = document.querySelector('meta[name="user-id"]').getAttribute('content');
-        this.getUsers();        
+        this.selectedUser = document
+            .querySelector('meta[name="user-id"]')
+            .getAttribute("content");
+        this.getUsers();
         this.getIndustries();
         this.getTypes();
         this.getCategories();

@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\ToDo;
 
+use Carbon\Carbon;
 use Illuminate\Foundation\Http\FormRequest;
 
 class ToDoInternalRequest extends FormRequest
@@ -25,7 +26,8 @@ class ToDoInternalRequest extends FormRequest
     {
         return [
             'priority_id' => ['required', 'int'],
-            'todo_date' => ['required'],
+            // 'todo_date' => ['required','after:yesterday'],
+            'todo_date' => ['required','after:'. Carbon::yesterday()->format('d-m-Y')],
             'todo_deadline' => ['required', 'after:todo_date'],
             'contact_id' => ['required', 'int'],
             'user_id' => ['required', 'int'],
@@ -43,6 +45,7 @@ class ToDoInternalRequest extends FormRequest
         return [
             'user_id.required' => 'Please select the user',
             'todo_date.required' => 'The start date is required',
+            'todo_date.after' => 'The to do minimum date is today.',
             'todo_deadline.required' => 'The end date is required',
             'status_id.required' => 'Please select the contact status',
             'contact_id.required' => 'Please select the contact name',

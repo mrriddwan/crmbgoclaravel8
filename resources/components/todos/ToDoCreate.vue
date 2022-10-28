@@ -5,9 +5,13 @@
         </div>
 
         <div
-            class="items-center text-center text-white  bg-slate-600 px-2 py-2 rounded-md"
+            class="items-center text-center text-white bg-slate-600 px-2 py-2 rounded-md"
         >
-            <h1 class="font-extrabold uppercase px-2 py-1 bg-black-50 font-mono">Create To Do (Internal)</h1>
+            <h1
+                class="font-extrabold uppercase px-2 py-1 bg-black-50 font-mono"
+            >
+                Create To Do (Internal)
+            </h1>
         </div>
         <div v-if="errors">
             <div v-for="(v, k) in errors" :key="k">
@@ -47,7 +51,10 @@
                         </label>
                     </div>
                     <div class="form-group">
-                        <label>User<p class="inline text-red-600 text-lg">*</p></label>
+                        <label
+                            >User
+                            <p class="inline text-red-600 text-lg">*</p></label
+                        >
                         <select
                             class="block mt-1 w-max rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                             v-model="form.user_id"
@@ -64,32 +71,41 @@
                         </select>
                     </div>
                     <div class="form-group w-max">
-                        <label>Date of Task<p class="inline text-red-600 text-lg">*</p></label>
+                        <label
+                            >Date of Task
+                            <p class="inline text-red-600 text-lg">*</p></label
+                        >
                         <div class="">
-                                <VueDatePicker
-                                    v-model="form.todo_date"
-                                    showNowButton
-                                    nowButtonLabel="Today"
-                                    :enableTimePicker="false"
-                                    :format="format" 
-                                />
-                            </div>
+                            <VueDatePicker
+                                v-model="form.todo_date"
+                                showNowButton
+                                nowButtonLabel="Today"
+                                :enableTimePicker="false"
+                                :format="format"
+                            />
+                        </div>
                     </div>
                     <div class="form-group w-max">
-                        <label>Date of Deadline<p class="inline text-red-600 text-lg">*</p></label>
+                        <label
+                            >Date of Deadline
+                            <p class="inline text-red-600 text-lg">*</p></label
+                        >
                         <div class="">
-                                <VueDatePicker
-                                    v-model="form.todo_deadline"
-                                    showNowButton
-                                    nowButtonLabel="Today"
-                                    :enableTimePicker="false"
-                                    :format="format" 
-                                />
-                            </div>
+                            <VueDatePicker
+                                v-model="form.todo_deadline"
+                                showNowButton
+                                nowButtonLabel="Today"
+                                :enableTimePicker="false"
+                                :format="format"
+                            />
+                        </div>
                     </div>
 
                     <div class="form-group">
-                        <label>Status<p class="inline text-red-600 text-lg">*</p></label>
+                        <label
+                            >Status
+                            <p class="inline text-red-600 text-lg">*</p></label
+                        >
                         <select
                             class="block mt-1 w-max rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                             v-model="form.status_id"
@@ -107,7 +123,10 @@
                     </div>
 
                     <div class="form-group">
-                        <label>Contact<p class="inline text-red-600 text-lg">*</p></label>
+                        <label
+                            >Contact
+                            <p class="inline text-red-600 text-lg">*</p></label
+                        >
                         <div class="h-max-10">
                             <select
                                 class="overflow-y block mt-1 w-max rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
@@ -130,7 +149,10 @@
                     </div>
 
                     <div class="form-group">
-                        <label>Type<p class="inline text-red-600 text-lg">*</p></label>
+                        <label
+                            >Type
+                            <p class="inline text-red-600 text-lg">*</p></label
+                        >
                         <select
                             class="block mt-1 w-max rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                             v-model="form.type_id"
@@ -148,7 +170,10 @@
                     </div>
 
                     <div class="form-group">
-                        <label>Task<p class="inline text-red-600 text-lg">*</p></label>
+                        <label
+                            >Task
+                            <p class="inline text-red-600 text-lg">*</p></label
+                        >
                         <select
                             class="block mt-1 w-max rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                             v-model="form.task_id"
@@ -168,6 +193,7 @@
                     <div class="form-group">
                         <label>Remark</label>
                         <textarea
+                            maxlength="65000"
                             type="text"
                             class="block mt-1 w-96 h-40 rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                             v-model="form.todo_remark"
@@ -215,7 +241,7 @@ export default {
             const year = date.getFullYear();
 
             return `${day}-${month}-${year}`;
-        }
+        };
 
         const form = reactive({
             priority_id: "",
@@ -254,7 +280,7 @@ export default {
         onMounted(getCategories);
 
         const createToDo = async () => {
-            await storeToDo({ ...form  });
+            await storeToDo({ ...form });
         };
 
         return {
@@ -269,13 +295,13 @@ export default {
             types,
             priority_id,
             format,
-            date
+            date,
         };
     },
 
     components: {
         GoBack,
-        VueDatePicker
+        VueDatePicker,
     },
 };
 </script>

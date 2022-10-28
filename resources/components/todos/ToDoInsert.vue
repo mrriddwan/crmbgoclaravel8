@@ -117,6 +117,7 @@
                 <div class="form-group">
                     <label>Remark</label>
                     <textarea
+                        maxlength="65000"
                         type="text"
                         class="block mt-1 w-full h-40 rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                         v-model="form.todo_remark"
@@ -175,7 +176,9 @@ export default {
                 await axios.post("/api/todos/insert/" + this.$route.params.id, {
                     priority_id: this.form.priority_id === "" ? 2 : 1,
                     user_id: contact.user_id,
-                    todo_date: this.moment(this.form.todo_date).format("YYYY-MM-DD"),
+                    todo_date: this.moment(this.form.todo_date).format(
+                        "YYYY-MM-DD"
+                    ),
                     status_id: contact.status_id,
                     type_id: contact.type_id,
                     contact_id: contact.id,

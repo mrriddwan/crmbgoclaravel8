@@ -24,7 +24,7 @@ class PermissionController extends Controller
     public function permission_create(Request $request)
     {
         $request->validate([
-            'name' => ['required', 'string'],
+            'name' => ['required', 'string', 'unique:permissions'],
             'description' => ['nullable', 'string'],
         ], [
             'name.required' => 'The name is required',

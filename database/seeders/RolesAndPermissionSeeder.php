@@ -24,7 +24,7 @@ class RolesAndPermissionSeeder extends Seeder
         Permission::create(['name' => 'create contact']);
         Permission::create(['name' => 'edit contact']);
         Permission::create(['name' => 'delete contact']);
-       
+
         Permission::create(['name' => 'create todo']);
         Permission::create(['name' => 'insert todo']);
         Permission::create(['name' => 'edit todo']);
@@ -62,19 +62,90 @@ class RolesAndPermissionSeeder extends Seeder
         Permission::create(['name' => 'view forecast summary']);
         Permission::create(['name' => 'view billboard/tempboard']);
 
+        Permission::create(
+            [
+                'name' => 'export contact',
+                'description' => 'export selected records from contact index'
+            ]
+        );
+        Permission::create([
+            'name' => 'export contact all',
+            'description' => 'export all existing records from contact database'
+        ]);
+        Permission::create([
+            'name' => 'export contact summary',
+            'description' => 'export all records displayed from contact summary'
+        ]);
+        Permission::create([
+            'name' => 'export todo',
+            'description' => 'export selected records from todo index'
+        ]);
+        Permission::create([
+            'name' => 'export todo all',
+            'description' => 'export all existing records from todo database'
+        ]);
+        Permission::create([
+            'name' => 'export followup',
+            'description' => 'export selected records from followup index'
+        ]);
+        Permission::create([
+            'name' => 'export followup all',
+            'description' => 'export all existing records from followup database'
+        ]);
+        Permission::create([
+            'name' => 'export forecast',
+            'description' => 'export selected records from forecast index'
+        ]);
+        Permission::create([
+            'name' => 'export forecast summary',
+            'description' => 'export selected records displayed from forecast summary'
+        ]);
+        Permission::create([
+            'name' => 'export forecast all',
+            'description' => 'export all existing records from forecast database'
+        ]);
+        Permission::create([
+            'name' => 'export project',
+            'description' => 'export selected records from project index'
+        ]);
+        Permission::create([
+            'name' => 'export project all',
+            'description' => 'export all existing records from project database'
+        ]);
+        Permission::create([
+            'name' => 'export performance',
+            'description' => 'export selected records from based on filter performance index'
+        ]);
+        Permission::create([
+            'name' => 'export billboard',
+            'description' => 'export selected records from billboard index'
+        ]);
+        Permission::create([
+            'name' => 'export billboard all',
+            'description' => 'export all existing records from billboard database'
+        ]);
+        Permission::create([
+            'name' => 'export tempboard',
+            'description' => 'export selected records from tempboard index'
+        ]);
+        Permission::create([
+            'name' => 'export tempboard all',
+            'description' => 'export all existing records from tempboard database'
+        ]);
+
         // create roles and assign created permissions
 
         // this can be done as separate statements
         // or may be done by chaining
 
         $role_alpha = Role::create(['name' => 'super-admin']);
-        $user_admin = User::where('id','=', 1)->first();
+        $user_admin = User::where('id', '=', 1)->first();
         $user_admin->assignRole($role_alpha);
-        
+
         $role1 = Role::create(['name' => 'admin']);
         $role1->givePermissionTo(Permission::all());
 
-        $user1 = User::where('id','=', 2)->first();
+        $user1 = User::where('id', '=', 2)->first();
         $user1->assignRole($role1);
 
         $role2 = Role::create(['name' => 'supervisor']);
@@ -117,9 +188,20 @@ class RolesAndPermissionSeeder extends Seeder
             'view contact summary',
             'view forecast summary',
             'view billboard/tempboard',
-            );
 
-        $user2 = User::where('id','=', 3)->first();
+            'export contact',
+            'export todo',
+            'export forecast',
+            'export project',
+            'export contact summary',
+            'export tempboard',
+            'export forecast summary',
+            'export performance',
+            'export billboard',
+            'export tempboard',
+        );
+
+        $user2 = User::where('id', '=', 3)->first();
         $user2->assignRole($role2);
 
 
@@ -147,8 +229,19 @@ class RolesAndPermissionSeeder extends Seeder
             'view forecast',
         );
 
-        $user3 = User::where('id','=', 4)->first();
-        $user3->assignRole($role3);
+        $user4 = User::where('id', '=', 4)->first();
+        $user4->assignRole($role3);
+
+        $user5 = User::where('id', '=', 5)->first();
+        $user5->assignRole($role3);
+        $user6 = User::where('id', '=', 6)->first();
+        $user6->assignRole($role3);
+        $user7 = User::where('id', '=', 7)->first();
+        $user7->assignRole($role3);
+        $user8 = User::where('id', '=', 8)->first();
+        $user8->assignRole($role3);
+        $user9 = User::where('id', '=', 9)->first();
+        $user9->assignRole($role3);
 
     }
 }

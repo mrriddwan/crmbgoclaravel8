@@ -15,12 +15,13 @@ class BillboardTenureController extends Controller
             'bboard_id' => 'required', 'int',
             'user_id' => 'required', 'int',
             'contact_id' => 'required', 'int',
-            'tenure_startdate' => 'required', 'date',
+            'tenure_startdate' => ['required','after:'. Carbon::yesterday()->format('d-m-Y')],
             'tenure_enddate' => 'required | date | after:tenure_startdate',
         ], [
             'user_id.required' => 'Please select contact',
             'contact_id.required' => 'Please select user',
             'tenure_startdate.required' => 'The start date is required.',
+            'tenure_startdate.after' => 'The tenure minimum date is today.',
             'tenure_enddate.required' => 'The end date is required.',
         ]);
 

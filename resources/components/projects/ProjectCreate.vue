@@ -56,6 +56,7 @@
                             <p class="inline text-red-600 text-lg">*</p></label
                         >
                         <input
+                            maxlength="65000"
                             type="text"
                             class="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                             v-model="form.project_name"
@@ -91,6 +92,7 @@
                     <div class="form-group">
                         <label>Remark</label>
                         <textarea
+                        maxlength="65000"
                             type="text"
                             class="block mt-1 w-60 w-max-100 rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                             v-model="form.project_remark"
@@ -142,7 +144,9 @@ export default {
                     project_startdate: this.form.project_startdate,
                     project_enddate: this.form.project_enddate,
                     project_name: this.form.project_name,
-                    project_remark: this.form.project_remark ? this.form.project_remark : "No remark",
+                    project_remark: this.form.project_remark
+                        ? this.form.project_remark
+                        : "No remark",
                     user_id: 2, //change to current user later
                     contact_id: this.form.contact_id,
                 });
@@ -160,15 +164,14 @@ export default {
         },
 
         async getContacts() {
-                await axios
-                    .get("/api/contacts/list")
-                    .then((res) => {
-                        this.contacts = res.data.data;
-                    })
-                    .catch((error) => {
-                        console.log(error);
-                    });
-
+            await axios
+                .get("/api/contacts/list")
+                .then((res) => {
+                    this.contacts = res.data.data;
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
         },
     },
     components: { GoBack },

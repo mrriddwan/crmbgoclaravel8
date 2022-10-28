@@ -53,7 +53,12 @@
                 </div> -->
 
                 <div>
-                    <div>
+                    <div
+                        v-if="
+                            can('export contact summary') ||
+                            is('admin | super-admin')
+                        "
+                    >
                         <download-excel
                             :data="contacts.data"
                             :fields="contact_fields"
@@ -969,11 +974,12 @@ export default {
     },
 
     mounted() {
-        
         this.getSelectedYear(this.getCurrentDate());
         this.getStatus();
         this.getTypes();
-        this.selectedUser = document.querySelector('meta[name="user-id"]').getAttribute('content');
+        this.selectedUser = document
+            .querySelector('meta[name="user-id"]')
+            .getAttribute("content");
         this.getUsers();
         this.getCategories();
         this.getIndustries();
@@ -1019,12 +1025,26 @@ export default {
                     callback: (value) => {
                         if (!value.summary_todo[`Jan` + this.selectedYear]) {
                             return " ";
+                        } else if (
+                            !value.summary_todo[`Jan` + this.selectedYear][0][
+                                "action"
+                            ]
+                        ) {
+                            return (
+                                
+                                `${
+                                    value.summary_todo[
+                                        `Jan` + this.selectedYear
+                                    ][0]["todo_date"]
+                                }`
+                                
+                            );
                         } else {
-                            return `${
+                            return `(( ` +  `${
                                 value.summary_todo[
                                     `Jan` + this.selectedYear
                                 ][0]["todo_date"]
-                            }`;
+                            }` + ` ))`;
                         }
                     },
                 },
@@ -1032,12 +1052,26 @@ export default {
                     callback: (value) => {
                         if (!value.summary_todo[`Feb` + this.selectedYear]) {
                             return " ";
+                        } else if (
+                            !value.summary_todo[`Feb` + this.selectedYear][0][
+                                "action"
+                            ]
+                        ) {
+                            return (
+                                
+                                ` ${
+                                    value.summary_todo[
+                                        `Feb` + this.selectedYear
+                                    ][0]["todo_date"]
+                                }`
+                                
+                            );
                         } else {
-                            return `${
+                            return `(( ` +  `${
                                 value.summary_todo[
                                     `Feb` + this.selectedYear
                                 ][0]["todo_date"]
-                            }`;
+                            }` + ` ))`;
                         }
                     },
                 },
@@ -1045,12 +1079,26 @@ export default {
                     callback: (value) => {
                         if (!value.summary_todo[`Mar` + this.selectedYear]) {
                             return " ";
+                        } else if (
+                            !value.summary_todo[`Mar` + this.selectedYear][0][
+                                "action"
+                            ]
+                        ) {
+                            return (
+                                
+                                ` ${
+                                    value.summary_todo[
+                                        `Mar` + this.selectedYear
+                                    ][0]["todo_date"]
+                                }`
+                                
+                            );
                         } else {
-                            return `${
+                            return `(( ` +  `${
                                 value.summary_todo[
                                     `Mar` + this.selectedYear
                                 ][0]["todo_date"]
-                            }`;
+                            }` + ` ))`;
                         }
                     },
                 },
@@ -1058,12 +1106,26 @@ export default {
                     callback: (value) => {
                         if (!value.summary_todo[`Apr` + this.selectedYear]) {
                             return " ";
+                        } else if (
+                            !value.summary_todo[`Apr` + this.selectedYear][0][
+                                "action"
+                            ]
+                        ) {
+                            return (
+                                
+                                ` ${
+                                    value.summary_todo[
+                                        `Apr` + this.selectedYear
+                                    ][0]["todo_date"]
+                                }`
+                                
+                            );
                         } else {
-                            return `${
+                            return `(( ` +  `${
                                 value.summary_todo[
                                     `Apr` + this.selectedYear
                                 ][0]["todo_date"]
-                            }`;
+                            }` + ` ))`;
                         }
                     },
                 },
@@ -1071,12 +1133,26 @@ export default {
                     callback: (value) => {
                         if (!value.summary_todo[`May` + this.selectedYear]) {
                             return " ";
+                        } else if (
+                            !value.summary_todo[`May` + this.selectedYear][0][
+                                "action"
+                            ]
+                        ) {
+                            return (
+                                
+                                ` ${
+                                    value.summary_todo[
+                                        `May` + this.selectedYear
+                                    ][0]["todo_date"]
+                                }`
+                                
+                            );
                         } else {
-                            return `${
+                            return `(( ` +  `${
                                 value.summary_todo[
                                     `May` + this.selectedYear
                                 ][0]["todo_date"]
-                            }`;
+                            }` + ` ))`;
                         }
                     },
                 },
@@ -1084,12 +1160,26 @@ export default {
                     callback: (value) => {
                         if (!value.summary_todo[`Jun` + this.selectedYear]) {
                             return " ";
+                        } else if (
+                            !value.summary_todo[`Jun` + this.selectedYear][0][
+                                "action"
+                            ]
+                        ) {
+                            return (
+                                
+                                ` ${
+                                    value.summary_todo[
+                                        `Jun` + this.selectedYear
+                                    ][0]["todo_date"]
+                                }`
+                                
+                            );
                         } else {
-                            return `${
+                            return `(( ` +  `${
                                 value.summary_todo[
                                     `Jun` + this.selectedYear
                                 ][0]["todo_date"]
-                            }`;
+                            }` + ` ))`;
                         }
                     },
                 },
@@ -1097,12 +1187,26 @@ export default {
                     callback: (value) => {
                         if (!value.summary_todo[`Jul` + this.selectedYear]) {
                             return " ";
+                        } else if (
+                            !value.summary_todo[`Jul` + this.selectedYear][0][
+                                "action"
+                            ]
+                        ) {
+                            return (
+                                
+                                ` ${
+                                    value.summary_todo[
+                                        `Jul` + this.selectedYear
+                                    ][0]["todo_date"]
+                                }`
+                                
+                            );
                         } else {
-                            return `${
+                            return `(( ` +  `${
                                 value.summary_todo[
                                     `Jul` + this.selectedYear
                                 ][0]["todo_date"]
-                            }`;
+                            }` + ` ))`;
                         }
                     },
                 },
@@ -1110,12 +1214,26 @@ export default {
                     callback: (value) => {
                         if (!value.summary_todo[`Aug` + this.selectedYear]) {
                             return " ";
+                        } else if (
+                            !value.summary_todo[`Aug` + this.selectedYear][0][
+                                "action"
+                            ]
+                        ) {
+                            return (
+                                
+                                ` ${
+                                    value.summary_todo[
+                                        `Aug` + this.selectedYear
+                                    ][0]["todo_date"]
+                                }`
+                                
+                            );
                         } else {
-                            return `${
+                            return `(( ` +  `${
                                 value.summary_todo[
                                     `Aug` + this.selectedYear
                                 ][0]["todo_date"]
-                            }`;
+                            }` + ` ))`;
                         }
                     },
                 },
@@ -1123,12 +1241,26 @@ export default {
                     callback: (value) => {
                         if (!value.summary_todo[`Sep` + this.selectedYear]) {
                             return " ";
+                        } else if (
+                            !value.summary_todo[`Sep` + this.selectedYear][0][
+                                "action"
+                            ]
+                        ) {
+                            return (
+                                
+                                ` ${
+                                    value.summary_todo[
+                                        `Sep` + this.selectedYear
+                                    ][0]["todo_date"]
+                                }`
+                                
+                            );
                         } else {
-                            return `${
+                            return `(( ` +  `${
                                 value.summary_todo[
                                     `Sep` + this.selectedYear
                                 ][0]["todo_date"]
-                            }`;
+                            }` + ` ))`
                         }
                     },
                 },
@@ -1136,12 +1268,25 @@ export default {
                     callback: (value) => {
                         if (!value.summary_todo[`Oct` + this.selectedYear]) {
                             return " ";
+                        } else if (
+                            !value.summary_todo[`Oct` + this.selectedYear][0][
+                                "action"
+                            ]
+                        ) {
+                            return (
+                                
+                                ` ${
+                                    value.summary_todo[
+                                        `Oct` + this.selectedYear
+                                    ][0]["todo_date"]
+                                }`
+                            );
                         } else {
-                            return `${
+                            return `(( ` +  `${
                                 value.summary_todo[
                                     `Oct` + this.selectedYear
                                 ][0]["todo_date"]
-                            }`;
+                            }` + ` ))`
                         }
                     },
                 },
@@ -1149,12 +1294,26 @@ export default {
                     callback: (value) => {
                         if (!value.summary_todo[`Nov` + this.selectedYear]) {
                             return " ";
+                        } else if (
+                            !value.summary_todo[`Nov` + this.selectedYear][0][
+                                "action"
+                            ]
+                        ) {
+                            return (
+                                
+                                ` ${
+                                    value.summary_todo[
+                                        `Nov` + this.selectedYear
+                                    ][0]["todo_date"]
+                                }`
+                                
+                            );
                         } else {
-                            return `${
+                            return `(( ` +  `${
                                 value.summary_todo[
                                     `Nov` + this.selectedYear
                                 ][0]["todo_date"]
-                            }`;
+                            }` + ` ))`
                         }
                     },
                 },
@@ -1162,12 +1321,25 @@ export default {
                     callback: (value) => {
                         if (!value.summary_todo[`Dec` + this.selectedYear]) {
                             return " ";
+                        } else if (
+                            !value.summary_todo[`Dec` + this.selectedYear][0][
+                                "action"
+                            ]
+                        ) {
+                            return (
+                                
+                                ` ${
+                                    value.summary_todo[
+                                        `Dec` + this.selectedYear
+                                    ][0]["todo_date"]
+                                }`
+                            );
                         } else {
-                            return `${
+                            return `(( ` +  `${
                                 value.summary_todo[
                                     `Dec` + this.selectedYear
                                 ][0]["todo_date"]
-                            }`;
+                            }` + ` ))`
                         }
                     },
                 },
