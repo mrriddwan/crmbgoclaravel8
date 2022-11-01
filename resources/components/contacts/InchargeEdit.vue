@@ -3,12 +3,12 @@
         <GoBack />
     </div>
 
-    <div class="max-w-lg">
+    <div class="w-full">
         <div
-            class="container w-max border-4 align-center mx-auto"
+            class="container w-full border-4 align-center mx-auto"
             v-if="incharge.length !== 0"
         >
-            <div>
+            <div class="w-full">
                 <h1
                     class="items-center text-center text-white font-extrabold font-mono bg-slate-600 px-2 py-2 rounded-md"
                 >
@@ -52,7 +52,7 @@
                                 <label class="ml-7">Phone No.(Office)</label>
                                 <input
                                     type="text"
-                                    class="items-left mt-1 rounded-md border-gray-500 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                    class="items-left w-64 mt-1 rounded-md border-gray-500 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                                     v-model="incharge.phone_office"
                                 />
                             </div>
@@ -107,40 +107,6 @@ export default {
                     console.log(error);
                 });
         },
-        // <p class="inline text-red-600 text-lg">*</p></label>
-
-        // async createPIC() {
-        //         const contact = this.contact_infos;
-        //         // const form = document.getElementById('inchargeForm');
-        //         try {
-        //             await axios.post("/api/incharges/store", {
-        //                 contact_id: contact[0].id,
-        //                 name: this.form.name,
-        //                 email: this.form.email,
-        //                 phone_mobile: this.form.phone_mobile,
-        //                 phone_office: this.form.phone_office,
-        //             });
-
-        //             await this.$router.push({
-        //                 name: "incharge_create",
-        //                 params: { id: this.$route.params.id },
-        //             });
-        //             this.form.contact_id = "";
-        //             this.form.name = "";
-        //             this.form.email = "";
-        //             this.form.phone_mobile = "";
-        //             this.form.phone_office = "";
-        //             this.errors = "";
-        //             this.showIncharge();
-        //         } catch (e) {
-        //             {
-        //                 if (e.response.status === 422){
-        //                     this.errors = e.response.data.errors;
-        //                 }
-
-        //             }
-        //         }
-        //     },
 
         updatePIC() {
             axios

@@ -281,7 +281,9 @@ export default {
                         remark: this.form.remark
                             ? this.form.remark
                             : "No remark",
-                        user_id: 2, //later add current user
+                        user_id: document
+                            .querySelector('meta[name="user-id"]')
+                            .getAttribute("content"),
                     })
                     .then((res) => {
                         const contact = res.data.data;

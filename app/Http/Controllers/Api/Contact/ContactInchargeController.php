@@ -40,7 +40,7 @@ class ContactInchargeController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'phone_mobile' => $request->phone_mobile,
-            'phone_mobile' => $request->phone_office,
+            'phone_office' => $request->phone_office,
         ]);
 
 
