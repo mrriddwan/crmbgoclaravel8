@@ -31,4 +31,9 @@ class ActionController extends Controller
             'data' => $data,
         ]);
     }
+
+    public function performance()
+    {
+        return ActionResource::collection(Action::all()->sortBy('id'));
+    }
 }

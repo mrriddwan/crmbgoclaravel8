@@ -17,7 +17,13 @@
                     </select>
                 </div> -->
 
-                <div class="items-center" v-if="can('create billboard') || is('supervisor | admin | super-admin')">
+                <div
+                    class="items-center"
+                    v-if="
+                        can('create billboard') ||
+                        is('supervisor | admin | super-admin')
+                    "
+                >
                     <router-link
                         to="/billboard/create"
                         class="inline-block items-center px-2 py-1 align-top bg-blue-800 border-transparent rounded-md font-semibold text-m text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
@@ -85,24 +91,39 @@
                                     <a
                                         href="#"
                                         @click.prevent="change_sort('site_id')"
-                                        class="text-white"
-                                    >
-                                        Site No.
+                                        class="text-white inline-flex"
+                                        ><div class="inline-flex">Site No.</div>
+
+                                        <span
+                                            v-if="
+                                                (!(sort_direction == 'asc') ||
+                                                    !(
+                                                        sort_direction == 'desc'
+                                                    )) &&
+                                                !(sort_field == 'site_id')
+                                            "
+                                            class="inline-block"
+                                            ><ArrowsUpDownIcon class="h-4 w-4"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'desc' &&
+                                                sort_field == 'site_id'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowUpIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'asc' &&
+                                                sort_field == 'site_id'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowDownIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
                                     </a>
-                                    <span
-                                        v-if="
-                                            sort_direction == 'desc' &&
-                                            sort_field == 'site_id'
-                                        "
-                                        >&uarr;</span
-                                    >
-                                    <span
-                                        v-if="
-                                            sort_direction == 'asc' &&
-                                            sort_field == 'site_id'
-                                        "
-                                        >&darr;</span
-                                    >
                                 </div>
                                 <!-- <div
                                     class="items-center text-xs text-center h-6 4"
@@ -133,24 +154,42 @@
                                         @click.prevent="
                                             change_sort('bboard_location')
                                         "
-                                        class="text-white"
-                                    >
-                                        Location
+                                        class="text-white inline-flex"
+                                        ><div class="inline-flex">Location</div>
+
+                                        <span
+                                            v-if="
+                                                (!(sort_direction == 'asc') ||
+                                                    !(
+                                                        sort_direction == 'desc'
+                                                    )) &&
+                                                !(
+                                                    sort_field ==
+                                                    'bboard_location'
+                                                )
+                                            "
+                                            class="inline-block"
+                                            ><ArrowsUpDownIcon class="h-4 w-4"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'desc' &&
+                                                sort_field == 'bboard_location'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowUpIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'asc' &&
+                                                sort_field == 'bboard_location'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowDownIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
                                     </a>
-                                    <span
-                                        v-if="
-                                            sort_direction == 'desc' &&
-                                            sort_field == 'bboard_location'
-                                        "
-                                        >&uarr;</span
-                                    >
-                                    <span
-                                        v-if="
-                                            sort_direction == 'asc' &&
-                                            sort_field == 'bboard_location'
-                                        "
-                                        >&darr;</span
-                                    >
                                 </div>
                             </th>
                             <th class="w-10">
@@ -160,24 +199,39 @@
                                         @click.prevent="
                                             change_sort('bboard_size')
                                         "
-                                        class="text-white"
-                                    >
-                                        Size
+                                        class="text-white inline-flex"
+                                        ><div class="inline-flex">Size</div>
+
+                                        <span
+                                            v-if="
+                                                (!(sort_direction == 'asc') ||
+                                                    !(
+                                                        sort_direction == 'desc'
+                                                    )) &&
+                                                !(sort_field == 'bboard_size')
+                                            "
+                                            class="inline-block"
+                                            ><ArrowsUpDownIcon class="h-4 w-4"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'desc' &&
+                                                sort_field == 'bboard_size'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowUpIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'asc' &&
+                                                sort_field == 'bboard_size'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowDownIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
                                     </a>
-                                    <span
-                                        v-if="
-                                            sort_direction == 'desc' &&
-                                            sort_field == 'bboard_size'
-                                        "
-                                        >&uarr;</span
-                                    >
-                                    <span
-                                        v-if="
-                                            sort_direction == 'asc' &&
-                                            sort_field == 'bboard_size'
-                                        "
-                                        >&darr;</span
-                                    >
                                 </div>
                                 <!--     <div class="text-xs text-center h-6">
                                      <div class="text-xs text-center h-6">
@@ -204,24 +258,39 @@
                                         @click.prevent="
                                             change_sort('company_name')
                                         "
-                                        class="text-white"
-                                    >
-                                        Company
+                                        class="text-white inline-flex"
+                                        ><div class="inline-flex">Company</div>
+
+                                        <span
+                                            v-if="
+                                                (!(sort_direction == 'asc') ||
+                                                    !(
+                                                        sort_direction == 'desc'
+                                                    )) &&
+                                                !(sort_field == 'company_name')
+                                            "
+                                            class="inline-block"
+                                            ><ArrowsUpDownIcon class="h-4 w-4"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'desc' &&
+                                                sort_field == 'company_name'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowUpIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'asc' &&
+                                                sort_field == 'company_name'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowDownIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
                                     </a>
-                                    <span
-                                        v-if="
-                                            sort_direction == 'desc' &&
-                                            sort_field == 'company_name'
-                                        "
-                                        >&uarr;</span
-                                    >
-                                    <span
-                                        v-if="
-                                            sort_direction == 'asc' &&
-                                            sort_field == 'company_name'
-                                        "
-                                        >&darr;</span
-                                    >
                                 </div>
                             </th>
 
@@ -1207,127 +1276,129 @@ export default {
             selectedYear: "",
             selectedSite: "",
             selectedSize: "",
+            sort_direction: "desc",
+            sort_field: "site_id",
 
             sort_direction: "asc",
             sort_field: "site_id",
             currentDate: "",
 
-            contact_fields: {
-            //     ID: "id",
-            //     Company: "name",
-            //     Status: "status_name",
-            //     Type: "type_name",
-            //     User: "user_name",
-            //     "Contact Product": "category_name",
-            //     Industry: "industry_name",
-            //     Jan: {
-            //         callback: (value) => {
-            //             if (!value.summary[`Jan` + this.selectedYear]) {
-            //                 return " ";
-            //             } else {
-            //                 return `${value.summary[`Jan` + this.selectedYear][0]["todo_date"]}`;
-            //             }
-            //         },
-            //     },
-            //     Feb: {
-            //         callback: (value) => {
-            //             if (!value.summary[`Feb` + this.selectedYear]) {
-            //                 return " ";
-            //             } else {
-            //                 return `${value.summary[`Feb` + this.selectedYear][0]["todo_date"]}`;
-            //             }
-            //         },
-            //     },
-            //     Mar: {
-            //         callback: (value) => {
-            //             if (!value.summary[`Mar` + this.selectedYear]) {
-            //                 return " ";
-            //             } else {
-            //                 return `${value.summary[`Mar` + this.selectedYear][0]["todo_date"]}`;
-            //             }
-            //         },
-            //     },
-            //     Apr: {
-            //         callback: (value) => {
-            //             if (!value.summary[`Apr` + this.selectedYear]) {
-            //                 return " ";
-            //             } else {
-            //                 return `${value.summary[`Apr` + this.selectedYear][0]["todo_date"]}`;
-            //             }
-            //         },
-            //     },
-            //     May: {
-            //         callback: (value) => {
-            //             if (!value.summary[`May` + this.selectedYear]) {
-            //                 return " ";
-            //             } else {
-            //                 return `${value.summary[`May` + this.selectedYear][0]["todo_date"]}`;
-            //             }
-            //         },
-            //     },
-            //     Jun: {
-            //         callback: (value) => {
-            //             if (!value.summary[`Jun` + this.selectedYear]) {
-            //                 return " ";
-            //             } else {
-            //                 return `${value.summary[`Jun` + this.selectedYear][0]["todo_date"]}`;
-            //             }
-            //         },
-            //     },
-            //     Jul: {
-            //         callback: (value) => {
-            //             if (!value.summary[`Jul` + this.selectedYear]) {
-            //                 return " ";
-            //             } else {
-            //                 return `${value.summary[`Jul` + this.selectedYear][0]["todo_date"]}`;
-            //             }
-            //         },
-            //     },
-            //     Aug: {
-            //         callback: (value) => {
-            //             if (!value.summary[`Aug` + this.selectedYear]) {
-            //                 return " ";
-            //             } else {
-            //                 return `${value.summary[`Aug` + this.selectedYear][0]["todo_date"]}`;
-            //             }
-            //         },
-            //     },
-            //     Sep: {
-            //         callback: (value) => {
-            //             if (!value.summary[`Sep` + this.selectedYear]) {
-            //                 return " ";
-            //             } else {
-            //                 return `${value.summary[`Sep` + this.selectedYear][0]["todo_date"]}`;
-            //             }
-            //         },
-            //     },
-            //     Oct: {
-            //         callback: (value) => {
-            //             if (!value.summary[`Oct` + this.selectedYear]) {
-            //                 return " ";
-            //             } else {
-            //                 return `${value.summary[`Oct` + this.selectedYear][0]["todo_date"]}`;
-            //             }
-            //         },
-            //     },
-            //     Nov: {
-            //         callback: (value) => {
-            //             if (!value.summary[`Nov` + this.selectedYear]) {
-            //                 return " ";
-            //             } else {
-            //                 return `${value.summary[`Nov` + this.selectedYear][0]["todo_date"]}`;
-            //             }
-            //         },
-            //     },
-            //     Dec: {
-            //         callback: (value) => {
-            //             if (!value.summary[`Dec` + this.selectedYear]) {
-            //                 return " ";
-            //             } else {
-            //                 return `${value.summary[`Dec` + this.selectedYear][0]["todo_date"]}`;
-            //             }
-            //         },
-            //     },
+            billboard_fields: {
+                //     ID: "id",
+                //     Company: "name",
+                //     Status: "status_name",
+                //     Type: "type_name",
+                //     User: "user_name",
+                //     "Contact Product": "category_name",
+                //     Industry: "industry_name",
+                //     Jan: {
+                //         callback: (value) => {
+                //             if (!value.summary[`Jan` + this.selectedYear]) {
+                //                 return " ";
+                //             } else {
+                //                 return `${value.summary[`Jan` + this.selectedYear][0]["todo_date"]}`;
+                //             }
+                //         },
+                //     },
+                //     Feb: {
+                //         callback: (value) => {
+                //             if (!value.summary[`Feb` + this.selectedYear]) {
+                //                 return " ";
+                //             } else {
+                //                 return `${value.summary[`Feb` + this.selectedYear][0]["todo_date"]}`;
+                //             }
+                //         },
+                //     },
+                //     Mar: {
+                //         callback: (value) => {
+                //             if (!value.summary[`Mar` + this.selectedYear]) {
+                //                 return " ";
+                //             } else {
+                //                 return `${value.summary[`Mar` + this.selectedYear][0]["todo_date"]}`;
+                //             }
+                //         },
+                //     },
+                //     Apr: {
+                //         callback: (value) => {
+                //             if (!value.summary[`Apr` + this.selectedYear]) {
+                //                 return " ";
+                //             } else {
+                //                 return `${value.summary[`Apr` + this.selectedYear][0]["todo_date"]}`;
+                //             }
+                //         },
+                //     },
+                //     May: {
+                //         callback: (value) => {
+                //             if (!value.summary[`May` + this.selectedYear]) {
+                //                 return " ";
+                //             } else {
+                //                 return `${value.summary[`May` + this.selectedYear][0]["todo_date"]}`;
+                //             }
+                //         },
+                //     },
+                //     Jun: {
+                //         callback: (value) => {
+                //             if (!value.summary[`Jun` + this.selectedYear]) {
+                //                 return " ";
+                //             } else {
+                //                 return `${value.summary[`Jun` + this.selectedYear][0]["todo_date"]}`;
+                //             }
+                //         },
+                //     },
+                //     Jul: {
+                //         callback: (value) => {
+                //             if (!value.summary[`Jul` + this.selectedYear]) {
+                //                 return " ";
+                //             } else {
+                //                 return `${value.summary[`Jul` + this.selectedYear][0]["todo_date"]}`;
+                //             }
+                //         },
+                //     },
+                //     Aug: {
+                //         callback: (value) => {
+                //             if (!value.summary[`Aug` + this.selectedYear]) {
+                //                 return " ";
+                //             } else {
+                //                 return `${value.summary[`Aug` + this.selectedYear][0]["todo_date"]}`;
+                //             }
+                //         },
+                //     },
+                //     Sep: {
+                //         callback: (value) => {
+                //             if (!value.summary[`Sep` + this.selectedYear]) {
+                //                 return " ";
+                //             } else {
+                //                 return `${value.summary[`Sep` + this.selectedYear][0]["todo_date"]}`;
+                //             }
+                //         },
+                //     },
+                //     Oct: {
+                //         callback: (value) => {
+                //             if (!value.summary[`Oct` + this.selectedYear]) {
+                //                 return " ";
+                //             } else {
+                //                 return `${value.summary[`Oct` + this.selectedYear][0]["todo_date"]}`;
+                //             }
+                //         },
+                //     },
+                //     Nov: {
+                //         callback: (value) => {
+                //             if (!value.summary[`Nov` + this.selectedYear]) {
+                //                 return " ";
+                //             } else {
+                //                 return `${value.summary[`Nov` + this.selectedYear][0]["todo_date"]}`;
+                //             }
+                //         },
+                //     },
+                //     Dec: {
+                //         callback: (value) => {
+                //             if (!value.summary[`Dec` + this.selectedYear]) {
+                //                 return " ";
+                //             } else {
+                //                 return `${value.summary[`Dec` + this.selectedYear][0]["todo_date"]}`;
+                //             }
+                //         },
+                //     },
             },
         };
     },
@@ -1390,7 +1461,11 @@ export default {
             }
             axios
                 .get(
-                    "/api/billboards/index"
+                    "/api/billboards/index?" +
+                        "&sort_direction=" +
+                        this.sort_direction +
+                        "&sort_field=" +
+                        this.sort_field
                 )
                 .then((res) => {
                     this.billboards = res.data;
@@ -1406,26 +1481,24 @@ export default {
             }
             axios
                 .get(
-                    "/api/billboards/index?"
-                    +
-                    "q=" +
-                    this.search
-                     +
-                    "&selectedYear=" +
-                    this.selectedYear 
-                    // +
-                    // "&selectedSite=" +
-                    // this.selectedSite +
-                    // "&selectedSize=" +
-                    // this.selectedSize +
-                    // "&paginate=" +
-                    // this.paginate +
-                    // "&page=" +
-                    // page +
-                    // "&sort_direction=" +
-                    // this.sort_direction +
-                    // "&sort_field=" +
-                    // this.sort_field
+                    "/api/billboards/index?" +
+                        "q=" +
+                        this.search +
+                        "&selectedYear=" +
+                        this.selectedYear +
+                        // +
+                        // "&selectedSite=" +
+                        // this.selectedSite +
+                        // "&selectedSize=" +
+                        // this.selectedSize +
+                        // "&paginate=" +
+                        // this.paginate +
+                        // "&page=" +
+                        // page +
+                        "&sort_direction=" +
+                        this.sort_direction +
+                        "&sort_field=" +
+                        this.sort_field
                 )
                 .then((res) => {
                     this.billboards = res.data;

@@ -94,11 +94,24 @@
     <!-- <div> -->
 
     <table class="table table-hover table-bordered" id="example">
-        <thead>
+        <thead v-if="viewType !== 'year'">
             <tr>
-                <!-- <th v-if="viewType === `year`">Month</th> -->
-                <th v-if="viewType !== 'year'" class="text-sm text-center">Week</th>
-                <th v-else></th>
+                <th class="text-sm text-center">Week</th>
+                <th
+                    class="text-sm text-center"
+                    v-for="action in actions"
+                    :key="action.id"
+                >
+                    <a class="break-normal">
+                        {{ action.name }}
+                    </a>
+                </th>
+            </tr>
+        </thead>
+        <thead v-else>
+            <tr>
+                <th class="text-sm text-center">Month</th>
+                <th class="text-sm text-center">Week</th>
                 <th
                     class="text-sm text-center"
                     v-for="action in actions"
@@ -167,74 +180,74 @@
                             {{ action_total }}
                         </span>
                         <span v-else class="">0</span>
-
-                        <!-- <br /> -->
-                        <!-- <span>{{ action.name }}</span> -->
                     </span>
                     <span v-else class=""> 0 </span>
-
-                    <!-- <span>
-                        {{ user_performance["44"][`${action.name}`]}}
-                    </span> -->
                 </td>
             </tr>
         </tbody>
 
-        <tbody v-if="viewType === 'year'" v-for="(month, index) in this.months">
-            <td
-                class="text-center text-lg font-bold bg-slate-700 text-amber-500 uppercase py-1"
-                colspan="8"
-            >
-                {{
-                    month
-                }}
-            </td>
-
-            <tr v-for="date in this.monthsInYear">
-                <td>
-                    <span>
-                        {{ moment(date.startDate).format("DD-MM-YY") }}
-                    </span>
-                    <span class="mx-2"> to </span>
-                    <span>
-                        {{ moment(date.endDate).format("DD-MM-YY") }}
-                        <br />
-                    </span>
+        <tbody v-if="viewType === 'year'">
+            <tr v-for="weeks in dates_in_one_year">
+                <td>{{ months[moment(weeks.start_date).month()] }}</td>
+                <td class="flex">
+                    <!-- <p>{{ weeks.week_number }} </p><br /> -->
+                    {{ showToday(weeks.start_date) }}
+                    <p class="mx-2">to</p>
+                    {{ showToday(weeks.end_date) }}
                 </td>
                 <td v-for="action in actions" :key="action.id">
+                    <!-- {{ getObjectKey(weeks.start_date) }} -->
                     <span
                         v-if="
-                            user_performance[`${this.getWeek(date.startDate)}`]
+                            user_performance[
+                                `${this.getWeek(weeks.start_date)}` // sama dengan user_performance[`44`]
+                            ]
                         "
                         v-for="action_total in user_performance[
-                            `${this.getWeek(date.startDate)}`
+                            `${this.getWeek(weeks.start_date)}`
                         ]"
-                        ><span
+                    >
+                        <!-- <span
+                            v-for="key in getObjectKey(
+                                user_performance[
+                                    `${this.getWeek(weeks.start_date)}`
+                                ]
+                            )"
+                        > -->
+                            <!-- {{
+                                getObjectKey(
+                                    user_performance[
+                                        `${this.getWeek(weeks.start_date)}`
+                                    ]
+                                ) 
+                                
+                            }} -->
+                            <!-- {{ action.name }} -->
+                            <!-- {{ key }} -->
+                        <!-- </span> -->
+                        <span
                             class="font-bold bg-lime-400 py-1 px-1 rounded-md"
                             v-if="
                                 user_performance[
-                                    `${this.getWeek(date.startDate)}`
+                                    `${this.getWeek(weeks.start_date)}`
                                 ][`${action.name}`]
+                                //  &&
+                                //  (getObjectKey(
+                                //     user_performance[
+                                //         `${this.getWeek(weeks.start_date)}`
+                                //     ]
+                                // ) === `${action.name}`)
                             "
                         >
                             {{ action_total }}
                         </span>
                         <span v-else class="">0</span>
-
-                        <!-- <br /> -->
-                        <!-- <span>{{ action.name }}</span> -->
                     </span>
                     <span v-else class=""> 0 </span>
-
-                    <!-- <span>
-                        {{ user_performance["44"][`${action.name}`]}}
-                    </span> -->
                 </td>
             </tr>
         </tbody>
     </table>
-
-    <!-- </div> -->
 </template>
 
 <script>
@@ -278,7 +291,8 @@ export default {
         this.currentMonth = this.selectedYear + "-" + this.selectedMonth;
         //initialise month view
         this.displayMonth(this.selectedYear, this.selectedMonth); //for month view
-        // this.displayYear(this.selectedYear); //for year view
+
+        this.displayYear(this.selectedYear, this.selectedDate); //for year view
 
         this.selectedStartDate = this.datesInWeek[0];
         // console.log("selectedStartDate", this.selectedStartDate);
@@ -302,11 +316,12 @@ export default {
             weeksInMonth: [],
             monthsInYear: [],
             // paginate: 10,
-            viewType: "month",
+            viewType: "year",
             moment: moment,
 
             selectedUser: 1,
             datesInWeek: [],
+            dates_in_one_year: [],
             months: [
                 "January",
                 "February",
@@ -367,7 +382,7 @@ export default {
             }
             if (value === "year") {
                 this.monthsInYear = [];
-                this.displayYear(this.selectedYear); //for year view
+                this.displayYear(this.selectedYear, this.selectedDate); //for year view
                 this.getUserPerformance();
             }
         },
@@ -431,15 +446,6 @@ export default {
 
         getWeek(date) {
             return moment(date).isoWeek();
-            // let tarikh =
-            //     this.getSelectedYear + "-" + this.getSelectedMonth + "-01";
-            // const d = new Date(
-            //     this.getSelectedYear + "-" + this.getSelectedMonth + "-01"
-            // );
-            // const date = d.getDate();
-            // const day = d.getDay();
-            // const weekOfMonth = Math.ceil((date - 1 - day) / 7);
-            // return weekOfMonth;
         },
 
         getWeekday(day) {
@@ -454,16 +460,12 @@ export default {
                     .startOf("isoweek")
                     .add(x, "days")
                     .format("YYYY-MM-DD");
-
-                // console.log("in loop " + datesOfWeek);
-                // console.log("");
                 this.datesInWeek.push(datesOfWeek);
             }
             return this.datesInWeek;
         },
 
         showToday(date) {
-            // let day = moment(date).format("DD-MM-YYYY");
             let day = moment(date).format("DD-MM-YY");
             return day;
         },
@@ -505,61 +507,50 @@ export default {
 
         displayMonth(selected_year, selected_month) {
             let monthYear = selected_year + "-" + selected_month + "-01";
-            // console.log("monthYear", monthYear);
 
             let y = parseInt(this.getSelectedYear(monthYear));
             let m = parseInt(this.getSelectedMonth(monthYear));
-
-            // console.log("y", y);
-            // console.log("m", m);
 
             const month = moment([y, m - 1]);
             console.log("month", month);
 
             const weekList = this.weeks(month);
-            // console.log("weekNumbers", weekNumbers);
-            // console.log("weekList", weekList);
-            // weekList.forEach((date) => {
-            //     date.startDate.format("YYYY-MM-DD");
-            //     console.log(
-            //         "start - " + date.startDate,
-            //         "end - " + date.endDate.format("DD-MM-YY")
-            //     );
-            //     // return date;
-            // });
+
             return this.weeksInMonth.push(...weekList);
         },
 
-        displayYear(selected_year) {
-            let arr = [];
+        getObjectKey(i) {
+            var arr = Object.keys(i);
+            return [...arr];
+        },
 
-            for (let x = 1; x++; x < this.months.length) {
-                let monthYear = selected_year + "-01-01";
-                // console.log("monthYear", monthYear);
+        displayYear(selected_year, selected_date) {
+            var year_end_date = new Date(selected_year + "-12-31");
 
-                let y = parseInt(this.getSelectedYear(monthYear));
-                // let m = parseInt(this.getSelectedMonth(monthYear));
-                // console.log("y", y);
-                // console.log("x", x);
+            for (let week = 1; week < 56; week++) {
+                let initialDayOfWeek = moment(
+                    moment(selected_date).isoWeek(week)
+                )
+                    .startOf("isoweek")
+                    .format("YYYY-MM-DD");
+                let finalDayOfWeek = moment(moment(selected_date).isoWeek(week))
+                    .endOf("isoweek")
+                    .format("YYYY-MM-DD");
+                let week_number = moment(initialDayOfWeek).isoWeek();
 
-                const month = moment([y, x - 1]);
-                // console.log("month", month);
+                var check_date = new Date(initialDayOfWeek);
 
-                const weekList = this.weeks(month);
-                // console.log("weekNumbers", weekNumbers);
-                // console.log("weekList", weekList);
-                // weekList.forEach((date) => {
-                //     console.log(
-                //         "start - " + date.startDate.format("DD-MM-YY"),
-                //         "end - " + date.endDate.format("DD-MM-YY")
-                //     );
-                // });
-                arr.push(...weekList);
-                console.log("array in display Week", arr);
-                return this.monthsInYear.push(...arr);
+                if (check_date > year_end_date) {
+                    return this.dates_in_one_year;
+                } else {
+                    this.dates_in_one_year.push({
+                        week_number: week_number,
+                        start_date: initialDayOfWeek,
+                        end_date: finalDayOfWeek,
+                    });
+                }
             }
-
-            // return this.monthsInYear
+            return this.dates_in_one_year;
         },
 
         incrementDate() {
@@ -597,8 +588,6 @@ export default {
                 this.getSelectedMonth(monthYearAdd);
                 this.getSelectedYear(monthYearAdd);
 
-                
-
                 this.displayMonth(selected_year, selected_month);
                 this.getUserPerformance();
 
@@ -607,6 +596,22 @@ export default {
                 return (this.currentMonth = year + "-" + month);
             } else {
                 document.getElementById("incrementDate").disabled = false;
+
+                var monthYearBefore =
+                    this.selectedYear + "-" + this.selectedMonth + "-" + "01";
+                console.log("monthYearBefore : " + monthYearBefore);
+
+                var monthYearAdd = moment(monthYearBefore)
+                    .add(1, "y")
+                    .format("YYYY-MM-DD");
+
+                console.log("monthYearAdd : " + monthYearAdd);
+
+                this.getSelectedYear(monthYearAdd);
+                this.dates_in_one_year = [];
+
+                this.displayYear(this.selectedYear, monthYearAdd);
+                this.getUserPerformance();
             }
         },
 
@@ -649,7 +654,6 @@ export default {
                 this.getSelectedMonth(monthYearMinus);
                 this.getSelectedYear(monthYearMinus);
 
-                
                 this.displayMonth(selected_year, selected_month);
                 this.getUserPerformance();
 
@@ -658,6 +662,22 @@ export default {
                 return (this.currentMonth = year + "-" + month);
             } else {
                 document.getElementById("decrementDate").disabled = false;
+
+                var monthYearBefore =
+                    this.selectedYear + "-" + this.selectedMonth + "-" + "01";
+                console.log("monthYearBefore : " + monthYearBefore);
+
+                var monthYearAdd = moment(monthYearBefore)
+                    .subtract(1, "y")
+                    .format("YYYY-MM-DD");
+
+                console.log("monthYearAdd : " + monthYearAdd);
+
+                this.getSelectedYear(monthYearAdd);
+                this.dates_in_one_year = [];
+
+                this.displayYear(this.selectedYear, monthYearAdd);
+                this.getUserPerformance();
             }
         },
 
@@ -679,13 +699,8 @@ export default {
         getMomentDate(start, end) {
             let monthYear =
                 this.selectedYear + "-" + this.selectedMonth + "-01";
-            // console.log("monthYear", monthYear);
-
             const y = parseInt(this.getSelectedYear(monthYear));
             const m = parseInt(this.getSelectedMonth(monthYear));
-            // let y = parseInt(this.getSelectedYear(this.selectedDate));
-            // let m = parseInt(this.getSelectedMonth(this.selectedDate));
-
             return {
                 startDate: moment([y, m - 1, start]),
                 endDate: moment([y, m - 1, end]),

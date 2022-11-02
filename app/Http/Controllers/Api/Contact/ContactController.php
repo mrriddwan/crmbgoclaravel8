@@ -583,11 +583,11 @@ class ContactController extends Controller
                 ->when($selectedIndustry, function ($query) use ($selectedIndustry) {
                     $query->where('contacts.industry_id', $selectedIndustry);
                 })
-                ->when($selectedYear, function ($query) use ($selectedYear) {
-                    $query->whereHas('summary_todo', function ($q) use ($selectedYear) {
-                        $q->whereYear('todo_date', $selectedYear);
-                    });
-                })
+                // ->when($selectedYear, function ($query) use ($selectedYear) {
+                //     $query->whereHas('summary_todo', function ($q) use ($selectedYear) {
+                //         $q->whereYear('todo_date', $selectedYear);
+                //     });
+                // })
                 ->orderBy($sort_field, $sort_direction)
                 ->search(trim($search_term))
 

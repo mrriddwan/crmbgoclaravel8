@@ -33,6 +33,7 @@ class BillboardController extends Controller
             //             });
             //     });
             // })
+            ->orderBy($sort_field, $sort_direction)
             ->search(trim($search_term))
             ->paginate(1000);
 

@@ -213,6 +213,7 @@ Route::get('/tasks/index', [TaskController::class, 'index'])->name('task:index')
 Route::get('/tasks/info/{task}', [TaskController::class, 'info'])->name('task:info');
 
 Route::get('/actions/index', [ActionController::class, 'index'])->name('action:index');
+Route::get('/actions/performance', [ActionController::class, 'performance'])->name('action:index');
 Route::get('/actions/info/{action}', [ActionController::class, 'info'])->name('action:info');
 
 Route::get('/sources/index', [ToDoSourceController::class, 'index'])->name('source:index');
