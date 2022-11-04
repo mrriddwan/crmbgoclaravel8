@@ -32,6 +32,27 @@
                         Billboard</router-link
                     >
                 </div>
+                <div class="grid grid-cols-2 break-normal text-xs">
+                    <!-- <div class="bg-blue-700 rounded-md w-max px-2 py-2">
+                        <button @click="getBillboards" class="text-white">
+                            Find Records
+                        </button>
+                    </div> -->
+                    <div>
+                        <download-excel
+                            :data="billboards.data"
+                            :fields="billboard_fields"
+                            worksheet="Billboard Summary"
+                            name="Billboard Summary.xls"
+                            class="btn btn-success btn-sm"
+                        >
+                            <ArrowTopRightOnSquareIcon
+                                class="h-5 w-5 mr-1 inline-block"
+                            />
+                            Export
+                        </download-excel>
+                    </div>
+                </div>
                 <div class="grid grid-cols-1 items-left m-2">
                     <label>Year</label>
                     <input
@@ -49,28 +70,6 @@
                         class="form-control"
                         placeholder="Search by any..."
                     />
-                </div>
-
-                <div class="grid grid-cols-2 break-normal text-xs">
-                    <!-- <div class="bg-blue-700 rounded-md w-max px-2 py-2">
-                        <button @click="getBillboards" class="text-white">
-                            Find Records
-                        </button>
-                    </div> -->
-                    <div>
-                        <!-- <download-excel
-                            :data="billboards.data"
-                            :fields="forecast_fields"
-                            worksheet="ForecastSummary"
-                            name="Forecast Summary.xls"
-                            class="btn btn-success btn-sm"
-                        >
-                            <ArrowTopRightOnSquareIcon
-                                class="h-5 w-5 mr-1 inline-block"
-                            />
-                            Export
-                        </download-excel> -->
-                    </div>
                 </div>
             </div>
 
@@ -1254,7 +1253,6 @@ export default {
 
     mounted() {
         this.getSelectedYear(this.getCurrentDate());
-        // this.getTenures();
         this.getBillboardSizes();
         this.getBillboards();
     },
@@ -1267,10 +1265,6 @@ export default {
 
             paginate: 50,
             moment: moment,
-            // selectPage: false,
-            // selectAll: false,
-            // checked: [],
-            // url: "",
 
             search: "",
             selectedYear: "",
@@ -1284,121 +1278,632 @@ export default {
             currentDate: "",
 
             billboard_fields: {
-                //     ID: "id",
-                //     Company: "name",
-                //     Status: "status_name",
-                //     Type: "type_name",
-                //     User: "user_name",
-                //     "Contact Product": "category_name",
-                //     Industry: "industry_name",
-                //     Jan: {
-                //         callback: (value) => {
-                //             if (!value.summary[`Jan` + this.selectedYear]) {
-                //                 return " ";
-                //             } else {
-                //                 return `${value.summary[`Jan` + this.selectedYear][0]["todo_date"]}`;
-                //             }
-                //         },
-                //     },
-                //     Feb: {
-                //         callback: (value) => {
-                //             if (!value.summary[`Feb` + this.selectedYear]) {
-                //                 return " ";
-                //             } else {
-                //                 return `${value.summary[`Feb` + this.selectedYear][0]["todo_date"]}`;
-                //             }
-                //         },
-                //     },
-                //     Mar: {
-                //         callback: (value) => {
-                //             if (!value.summary[`Mar` + this.selectedYear]) {
-                //                 return " ";
-                //             } else {
-                //                 return `${value.summary[`Mar` + this.selectedYear][0]["todo_date"]}`;
-                //             }
-                //         },
-                //     },
-                //     Apr: {
-                //         callback: (value) => {
-                //             if (!value.summary[`Apr` + this.selectedYear]) {
-                //                 return " ";
-                //             } else {
-                //                 return `${value.summary[`Apr` + this.selectedYear][0]["todo_date"]}`;
-                //             }
-                //         },
-                //     },
-                //     May: {
-                //         callback: (value) => {
-                //             if (!value.summary[`May` + this.selectedYear]) {
-                //                 return " ";
-                //             } else {
-                //                 return `${value.summary[`May` + this.selectedYear][0]["todo_date"]}`;
-                //             }
-                //         },
-                //     },
-                //     Jun: {
-                //         callback: (value) => {
-                //             if (!value.summary[`Jun` + this.selectedYear]) {
-                //                 return " ";
-                //             } else {
-                //                 return `${value.summary[`Jun` + this.selectedYear][0]["todo_date"]}`;
-                //             }
-                //         },
-                //     },
-                //     Jul: {
-                //         callback: (value) => {
-                //             if (!value.summary[`Jul` + this.selectedYear]) {
-                //                 return " ";
-                //             } else {
-                //                 return `${value.summary[`Jul` + this.selectedYear][0]["todo_date"]}`;
-                //             }
-                //         },
-                //     },
-                //     Aug: {
-                //         callback: (value) => {
-                //             if (!value.summary[`Aug` + this.selectedYear]) {
-                //                 return " ";
-                //             } else {
-                //                 return `${value.summary[`Aug` + this.selectedYear][0]["todo_date"]}`;
-                //             }
-                //         },
-                //     },
-                //     Sep: {
-                //         callback: (value) => {
-                //             if (!value.summary[`Sep` + this.selectedYear]) {
-                //                 return " ";
-                //             } else {
-                //                 return `${value.summary[`Sep` + this.selectedYear][0]["todo_date"]}`;
-                //             }
-                //         },
-                //     },
-                //     Oct: {
-                //         callback: (value) => {
-                //             if (!value.summary[`Oct` + this.selectedYear]) {
-                //                 return " ";
-                //             } else {
-                //                 return `${value.summary[`Oct` + this.selectedYear][0]["todo_date"]}`;
-                //             }
-                //         },
-                //     },
-                //     Nov: {
-                //         callback: (value) => {
-                //             if (!value.summary[`Nov` + this.selectedYear]) {
-                //                 return " ";
-                //             } else {
-                //                 return `${value.summary[`Nov` + this.selectedYear][0]["todo_date"]}`;
-                //             }
-                //         },
-                //     },
-                //     Dec: {
-                //         callback: (value) => {
-                //             if (!value.summary[`Dec` + this.selectedYear]) {
-                //                 return " ";
-                //             } else {
-                //                 return `${value.summary[`Dec` + this.selectedYear][0]["todo_date"]}`;
-                //             }
-                //         },
-                //     },
+                "Site No.": "site_id",
+                Location: "bboard_location",
+                Size: "bboard_size",
+                Company: {
+                    callback: (value) => {
+                        if (value.summary.length === 0) {
+                            return " ";
+                        } else {
+                            let arr = value.summary;
+                            let new_arr = [];
+
+                            for (
+                                let x = 0, index = 1;
+                                x < arr.length;
+                                x++, index++
+                            ) {
+                                new_arr.push(
+                                    `(${index})` + " " + arr[x].company_name
+                                );
+                            }
+
+                            return `${new_arr}`;
+                        }
+                    },
+                },
+
+                Jan: {
+                    callback: (value) => {
+                        if (value.summary.length === 0) {
+                            return " ";
+                        } else {
+                            let arr = value.summary;
+                            let startdate = [];
+                            let enddate = [];
+
+                            for (
+                                let x = 0, index = 1;
+                                x < arr.length;
+                                x++, index++
+                            ) {
+                                if (
+                                    this.getMonth(arr[x].tenure_startdate) ===
+                                    this.selectedYear + "-01"
+                                ) {
+                                    startdate.push(
+                                        `(${index})` +
+                                            " " +
+                                            this.showToday(arr[x].tenure_startdate)
+                                    );
+                                } else {
+                                    //startdate.push("");
+                                }
+                            }
+
+                            for (
+                                let x = 0, index = 1;
+                                x < arr.length;
+                                x++, index++
+                            ) {
+                                if (
+                                    this.getMonth(arr[x].tenure_enddate) ===
+                                    this.selectedYear + "-01"
+                                ) {
+                                    enddate.push(
+                                        `(${index})` +
+                                            " " +
+                                            this.showToday(arr[x].tenure_enddate)
+                                    );
+                                } else {
+                                    //enddate.push("");
+                                }
+                            }
+                            return `S:${startdate} \n F:${enddate}`;
+                        }
+                    },
+                },
+                Feb: {
+                    callback: (value) => {
+                        if (value.summary.length === 0) {
+                            return " ";
+                        } else {
+                            let arr = value.summary;
+                            let startdate = [];
+                            let enddate = [];
+
+                            for (
+                                let x = 0, index = 1;
+                                x < arr.length;
+                                x++, index++
+                            ) {
+                                if (
+                                    this.getMonth(arr[x].tenure_startdate) ===
+                                    this.selectedYear + "-02"
+                                ) {
+                                    startdate.push(
+                                        `(${index})` +
+                                            " " +
+                                            this.showToday(arr[x].tenure_startdate)
+                                    );
+                                } else {
+                                    //startdate.push("");
+                                }
+                            }
+
+                            for (
+                                let x = 0, index = 1;
+                                x < arr.length;
+                                x++, index++
+                            ) {
+                                if (
+                                    this.getMonth(arr[x].tenure_enddate) ===
+                                    this.selectedYear + "-02"
+                                ) {
+                                    enddate.push(
+                                        `(${index})` +
+                                            " " +
+                                            this.showToday(arr[x].tenure_enddate)
+                                    );
+                                } else {
+                                    //enddate.push("");
+                                }
+                            }
+                            return `S:${startdate} \n F:${enddate}`;
+                        }
+                    },
+                },
+                Mac: {
+                    callback: (value) => {
+                        if (value.summary.length === 0) {
+                            return " ";
+                        } else {
+                            let arr = value.summary;
+                            let startdate = [];
+                            let enddate = [];
+
+                            for (
+                                let x = 0, index = 1;
+                                x < arr.length;
+                                x++, index++
+                            ) {
+                                if (
+                                    this.getMonth(arr[x].tenure_startdate) ===
+                                    this.selectedYear + "-03"
+                                ) {
+                                    startdate.push(
+                                        `(${index})` +
+                                            " " +
+                                            this.showToday(arr[x].tenure_startdate)
+                                    );
+                                } else {
+                                    //startdate.push("");
+                                }
+                            }
+
+                            for (
+                                let x = 0, index = 1;
+                                x < arr.length;
+                                x++, index++
+                            ) {
+                                if (
+                                    this.getMonth(arr[x].tenure_enddate) ===
+                                    this.selectedYear + "-03"
+                                ) {
+                                    enddate.push(
+                                        `(${index})` +
+                                            " " +
+                                            this.showToday(arr[x].tenure_enddate)
+                                    );
+                                } else {
+                                    //enddate.push("");
+                                }
+                            }
+                            return `S:${startdate} \n F:${enddate}`;
+                        }
+                    },
+                },
+                Apr: {
+                    callback: (value) => {
+                        if (value.summary.length === 0) {
+                            return " ";
+                        } else {
+                            let arr = value.summary;
+                            let startdate = [];
+                            let enddate = [];
+
+                            for (
+                                let x = 0, index = 1;
+                                x < arr.length;
+                                x++, index++
+                            ) {
+                                if (
+                                    this.getMonth(arr[x].tenure_startdate) ===
+                                    this.selectedYear + "-04"
+                                ) {
+                                    startdate.push(
+                                        `(${index})` +
+                                            " " +
+                                            this.showToday(arr[x].tenure_startdate)
+                                    );
+                                } else {
+                                    //startdate.push("");
+                                }
+                            }
+
+                            for (
+                                let x = 0, index = 1;
+                                x < arr.length;
+                                x++, index++
+                            ) {
+                                if (
+                                    this.getMonth(arr[x].tenure_enddate) ===
+                                    this.selectedYear + "-04"
+                                ) {
+                                    enddate.push(
+                                        `(${index})` +
+                                            " " +
+                                            this.showToday(arr[x].tenure_enddate)
+                                    );
+                                } else {
+                                    //enddate.push("");
+                                }
+                            }
+                            return `S:${startdate} \n F:${enddate}`;
+                        }
+                    },
+                },
+                May: {
+                    callback: (value) => {
+                        if (value.summary.length === 0) {
+                            return " ";
+                        } else {
+                            let arr = value.summary;
+                            let startdate = [];
+                            let enddate = [];
+
+                            for (
+                                let x = 0, index = 1;
+                                x < arr.length;
+                                x++, index++
+                            ) {
+                                if (
+                                    this.getMonth(arr[x].tenure_startdate) ===
+                                    this.selectedYear + "-05"
+                                ) {
+                                    startdate.push(
+                                        `(${index})` +
+                                            " " +
+                                            this.showToday(arr[x].tenure_startdate)
+                                    );
+                                } else {
+                                    //startdate.push("");
+                                }
+                            }
+
+                            for (
+                                let x = 0, index = 1;
+                                x < arr.length;
+                                x++, index++
+                            ) {
+                                if (
+                                    this.getMonth(arr[x].tenure_enddate) ===
+                                    this.selectedYear + "-05"
+                                ) {
+                                    enddate.push(
+                                        `(${index})` +
+                                            " " +
+                                            this.showToday(arr[x].tenure_enddate)
+                                    );
+                                } else {
+                                    //enddate.push("");
+                                }
+                            }
+                            return `S:${startdate} \n F:${enddate}`;
+                        }
+                    },
+                },
+                Jun: {
+                    callback: (value) => {
+                        if (value.summary.length === 0) {
+                            return " ";
+                        } else {
+                            let arr = value.summary;
+                            let startdate = [];
+                            let enddate = [];
+
+                            for (
+                                let x = 0, index = 1;
+                                x < arr.length;
+                                x++, index++
+                            ) {
+                                if (
+                                    this.getMonth(arr[x].tenure_startdate) ===
+                                    this.selectedYear + "-06"
+                                ) {
+                                    startdate.push(
+                                        `(${index})` +
+                                            " " +
+                                            this.showToday(arr[x].tenure_startdate)
+                                    );
+                                } else {
+                                    //startdate.push("");
+                                }
+                            }
+
+                            for (
+                                let x = 0, index = 1;
+                                x < arr.length;
+                                x++, index++
+                            ) {
+                                if (
+                                    this.getMonth(arr[x].tenure_enddate) ===
+                                    this.selectedYear + "-06"
+                                ) {
+                                    enddate.push(
+                                        `(${index})` +
+                                            " " +
+                                            this.showToday(arr[x].tenure_enddate)
+                                    );
+                                } else {
+                                    //enddate.push("");
+                                }
+                            }
+                            return `S:${startdate} \n F:${enddate}`;
+                        }
+                    },
+                },
+                Jul: {
+                    callback: (value) => {
+                        if (value.summary.length === 0) {
+                            return " ";
+                        } else {
+                            let arr = value.summary;
+                            let startdate = [];
+                            let enddate = [];
+
+                            for (
+                                let x = 0, index = 1;
+                                x < arr.length;
+                                x++, index++
+                            ) {
+                                if (
+                                    this.getMonth(arr[x].tenure_startdate) ===
+                                    this.selectedYear + "-07"
+                                ) {
+                                    startdate.push(
+                                        `(${index})` +
+                                            " " +
+                                            this.showToday(arr[x].tenure_startdate)
+                                    );
+                                } else {
+                                    //startdate.push("");
+                                }
+                            }
+
+                            for (
+                                let x = 0, index = 1;
+                                x < arr.length;
+                                x++, index++
+                            ) {
+                                if (
+                                    this.getMonth(arr[x].tenure_enddate) ===
+                                    this.selectedYear + "-07"
+                                ) {
+                                    enddate.push(
+                                        `(${index})` +
+                                            " " +
+                                            this.showToday(arr[x].tenure_enddate)
+                                    );
+                                } else {
+                                    //enddate.push("");
+                                }
+                            }
+                            return `S:${startdate} \n F:${enddate}`;
+                        }
+                    },
+                },
+                Aug: {
+                    callback: (value) => {
+                        if (value.summary.length === 0) {
+                            return " ";
+                        } else {
+                            let arr = value.summary;
+                            let startdate = [];
+                            let enddate = [];
+
+                            for (
+                                let x = 0, index = 1;
+                                x < arr.length;
+                                x++, index++
+                            ) {
+                                if (
+                                    this.getMonth(arr[x].tenure_startdate) ===
+                                    this.selectedYear + "-08"
+                                ) {
+                                    startdate.push(
+                                        `(${index})` +
+                                            " " +
+                                            this.showToday(arr[x].tenure_startdate)
+                                    );
+                                } else {
+                                    //startdate.push("");
+                                }
+                            }
+
+                            for (
+                                let x = 0, index = 1;
+                                x < arr.length;
+                                x++, index++
+                            ) {
+                                if (
+                                    this.getMonth(arr[x].tenure_enddate) ===
+                                    this.selectedYear + "-08"
+                                ) {
+                                    enddate.push(
+                                        `(${index})` +
+                                            " " +
+                                            this.showToday(arr[x].tenure_enddate)
+                                    );
+                                } else {
+                                    //enddate.push("");
+                                }
+                            }
+                            return `S:${startdate} \n F:${enddate}`;
+                        }
+                    },
+                },
+                Sep: {
+                    callback: (value) => {
+                        if (value.summary.length === 0) {
+                            return " ";
+                        } else {
+                            let arr = value.summary;
+                            let startdate = [];
+                            let enddate = [];
+
+                            for (
+                                let x = 0, index = 1;
+                                x < arr.length;
+                                x++, index++
+                            ) {
+                                if (
+                                    this.getMonth(arr[x].tenure_startdate) ===
+                                    this.selectedYear + "-09"
+                                ) {
+                                    startdate.push(
+                                        `(${index})` +
+                                            " " +
+                                            this.showToday(arr[x].tenure_startdate)
+                                    );
+                                } else {
+                                    //startdate.push("");
+                                }
+                            }
+
+                            for (
+                                let x = 0, index = 1;
+                                x < arr.length;
+                                x++, index++
+                            ) {
+                                if (
+                                    this.getMonth(arr[x].tenure_enddate) ===
+                                    this.selectedYear + "-09"
+                                ) {
+                                    enddate.push(
+                                        `(${index})` +
+                                            " " +
+                                            this.showToday(arr[x].tenure_enddate)
+                                    );
+                                } else {
+                                    //enddate.push("");
+                                }
+                            }
+                            return `S:${startdate} \n F:${enddate}`;
+                        }
+                    },
+                },
+                Oct: {
+                    callback: (value) => {
+                        if (value.summary.length === 0) {
+                            return " ";
+                        } else {
+                            let arr = value.summary;
+                            let startdate = [];
+                            let enddate = [];
+
+                            for (
+                                let x = 0, index = 1;
+                                x < arr.length;
+                                x++, index++
+                            ) {
+                                if (
+                                    this.getMonth(arr[x].tenure_startdate) ===
+                                    this.selectedYear + "-10"
+                                ) {
+                                    startdate.push(
+                                        `(${index})` +
+                                            " " +
+                                            this.showToday(arr[x].tenure_startdate)
+                                    );
+                                } else {
+                                    //startdate.push("");
+                                }
+                            }
+
+                            for (
+                                let x = 0, index = 1;
+                                x < arr.length;
+                                x++, index++
+                            ) {
+                                if (
+                                    this.getMonth(arr[x].tenure_enddate) ===
+                                    this.selectedYear + "-10"
+                                ) {
+                                    enddate.push(
+                                        `(${index})` +
+                                            " " +
+                                            this.showToday(arr[x].tenure_enddate)
+                                    );
+                                } else {
+                                    //enddate.push("");
+                                }
+                            }
+                            return `S:${startdate} \n F:${enddate}`;
+                        }
+                    },
+                },
+                Nov: {
+                    callback: (value) => {
+                        if (value.summary.length === 0) {
+                            return " ";
+                        } else {
+                            let arr = value.summary;
+                            let startdate = [];
+                            let enddate = [];
+
+                            for (
+                                let x = 0, index = 1;
+                                x < arr.length;
+                                x++, index++
+                            ) {
+                                if (
+                                    this.getMonth(arr[x].tenure_startdate) ===
+                                    this.selectedYear + "-11"
+                                ) {
+                                    startdate.push(
+                                        `(${index})` +
+                                            " " +
+                                            this.showToday(arr[x].tenure_startdate)
+                                    );
+                                } else {
+                                    //startdate.push("");
+                                }
+                            }
+
+                            for (
+                                let x = 0, index = 1;
+                                x < arr.length;
+                                x++, index++
+                            ) {
+                                if (
+                                    this.getMonth(arr[x].tenure_enddate) ===
+                                    this.selectedYear + "-11"
+                                ) {
+                                    enddate.push(
+                                        `(${index})` +
+                                            " " +
+                                            this.showToday(arr[x].tenure_enddate)
+                                    );
+                                } else {
+                                    //enddate.push("");
+                                }
+                            }
+                            return `S:${startdate} \n F:${enddate}`;
+                        }
+                    },
+                },
+                Dec: {
+                    callback: (value) => {
+                        if (value.summary.length === 0) {
+                            return " ";
+                        } else {
+                            let arr = value.summary;
+                            let startdate = [];
+                            let enddate = [];
+
+                            for (
+                                let x = 0, index = 1;
+                                x < arr.length;
+                                x++, index++
+                            ) {
+                                if (
+                                    this.getMonth(arr[x].tenure_startdate) ===
+                                    this.selectedYear + "-12"
+                                ) {
+                                    startdate.push(
+                                        `(${index})` +
+                                            " " +
+                                            this.showToday(arr[x].tenure_startdate)
+                                    );
+                                } else {
+                                    //startdate.push("");
+                                }
+                            }
+
+                            for (
+                                let x = 0, index = 1;
+                                x < arr.length;
+                                x++, index++
+                            ) {
+                                if (
+                                    this.getMonth(arr[x].tenure_enddate) ===
+                                    this.selectedYear + "-12"
+                                ) {
+                                    enddate.push(
+                                        `(${index})` +
+                                            " " +
+                                            this.showToday(arr[x].tenure_enddate)
+                                    );
+                                } else {
+                                    //enddate.push("");
+                                }
+                            }
+                            return `S:${startdate} \n F:${enddate}`;
+                        }
+                    },
+                },
             },
         };
     },

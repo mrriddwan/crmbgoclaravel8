@@ -25,6 +25,27 @@
                         Tempboard</router-link
                     >
                 </div>
+                <div class="grid grid-cols-2 break-normal text-xs">
+                    <div class="bg-blue-700 rounded-md w-max px-2 py-2">
+                        <button @click="getTempboards" class="text-white">
+                            Find Records
+                        </button>
+                    </div>
+                    <div>
+                        <download-excel
+                            :data="tempboards.data"
+                            :fields="tempboard_fields"
+                            worksheet="TempboardSummary"
+                            name="Tempboard Summary.xls"
+                            class="btn btn-success btn-sm"
+                        >
+                            <ArrowTopRightOnSquareIcon
+                                class="h-5 w-5 mr-1 inline-block"
+                            />
+                            Export
+                        </download-excel>
+                    </div>
+                </div>
                 <div class="grid grid-cols-1 items-left m-2">
                     <label>Year</label>
                     <input
@@ -44,27 +65,7 @@
                     />
                 </div>
 
-                <div class="grid grid-cols-2 break-normal text-xs">
-                    <div class="bg-blue-700 rounded-md w-max px-2 py-2">
-                        <button @click="getTempboards" class="text-white">
-                            Find Records
-                        </button>
-                    </div>
-                    <div>
-                        <!-- <download-excel
-                            :data="tempboards.data"
-                            :fields="forecast_fields"
-                            worksheet="ForecastSummary"
-                            name="Forecast Summary.xls"
-                            class="btn btn-success btn-sm"
-                        >
-                            <ArrowTopRightOnSquareIcon
-                                class="h-5 w-5 mr-1 inline-block"
-                            />
-                            Export
-                        </download-excel> -->
-                    </div>
-                </div>
+                
                 <div class="py-1 inline-block">
                     <Pagination
                         :data="tempboards"
@@ -845,123 +846,21 @@ export default {
             sort_field: "tpboard_entrydate",
             currentDate: "",
 
-            // contact_fields: {
-            //     ID: "id",
-            //     Company: "name",
-            //     Status: "status_name",
-            //     Type: "type_name",
-            //     User: "user_name",
-            //     "Contact Product": "category_name",
-            //     Industry: "industry_name",
-            //     Jan: {
-            //         callback: (value) => {
-            //             if (!value.summary[`Jan` + this.selectedYear]) {
-            //                 return " ";
-            //             } else {
-            //                 return `${value.summary[`Jan` + this.selectedYear][0]["todo_date"]}`;
-            //             }
-            //         },
-            //     },
-            //     Feb: {
-            //         callback: (value) => {
-            //             if (!value.summary[`Feb` + this.selectedYear]) {
-            //                 return " ";
-            //             } else {
-            //                 return `${value.summary[`Feb` + this.selectedYear][0]["todo_date"]}`;
-            //             }
-            //         },
-            //     },
-            //     Mar: {
-            //         callback: (value) => {
-            //             if (!value.summary[`Mar` + this.selectedYear]) {
-            //                 return " ";
-            //             } else {
-            //                 return `${value.summary[`Mar` + this.selectedYear][0]["todo_date"]}`;
-            //             }
-            //         },
-            //     },
-            //     Apr: {
-            //         callback: (value) => {
-            //             if (!value.summary[`Apr` + this.selectedYear]) {
-            //                 return " ";
-            //             } else {
-            //                 return `${value.summary[`Apr` + this.selectedYear][0]["todo_date"]}`;
-            //             }
-            //         },
-            //     },
-            //     May: {
-            //         callback: (value) => {
-            //             if (!value.summary[`May` + this.selectedYear]) {
-            //                 return " ";
-            //             } else {
-            //                 return `${value.summary[`May` + this.selectedYear][0]["todo_date"]}`;
-            //             }
-            //         },
-            //     },
-            //     Jun: {
-            //         callback: (value) => {
-            //             if (!value.summary[`Jun` + this.selectedYear]) {
-            //                 return " ";
-            //             } else {
-            //                 return `${value.summary[`Jun` + this.selectedYear][0]["todo_date"]}`;
-            //             }
-            //         },
-            //     },
-            //     Jul: {
-            //         callback: (value) => {
-            //             if (!value.summary[`Jul` + this.selectedYear]) {
-            //                 return " ";
-            //             } else {
-            //                 return `${value.summary[`Jul` + this.selectedYear][0]["todo_date"]}`;
-            //             }
-            //         },
-            //     },
-            //     Aug: {
-            //         callback: (value) => {
-            //             if (!value.summary[`Aug` + this.selectedYear]) {
-            //                 return " ";
-            //             } else {
-            //                 return `${value.summary[`Aug` + this.selectedYear][0]["todo_date"]}`;
-            //             }
-            //         },
-            //     },
-            //     Sep: {
-            //         callback: (value) => {
-            //             if (!value.summary[`Sep` + this.selectedYear]) {
-            //                 return " ";
-            //             } else {
-            //                 return `${value.summary[`Sep` + this.selectedYear][0]["todo_date"]}`;
-            //             }
-            //         },
-            //     },
-            //     Oct: {
-            //         callback: (value) => {
-            //             if (!value.summary[`Oct` + this.selectedYear]) {
-            //                 return " ";
-            //             } else {
-            //                 return `${value.summary[`Oct` + this.selectedYear][0]["todo_date"]}`;
-            //             }
-            //         },
-            //     },
-            //     Nov: {
-            //         callback: (value) => {
-            //             if (!value.summary[`Nov` + this.selectedYear]) {
-            //                 return " ";
-            //             } else {
-            //                 return `${value.summary[`Nov` + this.selectedYear][0]["todo_date"]}`;
-            //             }
-            //         },
-            //     },
-            //     Dec: {
-            //         callback: (value) => {
-            //             if (!value.summary[`Dec` + this.selectedYear]) {
-            //                 return " ";
-            //             } else {
-            //                 return `${value.summary[`Dec` + this.selectedYear][0]["todo_date"]}`;
-            //             }
-            //         },
-            //     },
-            // },
+            tempboard_fields: {
+                "Entry Date": "tpboard_entrydate",
+                CS: "user_name",
+                Location: "tpboard_location",
+                Company: "contact_name",
+                Unit: "tpboard_unit",
+                Size: "user_name",
+                "Date Start": "tpboard_startdate",
+                "Date End": "tpboard_enddate",
+                Collection: "tpboard_collection",
+                Material: "tpboard_material",
+                Printing: "tpboard_printing",
+                Installation: "tpboard_installation",
+                Remark: "tpboard_remark",
+            },
         };
     },
     watch: {

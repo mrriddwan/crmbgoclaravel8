@@ -149,7 +149,10 @@
             </tr>
         </tbody>
 
-        <tbody v-if="viewType === 'month'" v-for="date in this.weeksInMonth">
+        <tbody
+            v-if="viewType === 'month'"
+            v-for="(date, index) in this.weeksInMonth"
+        >
             <tr>
                 <td>
                     <span>
@@ -161,7 +164,11 @@
                         <br />
                     </span>
                 </td>
-                <td v-for="action in actions" :key="action.id">
+                <td
+                    v-for="action in actions"
+                    :key="action.id"
+                    class="text-center"
+                >
                     <span
                         v-if="
                             user_performance[`${this.getWeek(date.startDate)}`]
@@ -169,7 +176,18 @@
                         v-for="action_total in user_performance[
                             `${this.getWeek(date.startDate)}`
                         ]"
-                        ><span
+                    >
+                        <!-- gets the object of the whole week-->
+                        <!-- <span
+                            class="font-bold bg-lime-400 py-1 px-1 rounded-md"
+                        >
+                        
+                            {{ user_performance[`${this.getWeek(date.startDate)}`] }} 
+                        </span> -->
+                        
+                        <span>{{ getObjKey(user_performance[`${this.getWeek(date.startDate)}`],action_total) }}</span>
+
+                        <!-- <span
                             class="font-bold bg-lime-400 py-1 px-1 rounded-md"
                             v-if="
                                 user_performance[
@@ -179,10 +197,18 @@
                         >
                             {{ action_total }}
                         </span>
-                        <span v-else class="">0</span>
+                        <span v-else class="">0</span> -->
                     </span>
                     <span v-else class=""> 0 </span>
                 </td>
+                <!-- <td v-for="action_total in user_performance[44]">
+                    {{ action_total }}
+                </td>
+                <td v-for="key in getObjectKey(user_performance[44])">
+                    {{ key }}
+                </td> -->
+                <!-- <td>{{ actions[index]["name"] }}</td> -->
+                <!-- <td> {{ getObjectKey(user_performance[44]) }}</td> -->
             </tr>
         </tbody>
 
@@ -196,7 +222,6 @@
                     {{ showToday(weeks.end_date) }}
                 </td>
                 <td v-for="action in actions" :key="action.id">
-                    <!-- {{ getObjectKey(weeks.start_date) }} -->
                     <span
                         v-if="
                             user_performance[
@@ -207,36 +232,12 @@
                             `${this.getWeek(weeks.start_date)}`
                         ]"
                     >
-                        <!-- <span
-                            v-for="key in getObjectKey(
-                                user_performance[
-                                    `${this.getWeek(weeks.start_date)}`
-                                ]
-                            )"
-                        > -->
-                            <!-- {{
-                                getObjectKey(
-                                    user_performance[
-                                        `${this.getWeek(weeks.start_date)}`
-                                    ]
-                                ) 
-                                
-                            }} -->
-                            <!-- {{ action.name }} -->
-                            <!-- {{ key }} -->
-                        <!-- </span> -->
                         <span
                             class="font-bold bg-lime-400 py-1 px-1 rounded-md"
                             v-if="
                                 user_performance[
                                     `${this.getWeek(weeks.start_date)}`
                                 ][`${action.name}`]
-                                //  &&
-                                //  (getObjectKey(
-                                //     user_performance[
-                                //         `${this.getWeek(weeks.start_date)}`
-                                //     ]
-                                // ) === `${action.name}`)
                             "
                         >
                             {{ action_total }}
@@ -316,7 +317,7 @@ export default {
             weeksInMonth: [],
             monthsInYear: [],
             // paginate: 10,
-            viewType: "year",
+            viewType: "month",
             moment: moment,
 
             selectedUser: 1,
@@ -370,15 +371,6 @@ export default {
                 this.getSelectedMonth(monthYear);
                 this.getSelectedYear(monthYear);
                 this.getUserPerformance();
-                // console.log(
-                //     "Result of this.getSelectedMonth(monthYear): " +
-                //         this.getSelectedMonth(monthYear)
-                // );
-                // console.log(
-                //     "Result of this.getSelectedYear(monthYear): " +
-                //         this.getSelectedYear(monthYear)
-                // );
-                // this.getToDosSelectMonth();
             }
             if (value === "year") {
                 this.monthsInYear = [];
@@ -390,6 +382,11 @@ export default {
         currentMonth: function (value) {
             const monthYear = this.currentMonth + "-" + "01";
             this.selectedMonthYear = monthYear;
+            this.weeksInMonth = [];
+            this.getSelectedMonth(monthYear);
+            this.getSelectedYear(monthYear);
+            this.displayMonth(this.selectedYear, this.selectedMonth);
+            this.getUserPerformance();
         },
     },
     computed: {},
@@ -521,7 +518,11 @@ export default {
 
         getObjectKey(i) {
             var arr = Object.keys(i);
-            return [...arr];
+            return arr;
+        },
+
+        getObjKey(obj, value) {
+            return Object.keys(obj).find((key) => obj[key] === value);
         },
 
         displayYear(selected_year, selected_date) {

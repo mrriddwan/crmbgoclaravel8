@@ -1182,53 +1182,6 @@ export default {
     },
 
     methods: {
-        // getToDos(page = 1) {
-        //     if (typeof page === "undefined") {
-        //         page = 1;
-        //     }
-        //     axios
-        //         .get(
-        //             "/api/todos/index?" +
-        //                 "q=" +
-        //                 this.search +
-        //                 "&selectedDate=" +
-        //                 this.selectedDate +
-        //                 "&selectedDateStart=" +
-        //                 this.selectedDateStart +
-        //                 "&selectedDateEnd=" +
-        //                 this.selectedDateEnd +
-        //                 "&selectedMonth=" +
-        //                 this.selectedMonth +
-        //                 "&selectedYear=" +
-        //                 this.selectedYear +
-        //                 "&selectedUser=" +
-        //                 this.selectedUser +
-        //                 "&selectedSource=" +
-        //                 this.selectedSource +
-        //                 "&selectedType=" +
-        //                 this.selectedType +
-        //                 "&selectedContact=" +
-        //                 this.selectedContact +
-        //                 "&selectedTask=" +
-        //                 this.selectedTask +
-        //                 "&selectedStatus=" +
-        //                 this.selectedStatus +
-        //                 "&paginate=" +
-        //                 this.paginate +
-        //                 "&page=" +
-        //                 page +
-        //                 "&sort_direction=" +
-        //                 this.sort_direction +
-        //                 "&sort_field=" +
-        //                 this.sort_field
-        //         )
-        //         .then((res) => {
-        //             this.todos = res.data;
-        //         })
-        //         .catch((error) => {
-        //             console.log(error);
-        //         });
-        // },
 
         getToDosSelectDate(page = 1) {
             if (typeof page === "undefined") {

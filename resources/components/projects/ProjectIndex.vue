@@ -5,7 +5,8 @@
         Project List
     </h1>
 
-    <div class="py-2">
+    <div class="flex">
+        <div class="py-2 px-2">
             <router-link
                 to="/project/create"
                 class="inline-block items-center px-2 py-1 align-top bg-blue-800 border border-transparent rounded-md font-semibold text-m text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
@@ -13,7 +14,21 @@
                 <PlusIcon class="inline h-6 w-6 mr-1" />
                 Project</router-link
             >
+        </div>
+        <div class="py-2 px-2">
+            <download-excel
+                :data="projects.data"
+                :fields="project_fields"
+                worksheet="ProjectSummary"
+                name="Project Summary.xls"
+                class="btn btn-success btn-sm"
+            >
+                <ArrowTopRightOnSquareIcon class="h-5 w-5 mr-1 inline-block" />
+                Export
+            </download-excel>
+        </div>
     </div>
+
     <div class="grid grid-cols-2">
         <div class="grid grid-cols-2 items-center align-middle w-max">
             <label for="paginate" class="px-2 inline-block">Entries</label>
@@ -47,11 +62,16 @@
             class="table-wrp block max-h-screen overflow-y-auto overflow-x-auto"
         >
             <table class="table table-hover w-full mt-0">
-                <thead class="bg-slate-400 border-b sticky top-0">
+                <thead class="bg-slate-500 border-b sticky top-0">
                     <tr>
                         <th class="py-3">
                             <div class="text-sm text-center h-6">
-                                <a href="#" @click.prevent=""> # </a>
+                                <a
+                                    href="#"
+                                    @click.prevent=""
+                                    class="text-white"
+                                >
+                                </a>
                                 <span
                                     v-if="
                                         sort_direction == 'desc' &&
@@ -75,23 +95,38 @@
                                     @click.prevent="
                                         change_sort('project_startdate')
                                     "
+                                    class="text-white inline-flex"
                                 >
-                                    Project<br />Start Date
+                                    Project <br />
+                                    Start Date
+                                    <span
+                                        v-if="
+                                            (!(sort_direction == 'asc') ||
+                                                !(sort_direction == 'desc')) &&
+                                            !(sort_field == 'project_startdate')
+                                        "
+                                        class="inline-block"
+                                        ><ArrowsUpDownIcon class="h-4 w-4"
+                                    /></span>
+                                    <span
+                                        v-if="
+                                            sort_direction == 'desc' &&
+                                            sort_field == 'project_startdate'
+                                        "
+                                        class="inline-block"
+                                        ><ArrowUpIcon
+                                            class="h-4 w-4 text-amber-400 font-extrabold"
+                                    /></span>
+                                    <span
+                                        v-if="
+                                            sort_direction == 'asc' &&
+                                            sort_field == 'project_startdate'
+                                        "
+                                        class="inline-block"
+                                        ><ArrowDownIcon
+                                            class="h-4 w-4 text-amber-400 font-extrabold"
+                                    /></span>
                                 </a>
-                                <span
-                                    v-if="
-                                        sort_direction == 'desc' &&
-                                        sort_field == 'project_startdate'
-                                    "
-                                    >&uarr;</span
-                                >
-                                <span
-                                    v-if="
-                                        sort_direction == 'asc' &&
-                                        sort_field == 'project_startdate'
-                                    "
-                                    >&darr;</span
-                                >
                             </div>
                         </th>
                         <th class="py-3">
@@ -101,23 +136,38 @@
                                     @click.prevent="
                                         change_sort('project_enddate')
                                     "
+                                    class="text-white inline-flex"
                                 >
-                                    Project<br />End Date
+                                    Project <br />
+                                    End Date
+                                    <span
+                                        v-if="
+                                            (!(sort_direction == 'asc') ||
+                                                !(sort_direction == 'desc')) &&
+                                            !(sort_field == 'project_enddate')
+                                        "
+                                        class="inline-block"
+                                        ><ArrowsUpDownIcon class="h-4 w-4"
+                                    /></span>
+                                    <span
+                                        v-if="
+                                            sort_direction == 'desc' &&
+                                            sort_field == 'project_enddate'
+                                        "
+                                        class="inline-block"
+                                        ><ArrowUpIcon
+                                            class="h-4 w-4 text-amber-400 font-extrabold"
+                                    /></span>
+                                    <span
+                                        v-if="
+                                            sort_direction == 'asc' &&
+                                            sort_field == 'project_enddate'
+                                        "
+                                        class="inline-block"
+                                        ><ArrowDownIcon
+                                            class="h-4 w-4 text-amber-400 font-extrabold"
+                                    /></span>
                                 </a>
-                                <span
-                                    v-if="
-                                        sort_direction == 'desc' &&
-                                        sort_field == 'project_enddate'
-                                    "
-                                    >&uarr;</span
-                                >
-                                <span
-                                    v-if="
-                                        sort_direction == 'asc' &&
-                                        sort_field == 'project_enddate'
-                                    "
-                                    >&darr;</span
-                                >
                             </div>
                         </th>
                         <th class="py-3">
@@ -127,23 +177,37 @@
                                     @click.prevent="
                                         change_sort('project_duration')
                                     "
+                                    class="text-white inline-flex"
                                 >
                                     Duration
+                                    <span
+                                        v-if="
+                                            (!(sort_direction == 'asc') ||
+                                                !(sort_direction == 'desc')) &&
+                                            !(sort_field == 'project_duration')
+                                        "
+                                        class="inline-block"
+                                        ><ArrowsUpDownIcon class="h-4 w-4"
+                                    /></span>
+                                    <span
+                                        v-if="
+                                            sort_direction == 'desc' &&
+                                            sort_field == 'project_duration'
+                                        "
+                                        class="inline-block"
+                                        ><ArrowUpIcon
+                                            class="h-4 w-4 text-amber-400 font-extrabold"
+                                    /></span>
+                                    <span
+                                        v-if="
+                                            sort_direction == 'asc' &&
+                                            sort_field == 'project_duration'
+                                        "
+                                        class="inline-block"
+                                        ><ArrowDownIcon
+                                            class="h-4 w-4 text-amber-400 font-extrabold"
+                                    /></span>
                                 </a>
-                                <span
-                                    v-if="
-                                        sort_direction == 'desc' &&
-                                        sort_field == 'project_duration'
-                                    "
-                                    >&uarr;</span
-                                >
-                                <span
-                                    v-if="
-                                        sort_direction == 'asc' &&
-                                        sort_field == 'project_duration'
-                                    "
-                                    >&darr;</span
-                                >
                             </div>
                         </th>
 
@@ -152,91 +216,131 @@
                                 <a
                                     href="#"
                                     @click.prevent="change_sort('contact_name')"
+                                    class="text-white inline-flex"
                                 >
                                     Company
+                                    <span
+                                        v-if="
+                                            (!(sort_direction == 'asc') ||
+                                                !(sort_direction == 'desc')) &&
+                                            !(sort_field == 'contact_name')
+                                        "
+                                        class="inline-block"
+                                        ><ArrowsUpDownIcon class="h-4 w-4"
+                                    /></span>
+                                    <span
+                                        v-if="
+                                            sort_direction == 'desc' &&
+                                            sort_field == 'contact_name'
+                                        "
+                                        class="inline-block"
+                                        ><ArrowUpIcon
+                                            class="h-4 w-4 text-amber-400 font-extrabold"
+                                    /></span>
+                                    <span
+                                        v-if="
+                                            sort_direction == 'asc' &&
+                                            sort_field == 'contact_name'
+                                        "
+                                        class="inline-block"
+                                        ><ArrowDownIcon
+                                            class="h-4 w-4 text-amber-400 font-extrabold"
+                                    /></span>
                                 </a>
-                                <span
-                                    v-if="
-                                        sort_direction == 'desc' &&
-                                        sort_field == 'contact_name'
-                                    "
-                                    >&uarr;</span
-                                >
-                                <span
-                                    v-if="
-                                        sort_direction == 'asc' &&
-                                        sort_field == 'contact_name'
-                                    "
-                                    >&darr;</span
-                                >
-                            </div>
-                        </th>
-                        <th class="py-3">
-                            <div class="text-sm text-center h-6">
-                                <a href="#" @click.prevent=""> Project </a>
-                                <span
-                                    v-if="
-                                        sort_direction == 'desc' &&
-                                        sort_field == 'project_name'
-                                    "
-                                    >&uarr;</span
-                                >
-                                <span
-                                    v-if="
-                                        sort_direction == 'asc' &&
-                                        sort_field == 'project_name'
-                                    "
-                                    >&darr;</span
-                                >
-                            </div>
-                        </th>
-                        <th class="py-3">
-                            <div class="text-sm text-center h-6">
-                                <a href="#" @click.prevent=""> Remark </a>
-                                <span
-                                    v-if="
-                                        sort_direction == 'desc' &&
-                                        sort_field == 'project_remark'
-                                    "
-                                    >&uarr;</span
-                                >
-                                <span
-                                    v-if="
-                                        sort_direction == 'asc' &&
-                                        sort_field == 'project_remark'
-                                    "
-                                    >&darr;</span
-                                >
                             </div>
                         </th>
                         <th class="py-3">
                             <div class="text-sm text-center h-6">
                                 <a
                                     href="#"
-                                    @click.prevent="
-                                        change_sort('updated_at')
-                                    "
+                                    @click.prevent="change_sort('project_name')"
+                                    class="text-white inline-flex"
                                 >
-                                    Entry<br />Date
+                                    Project
+                                    <span
+                                        v-if="
+                                            (!(sort_direction == 'asc') ||
+                                                !(sort_direction == 'desc')) &&
+                                            !(sort_field == 'project_name')
+                                        "
+                                        class="inline-block"
+                                        ><ArrowsUpDownIcon class="h-4 w-4"
+                                    /></span>
+                                    <span
+                                        v-if="
+                                            sort_direction == 'desc' &&
+                                            sort_field == 'project_name'
+                                        "
+                                        class="inline-block"
+                                        ><ArrowUpIcon
+                                            class="h-4 w-4 text-amber-400 font-extrabold"
+                                    /></span>
+                                    <span
+                                        v-if="
+                                            sort_direction == 'asc' &&
+                                            sort_field == 'project_name'
+                                        "
+                                        class="inline-block"
+                                        ><ArrowDownIcon
+                                            class="h-4 w-4 text-amber-400 font-extrabold"
+                                    /></span>
                                 </a>
-                                <span
-                                    v-if="
-                                        sort_direction == 'desc' &&
-                                        sort_field == 'updated_at'
-                                    "
-                                    >&uarr;</span
-                                >
-                                <span
-                                    v-if="
-                                        sort_direction == 'asc' &&
-                                        sort_field == 'updated_at'
-                                    "
-                                    >&darr;</span
-                                >
                             </div>
                         </th>
                         <th class="py-3">
-                            <div class="text-sm text-center h-6">Action</div>
+                            <div class="text-sm text-center h-6">
+                                <a
+                                    href="#"
+                                    @click.prevent=""
+                                    class="text-white inline-flex"
+                                >
+                                    Remark
+                                </a>
+                            </div>
+                        </th>
+                        <th class="py-3">
+                            <div class="text-sm text-center h-6">
+                                <a
+                                    href="#"
+                                    @click.prevent="change_sort('updated_at')"
+                                    class="text-white inline-flex"
+                                >
+                                    Entry <br />
+                                    Date
+                                    <span
+                                        v-if="
+                                            (!(sort_direction == 'asc') ||
+                                                !(sort_direction == 'desc')) &&
+                                            !(sort_field == 'updated_at')
+                                        "
+                                        class="inline-block"
+                                        ><ArrowsUpDownIcon class="h-4 w-4"
+                                    /></span>
+                                    <span
+                                        v-if="
+                                            sort_direction == 'desc' &&
+                                            sort_field == 'updated_at'
+                                        "
+                                        class="inline-block"
+                                        ><ArrowUpIcon
+                                            class="h-4 w-4 text-amber-400 font-extrabold"
+                                    /></span>
+                                    <span
+                                        v-if="
+                                            sort_direction == 'asc' &&
+                                            sort_field == 'updated_at'
+                                        "
+                                        class="inline-block"
+                                        ><ArrowDownIcon
+                                            class="h-4 w-4 text-amber-400 font-extrabold"
+                                    /></span>
+                                </a>
+                            </div>
+                        </th>
+                        <th class="py-3">
+                            <div class="text-sm text-center h-6 text-white">
+                                Action
+                            </div>
                         </th>
                     </tr>
                 </thead>
@@ -247,14 +351,20 @@
                     >
                         <td class="text-xs">{{ index + 1 }}</td>
                         <td class="text-xs">
-                            {{ project.project_startdate }}
+                            {{ showToday(project.project_startdate) }}
                         </td>
                         <td class="text-xs">
-                            {{ project.project_enddate }}
+                            {{ showToday(project.project_enddate) }}
                         </td>
                         <td class="text-xs">
                             <!-- {{ project.project_enddate }} -->
-                            Duration: 0 days
+                            {{
+                                calculateDuration(
+                                    project.project_startdate,
+                                    project.project_enddate
+                                )
+                            }}
+                            day(s)
                         </td>
                         <td class="text-xs grid-cols-2 w-max">
                             <router-link
@@ -270,8 +380,10 @@
                         </td>
                         <td class="text-xs">{{ project.project_name }}</td>
                         <td class="text-xs">{{ project.project_remark }}</td>
-                        <td class="text-xs">{{ project.updated_at }}</td>
-                        
+                        <td class="text-xs">
+                            {{ showToday(project.updated_at) }}
+                        </td>
+
                         <td class="text-xs">
                             <router-link
                                 :to="{
@@ -280,7 +392,8 @@
                                 }"
                                 class="mr-2 mb-2 inline-flex items-center px-2 py-1 bg-green-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
                             >
-                            <PlusIcon class="h-5 w-5 mr-1"/> To Do</router-link
+                                <PlusIcon class="h-5 w-5 mr-1" /> To
+                                Do</router-link
                             >
                             <router-link
                                 :to="{
@@ -299,7 +412,6 @@
                             >
                                 <TrashIcon class="h-3 w-3" />
                             </button>
-
                         </td>
                     </tr>
                 </tbody>
@@ -319,6 +431,10 @@ import {
     PlusIcon,
     UserPlusIcon,
     DocumentChartBarIcon,
+    ArrowTopRightOnSquareIcon,
+    ArrowsUpDownIcon,
+    ArrowUpIcon,
+    ArrowDownIcon,
 } from "@heroicons/vue/24/solid";
 
 export default {
@@ -330,6 +446,10 @@ export default {
         UserPlusIcon,
         DocumentChartBarIcon,
         PencilIcon,
+        ArrowTopRightOnSquareIcon,
+        ArrowsUpDownIcon,
+        ArrowUpIcon,
+        ArrowDownIcon,
     },
 
     mounted() {
@@ -349,6 +469,28 @@ export default {
             sort_direction: "desc",
             sort_field: "project_startdate",
 
+            project_fields: {
+                CS: {
+                    callback: (value) => {
+                        return `${
+                            value.user.name
+                        }`;
+                    },
+                },
+                "Start Date": "project_startdate",
+                "End Date": "project_enddate",
+                // Duration: "user_name",
+                Company: {
+                    callback: (value) => {
+                        return `${
+                            value.contact.name
+                        }`;
+                    },
+                },
+                Project: "project_name",
+                Remark: "project_remark",
+                "Entry Date": "updated_at",
+            },
         };
     },
     watch: {
@@ -382,8 +524,6 @@ export default {
                     "/api/projects/index?" +
                         "q=" +
                         this.search +
-                        "&filterResult=" +
-                        this.filterResult +
                         "&paginate=" +
                         this.paginate +
                         "&page=" +
@@ -419,6 +559,18 @@ export default {
             this.getProjects();
         },
 
+        calculateDuration(start_date, end_date) {
+            const start = new Date(start_date);
+            const end = new Date(end_date);
+
+            return moment(end - start).format("D");
+        },
+
+        showToday(date) {
+            // let day = moment(date).format("DD-MM-YYYY");
+            let day = moment(date).format("DD-MM-YY");
+            return day;
+        },
     },
 };
 </script>
