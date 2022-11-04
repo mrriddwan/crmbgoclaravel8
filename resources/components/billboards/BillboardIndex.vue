@@ -16,29 +16,23 @@
                         <option value="100">100</option>
                     </select>
                 </div> -->
-
-                <div
-                    class="items-center"
-                    v-if="
-                        can('create billboard') ||
-                        is('supervisor | admin | super-admin')
-                    "
-                >
-                    <router-link
-                        to="/billboard/create"
-                        class="inline-block items-center px-2 py-1 align-top bg-blue-800 border-transparent rounded-md font-semibold text-m text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
+                <div class="flex">
+                    <div
+                        class="items-center px-2"
+                        v-if="
+                            can('create billboard') ||
+                            is('supervisor | admin | super-admin')
+                        "
                     >
-                        <PlusIcon class="inline h-6 w-6 mr-1" />
-                        Billboard</router-link
-                    >
-                </div>
-                <div class="grid grid-cols-2 break-normal text-xs">
-                    <!-- <div class="bg-blue-700 rounded-md w-max px-2 py-2">
-                        <button @click="getBillboards" class="text-white">
-                            Find Records
-                        </button>
-                    </div> -->
-                    <div>
+                        <router-link
+                            to="/billboard/create"
+                            class="inline-block items-center px-2 py-1 align-top bg-blue-800 border-transparent rounded-md font-semibold text-m text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
+                        >
+                            <PlusIcon class="inline h-6 w-6 mr-1" />
+                            Billboard</router-link
+                        >
+                    </div>
+                    <div class="px-2" v-if="can('export billboard') || is('admin | super-admin')">
                         <download-excel
                             :data="billboards.data"
                             :fields="billboard_fields"
@@ -53,6 +47,7 @@
                         </download-excel>
                     </div>
                 </div>
+
                 <div class="grid grid-cols-1 items-left m-2">
                     <label>Year</label>
                     <input
@@ -1325,7 +1320,9 @@ export default {
                                     startdate.push(
                                         `(${index})` +
                                             " " +
-                                            this.showToday(arr[x].tenure_startdate)
+                                            this.showToday(
+                                                arr[x].tenure_startdate
+                                            )
                                     );
                                 } else {
                                     //startdate.push("");
@@ -1344,7 +1341,9 @@ export default {
                                     enddate.push(
                                         `(${index})` +
                                             " " +
-                                            this.showToday(arr[x].tenure_enddate)
+                                            this.showToday(
+                                                arr[x].tenure_enddate
+                                            )
                                     );
                                 } else {
                                     //enddate.push("");
@@ -1375,7 +1374,9 @@ export default {
                                     startdate.push(
                                         `(${index})` +
                                             " " +
-                                            this.showToday(arr[x].tenure_startdate)
+                                            this.showToday(
+                                                arr[x].tenure_startdate
+                                            )
                                     );
                                 } else {
                                     //startdate.push("");
@@ -1394,7 +1395,9 @@ export default {
                                     enddate.push(
                                         `(${index})` +
                                             " " +
-                                            this.showToday(arr[x].tenure_enddate)
+                                            this.showToday(
+                                                arr[x].tenure_enddate
+                                            )
                                     );
                                 } else {
                                     //enddate.push("");
@@ -1425,7 +1428,9 @@ export default {
                                     startdate.push(
                                         `(${index})` +
                                             " " +
-                                            this.showToday(arr[x].tenure_startdate)
+                                            this.showToday(
+                                                arr[x].tenure_startdate
+                                            )
                                     );
                                 } else {
                                     //startdate.push("");
@@ -1444,7 +1449,9 @@ export default {
                                     enddate.push(
                                         `(${index})` +
                                             " " +
-                                            this.showToday(arr[x].tenure_enddate)
+                                            this.showToday(
+                                                arr[x].tenure_enddate
+                                            )
                                     );
                                 } else {
                                     //enddate.push("");
@@ -1475,7 +1482,9 @@ export default {
                                     startdate.push(
                                         `(${index})` +
                                             " " +
-                                            this.showToday(arr[x].tenure_startdate)
+                                            this.showToday(
+                                                arr[x].tenure_startdate
+                                            )
                                     );
                                 } else {
                                     //startdate.push("");
@@ -1494,7 +1503,9 @@ export default {
                                     enddate.push(
                                         `(${index})` +
                                             " " +
-                                            this.showToday(arr[x].tenure_enddate)
+                                            this.showToday(
+                                                arr[x].tenure_enddate
+                                            )
                                     );
                                 } else {
                                     //enddate.push("");
@@ -1525,7 +1536,9 @@ export default {
                                     startdate.push(
                                         `(${index})` +
                                             " " +
-                                            this.showToday(arr[x].tenure_startdate)
+                                            this.showToday(
+                                                arr[x].tenure_startdate
+                                            )
                                     );
                                 } else {
                                     //startdate.push("");
@@ -1544,7 +1557,9 @@ export default {
                                     enddate.push(
                                         `(${index})` +
                                             " " +
-                                            this.showToday(arr[x].tenure_enddate)
+                                            this.showToday(
+                                                arr[x].tenure_enddate
+                                            )
                                     );
                                 } else {
                                     //enddate.push("");
@@ -1575,7 +1590,9 @@ export default {
                                     startdate.push(
                                         `(${index})` +
                                             " " +
-                                            this.showToday(arr[x].tenure_startdate)
+                                            this.showToday(
+                                                arr[x].tenure_startdate
+                                            )
                                     );
                                 } else {
                                     //startdate.push("");
@@ -1594,7 +1611,9 @@ export default {
                                     enddate.push(
                                         `(${index})` +
                                             " " +
-                                            this.showToday(arr[x].tenure_enddate)
+                                            this.showToday(
+                                                arr[x].tenure_enddate
+                                            )
                                     );
                                 } else {
                                     //enddate.push("");
@@ -1625,7 +1644,9 @@ export default {
                                     startdate.push(
                                         `(${index})` +
                                             " " +
-                                            this.showToday(arr[x].tenure_startdate)
+                                            this.showToday(
+                                                arr[x].tenure_startdate
+                                            )
                                     );
                                 } else {
                                     //startdate.push("");
@@ -1644,7 +1665,9 @@ export default {
                                     enddate.push(
                                         `(${index})` +
                                             " " +
-                                            this.showToday(arr[x].tenure_enddate)
+                                            this.showToday(
+                                                arr[x].tenure_enddate
+                                            )
                                     );
                                 } else {
                                     //enddate.push("");
@@ -1675,7 +1698,9 @@ export default {
                                     startdate.push(
                                         `(${index})` +
                                             " " +
-                                            this.showToday(arr[x].tenure_startdate)
+                                            this.showToday(
+                                                arr[x].tenure_startdate
+                                            )
                                     );
                                 } else {
                                     //startdate.push("");
@@ -1694,7 +1719,9 @@ export default {
                                     enddate.push(
                                         `(${index})` +
                                             " " +
-                                            this.showToday(arr[x].tenure_enddate)
+                                            this.showToday(
+                                                arr[x].tenure_enddate
+                                            )
                                     );
                                 } else {
                                     //enddate.push("");
@@ -1725,7 +1752,9 @@ export default {
                                     startdate.push(
                                         `(${index})` +
                                             " " +
-                                            this.showToday(arr[x].tenure_startdate)
+                                            this.showToday(
+                                                arr[x].tenure_startdate
+                                            )
                                     );
                                 } else {
                                     //startdate.push("");
@@ -1744,7 +1773,9 @@ export default {
                                     enddate.push(
                                         `(${index})` +
                                             " " +
-                                            this.showToday(arr[x].tenure_enddate)
+                                            this.showToday(
+                                                arr[x].tenure_enddate
+                                            )
                                     );
                                 } else {
                                     //enddate.push("");
@@ -1775,7 +1806,9 @@ export default {
                                     startdate.push(
                                         `(${index})` +
                                             " " +
-                                            this.showToday(arr[x].tenure_startdate)
+                                            this.showToday(
+                                                arr[x].tenure_startdate
+                                            )
                                     );
                                 } else {
                                     //startdate.push("");
@@ -1794,7 +1827,9 @@ export default {
                                     enddate.push(
                                         `(${index})` +
                                             " " +
-                                            this.showToday(arr[x].tenure_enddate)
+                                            this.showToday(
+                                                arr[x].tenure_enddate
+                                            )
                                     );
                                 } else {
                                     //enddate.push("");
@@ -1825,7 +1860,9 @@ export default {
                                     startdate.push(
                                         `(${index})` +
                                             " " +
-                                            this.showToday(arr[x].tenure_startdate)
+                                            this.showToday(
+                                                arr[x].tenure_startdate
+                                            )
                                     );
                                 } else {
                                     //startdate.push("");
@@ -1844,7 +1881,9 @@ export default {
                                     enddate.push(
                                         `(${index})` +
                                             " " +
-                                            this.showToday(arr[x].tenure_enddate)
+                                            this.showToday(
+                                                arr[x].tenure_enddate
+                                            )
                                     );
                                 } else {
                                     //enddate.push("");
@@ -1875,7 +1914,9 @@ export default {
                                     startdate.push(
                                         `(${index})` +
                                             " " +
-                                            this.showToday(arr[x].tenure_startdate)
+                                            this.showToday(
+                                                arr[x].tenure_startdate
+                                            )
                                     );
                                 } else {
                                     //startdate.push("");
@@ -1894,7 +1935,9 @@ export default {
                                     enddate.push(
                                         `(${index})` +
                                             " " +
-                                            this.showToday(arr[x].tenure_enddate)
+                                            this.showToday(
+                                                arr[x].tenure_enddate
+                                            )
                                     );
                                 } else {
                                     //enddate.push("");

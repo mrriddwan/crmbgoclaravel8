@@ -26,12 +26,12 @@
                     >
                 </div>
                 <div class="grid grid-cols-2 break-normal text-xs">
-                    <div class="bg-blue-700 rounded-md w-max px-2 py-2">
+                    <div class="bg-purple-700 rounded-md w-max px-2 py-2">
                         <button @click="getTempboards" class="text-white">
                             Find Records
                         </button>
                     </div>
-                    <div>
+                    <div v-if="can('export tempboard') || is('admin | super-admin')">
                         <download-excel
                             :data="tempboards.data"
                             :fields="tempboard_fields"

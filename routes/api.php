@@ -158,7 +158,7 @@ Route::get('/contacts/getuserid', [ContactController::class, 'getuserid'])->name
 
 Route::get('/contacts/summary_action', [ContactController::class, 'summary_action'])->name('contact:summary_action');
 Route::get('/contacts/summary_todo', [ContactController::class, 'summary_todo'])->name('contact:summary_todo');
-
+Route::get('/contacts/remark/{contact}', [ContactController::class, 'remark'])->name('contact:remark');
 
 /*Sub-Contact API*/
 Route::get('/contacts/category/index', [ContactCategoryController::class, 'index'])->name('category:index');

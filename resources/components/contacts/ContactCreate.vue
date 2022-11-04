@@ -1,5 +1,5 @@
 <template>
-    <div class="container w-max align-center mx-auto h-max px-3 py-3">
+    <div class="container w-max mx-auto h-max px-3 py-3">
         <div v-if="errors">
             <div v-for="(v, k) in errors" :key="k">
                 <p
@@ -11,7 +11,7 @@
                 </p>
             </div>
         </div>
-        <div class="flex w-full justify-center items-center row">
+        <div class="flex w-full row">
             <div class="col-lg-20">
                 <form
                     @submit.prevent="createContact"
@@ -32,7 +32,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label
+                        <label class="font-bold"
                             >Status
                             <p class="inline text-red-600 text-lg">*</p></label
                         >
@@ -52,7 +52,7 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label
+                        <label class="font-bold"
                             >Type
                             <p class="inline text-red-600 text-lg">*</p></label
                         >
@@ -73,7 +73,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label
+                        <label class="font-bold"
                             >Industry
                             <p class="inline text-red-600 text-lg">*</p></label
                         >
@@ -93,7 +93,7 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label
+                        <label class="font-bold"
                             >Category
                             <p class="inline text-red-600 text-lg">*</p></label
                         >
@@ -114,7 +114,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label
+                        <label class="font-bold"
                             >Company Name
                             <p class="inline text-red-600 text-lg">*</p></label
                         >
@@ -145,7 +145,7 @@
                     </div>
 
                     <div class="form-group mt-2">
-                        <label>Address </label>
+                        <label class="font-bold">Address </label>
                         <input
                             maxlength="65000"
                             type="text"
@@ -153,12 +153,17 @@
                             v-model="form.address"
                         />
                     </div>
+
                     <div class="form-group">
-                        <label>Remark</label>
+                        <label class="font-bold">Remark</label>
+                        <div v-if="form.remark.length > 2000" class="text-red-600 inline text-xs uppercase">
+                            Exceeded limit
+                        </div>
+                        <div>{{ form.remark.length }}</div>
                         <input
-                            maxlength="65000"
+                            
                             type="text"
-                            class="block mt-1 w-96 h-40 rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                            class="form-control block w-96 h-40 px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                             v-model="form.remark"
                         />
                     </div>

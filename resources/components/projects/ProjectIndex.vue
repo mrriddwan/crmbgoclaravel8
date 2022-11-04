@@ -15,7 +15,7 @@
                 Project</router-link
             >
         </div>
-        <div class="py-2 px-2">
+        <div class="py-2 px-2" v-if="can('export project') || is('admin | super-admin')">
             <download-excel
                 :data="projects.data"
                 :fields="project_fields"
@@ -31,13 +31,14 @@
 
     <div class="grid grid-cols-2">
         <div class="grid grid-cols-2 items-center align-middle w-max">
-            <label for="paginate" class="px-2 inline-block">Entries</label>
-            <select v-model="paginate" class="form-control inline-block">
-                <option value="10">10</option>
-                <option value="50">50</option>
-                <option value="100">100</option>
-            </select>
-            <label for="paginate" class="px-2 inline-block">of 100</label>
+            <label for="paginate" class="px-2 inline-block">Per page</label>
+            <input v-model.lazy="paginate" class="form-control"/>
+                    <!-- <select v-model="paginate" class="form-control">
+                        <option value="10">10</option>
+                        <option value="50">50</option>
+                        <option value="100">100</option>
+                    </select> -->
+            <!-- <label for="paginate" class="px-2 inline-block">of 100</label> -->
         </div>
         <div class="py-2">
             <input
@@ -368,7 +369,7 @@
                         </td>
                         <td class="text-xs grid-cols-2 w-max">
                             <router-link
-                                class="mr-2"
+                                
                                 :to="`/contact/${project.contact.id}/info`"
                                 custom
                                 v-slot="{ navigate, href }"
@@ -458,7 +459,7 @@ export default {
     data() {
         return {
             projects: [],
-            paginate: 50,
+            paginate: 100,
 
             search: "",
             searchStartDate: "",
@@ -567,8 +568,8 @@ export default {
         },
 
         showToday(date) {
-            // let day = moment(date).format("DD-MM-YYYY");
-            let day = moment(date).format("DD-MM-YY");
+            let new_date = new Date(date)
+            let day = moment(new_date).format("DD-MM-YY");
             return day;
         },
     },

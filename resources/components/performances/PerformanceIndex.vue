@@ -37,6 +37,55 @@
                 </option>
             </select>
         </div>
+
+        <div
+            class="m-1 inline-block items-center px-1 py-1"
+            v-if="(can('export performance') || is('admin | super-admin')) && viewType === 'week'"
+        >
+            <download-excel
+                :data="user_performance.data"
+                :fields="performance_week"
+                worksheet="Performance Summary"
+                name="Performance Summary(week).xls"
+                class="btn btn-success btn-sm"
+            >
+                <ArrowTopRightOnSquareIcon class="h-5 w-5 mr-1 inline-block" />
+                Export Weekly
+            </download-excel>
+        </div>
+
+        <div
+            class="m-1 inline-block items-center px-1 py-1"
+            v-if="(can('export performance') || is('admin | super-admin')) && viewType === 'month'"
+        >
+            <download-excel
+                :data="user_performance.data"
+                :fields="performance_month"
+                worksheet="Performance Summary"
+                name="Performance Summary(month).xls"
+                class="btn btn-success btn-sm"
+            >
+                <ArrowTopRightOnSquareIcon class="h-5 w-5 mr-1 inline-block" />
+                Export Monthly
+            </download-excel>
+        </div>
+
+        <div
+            class="m-1 inline-block items-center px-1 py-1"
+            v-if="(can('export performance') || is('admin | super-admin')) && viewType === 'year'"
+        >
+            <download-excel
+                :data="user_performance.data"
+                :fields="performance_year"
+                worksheet="Performance Summary"
+                name="Performance Summary(year).xls"
+                class="btn btn-success btn-sm"
+            >
+                <ArrowTopRightOnSquareIcon class="h-5 w-5 mr-1 inline-block" />
+                Export Annual
+            </download-excel>
+        </div>
+        
     </div>
 
     <div class="py-2 text-center bg-slate-500 flex justify-between">
@@ -149,10 +198,7 @@
             </tr>
         </tbody>
 
-        <tbody
-            v-if="viewType === 'month'"
-            v-for="(date, index) in this.weeksInMonth"
-        >
+        <tbody v-if="viewType === 'month'" v-for="date in this.weeksInMonth">
             <tr>
                 <td>
                     <span>
@@ -165,11 +211,52 @@
                     </span>
                 </td>
                 <td
-                    v-for="action in actions"
+                    v-for="(action, index) in actions"
                     :key="action.id"
                     class="text-center"
                 >
-                    <span
+                    <!-- <span
+                        v-if="
+                            user_performance[`${this.getWeek(date.startDate)}`]
+                        "
+                    > -->
+                    <div
+                        v-for="performance in user_performance[
+                            `${this.getWeek(date.startDate)}`
+                        ]"
+                    >
+                        {{
+                            getKeyByValue(
+                                user_performance[
+                                    `${this.getWeek(date.startDate)}`
+                                ],
+                                performance
+                            )[index]
+                        }}
+
+                        {{ performance }}
+                    </div>
+                    <!-- </span> -->
+                    <!-- <span v-else>0</span> -->
+                    <!-- -- -->
+                    <!-- {{ user_performance[`${this.getWeek(date.startDate)}`] }} -->
+                    <!-- {{ action.name }} -->
+                </td>
+
+                <!-- <td v-for="(performance, i) in user_performance">
+                    <span>
+                        <span>
+                            {{ performance }}
+                        </span>
+                    </span>
+                </td> -->
+                <!-- <td>{{ actions[index]['name'] }}</td> -->
+                <!-- <td
+                    v-for="action in actions"
+                    :key="action.id"
+                    class="text-center"
+                > -->
+                <!-- <span
                         v-if="
                             user_performance[`${this.getWeek(date.startDate)}`]
                         "
@@ -177,17 +264,17 @@
                             `${this.getWeek(date.startDate)}`
                         ]"
                     >
-                        <!-- gets the object of the whole week-->
-                        <!-- <span
+                         gets the object of the whole week-->
+                <!-- <span
                             class="font-bold bg-lime-400 py-1 px-1 rounded-md"
                         >
                         
                             {{ user_performance[`${this.getWeek(date.startDate)}`] }} 
                         </span> -->
-                        
-                        <span>{{ getObjKey(user_performance[`${this.getWeek(date.startDate)}`],action_total) }}</span>
 
-                        <!-- <span
+                <!-- <span>{{ getObjKey(user_performance[`${this.getWeek(date.startDate)}`],action_total) }}</span> -->
+
+                <!-- <span
                             class="font-bold bg-lime-400 py-1 px-1 rounded-md"
                             v-if="
                                 user_performance[
@@ -197,10 +284,10 @@
                         >
                             {{ action_total }}
                         </span>
-                        <span v-else class="">0</span> -->
+                        <span v-else class="">0</span>
                     </span>
-                    <span v-else class=""> 0 </span>
-                </td>
+                    <span v-else class=""> 0 </span> -->
+                <!-- </td> -->
                 <!-- <td v-for="action_total in user_performance[44]">
                     {{ action_total }}
                 </td>
@@ -258,6 +345,7 @@ import moment from "moment";
 import {
     ChevronDoubleLeftIcon,
     ChevronDoubleRightIcon,
+    ArrowTopRightOnSquareIcon,
 } from "@heroicons/vue/24/solid";
 
 export default {
@@ -265,6 +353,7 @@ export default {
         Pagination: LaravelVuePagination,
         ChevronDoubleLeftIcon,
         ChevronDoubleRightIcon,
+        ArrowTopRightOnSquareIcon,
     },
 
     created() {},
@@ -353,6 +442,24 @@ export default {
 
             sort_direction: "desc",
             sort_field: "todo_date",
+
+            obj: { country: "Chile", city: "Santiago" },
+
+            performance_week: {
+                "Site No.": "site_id",
+                Location: "bboard_location",
+                Size: "bboard_size",
+            },
+            performance_month: {
+                "Site No.": "site_id",
+                Location: "bboard_location",
+                Size: "bboard_size",
+            },
+            performance_year: {
+                "Site No.": "site_id",
+                Location: "bboard_location",
+                Size: "bboard_size",
+            },
         };
     },
     watch: {
@@ -516,12 +623,15 @@ export default {
             return this.weeksInMonth.push(...weekList);
         },
 
-        getObjectKey(i) {
-            var arr = Object.keys(i);
-            return arr;
+        getKeyByValue(object, value) {
+            return Object.keys(object).filter((key) => object[key] === value);
         },
 
-        getObjKey(obj, value) {
+        getObjectKey(object) {
+            return Object.keys(object);
+        },
+
+        returnFirstObjKey(obj, value) {
             return Object.keys(obj).find((key) => obj[key] === value);
         },
 

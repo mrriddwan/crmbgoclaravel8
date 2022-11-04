@@ -88,16 +88,17 @@
         </div>
     </div>
 
-    <div class="grid grid-cols-3">
+    <div class="grid grid-cols-3 gap-3">
         <div class="grid grid-cols-2 items-center align-middle w-max">
             <label for="paginate" class="px-2 inline-block"
-                >Total entries</label
+                >Per page</label
             >
-            <select v-model="paginate" class="form-control inline-block">
-                <option value="10">10</option>
-                <option value="50">50</option>
-                <option value="100">100</option>
-            </select>
+            <input v-model.lazy="paginate" class="form-control"/>
+                    <!-- <select v-model="paginate" class="form-control">
+                        <option value="10">10</option>
+                        <option value="50">50</option>
+                        <option value="100">100</option>
+                    </select> -->
         </div>
         <div class="py-2">
             <input

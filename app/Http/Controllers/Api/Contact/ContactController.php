@@ -288,6 +288,22 @@ class ContactController extends Controller
         ]);
     }
 
+    public function remark(Contact $contact)
+    {
+        $contact = Contact::where('id', $contact->id)
+            ->select('remark')
+            ->get();
+
+        $data = $contact->toArray();
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Successfully fetch data Contact ',
+            'data' => $data,
+        ]);
+    }
+    
+
     public function history(Contact $contact)
     {
         $contact = Contact::with([

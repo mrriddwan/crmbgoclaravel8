@@ -112,11 +112,12 @@
             <div class="grid grid-cols-3 items-center">
                 <div class="grid grid-cols-2 items-left m-2">
                     <label for="paginate" class="">Per Page</label>
-                    <select v-model="paginate" class="form-control">
+                    <input v-model.lazy="paginate" class="form-control" />
+                    <!-- <select v-model="paginate" class="form-control">
                         <option value="10">10</option>
                         <option value="50">50</option>
                         <option value="100">100</option>
-                    </select>
+                    </select> -->
                 </div>
 
                 <div>
@@ -634,7 +635,9 @@
                                     v-model="checked"
                                 />
                             </td>
-                            <td class="text-xs">{{ contact.created_at }}</td>
+                            <td class="text-xs">
+                                {{ showToday(contact.created_at) }}
+                            </td>
                             <td class="text-xs">{{ contact.user.name }}</td>
                             <td class="text-xs">{{ contact.status.name }}</td>
                             <td class="text-xs">{{ contact.type.name }}</td>
@@ -652,7 +655,15 @@
                             </td>
                             <td class="text-xs">{{ contact.category.name }}</td>
                             <td class="text-xs">{{ contact.address }}</td>
-                            <td class="text-xs">{{ contact.remark }}</td>
+                            <td class="text-xs">
+                                {{ contact.remark }}
+                                <button
+                                    @click="toggleRemark(contact.id)"
+                                    class="align-middle border-1 border-black w-max rounded-md px-1"
+                                >
+                                    <QuestionMarkCircleIcon class="inline h-4 w-4" />
+                                </button>
+                            </td>
                             <td class="text-xs">
                                 <div
                                     v-if="
@@ -707,12 +718,21 @@
                 </table>
             </div>
         </div>
+
+        <ContactRemarkModalVue
+            v-if="contact_remark_visibility"
+            @toggle-modal="toggleRemark(contact_id)"
+            :contact_id="contact_remark"
+        />
     </div>
 </template>
 
 <script>
 import LaravelVuePagination from "laravel-vue-pagination";
 import axios from "axios";
+import moment from "moment";
+import ContactRemarkModalVue from "./ContactRemarkModal.vue";
+
 import {
     PencilSquareIcon,
     TrashIcon,
@@ -722,6 +742,7 @@ import {
     ArrowsUpDownIcon,
     ArrowUpIcon,
     ArrowDownIcon,
+    QuestionMarkCircleIcon
 } from "@heroicons/vue/24/solid";
 
 export default {
@@ -735,6 +756,8 @@ export default {
         ArrowsUpDownIcon,
         ArrowUpIcon,
         ArrowDownIcon,
+        QuestionMarkCircleIcon,
+        ContactRemarkModalVue,
     },
 
     mounted() {
@@ -756,8 +779,10 @@ export default {
             statuses: [],
             industries: [],
             categories: [],
+            contact_remark_visibility: false,
+            contact_remark: null,
 
-            paginate: 50,
+            paginate: 100,
             selectPage: false,
             selectAll: false,
             checked: [],
@@ -772,6 +797,7 @@ export default {
 
             sort_direction: "desc",
             sort_field: "created_at",
+            moment: moment,
         };
     },
     watch: {
@@ -818,6 +844,11 @@ export default {
     },
 
     methods: {
+        toggleRemark(contact_id) {
+            this.contact_remark = contact_id;
+            this.contact_remark_visibility = !this.contact_remark_visibility;
+        },
+
         getContacts(page = 1) {
             if (typeof page === "undefined") {
                 page = 1;
@@ -943,6 +974,12 @@ export default {
                 this.checked = response.data;
                 this.selectAll = true;
             });
+        },
+
+        showToday(date) {
+            let new_date = new Date(date);
+            let day = moment(new_date).format("DD-MM-YY");
+            return day;
         },
     },
 };
