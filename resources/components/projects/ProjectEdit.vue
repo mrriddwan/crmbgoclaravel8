@@ -31,11 +31,20 @@
                             >Start Date
                             <p class="inline text-red-600 text-lg">*</p></label
                         >
-                        <input
+                        <!-- <input
                             type="date"
                             class="block mt-1 w-max rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                             v-model="project.project_startdate"
-                        />
+                        /> -->
+                        <div>
+                            <VueDatePicker
+                                v-model="project.project_startdate"
+                                showNowButton
+                                nowButtonLabel="Today"
+                                :enableTimePicker="false"
+                                class="text-center w-full inline-block items-left mt-1 mx-2 rounded-md border-gray-500 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                            />
+                        </div>
                     </div>
 
                     <div class="form-group">
@@ -43,11 +52,20 @@
                             >End Date
                             <p class="inline text-red-600 text-lg">*</p></label
                         >
-                        <input
+                        <div>
+                            <VueDatePicker
+                                v-model="project.project_enddate"
+                                showNowButton
+                                nowButtonLabel="Today"
+                                :enableTimePicker="false"
+                                class="text-center w-full inline-block items-left mt-1 mx-2 rounded-md border-gray-500 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                            />
+                        </div>
+                        <!-- <input
                             type="date"
                             class="block mt-1 w-max rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                             v-model="project.project_enddate"
-                        />
+                        /> -->
                     </div>
 
                     <div class="form-group">
@@ -56,7 +74,7 @@
                             <p class="inline text-red-600 text-lg">*</p></label
                         >
                         <input
-                            maxlength="65000"
+                            maxlength="800"
                             type="text"
                             class="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                             v-model="project.project_name"
@@ -120,10 +138,15 @@
 <script>
 import GoBack from "../utils/GoBack.vue";
 import axios from "axios";
+import { VueDatePicker } from "@vuepic/vue-datepicker";
+import moment from "moment";
 
 export default {
+    components: { GoBack, VueDatePicker },
+
     data() {
         return {
+            moment: moment,
             project: {
                 project_startdate: "",
                 project_enddate: "",
@@ -149,8 +172,12 @@ export default {
                 await axios.put(
                     "/api/projects/update/" + this.$route.params.id,
                     {
-                        project_startdate: this.project.project_startdate,
-                        project_enddate: this.project.project_enddate,
+                        project_startdate: this.moment(
+                            this.project.project_startdate
+                        ).format("YYYY-MM-DD"),
+                        project_enddate: this.moment(
+                            this.project.project_enddate
+                        ).format("YYYY-MM-DD"),
                         project_name: this.project.project_name,
                         project_remark: this.project.project_remark
                             ? this.project.project_remark
@@ -194,6 +221,6 @@ export default {
                 });
         },
     },
-    components: { GoBack },
+    
 };
 </script>

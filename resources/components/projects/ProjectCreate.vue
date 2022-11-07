@@ -31,11 +31,20 @@
                             >Start Date
                             <p class="inline text-red-600 text-lg">*</p></label
                         >
-                        <input
+                        <div>
+                            <VueDatePicker
+                                v-model="form.project_startdate"
+                                showNowButton
+                                nowButtonLabel="Today"
+                                :enableTimePicker="false"
+                                class="text-center w-full inline-block items-left mt-1 mx-2 rounded-md border-gray-500 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                            />
+                        </div>
+                        <!-- <input
                             type="date"
                             class="block mt-1 w-max rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                             v-model="form.project_startdate"
-                        />
+                        /> -->
                     </div>
 
                     <div class="form-group">
@@ -43,11 +52,20 @@
                             >End Date
                             <p class="inline text-red-600 text-lg">*</p></label
                         >
-                        <input
+                        <!-- <input
                             type="date"
                             class="block mt-1 w-max rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                             v-model="form.project_enddate"
-                        />
+                        /> -->
+                        <div>
+                            <VueDatePicker
+                                v-model="form.project_enddate"
+                                showNowButton
+                                nowButtonLabel="Today"
+                                :enableTimePicker="false"
+                                class="text-center w-full inline-block items-left mt-1 mx-2 rounded-md border-gray-500 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                            />
+                        </div>
                     </div>
 
                     <div class="form-group">
@@ -56,7 +74,7 @@
                             <p class="inline text-red-600 text-lg">*</p></label
                         >
                         <input
-                            maxlength="65000"
+                            maxlength="800"
                             type="text"
                             class="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                             v-model="form.project_name"
@@ -89,7 +107,7 @@
                         </div>
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group w-full">
                         <label>Remark</label>
                         <div
                             v-if="form.project_remark.length >= 800"
@@ -100,7 +118,7 @@
                         <textarea
                             maxlength="800"
                             type="text"
-                            class="block mt-1 w-60 w-max-100 rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                            class="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                             v-model="form.project_remark"
                         />
                     </div>
@@ -120,10 +138,15 @@
 <script>
 import GoBack from "../utils/GoBack.vue";
 import axios from "axios";
+import { VueDatePicker } from "@vuepic/vue-datepicker";
+import moment from 'moment'
 
 export default {
+    components: { GoBack, VueDatePicker },
+
     data() {
         return {
+            moment: moment,
             form: {
                 project_startdate: "",
                 project_enddate: "",
@@ -132,7 +155,7 @@ export default {
                 user_id: "",
                 contact_id: "",
             },
-
+            
             users: [],
             contacts: [],
             errors: "",
@@ -147,8 +170,14 @@ export default {
         async createProject() {
             try {
                 await axios.post("/api/projects/store", {
-                    project_startdate: this.form.project_startdate,
-                    project_enddate: this.form.project_enddate,
+                    project_startdate: this.moment(
+                        this.form.project_startdate
+                    ).format("YYYY-MM-DD"),
+                    // project_startdate: this.form.project_startdate,
+                    project_enddate: this.moment(
+                        this.form.project_enddate
+                    ).format("YYYY-MM-DD"),
+                    // project_enddate: this.form.project_enddate,
                     project_name: this.form.project_name,
                     project_remark: this.form.project_remark
                         ? this.form.project_remark
@@ -180,6 +209,5 @@ export default {
                 });
         },
     },
-    components: { GoBack },
 };
 </script>
