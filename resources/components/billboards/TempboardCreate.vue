@@ -27,24 +27,24 @@
             >
                 <div class="grid grid-cols-1 items-center text-center">
                     <div class="grid grid-cols-1">
-                            <div>
-                                <label class="mx-2"
-                                    >Entry Date
-                                    <p class="inline text-red-600 text-lg">
-                                        *
-                                    </p></label
-                                >
-                            </div>
-                            <div>
-                                <VueDatePicker
-                                    v-model="form.tpboard_entrydate"
-                                    showNowButton
-                                    nowButtonLabel="Today"
-                                    :enableTimePicker="false"
-                                    class="text-center w-full inline-block items-left mt-1 mx-2 rounded-md  border-gray-500 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                                />
-                            </div>
+                        <div>
+                            <label class="mx-2"
+                                >Entry Date
+                                <p class="inline text-red-600 text-lg">
+                                    *
+                                </p></label
+                            >
                         </div>
+                        <div>
+                            <VueDatePicker
+                                v-model="form.tpboard_entrydate"
+                                showNowButton
+                                nowButtonLabel="Today"
+                                :enableTimePicker="false"
+                                class="text-center w-full inline-block items-left mt-1 mx-2 rounded-md border-gray-500 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                            />
+                        </div>
+                    </div>
                     <div class="inline-block w-full mt-2">
                         <label class=""
                             >CS
@@ -54,7 +54,7 @@
                     <div class="inline-block w-full">
                         <div class="">
                             <select
-                                class="text-center w-full rounded-md  border-gray-500 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                class="text-center w-full rounded-md border-gray-500 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                                 v-model="form.user_id"
                                 @change="getUsers"
                             >
@@ -82,7 +82,7 @@
                     <div class="inline-block w-full">
                         <div class="">
                             <select
-                                class="text-center overflow-y block mt-1 w-full rounded-md  border-gray-500 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                class="text-center overflow-y block mt-1 w-full rounded-md border-gray-500 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                                 v-model="form.contact_id"
                                 @change="getContacts"
                             >
@@ -115,7 +115,11 @@
                                     class="text-center w-20 inline-block mt-1 rounded-md border-gray-500 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                                     v-model="form.tpboard_size1"
                                 />
-                                <p class="inline-block align-top text-xl ml-1 font-bold">"</p>
+                                <p
+                                    class="inline-block align-top text-xl ml-1 font-bold"
+                                >
+                                    "
+                                </p>
                             </div>
                             <div class="pt-2">
                                 <p class="uppercase text-xl">X</p>
@@ -126,7 +130,11 @@
                                     class="text-center w-20 inline-block mt-1 rounded-md border-gray-500 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                                     v-model="form.tpboard_size2"
                                 />
-                                <p class="inline-block align-top text-xl ml-1 font-bold">"</p>
+                                <p
+                                    class="inline-block align-top text-xl ml-1 font-bold"
+                                >
+                                    "
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -174,7 +182,7 @@
                                     showNowButton
                                     nowButtonLabel="Today"
                                     :enableTimePicker="false"
-                                    class="text-center w-full inline-block items-left mt-1 mx-2 rounded-md  border-gray-500 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                    class="text-center w-full inline-block items-left mt-1 mx-2 rounded-md border-gray-500 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                                 />
                             </div>
                         </div>
@@ -257,7 +265,14 @@
                         >
                     </div>
                     <div class="w-full">
+                        <div
+                            v-if="form.tpboard_remark.length >= 800"
+                            class="text-red-600 inline text-xs uppercase"
+                        >
+                            Exceeded limit
+                        </div>
                         <textarea
+                            maxlength="800"
                             type="text"
                             class="text-center inline-block items-left mt-1 mx-2 w-96 h-40 rounded-md border-gray-500 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                             v-model="form.tpboard_remark"
@@ -323,12 +338,18 @@ export default {
         async createTempboard() {
             try {
                 await axios.post("/api/tempboards/store", {
-                    tpboard_entrydate: this.moment(this.form.tpboard_entrydate).format("YYYY-MM-DD"),
+                    tpboard_entrydate: this.moment(
+                        this.form.tpboard_entrydate
+                    ).format("YYYY-MM-DD"),
                     contact_id: this.form.contact_id,
                     user_id: this.form.user_id,
-                    tpboard_startdate: this.moment(this.form.tpboard_startdate).format("YYYY-MM-DD"),
-                    tpboard_enddate: this.moment(this.form.tpboard_enddate).format("YYYY-MM-DD"),
-                    
+                    tpboard_startdate: this.moment(
+                        this.form.tpboard_startdate
+                    ).format("YYYY-MM-DD"),
+                    tpboard_enddate: this.moment(
+                        this.form.tpboard_enddate
+                    ).format("YYYY-MM-DD"),
+
                     tpboard_size1: this.form.tpboard_size1,
                     tpboard_size2: this.form.tpboard_size2,
                     tpboard_location: this.form.tpboard_location,
@@ -337,7 +358,9 @@ export default {
                     tpboard_material: this.form.tpboard_material,
                     tpboard_printing: this.form.tpboard_printing,
                     tpboard_installation: this.form.tpboard_installation,
-                    tpboard_remark: this.form.tpboard_remark ? this.form.tpboard_remark : 'No remark',
+                    tpboard_remark: this.form.tpboard_remark
+                        ? this.form.tpboard_remark
+                        : "No remark",
                 });
 
                 this.$router.push({

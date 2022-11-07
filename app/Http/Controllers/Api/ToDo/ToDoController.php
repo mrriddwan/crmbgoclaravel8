@@ -471,6 +471,21 @@ class ToDoController extends Controller
         ]);
     }
 
+    public function remark(ToDo $todo)
+    {
+        $todo = ToDo::where('id', $todo->id)
+            ->select('todo_remark')
+            ->get();
+
+        $data = $todo->toArray();
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Successfully fetch data Contact ',
+            'data' => $data,
+        ]);
+    }
+
     public function insert(Request $request)
     {
         $request->validate([

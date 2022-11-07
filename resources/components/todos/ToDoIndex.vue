@@ -100,7 +100,7 @@
 
                 <div class="border-gray-400 inline-block px-1 py-1">
                     <p for="paginate">Per page</p>
-                    <input v-model.lazy="paginate" class="form-control"/>
+                    <input v-model.lazy="paginate" class="form-control" />
                     <!-- <select v-model="paginate" class="form-control">
                         <option value="10">10</option>
                         <option value="50">50</option>
@@ -756,7 +756,17 @@
                         </td>
                         <td class="text-xs">{{ todo.user.name }}</td>
                         <td class="text-xs">{{ todo.task.name }}</td>
-                        <td class="text-xs">{{ todo.todo_remark }}</td>
+                        <td class="text-xs">
+                            {{ todo.todo_remark }}
+                            <button
+                                @click="toggleRemark(todo.id)"
+                                class="align-middle border-1 border-black w-max rounded-md px-1"
+                            >
+                                <QuestionMarkCircleIcon
+                                    class="inline h-4 w-4"
+                                />
+                            </button>
+                        </td>
                         <td class="text-center align-middle w-max">
                             <div class="container">
                                 <div v-if="todo.action" class="inline-block">
@@ -886,6 +896,12 @@
                 </tbody>
             </table>
         </div>
+
+        <TodoRemarkModalVue
+            v-if="todo_remark_visibility"
+            @toggle-modal="toggleRemark(todo_id)"
+            :todo_id="todo_remark"
+        />
     </div>
 </template>
 
@@ -894,6 +910,7 @@ import LaravelVuePagination from "laravel-vue-pagination";
 import axios from "axios";
 import moment from "moment";
 import { VueDatePicker } from "@vuepic/vue-datepicker";
+import TodoRemarkModalVue from "./TodoRemarkModal.vue";
 import {
     PencilSquareIcon,
     TrashIcon,
@@ -906,11 +923,13 @@ import {
     PencilIcon,
     ArrowDownIcon,
     ArrowUpIcon,
+    QuestionMarkCircleIcon,
 } from "@heroicons/vue/24/solid";
 
 export default {
     components: {
         Pagination: LaravelVuePagination,
+        TodoRemarkModalVue,
         PencilSquareIcon,
         TrashIcon,
         ChevronDoubleLeftIcon,
@@ -923,6 +942,7 @@ export default {
         VueDatePicker,
         ArrowDownIcon,
         ArrowUpIcon,
+        QuestionMarkCircleIcon,
     },
 
     created() {},
@@ -1000,6 +1020,9 @@ export default {
             checked: [],
             url: "",
             changeAction: false,
+
+            todo_remark_visibility: false,
+            todo_remark: null,
 
             selectedUser: "",
             selectedSource: "",
@@ -1183,6 +1206,10 @@ export default {
     },
 
     methods: {
+        toggleRemark(todo_id) {
+            this.todo_remark = todo_id;
+            this.todo_remark_visibility = !this.todo_remark_visibility;
+        },
 
         getToDosSelectDate(page = 1) {
             if (typeof page === "undefined") {

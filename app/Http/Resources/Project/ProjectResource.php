@@ -19,7 +19,7 @@ class ProjectResource extends JsonResource
             'project_startdate' => $this -> project_startdate,
             'project_enddate' => $this -> project_enddate,
             'project_name' => $this -> project_name,
-            'project_remark' => $this->project_remark,
+            'project_remark' => substr($this->project_remark, 0, 20) . '...',
             'user' => $this-> user -> only('id', 'name'),
             'contact' => $this -> contact -> only('id', 'name'),
             'updated_at' => $this -> updated_at -> format('d-m-Y')

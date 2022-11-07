@@ -91,8 +91,14 @@
 
                     <div class="form-group">
                         <label>Remark</label>
+                        <div
+                            v-if="form.project_remark.length >= 800"
+                            class="text-red-600 inline text-xs uppercase"
+                        >
+                            Exceeded limit
+                        </div>
                         <textarea
-                        maxlength="65000"
+                            maxlength="800"
                             type="text"
                             class="block mt-1 w-60 w-max-100 rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                             v-model="form.project_remark"

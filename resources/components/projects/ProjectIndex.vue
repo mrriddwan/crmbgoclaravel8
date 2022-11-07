@@ -380,7 +380,13 @@
                             </router-link>
                         </td>
                         <td class="text-xs">{{ project.project_name }}</td>
-                        <td class="text-xs">{{ project.project_remark }}</td>
+                        <td class="text-xs">{{ project.project_remark }}
+                            <button
+                                    @click="toggleRemark(project.id)"
+                                    class="align-middle border-1 border-black w-max rounded-md px-1"
+                                >
+                                    <QuestionMarkCircleIcon class="inline h-4 w-4" />
+                                </button></td>
                         <td class="text-xs">
                             {{ showToday(project.updated_at) }}
                         </td>
@@ -418,6 +424,12 @@
                 </tbody>
             </table>
         </div>
+
+        <ProjectRemarkModalVue
+            v-if="project_remark_visibility"
+            @toggle-modal="toggleRemark(project_id)"
+            :project_id="project_remark"
+        />
     </div>
 </template>
 
@@ -425,6 +437,7 @@
 import LaravelVuePagination from "laravel-vue-pagination";
 import axios from "axios";
 import moment from "moment";
+import ProjectRemarkModalVue from "./ProjectRemarkModal.vue";
 import {
     PencilSquareIcon,
     PencilIcon,
@@ -436,10 +449,12 @@ import {
     ArrowsUpDownIcon,
     ArrowUpIcon,
     ArrowDownIcon,
+    QuestionMarkCircleIcon,
 } from "@heroicons/vue/24/solid";
 
 export default {
     components: {
+        ProjectRemarkModalVue,
         Pagination: LaravelVuePagination,
         PencilSquareIcon,
         TrashIcon,
@@ -451,6 +466,7 @@ export default {
         ArrowsUpDownIcon,
         ArrowUpIcon,
         ArrowDownIcon,
+        QuestionMarkCircleIcon,
     },
 
     mounted() {
@@ -469,6 +485,8 @@ export default {
 
             sort_direction: "desc",
             sort_field: "project_startdate",
+            project_remark_visibility: false,
+            project_remark: null,
 
             project_fields: {
                 CS: {
@@ -516,6 +534,12 @@ export default {
     },
 
     methods: {
+
+        toggleRemark(project_id) {
+            this.project_remark = project_id;
+            this.project_remark_visibility = !this.project_remark_visibility;
+        },
+
         getProjects(page = 1) {
             if (typeof page === "undefined") {
                 page = 1;

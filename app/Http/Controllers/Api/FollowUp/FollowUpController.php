@@ -420,6 +420,21 @@ class FollowUpController extends Controller
         ]);
     }
 
+    public function remark(FollowUp $followup)
+    {
+        $followup = FollowUp::where('id', $followup->id)
+            ->select('followup_remark')
+            ->get();
+
+        $data = $followup->toArray();
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Successfully fetch data Contact ',
+            'data' => $data,
+        ]);
+    }
+
     public function update(Request $request, followup $followup)
     {
         $followup->update([

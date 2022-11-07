@@ -26,7 +26,7 @@ class TempboardResource extends JsonResource
             'tpboard_material' => $this -> tpboard_material,
             'tpboard_printing' => $this -> tpboard_printing,
             'tpboard_installation' => $this -> tpboard_installation,
-            'tpboard_remark' => $this -> tpboard_remark,
+            'tpboard_remark' => substr($this->tpboard_remark, 0, 20) . '...',
             'contact_id' => $this -> contact["id"],
             'contact_name' => $this -> contact["name"],
             'user_id' => $this -> user["id"],

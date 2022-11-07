@@ -280,7 +280,14 @@
                         <label class="mx-2">Remark</label>
                     </div>
                     <div class="w-full">
+                        <div
+                            v-if="tempboard.tpboard_remark.length >= 800"
+                            class="text-red-600 inline text-xs uppercase"
+                        >
+                            Exceeded limit
+                        </div>
                         <textarea
+                            maxlength="800"
                             type="text"
                             class="text-center inline-block items-left mt-1 mx-2 w-96 h-40 rounded-md border-gray-500 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                             v-model="tempboard.tpboard_remark"
@@ -361,31 +368,35 @@ export default {
         },
         async updateTempboard() {
             try {
-                await axios.put("/api/tempboards/update/"+ this.$route.params.id, {
-                    tpboard_entrydate: this.moment(
-                        this.tempboard.tpboard_entrydate
-                    ).format("YYYY-MM-DD"),
-                    contact_id: this.tempboard.contact_id,
-                    user_id: this.tempboard.user_id,
-                    tpboard_startdate: this.moment(
-                        this.tempboard.tpboard_startdate
-                    ).format("YYYY-MM-DD"),
-                    tpboard_enddate: this.moment(
-                        this.tempboard.tpboard_enddate
-                    ).format("YYYY-MM-DD"),
-                    tpboard_size: this.tempboard.tpboard_size,
-                    tpboard_size1: this.tempboard.tpboard_size1,
-                    tpboard_size2: this.tempboard.tpboard_size2,
-                    tpboard_location: this.tempboard.tpboard_location,
-                    tpboard_unit: this.tempboard.tpboard_unit,
-                    tpboard_collection: this.tempboard.tpboard_collection,
-                    tpboard_material: this.tempboard.tpboard_material,
-                    tpboard_printing: this.tempboard.tpboard_printing,
-                    tpboard_installation: this.tempboard.tpboard_installation,
-                    tpboard_remark: this.tempboard.tpboard_remark
-                        ? this.tempboard.tpboard_remark
-                        : "No remark",
-                });
+                await axios.put(
+                    "/api/tempboards/update/" + this.$route.params.id,
+                    {
+                        tpboard_entrydate: this.moment(
+                            this.tempboard.tpboard_entrydate
+                        ).format("YYYY-MM-DD"),
+                        contact_id: this.tempboard.contact_id,
+                        user_id: this.tempboard.user_id,
+                        tpboard_startdate: this.moment(
+                            this.tempboard.tpboard_startdate
+                        ).format("YYYY-MM-DD"),
+                        tpboard_enddate: this.moment(
+                            this.tempboard.tpboard_enddate
+                        ).format("YYYY-MM-DD"),
+                        tpboard_size: this.tempboard.tpboard_size,
+                        tpboard_size1: this.tempboard.tpboard_size1,
+                        tpboard_size2: this.tempboard.tpboard_size2,
+                        tpboard_location: this.tempboard.tpboard_location,
+                        tpboard_unit: this.tempboard.tpboard_unit,
+                        tpboard_collection: this.tempboard.tpboard_collection,
+                        tpboard_material: this.tempboard.tpboard_material,
+                        tpboard_printing: this.tempboard.tpboard_printing,
+                        tpboard_installation:
+                            this.tempboard.tpboard_installation,
+                        tpboard_remark: this.tempboard.tpboard_remark
+                            ? this.tempboard.tpboard_remark
+                            : "No remark",
+                    }
+                );
 
                 this.$router.push({
                     name: "tempboard_index",

@@ -146,8 +146,11 @@
 
                     <div class="form-group mt-2">
                         <label class="font-bold">Address </label>
+                        <div v-if="form.address.length >= 800" class="text-red-600 inline text-xs uppercase">
+                            Exceeded limit
+                        </div>
                         <input
-                            maxlength="65000"
+                            maxlength="800"
                             type="text"
                             class="block mt-1 w-96 h-40 rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                             v-model="form.address"
@@ -156,12 +159,12 @@
 
                     <div class="form-group">
                         <label class="font-bold">Remark</label>
-                        <div v-if="form.remark.length > 2000" class="text-red-600 inline text-xs uppercase">
+                        <div v-if="form.remark.length >= 800" class="text-red-600 inline text-xs uppercase">
                             Exceeded limit
                         </div>
-                        <div>{{ form.remark.length }}</div>
+                        <!-- <div>{{ form.remark.length }}</div> -->
                         <input
-                            
+                            maxlength="800"
                             type="text"
                             class="form-control block w-96 h-40 px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                             v-model="form.remark"

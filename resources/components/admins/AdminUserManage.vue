@@ -271,7 +271,7 @@
                                 <div class="form-group">
                                     <input
                                         v-model="edit_user.email_password"
-                                        type="text"
+                                        type="password"
                                         class="block mt-1 w-full text-center rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                                     />
                                 </div>
@@ -1138,7 +1138,7 @@ export default {
                     this.edit_user.confirm_password = "";
                     this.edit_user.email = "";
                     this.edit_user.email_password = "";
-                    this.selectedUser = "";
+                    // this.selectedUser = "";
                     alert("Updated password.");
                 } else {
                     await axios.put(
@@ -1154,7 +1154,7 @@ export default {
                     this.edit_user.confirm_password = "";
                     this.edit_user.email = "";
                     this.edit_user.email_password = "";
-                    this.selectedUser = "";
+                    // this.selectedUser = "";
                     alert("Updated user email.");
                 }
             } catch (e) {

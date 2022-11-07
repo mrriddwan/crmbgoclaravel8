@@ -231,6 +231,21 @@ class TempboardController extends Controller
         ]);
     }
 
+    public function remark(Tempboard $tempboard)
+    {
+        $tempboard = Tempboard::where('id', $tempboard->id)
+            ->select('tpboard_remark')
+            ->get();
+
+        $data = $tempboard->toArray();
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Successfully fetch data Contact ',
+            'data' => $data,
+        ]);
+    }
+
     public function update(Request $request, Tempboard $tempboard)
     {
 

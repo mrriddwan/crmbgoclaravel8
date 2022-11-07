@@ -760,6 +760,14 @@
                             </td>
                             <td class="text-xs break-normal">
                                 {{ tempboard.tpboard_remark }}
+                                <button
+                                @click="toggleRemark(tempboard.id)"
+                                class="align-middle border-1 border-black w-max rounded-md px-1"
+                            >
+                                <QuestionMarkCircleIcon
+                                    class="inline h-4 w-4"
+                                />
+                            </button>
                             </td>
                             <td class="text-xs">
                                 <br />
@@ -784,12 +792,19 @@
                 </table>
             </div>
         </div>
+
+        <TempboardRemarkModalVue
+            v-if="tpboard_remark_visibility"
+            @toggle-modal="toggleRemark(tpboard_id)"
+            :tpboard_id="tpboard_remark"
+        />
     </div>
 </template>
 
 <script>
 import LaravelVuePagination from "laravel-vue-pagination";
 import axios from "axios";
+import TempboardRemarkModalVue from "./TempboardRemarkModal.vue";
 import {
     PencilSquareIcon,
     TrashIcon,
@@ -799,11 +814,14 @@ import {
     ArrowsUpDownIcon,
     ArrowUpIcon,
     ArrowDownIcon,
+    QuestionMarkCircleIcon,
+
 } from "@heroicons/vue/24/solid";
 import moment from "moment";
 
 export default {
     components: {
+        TempboardRemarkModalVue,
         Pagination: LaravelVuePagination,
         PencilSquareIcon,
         TrashIcon,
@@ -813,6 +831,7 @@ export default {
         ArrowsUpDownIcon,
         ArrowUpIcon,
         ArrowDownIcon,
+        QuestionMarkCircleIcon,
     },
 
     mounted() {
@@ -835,6 +854,9 @@ export default {
             // selectAll: false,
             // checked: [],
             // url: "",
+
+            tpboard_remark_visibility: false,
+            tpboard_remark: null,
 
             search: "",
             selectedYear: "",
@@ -884,6 +906,12 @@ export default {
     computed: {},
 
     methods: {
+        toggleRemark(tpboard_id) {
+            this.tpboard_remark = tpboard_id;
+            this.tpboard_remark_visibility = !this.tpboard_remark_visibility;
+        },
+
+
         getTempboards(page = 1) {
             if (typeof page === "undefined") {
                 page = 1;

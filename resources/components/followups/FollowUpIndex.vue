@@ -540,7 +540,13 @@
                         </td>
                         <td>{{ followup.user.name }}</td>
                         <td>{{ followup.task.name }}</td>
-                        <td>{{ followup.followup_remark }}</td>
+                        <td>{{ followup.followup_remark }}
+                            <button
+                                    @click="toggleRemark(followup.id)"
+                                    class="align-middle border-1 border-black w-max rounded-md px-1"
+                                >
+                                    <QuestionMarkCircleIcon class="inline h-4 w-4" />
+                                </button></td>
                         <td>
                             <div
                                 v-if="
@@ -575,6 +581,12 @@
                 </tbody>
             </table>
         </div>
+
+        <FollowupRemarkModalVue
+            v-if="followup_remark_visibility"
+            @toggle-modal="toggleRemark(followup_id)"
+            :followup_id="followup_remark"
+        />
     </div>
 </template>
 
@@ -583,6 +595,7 @@ import LaravelVuePagination from "laravel-vue-pagination";
 import axios from "axios";
 import moment from "moment";
 import { VueDatePicker } from "@vuepic/vue-datepicker";
+import FollowupRemarkModalVue from "./FollowupRemarkModal.vue"
 import {
     PencilSquareIcon,
     TrashIcon,
@@ -595,11 +608,13 @@ import {
     ArrowsUpDownIcon,
     ArrowUpIcon,
     ArrowDownIcon,
+    QuestionMarkCircleIcon,
+
 } from "@heroicons/vue/24/solid";
 
 export default {
     components: {
-        Pagination: LaravelVuePagination,
+        Pagination: LaravelVuePagination,FollowupRemarkModalVue,
         PencilSquareIcon,
         TrashIcon,
         ChevronDoubleLeftIcon,
@@ -612,6 +627,7 @@ export default {
         VueDatePicker,
         ArrowUpIcon,
         ArrowDownIcon,
+        QuestionMarkCircleIcon,
     },
 
     mounted() {
@@ -619,14 +635,14 @@ export default {
         this.getUsers();
         this.selectedUser = document.querySelector('meta[name="user-id"]').getAttribute('content');
         this.getTasks();
-        console.log(
-            "this is the route params from follow up, month?:" +
-                this.$route.params.selectedMonth
-        );
-        console.log(
-            "this is the route params from follow up, year?:" +
-                this.$route.params.selectedYear
-        );
+        // console.log(
+        //     "this is the route params from follow up, month?:" +
+        //         this.$route.params.selectedMonth
+        // );
+        // console.log(
+        //     "this is the route params from follow up, year?:" +
+        //         this.$route.params.selectedYear
+        // );
 
         if (!this.$route.params) {
             this.currentDate = this.getCurrentDate();
@@ -638,22 +654,22 @@ export default {
             this.getFollowUpsSelectMonth();
         }
         //initial date selection
-        console.log(
-            "Result of mounted getCurrentDate: " + this.getCurrentDate()
-        );
+        // console.log(
+        //     "Result of mounted getCurrentDate: " + this.getCurrentDate()
+        // );
         this.currentDate = this.getCurrentDate();
         this.selectedDate = this.currentDate;
         // this.getSelectedDate(this.selectedDate);
-        console.log("Result of mounted currrentDate: " + this.currentDate);
+        // console.log("Result of mounted currrentDate: " + this.currentDate);
         //initialise date range
         this.selectedDateStart = this.selectedDate;
         this.selectedDateEnd = this.selectedDate;
-        console.log(
-            "Result of mounted selectedDateStart: " + this.selectedDateStart
-        );
-        console.log(
-            "Result of mounted selectedDateEnd: " + this.selectedDateEnd
-        );
+        // console.log(
+        //     "Result of mounted selectedDateStart: " + this.selectedDateStart
+        // );
+        // console.log(
+        //     "Result of mounted selectedDateEnd: " + this.selectedDateEnd
+        // );
 
         //initial month selection
         this.selectedMonth = this.getSelectedMonth(this.selectedDate);
@@ -675,6 +691,9 @@ export default {
             paginate: 100,
             viewType: "month",
             moment: moment,
+
+            followup_remark_visibility: false,
+            followup_remark: null,
 
             search: "",
             selectPage: false,
@@ -752,14 +771,14 @@ export default {
                 const monthYear = this.selectedMonthYear;
                 this.getSelectedMonth(monthYear);
                 this.getSelectedYear(monthYear);
-                console.log(
-                    "Result of this.getSelectedMonth(monthYear): " +
-                        this.getSelectedMonth(monthYear)
-                );
-                console.log(
-                    "Result of this.getSelectedYear(monthYear): " +
-                        this.getSelectedYear(monthYear)
-                );
+                // console.log(
+                //     "Result of this.getSelectedMonth(monthYear): " +
+                //         this.getSelectedMonth(monthYear)
+                // );
+                // console.log(
+                //     "Result of this.getSelectedYear(monthYear): " +
+                //         this.getSelectedYear(monthYear)
+                // );
                 this.getFollowUpsSelectMonth();
             }
             if (value === "range") {
@@ -781,21 +800,21 @@ export default {
             this.getSelectedMonth(monthYear);
             this.getSelectedYear(monthYear);
             this.getFollowUpsSelectMonth();
-            console.log("current date after month change: " + this.currentDate);
+            // console.log("current date after month change: " + this.currentDate);
         },
 
         selectedDateRange(newVal) {
             const [selectedDateStart, selectedDateEnd] = newVal.split("|");
             this.getSelectedDateStart(selectedDateStart);
             this.getSelectedDateEnd(selectedDateEnd);
-            console.log(
-                "result of date after this.getSelectedDateEnd(selectedDateStart): " +
-                    this.getSelectedDateEnd(selectedDateStart)
-            );
-            console.log(
-                "result of date after this.getSelectedDateEnd(selectedDateEnd): " +
-                    this.getSelectedDateEnd(selectedDateEnd)
-            );
+            // console.log(
+            //     "result of date after this.getSelectedDateEnd(selectedDateStart): " +
+            //         this.getSelectedDateEnd(selectedDateStart)
+            // );
+            // console.log(
+            //     "result of date after this.getSelectedDateEnd(selectedDateEnd): " +
+            //         this.getSelectedDateEnd(selectedDateEnd)
+            // );
             this.getFollowUpsSelectDateRange();
         },
 
@@ -822,6 +841,12 @@ export default {
     },
 
     methods: {
+        toggleRemark(followup_id) {
+            this.followup_remark = followup_id;
+            this.followup_remark_visibility = !this.followup_remark_visibility;
+        },
+
+
         getFollowUpsSelectDate(page = 1) {
             if (typeof page === "undefined") {
                 page = 1;
@@ -1053,13 +1078,13 @@ export default {
                 document.getElementById("incrementDate").disabled = false;
                 var monthYear =
                     this.selectedYear + "-" + this.selectedMonth + "-" + "01";
-                console.log("monthYear : " + monthYear);
+                // console.log("monthYear : " + monthYear);
 
                 var monthYearAdd = moment(monthYear)
                     .add(1, "M")
                     .format("YYYY-MM-DD");
 
-                console.log("monthYearAdd : " + monthYearAdd);
+                // console.log("monthYearAdd : " + monthYearAdd);
 
                 this.selectedMonthYear = monthYearAdd;
                 var month = this.getSelectedMonth(monthYearAdd);
@@ -1081,13 +1106,13 @@ export default {
                 document.getElementById("decrementDate").disabled = false;
                 var monthYear =
                     this.selectedYear + "-" + this.selectedMonth + "-" + "01";
-                console.log("monthYear : " + monthYear);
+                // console.log("monthYear : " + monthYear);
 
                 var monthYearMinus = moment(monthYear)
                     .subtract(1, "M")
                     .format("YYYY-MM-DD");
 
-                console.log("monthYearMinus : " + monthYearMinus);
+                // console.log("monthYearMinus : " + monthYearMinus);
 
                 this.selectedMonthYear = monthYearMinus;
                 var month = this.getSelectedMonth(monthYearMinus);

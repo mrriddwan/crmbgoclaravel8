@@ -120,8 +120,11 @@
                     </div>
                     <div class="form-group mb-4">
                         <label class="font-bold">Address</label>
+                        <div v-if="contact.address.length >= 800" class="text-red-600 inline text-xs uppercase">
+                            Exceeded limit
+                        </div>
                         <textarea
-                            maxlength="65000"
+                            maxlength="800"
                             type="text"
                             name="address"
                             id="address"
@@ -133,8 +136,11 @@
                     </div>
                     <div class="form-group mb-4">
                         <label class="font-bold">Remark</label>
+                        <div v-if="contact.remark.length >= 800" class="text-red-600 inline text-xs uppercase">
+                            Exceeded limit
+                        </div>
                         <textarea
-                            maxlength="65000"
+                            maxlength="800"
                             type="text"
                             name="remark"
                             id="remark"

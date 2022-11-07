@@ -56,7 +56,7 @@
                             <p class="inline text-red-600 text-lg">*</p></label
                         >
                         <input
-                        maxlength="65000"
+                            maxlength="65000"
                             type="text"
                             class="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                             v-model="project.project_name"
@@ -91,8 +91,14 @@
 
                     <div class="form-group">
                         <label>Remark</label>
+                        <div
+                            v-if="project.project_remark.length >= 800"
+                            class="text-red-600 inline text-xs uppercase"
+                        >
+                            Exceeded limit
+                        </div>
                         <textarea
-                        maxlength="65000"
+                            maxlength="800"
                             type="text"
                             class="block mt-1 w-60 w-max-100 rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                             v-model="project.project_remark"
@@ -126,7 +132,7 @@ export default {
                 user_id: "",
                 contact_id: "",
             },
-            
+
             contacts: [],
             errors: "",
         };
@@ -140,14 +146,19 @@ export default {
     methods: {
         async updateProject() {
             try {
-                await axios.put("/api/projects/update/"+ this.$route.params.id, {
-                    project_startdate: this.project.project_startdate,
-                    project_enddate: this.project.project_enddate,
-                    project_name: this.project.project_name,
-                    project_remark: this.project.project_remark ? this.project.project_remark : "No remark",
-                    user_id: 2, //change to current user later
-                    contact_id: this.project.contact_id,
-                });
+                await axios.put(
+                    "/api/projects/update/" + this.$route.params.id,
+                    {
+                        project_startdate: this.project.project_startdate,
+                        project_enddate: this.project.project_enddate,
+                        project_name: this.project.project_name,
+                        project_remark: this.project.project_remark
+                            ? this.project.project_remark
+                            : "No remark",
+                        user_id: 2, //change to current user later
+                        contact_id: this.project.contact_id,
+                    }
+                );
 
                 await this.$router.push({
                     name: "project_index",
@@ -162,19 +173,19 @@ export default {
         },
 
         async getContacts() {
-                await axios
-                    .get("/api/contacts/list")
-                    .then((res) => {
-                        this.contacts = res.data.data;
-                    })
-                    .catch((error) => {
-                        console.log(error);
-                    });
-
+            await axios
+                .get("/api/contacts/list")
+                .then((res) => {
+                    this.contacts = res.data.data;
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
         },
 
         async showContact() {
-            await axios.get("/api/projects/show/" + this.$route.params.id)
+            await axios
+                .get("/api/projects/show/" + this.$route.params.id)
                 .then((res) => {
                     this.project = res.data.data;
                 })

@@ -143,6 +143,21 @@ class ProjectController extends Controller
         return response()->json(["data" => $project]);
     }
 
+    public function remark(Project $project)
+    {
+        $project = Project::where('id', $project->id)
+            ->select('project_remark')
+            ->get();
+
+        $data = $project->toArray();
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Successfully fetch data Contact ',
+            'data' => $data,
+        ]);
+    }
+
     public function update(ProjectRequest $request, Project $project)
     {
         $project->update([
