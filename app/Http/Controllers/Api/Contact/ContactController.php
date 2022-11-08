@@ -728,7 +728,8 @@ class ContactController extends Controller
 
         $contactsArray = explode(',', $contact);
 
-        return Excel::download(new ContactExport($contactsArray), ('Contacts - ' . $date . '.xlsx'));
+        // return Excel::download(new ContactExport($contactsArray), ('Contacts - ' . $date . '.xlsx'));
+        return (new ContactExport($contactsArray))->download('Contacts - ' . $date . '.xlsx');
     }
 
     public function selectAll()

@@ -586,17 +586,13 @@ class ToDoController extends Controller
 
     public function export($todo)
     {
-        // $date = Carbon::now()->format('Ymd');
-
-        // $todoArray = explode(',', $todo);
-
-        // return Excel::download(new TodoExport($todoArray), ('ToDo-' . $date . '.xlsx'));
 
         $date = Carbon::now()->format('Ymd');
 
-        $forecastsArray = explode(',', $todo);
+        $todoArray = explode(',', $todo);
 
-        return Excel::download(new TodoExport($forecastsArray), ('ToDo - ' . $date . '.xlsx'));
+        // return Excel::download(new TodoExport($forecastsArray), ('ToDo - ' . $date . '.xlsx'));
+        return (new TodoExport($todoArray))->download('To Do - ' . $date . '.xlsx');
     }
 
     public function selectAll()

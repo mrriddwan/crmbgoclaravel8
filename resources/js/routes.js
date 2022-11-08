@@ -5,6 +5,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import AdminData from "../components/admins/AdminData.vue";
 import AdminUserAccess from "../components/admins/AdminUserAccess.vue";
 import AdminUserManage from "../components/admins/AdminUserManage.vue";
+import AdminExport from "../components/admins/AdminExport.vue";
 
 /**Contact Imports */
 import ContactIndex from "../components/contacts/ContactIndex.vue";
@@ -310,6 +311,12 @@ const routes = [
         path: "/admin/user/access",
         name: "admin_userAccess",
         component: AdminUserAccess,
+    },
+
+    {   //Admin Export
+        path: "/admin/export",
+        name: "admin_export",
+        component: AdminExport,
     },
 ];
 

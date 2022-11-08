@@ -132,6 +132,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     Route::post('/admin/roles/user/update/permission/{user}', [AdminController::class, 'user_permission_update'])->name('user:direct_permission_update');
     Route::post('/admin/users/remove/permission/{user}', [AdminController::class, 'user_permission_remove'])->name('user:direct_permission_remove');
 
+    Route::get('/admin/module_export', [AdminController::class, 'module_export'])->name('admin:module_export');
 
 // });
 

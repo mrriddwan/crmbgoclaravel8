@@ -98,3 +98,7 @@ Route::get('/admin/user/management', function () {
 Route::get('/admin/user/access', function () {
     return view('admin_access');
 })->middleware(['auth'])->name('admin-access');
+
+Route::get('/admin/export', function () {
+    return view('admin_export');
+})->middleware(['auth'])->name('admin-export');

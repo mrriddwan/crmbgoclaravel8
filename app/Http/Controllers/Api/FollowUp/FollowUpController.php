@@ -497,7 +497,8 @@ class FollowUpController extends Controller
 
         $folowupsArray = explode(',', $followup);
 
-        return Excel::download(new FollowUpExport($folowupsArray), ('Follow Up - ' . $date . '.xlsx'));
+        // return Excel::download(new FollowUpExport($folowupsArray), ('Follow Up - ' . $date . '.xlsx'));
+        return (new FollowUpExport($folowupsArray))->download('Follow Up - ' . $date . '.xlsx');
     }
 
     public function selectAll()

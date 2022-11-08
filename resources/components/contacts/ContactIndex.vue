@@ -129,7 +129,7 @@
                     />
                 </div>
 
-                <div class="py-1">
+                <div class="py-1 w-60">
                     <Pagination
                         :data="contacts"
                         @pagination-change-page="getContacts"

@@ -184,6 +184,10 @@
                                 <x-nav-link :href="route('admin-access')" :active="request()->routeIs('admin-access')">
                                     {{ __('User Access') }}
                                 </x-nav-link>
+                                <br>
+                                <x-nav-link :href="route('admin-export')" :active="request()->routeIs('admin-export')">
+                                    {{ __('Export') }}
+                                </x-nav-link>
                             </x-slot>
                         </x-dropdown>
                     </div>

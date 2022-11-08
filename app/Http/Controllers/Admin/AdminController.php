@@ -5,14 +5,18 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Admin\Permission;
 use App\Models\Admin\SvSbPivot;
+use App\Models\Contact\Contact;
 use App\Models\Contact\ContactCategory;
 use App\Models\Contact\ContactIndustry;
 use App\Models\Contact\ContactStatus;
 use App\Models\Contact\ContactType;
 use App\Models\FollowUp\Action;
+use App\Models\Forecast\Forecast;
 use App\Models\Forecast\ForecastProduct;
 use App\Models\Forecast\ForecastType;
+use App\Models\Project\Project;
 use App\Models\ToDo\Task;
+use App\Models\ToDo\ToDo;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -573,6 +577,213 @@ class AdminController extends Controller
             'message' => 'User permission removed',
             'data' => $user,
         ]);
+    }
 
+    public function module_export()
+    {
+        $module_type = request('module_type');
+
+        $sort_direction = request('sort_direction');
+        $sort_field = request('sort_field');
+        $search_term = request('q', '');
+
+        //if module contact
+        if ($module_type === 'contact') {
+            $selectedUser = request('selectedUser');
+            $selectedStatus = request('selectedStatus');
+            $selectedCategory = request('selectedCategory');
+            $selectedType = request('selectedType');
+            $selectedIndustry = request('selectedIndustry');
+
+
+            $contact = Contact::select([
+                'contacts.*',
+                'contact_statuses.name as status_name',
+                'contact_types.name as type_name',
+                'users.name as user_name',
+                'contact_categories.name as category_name',
+                'contact_industries.name as industry_name'
+            ])
+                ->join('contact_statuses', 'contacts.status_id', '=', 'contact_statuses.id')
+                ->join('contact_types', 'contacts.type_id', '=', 'contact_types.id')
+                ->join('contact_categories', 'contacts.category_id', '=', 'contact_categories.id')
+                ->join('contact_industries', 'contacts.industry_id', '=', 'contact_industries.id')
+                ->join('users', 'contacts.user_id', '=', 'users.id')
+                ->with(['incharge' => function ($q) {
+                    $q->select('id', 'contact_id', 'name', 'email', 'phone_mobile', 'phone_office');
+                }])
+                ->when($selectedUser, function ($query) use ($selectedUser) {
+                    $query->where('contacts.user_id', $selectedUser);
+                })
+                ->when($selectedStatus, function ($query) use ($selectedStatus) {
+                    $query->where('contacts.status_id', $selectedStatus);
+                })
+                ->when($selectedCategory, function ($query) use ($selectedCategory) {
+                    $query->where('contacts.category_id', $selectedCategory);
+                })
+                ->when($selectedType, function ($query) use ($selectedType) {
+                    $query->where('contacts.type_id', $selectedType);
+                })
+                ->when($selectedIndustry, function ($query) use ($selectedIndustry) {
+                    $query->where('contacts.industry_id', $selectedIndustry);
+                })
+                ->orderBy($sort_field, $sort_direction)
+                ->search(trim($search_term))
+                ->get();
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Contact retrieved',
+                'data' => $contact,
+            ]);
+        }
+
+        //if module todo
+
+        else if ($module_type === 'todo') {
+
+            $selectedSource = request('selectedSource');
+            $selectedStatus = request('selectedStatus');
+            // $selectedContact = request('selectedContact');
+            $selectedUser = request('selectedUser');
+            $selectedTask = request('selectedTask');
+            $selectedType = request('selectedType');
+
+            $todo = ToDo::select([
+                'to_dos.*',
+                'contact_statuses.name as status_name',
+                'contact_types.name as type_name',
+                'users.name as user_name',
+                'tasks.name as task_name',
+                'priorities.name as priority_name',
+                'text_colors.color_code as color_name',
+                'contacts.name as contact_name',
+                'to_do_sources.name as source_name',
+                'actions.name as action_name',
+            ])
+                ->join('contacts', 'to_dos.contact_id', '=', 'contacts.id')
+                ->join('contact_statuses', 'to_dos.status_id', '=', 'contact_statuses.id')
+                ->join('contact_types', 'to_dos.type_id', '=', 'contact_types.id')
+                ->join('tasks', 'to_dos.task_id', '=', 'tasks.id')
+                ->join('priorities', 'to_dos.priority_id', '=', 'priorities.id')
+                ->join('users', 'to_dos.user_id', '=', 'users.id')
+                ->join('text_colors', 'to_dos.color_id', '=', 'text_colors.id')
+                ->leftJoin('to_do_sources', 'to_dos.source_id', '=', 'to_do_sources.id')
+                ->leftJoin('actions', 'to_dos.action_id', '=', 'actions.id')
+                ->when($selectedStatus, function ($query) use ($selectedStatus) {
+                    $query->where('to_dos.status_id', $selectedStatus);
+                })
+                ->when($selectedSource, function ($query) use ($selectedSource) {
+                    $query->where('to_dos.source_id', $selectedSource);
+                })
+                ->when($selectedTask, function ($query) use ($selectedTask) {
+                    $query->where('to_dos.task_id', $selectedTask);
+                })
+                ->when($selectedType, function ($query) use ($selectedType) {
+                    $query->where('to_dos.type_id', $selectedType);
+                })
+                ->when($selectedUser, function ($query) use ($selectedUser) {
+                    $query->where('to_dos.user_id', $selectedUser);
+                })
+                // ->when($selectedDate, function ($query) use ($selectedDate) {
+                //     $query->whereDate('to_dos.todo_date', ('='), ($selectedDate));
+                // })
+                ->orderBy($sort_field, $sort_direction)
+                ->search(trim($search_term))
+                ->get();
+
+            return response()->json([
+                'status' => true,
+                'message' => 'To do retrieved',
+                'data' => $todo,
+            ]);
+        }
+
+        //if module forecast
+
+        else if ($module_type === 'forecast') {
+
+            $selectedProduct = request('selectedProduct');
+            $selectedForecastType = request('selectedForecastType');
+            $selectedUser = request('selectedUser');
+            $filterResult = request('filterResult');
+
+            $forecast = Forecast::select([
+                'forecasts.*',
+                'forecast_products.name as product_name',
+                'users.name as user_name',
+                'contacts.name as contact_name',
+                'forecast_results.name as result_name',
+                'forecast_types.name as forecast_type_name',
+            ])
+                ->join('forecast_products', 'forecasts.product_id', '=', 'forecast_products.id')
+                ->join('contacts', 'forecasts.contact_id', '=', 'contacts.id')
+                ->join('users', 'forecasts.user_id', '=', 'users.id')
+                ->join('forecast_types', 'forecasts.forecast_type_id', '=', 'forecast_types.id')
+                ->leftJoin('forecast_results', 'forecasts.result_id', '=', 'forecast_results.id')
+                ->when($selectedForecastType, function ($query) use ($selectedForecastType) {
+                    $query->where('forecasts.forecast_type_id', $selectedForecastType);
+                })
+                ->when($selectedProduct, function ($query) use ($selectedProduct) {
+                    $query->where('forecasts.product_id', $selectedProduct);
+                })
+                ->when($selectedUser, function ($query) use ($selectedUser) {
+                    $query->where('forecasts.user_id', $selectedUser);
+                })
+                ->when($filterResult, function ($query) use ($filterResult) {
+                    if ($filterResult === "null") {
+                        $query->whereNull('forecasts.result_id');
+                    } else {
+                        $query->where('forecasts.result_id', $filterResult);
+                    }
+                })
+                ->orderBy($sort_field, $sort_direction)
+                ->search(trim($search_term))
+                ->get();
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Contact retrieved',
+                'data' => $forecast,
+            ]);
+        }
+
+        //if module project
+        else {
+
+            $searchStartDate = request('searchStartDate');
+            $searchEndDate = request('searchEndDate');
+            $searchDuration = request('searchDuration');
+            $searchEntryDate = request('searchEntryDate');
+
+            $project = Project::select([
+                'projects.*',
+                'users.name as user_name',
+                'contacts.name as contact_name',
+            ])
+                ->join('contacts', 'projects.contact_id', '=', 'contacts.id')
+                ->join('users', 'projects.user_id', '=', 'users.id')
+                // ->when($searchStartDate, function ($query) use ($searchStartDate) {
+                //     $query->where('projects.project_startdate', $searchStartDate);
+                // })
+                // ->when($searchEndDate, function ($query) use ($searchEndDate) {
+                //     $query->where('projects.project_enddate', $searchEndDate);
+                // })
+                // // ->when($searchDuration, function ($query) use ($searchDuration) {
+                // //     $query->where('projects.project_duration', $searchDuration);
+                // // })
+                // ->when($searchEntryDate, function ($query) use ($searchEntryDate) {
+                //     $query->where('projects.created_at', $searchEntryDate);
+                // })
+                ->orderBy($sort_field, $sort_direction)
+                ->search(trim($search_term))
+                ->get();
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Contact retrieved',
+                'data' => $project,
+            ]);
+        }
     }
 }
