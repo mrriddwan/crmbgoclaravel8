@@ -715,11 +715,13 @@ class AdminController extends Controller
                 'contacts.name as contact_name',
                 'forecast_results.name as result_name',
                 'forecast_types.name as forecast_type_name',
+                'contact_types.name as contact_type_name',
             ])
                 ->join('forecast_products', 'forecasts.product_id', '=', 'forecast_products.id')
                 ->join('contacts', 'forecasts.contact_id', '=', 'contacts.id')
                 ->join('users', 'forecasts.user_id', '=', 'users.id')
                 ->join('forecast_types', 'forecasts.forecast_type_id', '=', 'forecast_types.id')
+                ->join('contact_types', 'forecasts.contact_type_id', '=', 'contact_types.id')
                 ->leftJoin('forecast_results', 'forecasts.result_id', '=', 'forecast_results.id')
                 ->when($selectedForecastType, function ($query) use ($selectedForecastType) {
                     $query->where('forecasts.forecast_type_id', $selectedForecastType);
@@ -781,7 +783,7 @@ class AdminController extends Controller
 
             return response()->json([
                 'status' => true,
-                'message' => 'Contact retrieved',
+                'message' => 'Project retrieved',
                 'data' => $project,
             ]);
         }

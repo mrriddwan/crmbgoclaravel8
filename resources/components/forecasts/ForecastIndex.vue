@@ -595,6 +595,12 @@
                                 >
                                     {{ forecast.result.name }}
                                 </span>
+                                <span
+                                    v-if="forecast.result_id === 3"
+                                    class="w-max inline-block align-middle text-sm font-extrabold uppercase text-white bg-yellow-600 rounded-md py-1 px-2 text-center"
+                                >
+                                    {{ forecast.result_name }}
+                                </span>
                                 <div
                                     v-if="
                                         can('edit forecast') ||

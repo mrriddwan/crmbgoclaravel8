@@ -1062,12 +1062,6 @@
                 >
                     <thead class="bg-slate-500 border-b sticky top-0 text-xs">
                         <tr>
-                            <th class="py-3">
-                                <div class="text-sm text-center text-white h-6">
-                                    #
-                                </div>
-                                <div class="text-sm text-center h-6"></div>
-                            </th>
                             <th class="py-3 align-middle text-center">
                                 <div class="text-sm text-center h-6">
                                     <a
@@ -1196,9 +1190,6 @@
                                 </div>
                                 <div
                                     class="items-center text-xs text-center h-6 w-24"
-                                    v-if="
-                                        is('supervisor | admin | super-admin')
-                                    "
                                 >
                                     <select
                                         v-model="selectedUser"
@@ -1484,28 +1475,32 @@
                         </tr>
                     </thead>
                     <tbody class="mt-2 text-center">
+                        <tr v-show="module_infos_loading" >
+                            <td class="text-center text-sm font-bold" colspan="8">
+                                Loading . .
+                            </td>
+                        </tr>
                         <tr
                             v-for="(forecast, index) in module_infos.data"
                             :key="forecast.id"
                         >
-                            <td class="text-xs">{{ index + 1 }}</td>
                             <td class="text-xs">
                                 {{ showToday(forecast.forecast_updatedate) }}
                             </td>
                             <td class="text-xs grid-cols-2 w-max">
                                 <router-link
-                                    :to="`/contact/${forecast.contact.id}/info`"
+                                    :to="`/contact/${forecast.contact_id}/info`"
                                     custom
                                     v-slot="{ navigate, href }"
                                 >
                                     <a :href="href" @click.stop="navigate">{{
-                                        forecast.contact.name
+                                        forecast.contact_name
                                     }}</a>
                                 </router-link>
                             </td>
-                            <td class="text-xs">{{ forecast.user.name }}</td>
+                            <td class="text-xs">{{ forecast.user_name }}</td>
                             <td class="text-xs w-max">
-                                {{ forecast.product.name }}
+                                {{ forecast.product_name }}
                             </td>
                             <td class="text-xs">
                                 <p class="inline mr-1">RM</p>
@@ -1515,8 +1510,33 @@
                                 {{ showToday(forecast.forecast_date) }}
                             </td>
                             <td class="text-xs">
-                                {{ forecast.forecast_type.name }}
+                                {{ forecast.forecast_type_name }}
                             </td>
+                            <td class="text-center align-middle">
+                            <span v-if="forecast.result_name">
+                                <span
+                                    v-if="forecast.result_id === 1"
+                                    class="w-max inline-block align-middle text-sm font-extrabold uppercase text-white bg-green-600 rounded-md py-1 px-2 text-center"
+                                >
+                                    {{ forecast.result_name }}
+                                </span>
+                                <span
+                                    v-if="forecast.result_id === 2"
+                                    class="w-max inline-block align-middle text-sm font-extrabold uppercase text-white bg-red-600 rounded-md py-1 px-2 text-center"
+                                >
+                                    {{ forecast.result_name }}
+                                </span>
+                                <span
+                                    v-if="forecast.result_id === 3"
+                                    class="w-max inline-block align-middle text-sm font-extrabold uppercase text-white bg-yellow-600 rounded-md py-1 px-2 text-center"
+                                >
+                                    {{ forecast.result_name }}
+                                </span>
+                            </span>
+                            <span v-show="!forecast.result_name" class="text-xs">
+                                No result
+                            </span>
+                        </td>
                         </tr>
                     </tbody>
                 </table>
@@ -1527,32 +1547,8 @@
                     class="table table-hover w-full mt-0"
                 >
                     <thead class="bg-slate-500 border-b sticky top-0">
-                        <tr>
-                            <th class="py-3">
-                                <div class="text-sm text-center h-6">
-                                    <a
-                                        href="#"
-                                        @click.prevent=""
-                                        class="text-white"
-                                    >
-                                    </a>
-                                    <span
-                                        v-if="
-                                            sort_direction == 'desc' &&
-                                            sort_field == ''
-                                        "
-                                        >&uarr;</span
-                                    >
-                                    <span
-                                        v-if="
-                                            sort_direction == 'asc' &&
-                                            sort_field == ''
-                                        "
-                                        >&darr;</span
-                                    >
-                                </div>
-                            </th>
-                            <th class="py-3">
+                        <tr class="h-max">
+                            <th class="py-3 w-max">
                                 <div class="text-sm text-center h-6">
                                     <a
                                         href="#"
@@ -1599,8 +1595,9 @@
                                         /></span>
                                     </a>
                                 </div>
+                                <div class="text-sm text-center h-6"></div>
                             </th>
-                            <th class="py-3">
+                            <th class="py-3 w-max">
                                 <div class="text-sm text-center h-6">
                                     <a
                                         href="#"
@@ -1645,6 +1642,7 @@
                                         /></span>
                                     </a>
                                 </div>
+                                <div class="text-sm text-center h-6"></div>
                             </th>
                             <th class="py-3">
                                 <div class="text-sm text-center h-6">
@@ -1832,11 +1830,15 @@
                         </tr>
                     </thead>
                     <tbody class="mt-2">
+                        <tr v-show="module_infos_loading" >
+                            <td class="text-center text-sm font-bold" colspan="7">
+                                Loading . .
+                            </td>
+                        </tr>
                         <tr
                             v-for="(project, index) in module_infos.data"
                             :key="project.id"
                         >
-                            <td class="text-xs">{{ index + 1 }}</td>
                             <td class="text-xs">
                                 {{ showToday(project.project_startdate) }}
                             </td>
@@ -1855,12 +1857,12 @@
                             </td>
                             <td class="text-xs grid-cols-2 w-max">
                                 <router-link
-                                    :to="`/contact/${project.contact.id}/info`"
+                                    :to="`/contact/${project.contact_id}/info`"
                                     custom
                                     v-slot="{ navigate, href }"
                                 >
                                     <a :href="href" @click.stop="navigate">{{
-                                        project.contact.name
+                                        project.contact_name
                                     }}</a>
                                 </router-link>
                             </td>
@@ -1951,7 +1953,7 @@ export default {
             forecast_types: [],
             results: [],
 
-            module_type: "todo",
+            module_type: "project",
 
             search: "",
             selectedUser: "",
@@ -2069,6 +2071,43 @@ export default {
                 Address: "address",
                 Remark: "remark",
             },
+
+            todo_fields: {
+                Source: "source_name",
+                Date: "todo_date",
+                Deadline: "todo_deadline",
+                Status: "status_name",
+                Type: "type_name",
+                Company: "contact_name",
+                User: "user_name",
+                Task: "task_name",
+                Remark: "todo_remark",
+            },
+
+            forecast_fields: {
+                "Last Update": "updated_at",
+                User: "user_name",
+                "Contact Type": "contact_type_name",
+                Company: "contact_name",
+                "Forecast Product": "product_name",
+                Amount: "amount",                
+                "Forecast Date": "forecast_date",
+                "Forecast Type": "forecast_type_name",
+                Result: "result_name",
+            },
+
+            project_fields: {
+                "Start Date": "project_startdate",
+                "End Date": "project_enddate",
+                Duration: `${this.calculateDuration(
+                    "project_startdate",
+                    "project_enddate"
+                )}`,
+                Company: "contact_name",
+                "Project Name": "project_name",
+                Remark: "project_remark",
+                "Entry Date": "created_at",
+            },
         };
     },
     watch: {
@@ -2143,6 +2182,14 @@ export default {
                     console.log(error);
                 });
         },
+
+        calculateDuration(start_date, end_date) {
+            const start = new Date(start_date);
+            const end = new Date(end_date);
+
+            return moment(end - start).format("D");
+        },
+
         getStatus() {
             axios
                 .get("/api/contacts/status/index")
