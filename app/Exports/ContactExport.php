@@ -22,7 +22,6 @@ class ContactExport implements FromQuery, WithHeadings, WithMapping
 
     public function query()
     {
-        // return Contact::query()->whereKey($this->contact->exportContact())
         return Contact::query()
         ->whereKey($this->contact)
         ;
@@ -31,21 +30,17 @@ class ContactExport implements FromQuery, WithHeadings, WithMapping
     public function map($contacts): array
     {
         return [
-            // $contacts->created_at
-            Carbon::createFromFormat('Y-m-d H:i:s', $contacts->created_at)->format('d-m-Y'),
-            // Carbon::createFromFormat('Y-m-d H:i:s', $date)->format('Y-m-d');
-            // $contacts->$contacts,
+            $contacts->created_at->format('d-m-Y'),
             $contacts->user->name,
             $contacts->status->name,
             $contacts->type->name,
             $contacts->industry->name,
             $contacts->name,
             $contacts->category->name,
-            // $contacts->incharge[0]->name,
-            // $contacts->incharge[0]->mobile_no,
-            // $contacts->incharge[0]->office_no,
-            // $contacts->incharge[0]->email,
-
+            $contacts->incharge->pluck('name')->implode(', '),
+            $contacts->incharge->pluck('phone_mobile')->implode(', '),
+            $contacts->incharge->pluck('phone_office')->implode(', '),
+            $contacts->incharge->pluck('email')->implode(', '),
             $contacts->address,
             $contacts->remark,
         ];
@@ -61,14 +56,12 @@ class ContactExport implements FromQuery, WithHeadings, WithMapping
             'Industry',
             'Company Name', 
             'Product',            
-            // 'PIC Name',
-            // 'PIC No. Mobile',
-            // 'PIC No. Office',
-            // 'PIC Email',
+            'PIC Name',
+            'PIC Phone No. 1',
+            'PIC Phone No. 2',
+            'PIC Email',
             'Address',
             'Remark',
-            
-            
         ];
     }
 }

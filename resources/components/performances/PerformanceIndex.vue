@@ -215,29 +215,29 @@
                     :key="action.id"
                     class="text-center"
                 >
-                    <!-- <span
+                    <span
                         v-if="
                             user_performance[`${this.getWeek(date.startDate)}`]
                         "
-                    > -->
+                    >
                     <div
                         v-for="performance in user_performance[
                             `${this.getWeek(date.startDate)}`
                         ]"
                     >
-                        {{
+                        <!-- {{
                             getKeyByValue(
                                 user_performance[
                                     `${this.getWeek(date.startDate)}`
                                 ],
                                 performance
                             )[index]
-                        }}
+                        }} -->
 
                         {{ performance }}
                     </div>
-                    <!-- </span> -->
-                    <!-- <span v-else>0</span> -->
+                    </span>
+                    <span v-else>0</span>
                     <!-- -- -->
                     <!-- {{ user_performance[`${this.getWeek(date.startDate)}`] }} -->
                     <!-- {{ action.name }} -->
