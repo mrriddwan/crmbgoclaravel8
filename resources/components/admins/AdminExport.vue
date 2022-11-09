@@ -1504,7 +1504,7 @@
                             </td>
                             <td class="text-xs">
                                 <p class="inline mr-1">RM</p>
-                                {{ forecast.amount.toLocaleString("en-US") }}
+                                {{ forecast.amount }}
                             </td>
                             <td class="text-xs">
                                 {{ showToday(forecast.forecast_date) }}

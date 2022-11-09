@@ -31,7 +31,7 @@
         >
             <p>Select user</p>
             <select v-model="selectedUser" class="form-control">
-                <option value="">All User</option>
+                <option value="">Select User</option>
                 <option v-for="user in users" :key="user.id" :value="user.id">
                     {{ user.name }}
                 </option>
@@ -40,7 +40,10 @@
 
         <div
             class="m-1 inline-block items-center px-1 py-1"
-            v-if="(can('export performance') || is('admin | super-admin')) && viewType === 'week'"
+            v-if="
+                (can('export performance') || is('admin | super-admin')) &&
+                viewType === 'week'
+            "
         >
             <download-excel
                 :data="user_performance.data"
@@ -56,7 +59,10 @@
 
         <div
             class="m-1 inline-block items-center px-1 py-1"
-            v-if="(can('export performance') || is('admin | super-admin')) && viewType === 'month'"
+            v-if="
+                (can('export performance') || is('admin | super-admin')) &&
+                viewType === 'month'
+            "
         >
             <download-excel
                 :data="user_performance.data"
@@ -72,7 +78,10 @@
 
         <div
             class="m-1 inline-block items-center px-1 py-1"
-            v-if="(can('export performance') || is('admin | super-admin')) && viewType === 'year'"
+            v-if="
+                (can('export performance') || is('admin | super-admin')) &&
+                viewType === 'year'
+            "
         >
             <download-excel
                 :data="user_performance.data"
@@ -85,7 +94,6 @@
                 Export Annual
             </download-excel>
         </div>
-        
     </div>
 
     <div class="py-2 text-center bg-slate-500 flex justify-between">
@@ -210,94 +218,50 @@
                         <br />
                     </span>
                 </td>
-                <td
-                    v-for="(action, index) in actions"
-                    :key="action.id"
-                    class="text-center"
-                >
-                    <span
-                        v-if="
-                            user_performance[`${this.getWeek(date.startDate)}`]
-                        "
-                    >
-                    <div
-                        v-for="performance in user_performance[
-                            `${this.getWeek(date.startDate)}`
-                        ]"
-                    >
-                        <!-- {{
-                            getKeyByValue(
-                                user_performance[
-                                    `${this.getWeek(date.startDate)}`
-                                ],
-                                performance
-                            )[index]
-                        }} -->
-
-                        {{ performance }}
-                    </div>
+                {{ console.log(Object.keys(user_performance) )}}
+                <td v-if="Object.keys(user_performance).length > 0">
+                    <span v-if="user_performance[`${this.getWeek(date.startDate)}`]['Attended'] === undefined">
+                        0
                     </span>
-                    <span v-else>0</span>
-                    <!-- -- -->
-                    <!-- {{ user_performance[`${this.getWeek(date.startDate)}`] }} -->
-                    <!-- {{ action.name }} -->
+                    <span v-else>
+                        {{ user_performance[`${this.getWeek(date.startDate)}`]['Attended']}}
+                    </span>
                 </td>
-
-                <!-- <td v-for="(performance, i) in user_performance">
-                    <span>
-                        <span>
-                            {{ performance }}
-                        </span>
-                    </span>
-                </td> -->
-                <!-- <td>{{ actions[index]['name'] }}</td> -->
-                <!-- <td
-                    v-for="action in actions"
-                    :key="action.id"
-                    class="text-center"
-                > -->
-                <!-- <span
-                        v-if="
-                            user_performance[`${this.getWeek(date.startDate)}`]
-                        "
-                        v-for="action_total in user_performance[
-                            `${this.getWeek(date.startDate)}`
-                        ]"
-                    >
-                         gets the object of the whole week-->
-                <!-- <span
-                            class="font-bold bg-lime-400 py-1 px-1 rounded-md"
-                        >
-                        
-                            {{ user_performance[`${this.getWeek(date.startDate)}`] }} 
-                        </span> -->
-
-                <!-- <span>{{ getObjKey(user_performance[`${this.getWeek(date.startDate)}`],action_total) }}</span> -->
-
-                <!-- <span
-                            class="font-bold bg-lime-400 py-1 px-1 rounded-md"
-                            v-if="
-                                user_performance[
-                                    `${this.getWeek(date.startDate)}`
-                                ][`${action.name}`]
-                            "
-                        >
-                            {{ action_total }}
-                        </span>
-                        <span v-else class="">0</span>
-                    </span>
-                    <span v-else class=""> 0 </span> -->
-                <!-- </td> -->
-                <!-- <td v-for="action_total in user_performance[44]">
-                    {{ action_total }}
-                </td>
-                <td v-for="key in getObjectKey(user_performance[44])">
-                    {{ key }}
-                </td> -->
-                <!-- <td>{{ actions[index]["name"] }}</td> -->
-                <!-- <td> {{ getObjectKey(user_performance[44]) }}</td> -->
+                
+                <!-- backend data if action is 0, must return 0 as well -->
             </tr>
         </tbody>
+
+        <!-- <tr v-for="date in this.weeksInMonth"> -->
+        <!-- <td>
+                <span>
+                    {{ moment(date.startDate).format("DD-MM-YY") }}
+                </span>
+                <span class="mx-2"> to </span>
+                <span>
+                    {{ moment(date.endDate).format("DD-MM-YY") }}
+                    <br />
+                </span>
+            </td> -->
+        <!-- <td v-for="(performance, index1) in user_performance[44]"> -->
+        <!-- {{ "Attended" in user_performance[44] }} -->
+        <!-- {{ performance }} <br /> -->
+        <!-- <span v-if="getKeyByValue(user_performance[44], performance)"></span> -->
+        <!-- {{ getKeyByValue(user_performance[44], performance) }} <br /> -->
+        <!-- {{ actions[index1]['name'] }} -->
+        <!-- [ "Attended" ] -->
+        <!-- </td> -->
+        <!-- for (let [key, value] of Object.entries(object1)) {
+                if (key == "a") {
+                    console.log(value)
+                }
+            } -->
+        <!-- <td v-for="[key, value] of Object.entries(user_performance[44])"> -->
+        <!-- <span v-if="key === 'Attended'"> -->
+        <!-- {{ key }} -->
+        <!-- </span> -->
+        <!-- </td> -->
+        <!-- </tr> -->
 
         <tbody v-if="viewType === 'year'">
             <tr v-for="weeks in dates_in_one_year">
@@ -356,14 +320,17 @@ export default {
         ArrowTopRightOnSquareIcon,
     },
 
-    created() {},
+    created() {
+        
+    },
 
     mounted() {
         this.getActions();
         this.getUsers();
-        this.selectedUser = document
-            .querySelector('meta[name="user-id"]')
-            .getAttribute("content");
+        // this.selectedUser = document
+        //     .querySelector('meta[name="user-id"]')
+        //     .getAttribute("content");
+        this.selectedUser = 4;
         this.getCurrentDate();
         this.getDates(this.currentDate);
 
@@ -388,8 +355,8 @@ export default {
         // console.log("selectedStartDate", this.selectedStartDate);
         this.selectedEndDate = this.datesInWeek[6];
         // console.log("selectedEndDate", this.selectedEndDate);
-
         this.getUserPerformance();
+        
     },
 
     props: {},
@@ -496,7 +463,9 @@ export default {
             this.getUserPerformance();
         },
     },
-    computed: {},
+    computed: {
+        console: () => console
+    },
 
     methods: {
         getUsers() {
