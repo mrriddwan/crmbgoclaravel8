@@ -2,7 +2,7 @@
     <h1
         class="items-center text-center text-6xl text-white font-extrabold bg-slate-600 rounded-md"
     >
-        Performance Index
+        Performance
     </h1>
 
     <div class="text-sm">
@@ -151,32 +151,32 @@
     <!-- <div> -->
 
     <table class="table table-hover table-bordered" id="example">
-        <thead v-if="viewType !== 'year'">
+        <thead v-if="viewType !== 'year'" class="bg-slate-600">
             <tr>
-                <th class="text-sm text-center">Week</th>
+                <th class="text-sm text-center text-amber-400">Week</th>
                 <th
                     class="text-sm text-center"
                     v-for="action in actions"
                     :key="action.id"
                 >
-                    <a class="break-normal">
+                    <span class=" text-amber-400 break-normal">
                         {{ action.name }}
-                    </a>
+                    </span>
                 </th>
             </tr>
         </thead>
-        <thead v-else>
+        <thead v-else class="bg-slate-600">
             <tr>
-                <th class="text-sm text-center">Month</th>
-                <th class="text-sm text-center">Week</th>
+                <th class="text-sm text-center text-amber-400">Month</th>
+                <th class="text-sm text-center text-amber-400">Week</th>
                 <th
-                    class="text-sm text-center"
+                    class="text-sm text-center text-amber-400"
                     v-for="action in actions"
                     :key="action.id"
                 >
-                    <a class="break-normal">
+                    <span class="break-normal">
                         {{ action.name }}
-                    </a>
+                    </span>
                 </th>
             </tr>
         </thead>
@@ -189,24 +189,23 @@
             <!-- <tr>{{ getWeek(date)}}</tr> -->
             <tr>
                 <td>{{ showToday(date) + " - " + getWeekday(day) }}</td>
-                <td v-for="action in actions" :key="action.id">
-                    <span
-                        v-if="user_performance[`${date}`]"
-                        v-for="action_total in user_performance[`${date}`]"
-                        ><span
-                            class="font-bold bg-lime-400 py-1 px-1 rounded-md"
-                            v-if="user_performance[`${date}`][`${action.name}`]"
-                        >
-                            {{ action_total }}
+                <td v-for="(action, index) in actions" :key="action.id">
+                    <span v-if="user_performance[`${date}`]"> 
+                        <span v-if="!user_performance[`${date}`][`${action.name}`]" >
+                            0
                         </span>
-                        <span v-else class="">0</span>
+                        <span v-else>
+                            {{ user_performance[`${date}`][`${action.name}`] }}
+                        </span>
                     </span>
-                    <span v-else class=""> 0 </span>
+                    <span v-else>
+                        0
+                    </span>                    
                 </td>
             </tr>
         </tbody>
 
-        <tbody v-if="viewType === 'month'" v-for="date in this.weeksInMonth">
+        <tbody v-if="viewType === 'month'" v-for="date in this.weeksInMonth" class="text-center">
             <tr>
                 <td>
                     <span>
@@ -218,50 +217,21 @@
                         <br />
                     </span>
                 </td>
-                {{ console.log(Object.keys(user_performance) )}}
-                <td v-if="Object.keys(user_performance).length > 0">
-                    <span v-if="user_performance[`${this.getWeek(date.startDate)}`]['Attended'] === undefined">
-                        0
+                <td v-for="(action, index) in actions" :key="action.id">
+                    <span v-if="user_performance[`${this.getWeek(date.startDate)}`]"> 
+                        <span v-if="!user_performance[`${this.getWeek(date.startDate)}`][`${action.name}`]" >
+                            0
+                        </span>
+                        <span v-else>
+                            {{ user_performance[`${this.getWeek(date.startDate)}`][`${action.name}`] }}
+                        </span>
                     </span>
                     <span v-else>
-                        {{ user_performance[`${this.getWeek(date.startDate)}`]['Attended']}}
-                    </span>
+                        0
+                    </span>                    
                 </td>
-                
-                <!-- backend data if action is 0, must return 0 as well -->
             </tr>
         </tbody>
-
-        <!-- <tr v-for="date in this.weeksInMonth"> -->
-        <!-- <td>
-                <span>
-                    {{ moment(date.startDate).format("DD-MM-YY") }}
-                </span>
-                <span class="mx-2"> to </span>
-                <span>
-                    {{ moment(date.endDate).format("DD-MM-YY") }}
-                    <br />
-                </span>
-            </td> -->
-        <!-- <td v-for="(performance, index1) in user_performance[44]"> -->
-        <!-- {{ "Attended" in user_performance[44] }} -->
-        <!-- {{ performance }} <br /> -->
-        <!-- <span v-if="getKeyByValue(user_performance[44], performance)"></span> -->
-        <!-- {{ getKeyByValue(user_performance[44], performance) }} <br /> -->
-        <!-- {{ actions[index1]['name'] }} -->
-        <!-- [ "Attended" ] -->
-        <!-- </td> -->
-        <!-- for (let [key, value] of Object.entries(object1)) {
-                if (key == "a") {
-                    console.log(value)
-                }
-            } -->
-        <!-- <td v-for="[key, value] of Object.entries(user_performance[44])"> -->
-        <!-- <span v-if="key === 'Attended'"> -->
-        <!-- {{ key }} -->
-        <!-- </span> -->
-        <!-- </td> -->
-        <!-- </tr> -->
 
         <tbody v-if="viewType === 'year'">
             <tr v-for="weeks in dates_in_one_year">
@@ -272,30 +242,18 @@
                     <p class="mx-2">to</p>
                     {{ showToday(weeks.end_date) }}
                 </td>
-                <td v-for="action in actions" :key="action.id">
-                    <span
-                        v-if="
-                            user_performance[
-                                `${this.getWeek(weeks.start_date)}` // sama dengan user_performance[`44`]
-                            ]
-                        "
-                        v-for="action_total in user_performance[
-                            `${this.getWeek(weeks.start_date)}`
-                        ]"
-                    >
-                        <span
-                            class="font-bold bg-lime-400 py-1 px-1 rounded-md"
-                            v-if="
-                                user_performance[
-                                    `${this.getWeek(weeks.start_date)}`
-                                ][`${action.name}`]
-                            "
-                        >
-                            {{ action_total }}
+                <td v-for="(action, index) in actions" :key="action.id">
+                    <span v-if="user_performance[`${this.getWeek(weeks.start_date)}`]"> 
+                        <span v-if="!user_performance[`${this.getWeek(weeks.start_date)}`][`${action.name}`]" >
+                            0
                         </span>
-                        <span v-else class="">0</span>
+                        <span v-else>
+                            {{ user_performance[`${this.getWeek(weeks.start_date)}`][`${action.name}`] }}
+                        </span>
                     </span>
-                    <span v-else class=""> 0 </span>
+                    <span v-else>
+                        0
+                    </span>                    
                 </td>
             </tr>
         </tbody>
@@ -320,17 +278,15 @@ export default {
         ArrowTopRightOnSquareIcon,
     },
 
-    created() {
-        
-    },
+    created() {},
 
     mounted() {
         this.getActions();
         this.getUsers();
-        // this.selectedUser = document
-        //     .querySelector('meta[name="user-id"]')
-        //     .getAttribute("content");
-        this.selectedUser = 4;
+        this.selectedUser = document
+            .querySelector('meta[name="user-id"]')
+            .getAttribute("content");
+        // this.selectedUser = 4;
         this.getCurrentDate();
         this.getDates(this.currentDate);
 
@@ -356,7 +312,6 @@ export default {
         this.selectedEndDate = this.datesInWeek[6];
         // console.log("selectedEndDate", this.selectedEndDate);
         this.getUserPerformance();
-        
     },
 
     props: {},
@@ -410,7 +365,10 @@ export default {
             sort_direction: "desc",
             sort_field: "todo_date",
 
-            obj: { country: "Chile", city: "Santiago" },
+            // someValues.forEach((element, index) => {
+            //     console.log(`Current index: ${index}`);
+            //     console.log(element);
+            // });
 
             performance_week: {
                 "Site No.": "site_id",
@@ -418,10 +376,9 @@ export default {
                 Size: "bboard_size",
             },
             performance_month: {
-                "Site No.": "site_id",
-                Location: "bboard_location",
-                Size: "bboard_size",
+                // Week: `${this.weeksInMonth}`,
             },
+
             performance_year: {
                 "Site No.": "site_id",
                 Location: "bboard_location",
@@ -464,7 +421,7 @@ export default {
         },
     },
     computed: {
-        console: () => console
+        console: () => console,
     },
 
     methods: {
@@ -803,19 +760,6 @@ export default {
             return weekStartEndDay;
         },
 
-        // consoleList() {
-        //     const month = moment([this.y, this.m - 1]);
-        //     const weekNumbers = this.getWeekNumbers(this.y, this.m - 1);
-        //     const weekList = this.weeks(month);
-        //     // console.log("weekNumbers", weekNumbers);
-        //     // console.log("weekList", weekList);
-        //     weekList.forEach((date) => {
-        //         console.log(
-        //             "start - " + date.startDate.format("DD-MM--YY"),
-        //             "end - " + date.endDate.format("DD-MM--YY")
-        //         );
-        //     });
-        // },
     },
 };
 </script>
