@@ -156,6 +156,8 @@ Route::get('/contacts/exportSummary', [ContactController::class, 'exportSummary'
 Route::get('/contacts/todo', [ContactController::class, 'todo'])->name('contact:todo');
 Route::get('/contacts/history/{contact}', [ContactController::class, 'history'])->name('contact:history');
 Route::get('/contacts/getuserid', [ContactController::class, 'getuserid'])->name('contact:getuserid');
+Route::post('/contacts/import', [ContactController::class, 'import'])->name('contact:import');
+
 
 Route::get('/contacts/summary_action', [ContactController::class, 'summary_action'])->name('contact:summary_action');
 Route::get('/contacts/summary_todo', [ContactController::class, 'summary_todo'])->name('contact:summary_todo');

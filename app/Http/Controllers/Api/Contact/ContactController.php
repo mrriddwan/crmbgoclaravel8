@@ -6,6 +6,7 @@ use App\Exports\ContactExport;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Contact\ContactRequest;
 use App\Http\Resources\Contact\ContactResource;
+use App\Imports\ContactImport;
 use App\Models\Admin\SvSbPivot;
 use App\Models\Contact\Contact;
 use Carbon\Carbon;
@@ -735,6 +736,21 @@ class ContactController extends Controller
     public function selectAll()
     {
         return Contact::pluck('id');
+    }
+
+    public function import(Request $request)
+    {
+        // $this->validate($request, [
+        //     'file' => 'required|mimes:xls,xlsx',
+        // ]);
+
+        Excel::import(new ContactImport, $request->file('file'));
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Successfully import Contact ',
+        ]);
+        // return $request->all();
     }
 
     public function test()

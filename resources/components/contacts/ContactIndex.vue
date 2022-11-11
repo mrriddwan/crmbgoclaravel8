@@ -661,7 +661,9 @@
                                     @click="toggleRemark(contact.id)"
                                     class="align-middle border-1 border-black w-max rounded-md px-1"
                                 >
-                                    <QuestionMarkCircleIcon class="inline h-4 w-4" />
+                                    <QuestionMarkCircleIcon
+                                        class="inline h-4 w-4"
+                                    />
                                 </button>
                             </td>
                             <td class="text-xs">
@@ -742,7 +744,8 @@ import {
     ArrowsUpDownIcon,
     ArrowUpIcon,
     ArrowDownIcon,
-    QuestionMarkCircleIcon
+    QuestionMarkCircleIcon,
+    ArrowDownOnSquareIcon,
 } from "@heroicons/vue/24/solid";
 
 export default {
@@ -757,6 +760,7 @@ export default {
         ArrowUpIcon,
         ArrowDownIcon,
         QuestionMarkCircleIcon,
+        ArrowDownOnSquareIcon,
         ContactRemarkModalVue,
     },
 
@@ -787,6 +791,7 @@ export default {
             selectAll: false,
             checked: [],
             url: "",
+            // importContacts: "/api/contacts/import",
 
             search: "",
             selectedUser: "",

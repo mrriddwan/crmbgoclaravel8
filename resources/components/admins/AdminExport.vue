@@ -1,16 +1,71 @@
 <template>
-    <div class="w-max container" id="index-container">
+    <div class="w-screen">
         <h1
-            class="items-center text-center text-5xl text-white font-extrabold bg-slate-400 px-2 rounded-md"
+            class="w-full items-center text-center text-5xl text-white font-extrabold bg-slate-400 px-2 rounded-md"
         >
-            Export
+            Import/Export
         </h1>
 
-        <div class="flex">
+        <div>
             <div class="py-2 flex">
-                Select module:
-                <select v-model="module_type" class="form-control">
-                    <option value="">Pick one</option>
+                Import/Export:
+                <select v-model="import_export" class="form-control mx-2">
+                    <option value="">Select type</option>
+                    <option value="import">Import</option>
+                    <option value="export">Export</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="py-2 flex" v-if="import_export === 'import'">
+            Import Type:
+            <select v-model="import_type" class="form-control mx-2">
+                <option value="">Select module</option>
+                <option value="contact">Contact</option>
+                <option value="todo">To Do</option>
+                <option value="forecast">Forecast</option>
+                <option value="project">Project</option>
+            </select>
+        </div>
+
+        <div v-if="import_type === 'contact'" class="w-max">
+            <form
+                id="excel_contact"
+                class="grid grid-cols-1 gap-2"
+                @submit.prevent="importContacts"
+                @change="getExcelData"
+                enctype="multipart/form-data"
+            >
+                <label
+                    class="text-center font-bold uppercase bg-slate-700 text-yellow-600"
+                    >Contact</label
+                >
+                <!-- <input
+                    class="input"
+                    type="text"
+                    name="name"
+                    placeholder="File name"
+                    v-model="fileName"
+                    required
+                /> -->
+                <input class="file-input" type="file" ref="file" name="file" />
+                <button
+                    type="submit"
+                    class="inline-block items-center font-semibold text-xs text-white uppercase px-2 py-1 bg-green-800 border border-transparent rounded-md tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
+                >
+                    <ArrowDownOnSquareIcon class="h-6 w-6 inline" />Import
+                </button>
+                <div v-show="buffering" class="text-center text-sm font-bold">
+                    Loading . .
+                </div>
+            </form>
+        </div>
+
+        <div class="flex" v-if="import_export === 'export'">
+            <div class="py-2 flex">
+                Module:
+                <select v-model="export_type" class="form-control mx-2">
+                    <option value="">Select module</option>
                     <option value="contact">Contact</option>
                     <option value="todo">To Do</option>
                     <option value="forecast">Forecast</option>
@@ -18,7 +73,7 @@
                 </select>
             </div>
 
-            <div class="py-2 mx-2">
+            <div class="py-2 mx-2" v-if="export_type">
                 <button
                     @click="getModule"
                     class="inline-block items-center px-2 py-1 bg-slate-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
@@ -27,7 +82,7 @@
                 </button>
             </div>
 
-            <div class="py-2 mx-2">
+            <div class="py-2 mx-2" v-if="module_infos.length !== 0">
                 <input
                     v-model.lazy="search"
                     type="search"
@@ -38,7 +93,7 @@
 
             <div class="py-2 mx-2">
                 <div v-if="module_infos.length !== 0">
-                    <div v-if="module_type === 'contact'">
+                    <div v-if="export_type === 'contact'">
                         <download-excel
                             :data="module_infos.data"
                             :fields="contact_fields"
@@ -52,7 +107,7 @@
                             Export
                         </download-excel>
                     </div>
-                    <div v-if="module_type === 'todo'">
+                    <div v-if="export_type === 'todo'">
                         <download-excel
                             :data="module_infos.data"
                             :fields="todo_fields"
@@ -66,7 +121,7 @@
                             Export
                         </download-excel>
                     </div>
-                    <div v-if="module_type === 'forecast'">
+                    <div v-if="export_type === 'forecast'">
                         <download-excel
                             :data="module_infos.data"
                             :fields="forecast_fields"
@@ -80,7 +135,7 @@
                             Export
                         </download-excel>
                     </div>
-                    <div v-if="module_type === 'project'">
+                    <div v-if="export_type === 'project'">
                         <download-excel
                             :data="module_infos.data"
                             :fields="project_fields"
@@ -104,7 +159,7 @@
             >
                 <!-- table for contacts-->
                 <table
-                    v-if="module_type === 'contact'"
+                    v-if="export_type === 'contact'"
                     class="table table-hover table-bordered w-full"
                 >
                     <thead class="bg-slate-500 border-b sticky top-0">
@@ -565,8 +620,11 @@
                         </tr>
                     </thead>
                     <tbody class="mt-2">
-                        <tr v-show="module_infos_loading" >
-                            <td class="text-center text-sm font-bold" colspan="9">
+                        <tr v-show="buffering">
+                            <td
+                                class="text-center text-sm font-bold"
+                                colspan="9"
+                            >
                                 Loading . .
                             </td>
                         </tr>
@@ -601,7 +659,7 @@
 
                 <!-- table for todos-->
                 <table
-                    v-if="module_type === 'todo'"
+                    v-if="export_type === 'todo'"
                     class="table table-hover table-bordered text-center"
                     id="example"
                 >
@@ -912,7 +970,26 @@
                                             class="h-4 w-4 text-amber-400 font-extrabold"
                                     /></span>
                                 </a>
-                                <div class="text-sm text-center h-6"></div>
+                                <div
+                                    class="items-center text-xs text-center h-6 w-24"
+                                >
+                                    <select
+                                        v-model="selectedUser"
+                                        class="form-control form-control-sm text-xs"
+                                    >
+                                        <option class="text-xs" value="">
+                                            All
+                                        </option>
+                                        <option
+                                            class="text-xs"
+                                            v-for="user in users.data"
+                                            :key="user.id"
+                                            :value="user.id"
+                                        >
+                                            {{ user.name }}
+                                        </option>
+                                    </select>
+                                </div>
                             </th>
                             <th class="text-sm text-center">
                                 <a
@@ -1057,10 +1134,18 @@
 
                 <!-- table for forecasts-->
                 <table
-                    v-if="module_type === 'forecast'"
+                    v-if="export_type === 'forecast'"
                     class="table table-hover table-bordered w-full mt-0"
                 >
                     <thead class="bg-slate-500 border-b sticky top-0 text-xs">
+                        <tr v-show="buffering">
+                            <td
+                                class="text-center text-sm font-bold"
+                                colspan="7"
+                            >
+                                Loading . .
+                            </td>
+                        </tr>
                         <tr>
                             <th class="py-3 align-middle text-center">
                                 <div class="text-sm text-center h-6">
@@ -1475,8 +1560,11 @@
                         </tr>
                     </thead>
                     <tbody class="mt-2 text-center">
-                        <tr v-show="module_infos_loading" >
-                            <td class="text-center text-sm font-bold" colspan="8">
+                        <tr v-show="buffering">
+                            <td
+                                class="text-center text-sm font-bold"
+                                colspan="8"
+                            >
                                 Loading . .
                             </td>
                         </tr>
@@ -1513,37 +1601,40 @@
                                 {{ forecast.forecast_type_name }}
                             </td>
                             <td class="text-center align-middle">
-                            <span v-if="forecast.result_name">
-                                <span
-                                    v-if="forecast.result_id === 1"
-                                    class="w-max inline-block align-middle text-sm font-extrabold uppercase text-white bg-green-600 rounded-md py-1 px-2 text-center"
-                                >
-                                    {{ forecast.result_name }}
+                                <span v-if="forecast.result_name">
+                                    <span
+                                        v-if="forecast.result_id === 1"
+                                        class="w-max inline-block align-middle text-sm font-extrabold uppercase text-white bg-green-600 rounded-md py-1 px-2 text-center"
+                                    >
+                                        {{ forecast.result_name }}
+                                    </span>
+                                    <span
+                                        v-if="forecast.result_id === 2"
+                                        class="w-max inline-block align-middle text-sm font-extrabold uppercase text-white bg-red-600 rounded-md py-1 px-2 text-center"
+                                    >
+                                        {{ forecast.result_name }}
+                                    </span>
+                                    <span
+                                        v-if="forecast.result_id === 3"
+                                        class="w-max inline-block align-middle text-sm font-extrabold uppercase text-white bg-yellow-600 rounded-md py-1 px-2 text-center"
+                                    >
+                                        {{ forecast.result_name }}
+                                    </span>
                                 </span>
                                 <span
-                                    v-if="forecast.result_id === 2"
-                                    class="w-max inline-block align-middle text-sm font-extrabold uppercase text-white bg-red-600 rounded-md py-1 px-2 text-center"
+                                    v-show="!forecast.result_name"
+                                    class="text-xs"
                                 >
-                                    {{ forecast.result_name }}
+                                    No result
                                 </span>
-                                <span
-                                    v-if="forecast.result_id === 3"
-                                    class="w-max inline-block align-middle text-sm font-extrabold uppercase text-white bg-yellow-600 rounded-md py-1 px-2 text-center"
-                                >
-                                    {{ forecast.result_name }}
-                                </span>
-                            </span>
-                            <span v-show="!forecast.result_name" class="text-xs">
-                                No result
-                            </span>
-                        </td>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
 
                 <!-- table for projects-->
                 <table
-                    v-if="module_type === 'project'"
+                    v-if="export_type === 'project'"
                     class="table table-hover w-full mt-0"
                 >
                     <thead class="bg-slate-500 border-b sticky top-0">
@@ -1830,8 +1921,11 @@
                         </tr>
                     </thead>
                     <tbody class="mt-2">
-                        <tr v-show="module_infos_loading" >
-                            <td class="text-center text-sm font-bold" colspan="7">
+                        <tr v-show="buffering">
+                            <td
+                                class="text-center text-sm font-bold"
+                                colspan="7"
+                            >
                                 Loading . .
                             </td>
                         </tr>
@@ -1896,6 +1990,7 @@ import {
     ArrowUpIcon,
     ArrowDownIcon,
     QuestionMarkCircleIcon,
+    ArrowDownOnSquareIcon,
 } from "@heroicons/vue/24/solid";
 
 export default {
@@ -1910,13 +2005,14 @@ export default {
         ArrowUpIcon,
         ArrowDownIcon,
         QuestionMarkCircleIcon,
+        ArrowDownOnSquareIcon,
     },
 
     mounted() {
         // this.selectedUser = document
         //     .querySelector('meta[name="user-id"]')
         //     .getAttribute("content");
-        this.getUsers();
+        (this.selectedUser = ""), this.getUsers();
         //contact
         this.getIndustries();
         this.getStatus();
@@ -1938,7 +2034,7 @@ export default {
     data() {
         return {
             module_infos: [],
-            module_infos_loading: false,
+            buffering: false,
 
             types: [],
             users: [],
@@ -1953,7 +2049,12 @@ export default {
             forecast_types: [],
             results: [],
 
-            module_type: "project",
+            export_type: "",
+            import_export: "import",
+            import_type: "contact",
+
+            fileName: "",
+            excel: "",
 
             search: "",
             selectedUser: "",
@@ -2090,7 +2191,7 @@ export default {
                 "Contact Type": "contact_type_name",
                 Company: "contact_name",
                 "Forecast Product": "product_name",
-                Amount: "amount",                
+                Amount: "amount",
                 "Forecast Date": "forecast_date",
                 "Forecast Type": "forecast_type_name",
                 Result: "result_name",
@@ -2137,14 +2238,14 @@ export default {
     methods: {
         getModule() {
             this.module_infos = [];
-            this.module_infos_loading = true;
+            this.buffering = true;
             axios
                 .get(
                     "/api/admin/module_export?" +
                         "q=" +
                         this.search +
-                        "&module_type=" +
-                        this.module_type +
+                        "&export_type=" +
+                        this.export_type +
                         "&selectedUser=" +
                         this.selectedUser +
                         "&selectedContact=" +
@@ -2175,12 +2276,51 @@ export default {
                         this.sort_field
                 )
                 .then((res) => {
-                    this.module_infos_loading = false;
+                    this.buffering = false;
                     this.module_infos = res.data;
                 })
                 .catch((error) => {
                     console.log(error);
                 });
+        },
+
+        getExcelData(e) {
+            this.excel = e.target.files[0];
+            console.log(this.excel);
+        },
+
+        importContacts() {
+            const config = {
+                headers: {
+                    "content-type": "multipart/form-data",
+                },
+            };
+
+            let data = new FormData();
+
+            data.append("file", this.excel);
+
+            this.buffering = true;
+
+            axios
+                .post("/api/contacts/import", data)
+                .then((response) => {
+                    this.buffering = false;
+                    alert("Contact imported");
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        },
+
+        change_sort(field) {
+            if (this.sort_field == field) {
+                this.sort_direction =
+                    this.sort_direction == "asc" ? "desc" : "asc";
+            } else {
+                this.sort_field = field;
+            }
+            this.getModule();
         },
 
         calculateDuration(start_date, end_date) {
@@ -2266,6 +2406,7 @@ export default {
                     console.log(error);
                 });
         },
+
         getForecastTypes() {
             axios
                 .get("/api/forecasts/type/index")
@@ -2307,7 +2448,3 @@ export default {
     },
 };
 </script>
-
-<style scoped>
-@import "bootstrap/dist/css/bootstrap.min.css";
-</style>
