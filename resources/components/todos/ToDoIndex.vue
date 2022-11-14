@@ -127,11 +127,13 @@
                                 :size="'small'"
                                 :align="'right'"
                                 class="pagination"
+                                :limit="2"
                             />
                         </span>
                         <span v-else-if="viewType === 'month'">
                             <Pagination
                                 :data="todos"
+                                :limit="2"
                                 @pagination-change-page="getToDosSelectMonth"
                                 :size="'small'"
                                 :align="'right'"
@@ -142,6 +144,7 @@
                         <span v-else-if="viewType === 'range'">
                             <Pagination
                                 :data="todos"
+                                :limit="2"
                                 @pagination-change-page="
                                     getToDosSelectDateRange
                                 "
@@ -183,7 +186,7 @@
                 <div v-else class="inline-block mx-1">
                     Selected:
                     <strong>{{ checked.length }}</strong> record(s)
-                    <a
+                    <!-- <a
                         v-if="
                             can('export todo all') || is('admin | super-admin')
                         "
@@ -191,7 +194,7 @@
                         href="#"
                         class="ml-1 rounded-md bg-yellow-400 border-2 border-black uppercase text-black text-xs"
                         >Select All</a
-                    >
+                    > -->
                 </div>
             </div>
 
@@ -202,7 +205,7 @@
                 >
                     Selected:
                     <strong>{{ checked.length }}</strong> record(s).
-                    <a
+                    <!-- <a
                         v-if="
                             can('export todo all') || is('admin | super-admin')
                         "
@@ -210,12 +213,12 @@
                         href="#"
                         class="ml-1 rounded-md bg-yellow-400 border-2 border-black uppercase text-black text-xs px-1"
                         >Select All</a
-                    >
+                    > -->
                 </div>
                 <div v-else class="inline-block mx-1">
                     Selected:
                     <strong>{{ checked.length }}</strong> record(s)
-                    <a
+                    <!-- <a
                         v-if="
                             can('export todo all') || is('admin | super-admin')
                         "
@@ -223,7 +226,7 @@
                         href="#"
                         class="ml-1 rounded-md bg-yellow-400 border-2 border-black uppercase text-black text-xs px-1"
                         >Select All</a
-                    >
+                    > -->
                 </div>
             </div>
         </div>

@@ -8,6 +8,7 @@ use App\Models\Admin\SvSbPivot;
 use App\Models\ToDo\ToDo;
 use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use PhpOffice\PhpSpreadsheet\Calculation\MathTrig\Sum;
@@ -18,6 +19,28 @@ class UserController extends Controller
     {
         $user = User::orderBy('name', 'asc')
             ->select('id', 'name')
+            ->get();
+
+        return response()->json([
+            'data' => $user,
+            'status' => true,
+            'message' => 'Successfully store contact',
+        ]);
+    }
+
+    public function manage_list()
+    {
+        $user = User::with(['roles' => function ($query) {
+            $query
+                ->select(
+                    'id',
+                    'name',
+                )
+                ->get();
+        }])
+            ->whereKeyNot(1)
+            ->orderBy('name')
+            ->select('id', 'name', 'password', 'email')
             ->get();
 
         return response()->json([
@@ -510,45 +533,62 @@ class UserController extends Controller
         return $performance;
     }
 
-    public function check_supervisor(User $user)
+    public function check_subordinate(Request $request)
     {
-        // $id = Auth::id();
+        $id = Auth::id();
+        // $id = 2;
+
+
+        $contact_user_id = $request->contact_user_id;
+
+        $true = array("id"=>"1", "result"=>"true");
+        $false = array("id"=>"2", "result"=>"false");
 
         if (
             (DB::table('model_has_roles')
-                ->where('model_id', '=', $user)
+                ->where('model_id', '=', $id)
                 ->where('role_id', '=', 2)
                 ->exists()) ||
             (DB::table('model_has_roles')
-                ->where('model_id', '=', $user)
+                ->where('model_id', '=', $id)
                 ->where('role_id', '=', 1)
                 ->exists())
         ) {
             return response()->json([
-                'data' => true,
+                'data' => $true,
                 'status' => true,
                 'message' => 'An admin.',
             ]);
         } else {
-            $sv_sb = "";
-            $final = [$user];
+            // check if the $id is supervisor
 
-            if (SvSbPivot::where('supervisor_id', '=', $user)->exists()) {
+            //if no, return false
+            if (!(SvSbPivot::where('supervisor_id', '=', $id)->exists())) {
                 return response()->json([
-                    'data' => true,
+                    'data' => $false,
                     'status' => true,
-                    'message' => 'A supervisor.',
+                    'message' => 'Not a supervisor/admin.',
                 ]);
             } else {
-                return response()->json([
-                    'data' => false,
-                    'status' => false,
-                    'message' => 'Not supervisor',
-                ]);
+                //if yes,
+                //check if the request user_id is subordinate,
+                if ((SvSbPivot::where('subordinate_id', '=', $contact_user_id)
+                    ->where('supervisor_id', '=', $id)->exists())) {
+                    //if yes return true
+                    return response()->json([
+                        'data' => $true,
+                        'status' => true,
+                        'message' => 'This user is under this user.',
+                    ]);
+                } else {
+                    //if no, return false
+                    return response()->json([
+                        'data' => $false,
+                        'status' => true,
+                        'message' => 'Not a supervisor/admin.',
+                    ]);
+                }
             }
-            
-
-            // ->whereIn('to_dos.user_id', $final) // for view under supervisor and the subordinates
         }
     }
 }

@@ -176,13 +176,13 @@
                 <div v-else class="inline-block mx-1">
                     Selected:
                     <strong>{{ checked.length }}</strong> record(s)
-                    <a
+                    <!-- <a
                     v-if="can('export followup all') || is('admin | super-admin')"
                         @click.prevent="selectAllRecords"
                         href="#"
                         class="ml-1 rounded-md bg-yellow-400 border-2 border-black uppercase text-black text-xs"
                         >Select All</a
-                    >
+                    > -->
                 </div>
             </div>
 
@@ -193,24 +193,24 @@
                 >
                     Selected:
                     <strong>{{ checked.length }}</strong> record(s).
-                    <a
+                    <!-- <a
                     v-if="can('export followup all') || is('admin | super-admin')"
                         @click.prevent="selectAllRecords"
                         href="#"
                         class="ml-1 rounded-md bg-yellow-400 border-2 border-black uppercase text-black text-xs px-1"
                         >Select All</a
-                    >
+                    > -->
                 </div>
                 <div v-else class="inline-block mx-1">
                     Selected:
                     <strong>{{ checked.length }}</strong> record(s)
-                    <a
+                    <!-- <a
                     v-if="can('export followup all') || is('admin | super-admin')"
                         @click.prevent="selectAllRecords"
                         href="#"
                         class="ml-1 rounded-md bg-yellow-400 border-2 border-black uppercase text-black text-xs px-1"
                         >Select All</a
-                    >
+                    > -->
                 </div>
             </div>
         </div>

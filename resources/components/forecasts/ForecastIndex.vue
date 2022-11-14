@@ -49,7 +49,7 @@
                 <div v-else class="inline-block mx-1">
                     Selected:
                     <strong>{{ checked.length }}</strong> record(s)
-                    <a
+                    <!-- <a
                         v-if="
                             can('export forecast all') ||
                             is('supervisor | admin | super-admin')
@@ -58,7 +58,7 @@
                         href="#"
                         class="ml-1 rounded-md bg-yellow-400 border-2 border-black uppercase text-black text-xs"
                         >Select All</a
-                    >
+                    > -->
                 </div>
             </div>
 
@@ -73,7 +73,7 @@
                 <div v-else class="inline-block mx-1">
                     Selected:
                     <strong>{{ checked.length }}</strong> record(s)
-                    <a
+                    <!-- <a
                         v-if="
                             can('export forecast all') ||
                             is('supervisor | admin | super-admin')
@@ -82,7 +82,7 @@
                         href="#"
                         class="ml-1 rounded-md bg-yellow-400 border-2 border-black uppercase text-black text-xs px-1"
                         >Select All</a
-                    >
+                    > -->
                 </div>
             </div>
         </div>
@@ -111,6 +111,7 @@
         <div class="mt-1">
             <Pagination
                 :data="forecasts"
+                :limit="2"
                 @pagination-change-page="getForecasts"
                 :size="'small'"
                 :align="'right'"

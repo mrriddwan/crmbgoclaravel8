@@ -638,7 +638,8 @@ class ContactController extends Controller
         //     'file' => 'required|mimes:xls,xlsx',
         // ]);
 
-        Excel::import(new ContactImport, $request->file('file'));
+        // Excel::import(new ContactImport, $request->file('file'));
+        (new ContactImport)->import($request->file('file'), 'local', \Maatwebsite\Excel\Excel::XLSX);
 
         return response()->json([
             'status' => true,

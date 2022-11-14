@@ -52,6 +52,7 @@
     <div class="mt-1">
         <Pagination
             :data="projects"
+            :limit="2"
             @pagination-change-page="getProjects"
             :size="'small'"
             :align="'center'"

@@ -936,8 +936,8 @@
                         <tbody>
                             <tr v-for="user in users">
                                 <td>{{ user.name }}</td>
-                                <td>*****</td>
-                                <td>Admin / User</td>
+                                <td>{{ user.password }}</td>
+                                <td>{{ user.roles[0].name }}</td>
                                 <td>{{ user.email }}</td>
                             </tr>
                         </tbody>
@@ -1281,7 +1281,7 @@ export default {
 
         async getUsers() {
             await axios
-                .get("/api/users/index")
+                .get("/api/users/manage_list")
                 .then((res) => {
                     this.users = res.data.data;
                 })

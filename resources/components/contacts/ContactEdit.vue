@@ -209,34 +209,6 @@ export default {
                 });
         },
 
-        // <p class="inline text-red-600 text-lg">*</p></label>
-
-        // async createPIC() {
-        //         const contact = this.contact_infos;
-        //         // const form = document.getElementById('inchargeForm');
-        //         try {
-        //             await axios.post("/api/incharges/store", {
-        //                 contact_id: contact[0].id,
-        //                 name: this.form.name,
-        //                 email: this.form.email,
-        //                 phone_mobile: this.form.phone_mobile,
-        //                 phone_office: this.form.phone_office,
-        //             });
-
-        //             await this.$router.push({
-        //                 name: "incharge_create",
-        //                 params: { id: this.$route.params.id },
-        //             });
-        //         } catch (e) {
-        //             {
-        //                 if (e.response.status === 422){
-        //                     this.errors = e.response.data.errors;
-        //                 }
-
-        //             }
-        //         }
-        //     },
-
         updateContact() {
             axios
                 .put("/api/contacts/update/" + this.$route.params.id, {

@@ -132,6 +132,7 @@
                 <div class="py-1 w-60">
                     <Pagination
                         :data="contacts"
+                        :limit="2"
                         @pagination-change-page="getContacts"
                         :size="'small'"
                         :align="'right'"
@@ -631,14 +632,19 @@
                                 />
                             </td>
                             <td class="text-xs">
-                                {{ showToday(contact.created_at) }}
+                                {{ contact.created_at }}
                             </td>
                             <td class="text-xs">{{ contact.user.name }}</td>
                             <td class="text-xs">{{ contact.status.name }}</td>
-                            <td class="text-xs">{{ contact.type.name }}</td>
+                            <!-- <td class="text-xs">{{ contact.user.id }}</td> -->
+                            <!-- <td class="text-xs">{{ is_subordinate}} </td> -->
+                            <td class="text-xs">{{ contact.type.name }} </td>
                             <td class="text-xs">{{ contact.industry.name }}</td>
                             <td
-                                v-if="check_id(contact.user.id) || is('admin | super-admin')"
+                                v-if="
+                                    check_id(contact.user.id) ||
+                                    is('admin | super-admin')
+                                "
                                 class="items-center text-xs text-center h-6 w-24"
                             >
                                 <router-link
@@ -670,14 +676,19 @@
                                     />
                                 </button>
                             </td>
-                            <td class="text-xs" v-if="check_id(contact.user.id) || is('admin | super-admin')" >
+                            <td
+                                class="text-xs"
+                                v-if="
+                                    check_id(contact.user.id) ||
+                                    is('admin | super-admin')
+                                "
+                            >
                                 <div
                                     v-if="
                                         can('insert todo') || is('super-admin')
                                     "
                                 >
-                                    <div
-                                    >
+                                    <div>
                                         <router-link
                                             :to="{
                                                 name: 'todo_insert',
@@ -697,8 +708,7 @@
                                         can('edit contact') || is('super-admin')
                                     "
                                 >
-                                    <div
-                                    >
+                                    <div>
                                         <router-link
                                             :to="{
                                                 name: 'contacts_edit',
@@ -717,8 +727,7 @@
                                         is('super-admin')
                                     "
                                 >
-                                    <div
-                                    >
+                                    <div>
                                         <button
                                             class="mr-2 mb-2 inline-flex items-center px-2 py-1 bg-red-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
                                             @click="deletecontact(contact.id)"
@@ -728,7 +737,7 @@
                                     </div>
                                 </div>
                             </td>
-                            <td class="text-xs" v-else>No action</td>
+                            <td class="text-xs" v-else> </td>
                         </tr>
                     </tbody>
                 </table>
@@ -761,6 +770,7 @@ import {
     QuestionMarkCircleIcon,
     ArrowDownOnSquareIcon,
 } from "@heroicons/vue/24/solid";
+import { json } from "body-parser";
 
 export default {
     components: {
@@ -780,15 +790,17 @@ export default {
 
     mounted() {
         this.getStatus();
-        console.log(
-            "user_id",
-            document
-                .querySelector('meta[name="user-id"]')
-                .getAttribute("content")
-        );
-        this.selectedUser = document
-            .querySelector('meta[name="user-id"]')
-            .getAttribute("content");
+        // console.log(
+        //     "user_id",
+        //     document
+        //         .querySelector('meta[name="user-id"]')
+        //         .getAttribute("content")
+        // );
+        // this.selectedUser = document
+        //     .querySelector('meta[name="user-id"]')
+        //     .getAttribute("content");
+        this.selectedUser = 4;
+
         this.getUsers();
         this.getIndustries();
         this.getTypes();
@@ -806,13 +818,13 @@ export default {
             contact_remark_visibility: false,
             contact_remark: null,
 
-            paginate: 100,
+            paginate: 10,
             selectPage: false,
             selectAll: false,
             checked: [],
             url: "",
-            // importContacts: "/api/contacts/import",
-            reveal_action: false,
+
+            is_subordinate: false,
 
             search: "",
             selectedUser: "",
@@ -878,9 +890,11 @@ export default {
         check_id(contact_user_id) {
             let id = contact_user_id;
             // console.log(id)
-            let user_id = parseInt(document
-                .querySelector('meta[name="user-id"]')
-                .getAttribute("content"));
+            let user_id = parseInt(
+                document
+                    .querySelector('meta[name="user-id"]')
+                    .getAttribute("content")
+            );
             // console.log(user_id)
             if (id === user_id) {
                 return true;
@@ -889,29 +903,32 @@ export default {
             }
         },
 
-        // check_if_supervisor(contact_user_id)
-        // {
-        //     let user_id = contact_user_id;
+        async check_if_subordinate(contact_user_id) {
+            let result = await axios
+                .post("/api/users/check_subordinate", {
+                    contact_user_id: contact_user_id,
+                })
+                .then((response) => {
+                    return response.data.data;
+                })
+                console.log("result: ", result);
 
-        //     axios
-        //         .get("/api/users/check_supervisor/" + user_id)
-        //         .then((res) => {
-        //             if (res === true) {
-        //                 return this.reveal_action = true;
-        //             } else {
-        //                 return this.reveal_action = false;
-        //             }
-        //         })
-        //         .catch((error) => {
-        //             console.log(error);
-        //         });
-        // },
+            for(let final_result in result){
+                return final_result.result;
+            }
+        },
 
-        getContacts(page = 1) {
+        result_subordinate_check(contact_user_id) {
+            const final_result = this.check_if_subordinate(contact_user_id);
+            console.log("result final check: ", final_result);
+            return final_result;
+        },
+
+        async getContacts(page = 1) {
             if (typeof page === "undefined") {
                 page = 1;
             }
-            axios
+            await axios
                 .get(
                     "/api/contacts/index?" +
                         "q=" +
@@ -942,8 +959,8 @@ export default {
                     console.log(error);
                 });
         },
-        getStatus() {
-            axios
+        async getStatus() {
+            await axios
                 .get("/api/contacts/status/index")
                 .then((res) => {
                     this.statuses = res.data;
@@ -953,8 +970,8 @@ export default {
                 });
         },
 
-        getUsers() {
-            axios
+        async getUsers() {
+            await axios
                 .get("/api/users/index")
                 .then((res) => {
                     this.users = res.data;
@@ -964,8 +981,8 @@ export default {
                 });
         },
 
-        getTypes() {
-            axios
+        async getTypes() {
+            await axios
                 .get("/api/contacts/type/index")
                 .then((res) => {
                     this.types = res.data;
@@ -975,8 +992,8 @@ export default {
                 });
         },
 
-        getIndustries() {
-            axios
+        async getIndustries() {
+            await axios
                 .get("/api/contacts/industry/index")
                 .then((res) => {
                     this.industries = res.data;
@@ -986,8 +1003,8 @@ export default {
                 });
         },
 
-        getCategories() {
-            axios
+        async getCategories() {
+            await axios
                 .get("/api/contacts/category/index")
                 .then((res) => {
                     this.categories = res.data;
@@ -1027,8 +1044,8 @@ export default {
             return this.checked.includes(contact_id);
         },
 
-        selectAllRecords() {
-            axios.get("/api/contacts/all").then((response) => {
+        async selectAllRecords() {
+            await axios.get("/api/contacts/all").then((response) => {
                 this.checked = response.data;
                 this.selectAll = true;
             });
