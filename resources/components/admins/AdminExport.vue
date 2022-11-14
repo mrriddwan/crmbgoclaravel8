@@ -56,7 +56,7 @@
                     <ArrowDownOnSquareIcon class="h-6 w-6 inline" />Import
                 </button>
                 <div v-show="buffering" class="text-center text-sm font-bold">
-                    Loading . .
+                    Loading . . . please
                 </div>
             </form>
         </div>
@@ -991,6 +991,7 @@
                                     </select>
                                 </div>
                             </th>
+                            <!--NEED ADD ACTION <TD> -->
                             <th class="text-sm text-center">
                                 <a
                                     href="#"

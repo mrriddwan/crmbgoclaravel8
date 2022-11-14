@@ -62,146 +62,40 @@ class ContactController extends Controller
 
         $id = Auth::id();
 
+        $contact = Contact::select([
+            'contacts.*',
+            'contact_statuses.name as status_name',
+            'contact_types.name as type_name',
+            'users.name as user_name',
+            'contact_categories.name as category_name',
+            'contact_industries.name as industry_name'
+        ])
+            ->join('contact_statuses', 'contacts.status_id', '=', 'contact_statuses.id')
+            ->join('contact_types', 'contacts.type_id', '=', 'contact_types.id')
+            ->join('contact_categories', 'contacts.category_id', '=', 'contact_categories.id')
+            ->join('contact_industries', 'contacts.industry_id', '=', 'contact_industries.id')
+            ->join('users', 'contacts.user_id', '=', 'users.id')
+            ->when($selectedUser, function ($query) use ($selectedUser) {
+                $query->where('contacts.user_id', $selectedUser);
+            })
+            ->when($selectedStatus, function ($query) use ($selectedStatus) {
+                $query->where('contacts.status_id', $selectedStatus);
+            })
+            ->when($selectedCategory, function ($query) use ($selectedCategory) {
+                $query->where('contacts.category_id', $selectedCategory);
+            })
+            ->when($selectedType, function ($query) use ($selectedType) {
+                $query->where('contacts.type_id', $selectedType);
+            })
+            ->when($selectedIndustry, function ($query) use ($selectedIndustry) {
+                $query->where('contacts.industry_id', $selectedIndustry);
+            })
+            ->orderBy($sort_field, $sort_direction)
+            ->search(trim($search_term))
+            ->distinct()
+            ->paginate($paginate);
 
-        if ((DB::table('model_has_roles')
-                ->where('model_id', '=', $id)
-                ->where('role_id', '=', 2)
-                ->exists()) ||
-            (DB::table('model_has_roles')
-                ->where('model_id', '=', $id)
-                ->where('role_id', '=', 1)
-                ->exists())
-        ) {
-            $contact = Contact::select([
-                'contacts.*',
-                'contact_statuses.name as status_name',
-                'contact_types.name as type_name',
-                'users.name as user_name',
-                'contact_categories.name as category_name',
-                'contact_industries.name as industry_name'
-            ])
-                ->join('contact_statuses', 'contacts.status_id', '=', 'contact_statuses.id')
-                ->join('contact_types', 'contacts.type_id', '=', 'contact_types.id')
-                ->join('contact_categories', 'contacts.category_id', '=', 'contact_categories.id')
-                ->join('contact_industries', 'contacts.industry_id', '=', 'contact_industries.id')
-                ->join('users', 'contacts.user_id', '=', 'users.id')
-                ->when($selectedUser, function ($query) use ($selectedUser) {
-                    $query->where('contacts.user_id', $selectedUser);
-                })
-                ->when($selectedStatus, function ($query) use ($selectedStatus) {
-                    $query->where('contacts.status_id', $selectedStatus);
-                })
-                ->when($selectedCategory, function ($query) use ($selectedCategory) {
-                    $query->where('contacts.category_id', $selectedCategory);
-                })
-                ->when($selectedType, function ($query) use ($selectedType) {
-                    $query->where('contacts.type_id', $selectedType);
-                })
-                ->when($selectedIndustry, function ($query) use ($selectedIndustry) {
-                    $query->where('contacts.industry_id', $selectedIndustry);
-                })
-                ->orderBy($sort_field, $sort_direction)
-                ->search(trim($search_term))
-                ->distinct()
-                ->paginate($paginate);
-
-            return ContactResource::collection($contact);
-        } else if (SvSbPivot::where('supervisor_id', '=', $id)->exists()) {
-            $sv_sb = "";
-            $final = [$id];
-
-            $sv_sb = SvSbPivot::select('subordinate_id')
-                ->where('supervisor_id', '=', $id)
-                ->pluck('subordinate_id');
-
-
-            array_push($final, ...$sv_sb);
-            // ->whereIn('contacts.user_id', $final) // for view under supervisor and the subordinates
-
-            $contact = Contact::select([
-                'contacts.*',
-                'contact_statuses.name as status_name',
-                'contact_types.name as type_name',
-                'users.name as user_name',
-                'contact_categories.name as category_name',
-                'contact_industries.name as industry_name'
-            ])
-                // ->where('contacts.user_id', '=', $id) // for view under user only
-                ->whereIn('contacts.user_id', $final) // for view under supervisor and the subordinates
-                // ->whereIn('contacts.user_id', [1])
-                ->join('contact_statuses', 'contacts.status_id', '=', 'contact_statuses.id')
-                ->join('contact_types', 'contacts.type_id', '=', 'contact_types.id')
-                ->join('contact_categories', 'contacts.category_id', '=', 'contact_categories.id')
-                ->join('contact_industries', 'contacts.industry_id', '=', 'contact_industries.id')
-                ->join('users', 'contacts.user_id', '=', 'users.id')
-                ->when($selectedUser, function ($query) use ($selectedUser) {
-                    $query->where('contacts.user_id', $selectedUser);
-                })
-                ->when($selectedStatus, function ($query) use ($selectedStatus) {
-                    $query->where('contacts.status_id', $selectedStatus);
-                })
-                ->when($selectedCategory, function ($query) use ($selectedCategory) {
-                    $query->where('contacts.category_id', $selectedCategory);
-                })
-                ->when($selectedType, function ($query) use ($selectedType) {
-                    $query->where('contacts.type_id', $selectedType);
-                })
-                ->when($selectedIndustry, function ($query) use ($selectedIndustry) {
-                    $query->where('contacts.industry_id', $selectedIndustry);
-                })
-                ->orderBy($sort_field, $sort_direction)
-                ->search(trim($search_term))
-                ->distinct()
-                ->paginate($paginate);
-
-            return ContactResource::collection($contact);
-        } else {
-            $final = [$id];
-
-            $sv_sb = ["null"];
-
-            array_push($final, ...$sv_sb);
-            // ->whereIn('contacts.user_id', $final) // for view under supervisor and the subordinates
-
-
-            $contact = Contact::select([
-                'contacts.*',
-                'contact_statuses.name as status_name',
-                'contact_types.name as type_name',
-                'users.name as user_name',
-                'contact_categories.name as category_name',
-                'contact_industries.name as industry_name'
-            ])
-                // ->where('contacts.user_id', '=', $id) // for view under user only
-                ->whereIn('contacts.user_id', $final) // for view under supervisor and the subordinates
-                // ->whereIn('contacts.user_id', [1])
-                ->join('contact_statuses', 'contacts.status_id', '=', 'contact_statuses.id')
-                ->join('contact_types', 'contacts.type_id', '=', 'contact_types.id')
-                ->join('contact_categories', 'contacts.category_id', '=', 'contact_categories.id')
-                ->join('contact_industries', 'contacts.industry_id', '=', 'contact_industries.id')
-                ->join('users', 'contacts.user_id', '=', 'users.id')
-                ->when($selectedUser, function ($query) use ($selectedUser) {
-                    $query->where('contacts.user_id', $selectedUser);
-                })
-                ->when($selectedStatus, function ($query) use ($selectedStatus) {
-                    $query->where('contacts.status_id', $selectedStatus);
-                })
-                ->when($selectedCategory, function ($query) use ($selectedCategory) {
-                    $query->where('contacts.category_id', $selectedCategory);
-                })
-                ->when($selectedType, function ($query) use ($selectedType) {
-                    $query->where('contacts.type_id', $selectedType);
-                })
-                ->when($selectedIndustry, function ($query) use ($selectedIndustry) {
-                    $query->where('contacts.industry_id', $selectedIndustry);
-                })
-                ->orderBy($sort_field, $sort_direction)
-                ->search(trim($search_term))
-                ->distinct()
-                ->paginate($paginate);
-
-            return ContactResource::collection($contact);
-        }
+        return ContactResource::collection($contact);
     }
 
     public function list()
@@ -303,7 +197,7 @@ class ContactController extends Controller
             'data' => $data,
         ]);
     }
-    
+
 
     public function history(Contact $contact)
     {

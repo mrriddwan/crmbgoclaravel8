@@ -509,4 +509,46 @@ class UserController extends Controller
 
         return $performance;
     }
+
+    public function check_supervisor(User $user)
+    {
+        // $id = Auth::id();
+
+        if (
+            (DB::table('model_has_roles')
+                ->where('model_id', '=', $user)
+                ->where('role_id', '=', 2)
+                ->exists()) ||
+            (DB::table('model_has_roles')
+                ->where('model_id', '=', $user)
+                ->where('role_id', '=', 1)
+                ->exists())
+        ) {
+            return response()->json([
+                'data' => true,
+                'status' => true,
+                'message' => 'An admin.',
+            ]);
+        } else {
+            $sv_sb = "";
+            $final = [$user];
+
+            if (SvSbPivot::where('supervisor_id', '=', $user)->exists()) {
+                return response()->json([
+                    'data' => true,
+                    'status' => true,
+                    'message' => 'A supervisor.',
+                ]);
+            } else {
+                return response()->json([
+                    'data' => false,
+                    'status' => false,
+                    'message' => 'Not supervisor',
+                ]);
+            }
+            
+
+            // ->whereIn('to_dos.user_id', $final) // for view under supervisor and the subordinates
+        }
+    }
 }

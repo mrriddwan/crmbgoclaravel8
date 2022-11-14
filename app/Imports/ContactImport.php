@@ -13,7 +13,7 @@ use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithValidation;
 
 class ContactImport implements ToModel
-// , WithHeadingRow
+, WithHeadingRow
 {
     /**
      * @param array $row
@@ -33,25 +33,33 @@ class ContactImport implements ToModel
         //     'remark'  => $row['remark'],
         // ]);
 
-        // $row['user_id'] = User::where("name", "like", "%" . $row['designation'] . "%");
-        // $row['industry_id'] = ContactIndustry::where("first_name", "like", "%" . $row['line_manager'] . "%");
-        // $row['status_id']   = ContactStatus::where("name", "like", "%" . $row['job_title'] . "%");
+        // $row['user_id'] = 1;
+        // $row['industry_id'] = 5;
+        // $row['status_id']   = 5;
+        // $row['type_id']   = 2;
+        // $row['category_id']   = 10;
 
-        $row[0] = User::where("id", "=", $row[0])->pluck('id');
-        $row[3] = ContactIndustry::where("id", "=", $row[3])->pluck('id');
-        $row[4] = ContactStatus::where("id", "=", $row[4])->pluck('id');
-        $row[5] = ContactType::where("id", "=", $row[5])->pluck('id');
-        $row[6] = ContactCategory::where("id", "=", $row[6])->pluck('id');
+        // $row['name'] = 'New Company Ltd';
+        // $row['address'] = 'Klang';
+        // $row['remark'] = 'Please work for the company';
+
+
+        
+        $row['industry_id'] = ContactIndustry::whereIn("id", "=", $row['industry'])->pluck('id')->get();
+        $row['status_id'] = ContactStatus::whereIn("id", "=", $row['status'])->pluck('id')->get();
+        $row['type_id'] = ContactType::whereIn("id", "=", $row['type'])->pluck('id')->get();
+        $row['category_id']  = ContactCategory::whereIn("id", "=", $row['category'])->pluck('id')->get();
+        $row['user_id'] = User::whereIn("id", "=", $row['user'])->pluck('id')->get();
 
         return new Contact([
-            'user_id' => $row[0],
-            'name' => $row[1],
-            'address'  => $row[2],
-            'industry_id'  => $row[3],
-            'status_id'  => $row[4],
-            'type_id'  => $row[5],
-            'category_id'  => $row[6],
-            'remark'  => $row[7],
+            'user_id' => intval($row['user_id']),
+            'name' => $row['name'],
+            'address'  => $row['address'],
+            'industry_id'  => intval($row['industry_id']),
+            'status_id'  => intval($row['status_id']),
+            'type_id'  => intval($row['type_id']),
+            'category_id'  => intval($row['category_id']),
+            'remark'  => intval($row['remark']),
         ]);
     }
 

@@ -190,6 +190,8 @@ Route::get('/users/action', [UserController::class, 'action'])->name('user:actio
 // Route::get('/users/performance/year', [UserController::class, 'performance_year'])->name('user:performance_year');
 Route::get('/users/performance', [UserController::class, 'performance'])->name('user:performance');
 // Route::get('/users/performance/week', [UserController::class, 'performance_week'])->name('user:performance_week');
+Route::get('/users/check_supervisor/{user}', [UserController::class, 'check_supervisor'])->name('user:check_supervisor');
+
 
 
 /*Incharge API*/

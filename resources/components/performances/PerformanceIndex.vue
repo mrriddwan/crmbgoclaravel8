@@ -38,7 +38,7 @@
             </select>
         </div>
 
-        <div
+        <!-- <div
             class="m-1 inline-block items-center px-1 py-1"
             v-if="
                 (can('export performance') || is('admin | super-admin')) &&
@@ -74,7 +74,7 @@
                 <ArrowTopRightOnSquareIcon class="h-5 w-5 mr-1 inline-block" />
                 Export Monthly
             </download-excel>
-        </div>
+        </div> -->
 
         <div
             class="m-1 inline-block items-center px-1 py-1"
@@ -328,7 +328,7 @@ export default {
             weeksInMonth: [],
             monthsInYear: [],
             // paginate: 10,
-            viewType: "month",
+            viewType: "week",
             moment: moment,
 
             selectedUser: 1,

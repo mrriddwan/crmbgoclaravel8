@@ -65,7 +65,7 @@
                         <div v-else class="inline-block mx-1">
                             Selected:
                             <strong>{{ checked.length }}</strong> record(s)
-                            <a
+                            <!-- <a
                                 v-if="
                                     can('export contact all') ||
                                     is('admin | super-admin')
@@ -74,7 +74,7 @@
                                 href="#"
                                 class="ml-1 rounded-md bg-yellow-400 border-2 border-black uppercase text-black text-xs"
                                 >Select All</a
-                            >
+                            > -->
                         </div>
                     </div>
 
@@ -92,7 +92,7 @@
                         <div v-else class="inline-block mx-1">
                             Selected:
                             <strong>{{ checked.length }}</strong> record(s)
-                            <a
+                            <!-- <a
                                 v-if="
                                     can('export contact all') ||
                                     is('admin | super-admin')
@@ -101,7 +101,7 @@
                                 href="#"
                                 class="ml-1 rounded-md bg-yellow-400 border-2 border-black uppercase text-black text-xs px-1"
                                 >Select All</a
-                            >
+                            > -->
                         </div>
                     </div>
                 </div>
@@ -234,12 +234,7 @@
                                         /></span>
                                     </a>
                                 </div>
-                                <div
-                                    v-if="
-                                        is('admin | supervisor | super-admin')
-                                    "
-                                    class="items-center text-xs text-center h-6 w-24"
-                                >
+                                <div class="text-sm text-center h-6">
                                     <select
                                         v-model="selectedUser"
                                         class="form-control form-control-sm text-xs"
@@ -642,7 +637,10 @@
                             <td class="text-xs">{{ contact.status.name }}</td>
                             <td class="text-xs">{{ contact.type.name }}</td>
                             <td class="text-xs">{{ contact.industry.name }}</td>
-                            <td class="text-xs">
+                            <td
+                                v-if="check_id(contact.user.id) || is('admin | super-admin')"
+                                class="items-center text-xs text-center h-6 w-24"
+                            >
                                 <router-link
                                     :to="`/contact/${contact.id}/info`"
                                     custom
@@ -652,6 +650,12 @@
                                         contact.name
                                     }}</a>
                                 </router-link>
+                            </td>
+                            <td
+                                v-else
+                                class="items-center text-xs text-center h-6 w-24"
+                            >
+                                {{ contact.name }}
                             </td>
                             <td class="text-xs">{{ contact.category.name }}</td>
                             <td class="text-xs">{{ contact.address }}</td>
@@ -666,22 +670,25 @@
                                     />
                                 </button>
                             </td>
-                            <td class="text-xs">
+                            <td class="text-xs" v-if="check_id(contact.user.id) || is('admin | super-admin')" >
                                 <div
                                     v-if="
                                         can('insert todo') || is('super-admin')
                                     "
                                 >
-                                    <router-link
-                                        :to="{
-                                            name: 'todo_insert',
-                                            params: { id: contact.id },
-                                        }"
-                                        class="mr-2 mb-2 inline-flex items-center px-2 py-1 bg-green-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
+                                    <div
                                     >
-                                        <PlusIcon class="h-5 w-5 mr-1" /> To
-                                        Do</router-link
-                                    >
+                                        <router-link
+                                            :to="{
+                                                name: 'todo_insert',
+                                                params: { id: contact.id },
+                                            }"
+                                            class="mr-2 mb-2 inline-flex items-center px-2 py-1 bg-green-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
+                                        >
+                                            <PlusIcon class="h-5 w-5 mr-1" /> To
+                                            Do</router-link
+                                        >
+                                    </div>
                                 </div>
 
                                 <br />
@@ -690,15 +697,18 @@
                                         can('edit contact') || is('super-admin')
                                     "
                                 >
-                                    <router-link
-                                        :to="{
-                                            name: 'contacts_edit',
-                                            params: { id: contact.id },
-                                        }"
-                                        class="mr-2 mb-2 inline-flex items-center px-2 py-1 bg-yellow-400 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
+                                    <div
                                     >
-                                        <PencilSquareIcon class="h-3 w-3"
-                                    /></router-link>
+                                        <router-link
+                                            :to="{
+                                                name: 'contacts_edit',
+                                                params: { id: contact.id },
+                                            }"
+                                            class="mr-2 mb-2 inline-flex items-center px-2 py-1 bg-yellow-400 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
+                                        >
+                                            <PencilSquareIcon class="h-3 w-3"
+                                        /></router-link>
+                                    </div>
                                 </div>
 
                                 <div
@@ -707,14 +717,18 @@
                                         is('super-admin')
                                     "
                                 >
-                                    <button
-                                        class="mr-2 mb-2 inline-flex items-center px-2 py-1 bg-red-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
-                                        @click="deletecontact(contact.id)"
+                                    <div
                                     >
-                                        <TrashIcon class="h-3 w-3" />
-                                    </button>
+                                        <button
+                                            class="mr-2 mb-2 inline-flex items-center px-2 py-1 bg-red-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
+                                            @click="deletecontact(contact.id)"
+                                        >
+                                            <TrashIcon class="h-3 w-3" />
+                                        </button>
+                                    </div>
                                 </div>
                             </td>
+                            <td class="text-xs" v-else>No action</td>
                         </tr>
                     </tbody>
                 </table>
@@ -766,6 +780,12 @@ export default {
 
     mounted() {
         this.getStatus();
+        console.log(
+            "user_id",
+            document
+                .querySelector('meta[name="user-id"]')
+                .getAttribute("content")
+        );
         this.selectedUser = document
             .querySelector('meta[name="user-id"]')
             .getAttribute("content");
@@ -792,6 +812,7 @@ export default {
             checked: [],
             url: "",
             // importContacts: "/api/contacts/import",
+            reveal_action: false,
 
             search: "",
             selectedUser: "",
@@ -854,6 +875,38 @@ export default {
             this.contact_remark_visibility = !this.contact_remark_visibility;
         },
 
+        check_id(contact_user_id) {
+            let id = contact_user_id;
+            // console.log(id)
+            let user_id = parseInt(document
+                .querySelector('meta[name="user-id"]')
+                .getAttribute("content"));
+            // console.log(user_id)
+            if (id === user_id) {
+                return true;
+            } else {
+                return false;
+            }
+        },
+
+        // check_if_supervisor(contact_user_id)
+        // {
+        //     let user_id = contact_user_id;
+
+        //     axios
+        //         .get("/api/users/check_supervisor/" + user_id)
+        //         .then((res) => {
+        //             if (res === true) {
+        //                 return this.reveal_action = true;
+        //             } else {
+        //                 return this.reveal_action = false;
+        //             }
+        //         })
+        //         .catch((error) => {
+        //             console.log(error);
+        //         });
+        // },
+
         getContacts(page = 1) {
             if (typeof page === "undefined") {
                 page = 1;
@@ -902,7 +955,7 @@ export default {
 
         getUsers() {
             axios
-                .get("/api/users/users_list")
+                .get("/api/users/index")
                 .then((res) => {
                     this.users = res.data;
                 })
