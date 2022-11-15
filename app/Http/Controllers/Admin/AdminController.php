@@ -581,14 +581,14 @@ class AdminController extends Controller
 
     public function module_export()
     {
-        $module_type = request('module_type');
+        $export_type = request('export_type');
 
         $sort_direction = request('sort_direction');
         $sort_field = request('sort_field');
         $search_term = request('q', '');
 
         //if module contact
-        if ($module_type === 'contact') {
+        if ($export_type === 'contact') {
             $selectedUser = request('selectedUser');
             $selectedStatus = request('selectedStatus');
             $selectedCategory = request('selectedCategory');
@@ -640,7 +640,7 @@ class AdminController extends Controller
 
         //if module todo
 
-        else if ($module_type === 'todo') {
+        else if ($export_type === 'todo') {
 
             $selectedSource = request('selectedSource');
             $selectedStatus = request('selectedStatus');
@@ -701,7 +701,7 @@ class AdminController extends Controller
 
         //if module forecast
 
-        else if ($module_type === 'forecast') {
+        else if ($export_type === 'forecast') {
 
             $selectedProduct = request('selectedProduct');
             $selectedForecastType = request('selectedForecastType');

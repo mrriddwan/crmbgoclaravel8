@@ -38,7 +38,18 @@
             </select>
         </div>
 
-        <!-- <div
+        <!-- <download-excel
+            :data="actions"
+            :fields="action_fields"
+            worksheet="Performance Summary"
+            name="Performance Summary(week).xls"
+            class="btn btn-success btn-sm"
+        >
+            <ArrowTopRightOnSquareIcon class="h-5 w-5 mr-1 inline-block" />
+            Export Actions
+        </download-excel> -->
+
+        <div
             class="m-1 inline-block items-center px-1 py-1"
             v-if="
                 (can('export performance') || is('admin | super-admin')) &&
@@ -46,7 +57,7 @@
             "
         >
             <download-excel
-                :data="user_performance.data"
+                :data="user_performance"
                 :fields="performance_week"
                 worksheet="Performance Summary"
                 name="Performance Summary(week).xls"
@@ -74,7 +85,7 @@
                 <ArrowTopRightOnSquareIcon class="h-5 w-5 mr-1 inline-block" />
                 Export Monthly
             </download-excel>
-        </div> -->
+        </div>
 
         <div
             class="m-1 inline-block items-center px-1 py-1"
@@ -159,7 +170,7 @@
                     v-for="action in actions"
                     :key="action.id"
                 >
-                    <span class=" text-amber-400 break-normal">
+                    <span class="text-amber-400 break-normal">
                         {{ action.name }}
                     </span>
                 </th>
@@ -187,26 +198,32 @@
             :key="date.id"
         >
             <!-- <tr>{{ getWeek(date)}}</tr> -->
-            <tr>
+            <tr class="text-center">
                 <td>{{ showToday(date) + " - " + getWeekday(day) }}</td>
                 <td v-for="(action, index) in actions" :key="action.id">
-                    <span v-if="user_performance[`${date}`]"> 
-                        <span v-if="!user_performance[`${date}`][`${action.name}`]" >
+                    <span v-if="user_performance[0][`${date}`]">
+                        <span
+                            v-if="
+                                !user_performance[0][`${date}`][`${action.name}`]
+                            "
+                        >
                             0
                         </span>
-                        <span v-else>
-                            {{ user_performance[`${date}`][`${action.name}`] }}
+                        <span v-else class="font-bold">
+                            {{ user_performance[0][`${date}`][`${action.name}`] }}
                         </span>
                     </span>
-                    <span v-else>
-                        0
-                    </span>                    
+                    <span v-else> 0 </span>
                 </td>
             </tr>
         </tbody>
 
-        <tbody v-if="viewType === 'month'" v-for="date in this.weeksInMonth" class="text-center">
-            <tr>
+        <tbody
+            v-if="viewType === 'month'"
+            v-for="date in this.weeksInMonth"
+            class="text-center"
+        >
+            <tr class="text-center">
                 <td>
                     <span>
                         {{ moment(date.startDate).format("DD-MM-YY") }}
@@ -218,24 +235,38 @@
                     </span>
                 </td>
                 <td v-for="(action, index) in actions" :key="action.id">
-                    <span v-if="user_performance[`${this.getWeek(date.startDate)}`]"> 
-                        <span v-if="!user_performance[`${this.getWeek(date.startDate)}`][`${action.name}`]" >
+                    <span
+                        v-if="
+                            user_performance[`${this.getWeek(date.startDate)}`]
+                        "
+                    >
+                        <span
+                            v-if="
+                                !user_performance[
+                                    `${this.getWeek(date.startDate)}`
+                                ][`${action.name}`]
+                            "
+                        >
                             0
                         </span>
-                        <span v-else>
-                            {{ user_performance[`${this.getWeek(date.startDate)}`][`${action.name}`] }}
+                        <span v-else class="font-bold">
+                            {{
+                                user_performance[
+                                    `${this.getWeek(date.startDate)}`
+                                ][`${action.name}`]
+                            }}
                         </span>
                     </span>
-                    <span v-else>
-                        0
-                    </span>                    
+                    <span v-else> 0 </span>
                 </td>
             </tr>
         </tbody>
 
         <tbody v-if="viewType === 'year'">
-            <tr v-for="weeks in dates_in_one_year">
-                <td>{{ months[moment(weeks.start_date).month()] }}</td>
+            <tr v-for="weeks in dates_in_one_year" class="text-center">
+                <td>
+                    {{ months[moment(weeks.start_date).add(2, "d").month()] }}
+                </td>
                 <td class="flex">
                     <!-- <p>{{ weeks.week_number }} </p><br /> -->
                     {{ showToday(weeks.start_date) }}
@@ -243,20 +274,36 @@
                     {{ showToday(weeks.end_date) }}
                 </td>
                 <td v-for="(action, index) in actions" :key="action.id">
-                    <span v-if="user_performance[`${this.getWeek(weeks.start_date)}`]"> 
-                        <span v-if="!user_performance[`${this.getWeek(weeks.start_date)}`][`${action.name}`]" >
+                    <span
+                        v-if="
+                            user_performance[
+                                `${this.getWeek(weeks.start_date)}`
+                            ]
+                        "
+                    >
+                        <span
+                            v-if="
+                                !user_performance[
+                                    `${this.getWeek(weeks.start_date)}`
+                                ][`${action.name}`]
+                            "
+                        >
                             0
                         </span>
-                        <span v-else>
-                            {{ user_performance[`${this.getWeek(weeks.start_date)}`][`${action.name}`] }}
+                        <span v-else class="font-bold">
+                            {{
+                                user_performance[
+                                    `${this.getWeek(weeks.start_date)}`
+                                ][`${action.name}`]
+                            }}
                         </span>
                     </span>
-                    <span v-else>
-                        0
-                    </span>                    
+                    <span v-else> 0 </span>
                 </td>
             </tr>
         </tbody>
+
+        <!-- <div>{{ datesInWeek }}</div> -->
     </table>
 </template>
 
@@ -283,10 +330,11 @@ export default {
     mounted() {
         this.getActions();
         this.getUsers();
-        this.selectedUser = document
-            .querySelector('meta[name="user-id"]')
-            .getAttribute("content");
-        // this.selectedUser = 4;
+        // this.selectedUser = document
+        //     .querySelector('meta[name="user-id"]')
+        //     .getAttribute("content");
+        this.selectedUser = 4;
+
         this.getCurrentDate();
         this.getDates(this.currentDate);
 
@@ -308,8 +356,10 @@ export default {
         this.displayYear(this.selectedYear, this.selectedDate); //for year view
 
         this.selectedStartDate = this.datesInWeek[0];
+        // this.selectedStartDate = "2022-10-31"
         // console.log("selectedStartDate", this.selectedStartDate);
         this.selectedEndDate = this.datesInWeek[6];
+        // this.selectedEndDate = "2022-11-06"
         // console.log("selectedEndDate", this.selectedEndDate);
         this.getUserPerformance();
     },
@@ -331,7 +381,7 @@ export default {
             viewType: "week",
             moment: moment,
 
-            selectedUser: 1,
+            selectedUser: "",
             datesInWeek: [],
             dates_in_one_year: [],
             months: [
@@ -365,24 +415,118 @@ export default {
             sort_direction: "desc",
             sort_field: "todo_date",
 
-            // someValues.forEach((element, index) => {
-            //     console.log(`Current index: ${index}`);
-            //     console.log(element);
-            // });
+            // action_fields: {
+            //     ID: "id",
+            //     Name: "name",
+            // },
 
             performance_week: {
-                "Site No.": "site_id",
-                Location: "bboard_location",
-                Size: "bboard_size",
+                // Week: {
+                //     callback: (value) => {
+                //         let week_date = this.datesInWeek;
+   
+                //         for (let date of week_date) {
+                //             return `${date}`;
+                //         }
+                //         // return `${week_date}`;
+                //     },
+                // },
+
+
+                // <td v-for="(action, index) in actions" :key="action.id">
+                //     <span v-if="user_performance[0][`${date}`]">
+                //         <span
+                //             v-if="
+                //                 !user_performance[0][`${date}`][`${action.name}`]
+                //             "
+                //         >
+                //             0
+                //         </span>
+                //         <span v-else class="font-bold">
+                //             {{ user_performance[0][`${date}`][`${action.name}`] }}
+                //         </span>
+                //     </span>
+                //     <span v-else> 0 </span>
+                // </td>
+
+                Attended: 
+                // "2022-10-31",
+                {
+                    callback: (value) => {
+                        // let week_date = this.datesInWeek;
+
+                        // for (let date in this.datesInWeek) {
+                        //     return `${value[date]}`;
+                        // }
+                        return `${value["2022-10-31"]['Attended']}`;
+                    },
+                },
+
+                // Called: {
+                //     callback: (value) => {
+                //         let week_date = this.datesInWeek;
+
+                //         for (let date in week_date) {
+                //             return `${value[date]['Attended']}`;
+                //         }
+                //     },
+                // },
+
+                // "Telephone 2": {
+                //     field: "phone.landline",
+                //     callback: (value) => {
+                //       return `Landline Phone - ${value}`;
+                //   },
+                // },
+
+                // "Appointment Visitation": {
+                //     callback: (value) => {
+                //         let week_date = this.datesInWeek;
+                //         for (date in week_date){
+                //             return `${value[date][`${action.name}`]}`;
+                //         }
+                //     }
+                // },
+                // "Approval obtained": {
+                //     callback: (value) => {
+                //         return ``;
+                //     }
+                // },
+                // "Attended": {
+                //     callback: (value) => {
+                //         return ``;
+                //     }
+                // },
+                // "Called": {
+                //     callback: (value) => {
+                //         return ``;
+                //     }
+                // },
+                // "Carried Forward": {
+                //     callback: (value) => {
+                //         return ``;
+                //     }
+                // },
+                // "Payment": {
+                //     callback: (value) => {
+                //         return ``;
+                //     }
+                // },
+                // "To Call": {
+                //     callback: (value) => {
+                //         return ``;
+                //     }
+                // },
             },
+            
             performance_month: {
                 // Week: `${this.weeksInMonth}`,
             },
 
             performance_year: {
-                "Site No.": "site_id",
-                Location: "bboard_location",
-                Size: "bboard_size",
+                // "Site No.": "site_id",
+                // Location: "bboard_location",
+                // Size: "bboard_size",
             },
         };
     },
@@ -759,7 +903,6 @@ export default {
             }
             return weekStartEndDay;
         },
-
     },
 };
 </script>

@@ -1971,37 +1971,6 @@ export default {
     computed: {},
 
     methods: {
-        // getTenures(page = 1) {
-        //     if (typeof page === "undefined") {
-        //         page = 1;
-        //     }
-        //     axios
-        //         .get(
-        //             "/api/billboards/tenure?" +
-        //                 "q=" +
-        //                 this.search +
-        //                 "&selectedYear=" +
-        //                 this.selectedYear +
-        //                 "&selectedSite=" +
-        //                 this.selectedSite +
-        //                 "&selectedSize=" +
-        //                 this.selectedSize +
-        //                 "&paginate=" +
-        //                 this.paginate +
-        //                 "&page=" +
-        //                 page +
-        //                 "&sort_direction=" +
-        //                 this.sort_direction +
-        //                 "&sort_field=" +
-        //                 this.sort_field
-        //         )
-        //         .then((res) => {
-        //             this.tenures = res.data;
-        //         })
-        //         .catch((error) => {
-        //             console.log(error);
-        //         });
-        // },
 
         getBillboards(page = 1) {
             if (typeof page === "undefined") {
@@ -2085,7 +2054,7 @@ export default {
             } else {
                 this.sort_field = field;
             }
-            await this.getBillboards();
+            this.getBillboards();
         },
 
         getCurrentDate() {

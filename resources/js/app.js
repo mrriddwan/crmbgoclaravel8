@@ -9,8 +9,6 @@ import JsonExcel from "vue-json-excel3";
 import laravelPermissionToVuejs from "laravel-permission-to-vuejs";
 // window.$ = window.jQuery = require('jquery')
 
-
-
 import ContactIndex from "../components/contacts/ContactIndex.vue";
 import moment from "moment";
 

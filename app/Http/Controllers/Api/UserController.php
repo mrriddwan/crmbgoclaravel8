@@ -431,7 +431,7 @@ class UserController extends Controller
             return response()->json([
                 'status' => true,
                 'message' => 'Successfully get user performance',
-                'data' => $new_group,
+                'data' => [$new_group],
             ]);;
         } else if ($viewType === 'month') {
 
