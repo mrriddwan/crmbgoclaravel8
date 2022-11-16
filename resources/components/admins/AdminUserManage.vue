@@ -54,7 +54,7 @@
                             <label
                                 for="name"
                                 class="col-md-4 col-form-label text-md-right"
-                                >Name</label
+                                >User Name</label
                             >
 
                             <div class="col-md-6">
@@ -72,7 +72,7 @@
                             <label
                                 for="email"
                                 class="col-md-4 col-form-label text-md-right"
-                                >Email</label
+                                >User ID - Email</label
                             >
 
                             <div class="col-md-6">
@@ -190,6 +190,9 @@
                                     </option>
                                 </select>
                             </div>
+                        </div>
+                        <div>
+                            
                         </div>
                         <div class="text-md text-center mt-2">Name</div>
                         <div class="text-md text-center">

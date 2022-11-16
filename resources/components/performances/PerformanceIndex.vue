@@ -38,72 +38,18 @@
             </select>
         </div>
 
-        <!-- <download-excel
-            :data="actions"
-            :fields="action_fields"
-            worksheet="Performance Summary"
-            name="Performance Summary(week).xls"
-            class="btn btn-success btn-sm"
-        >
-            <ArrowTopRightOnSquareIcon class="h-5 w-5 mr-1 inline-block" />
-            Export Actions
-        </download-excel> -->
-
         <div
-            class="m-1 inline-block items-center px-1 py-1"
-            v-if="
-                (can('export performance') || is('admin | super-admin')) &&
-                viewType === 'week'
-            "
+            class="inline-block"
+            v-if="can('export performance') || is('admin | super-admin')"
         >
-            <download-excel
-                :data="user_performance"
-                :fields="performance_week"
-                worksheet="Performance Summary"
-                name="Performance Summary(week).xls"
-                class="btn btn-success btn-sm"
+            <button
+                class="bg-green-500 px-2 py-2 rounded-lg text-xs"
+                @click="exportExcel('xls')"
             >
-                <ArrowTopRightOnSquareIcon class="h-5 w-5 mr-1 inline-block" />
-                Export Weekly
-            </download-excel>
-        </div>
-
-        <div
-            class="m-1 inline-block items-center px-1 py-1"
-            v-if="
-                (can('export performance') || is('admin | super-admin')) &&
-                viewType === 'month'
-            "
-        >
-            <download-excel
-                :data="user_performance.data"
-                :fields="performance_month"
-                worksheet="Performance Summary"
-                name="Performance Summary(month).xls"
-                class="btn btn-success btn-sm"
-            >
-                <ArrowTopRightOnSquareIcon class="h-5 w-5 mr-1 inline-block" />
-                Export Monthly
-            </download-excel>
-        </div>
-
-        <div
-            class="m-1 inline-block items-center px-1 py-1"
-            v-if="
-                (can('export performance') || is('admin | super-admin')) &&
-                viewType === 'year'
-            "
-        >
-            <download-excel
-                :data="user_performance.data"
-                :fields="performance_year"
-                worksheet="Performance Summary"
-                name="Performance Summary(year).xls"
-                class="btn btn-success btn-sm"
-            >
-                <ArrowTopRightOnSquareIcon class="h-5 w-5 mr-1 inline-block" />
-                Export Annual
-            </download-excel>
+                <ArrowTopRightOnSquareIcon
+                    class="h-5 w-5 mr-1 inline-block"
+                />Export
+            </button>
         </div>
     </div>
 
@@ -161,10 +107,15 @@
 
     <!-- <div> -->
 
-    <table class="table table-hover table-bordered" id="example">
+    <table
+        class="table table-hover table-bordered"
+        id="example"
+        ref="performance_table"
+    >
         <thead v-if="viewType !== 'year'" class="bg-slate-600">
             <tr>
-                <th class="text-sm text-center text-amber-400">Week</th>
+                <th v-if="viewType === 'week'" class="text-sm text-center text-amber-400">Date - Day</th>
+                <th v-if="viewType === 'month'" class="text-sm text-center text-amber-400">Week</th>
                 <th
                     class="text-sm text-center"
                     v-for="action in actions"
@@ -201,16 +152,16 @@
             <tr class="text-center">
                 <td>{{ showToday(date) + " - " + getWeekday(day) }}</td>
                 <td v-for="(action, index) in actions" :key="action.id">
-                    <span v-if="user_performance[0][`${date}`]">
+                    <span v-if="user_performance[`${date}`]">
                         <span
                             v-if="
-                                !user_performance[0][`${date}`][`${action.name}`]
+                                !user_performance[`${date}`][`${action.name}`]
                             "
                         >
                             0
                         </span>
                         <span v-else class="font-bold">
-                            {{ user_performance[0][`${date}`][`${action.name}`] }}
+                            {{ user_performance[`${date}`][`${action.name}`] }}
                         </span>
                     </span>
                     <span v-else> 0 </span>
@@ -262,13 +213,16 @@
             </tr>
         </tbody>
 
-        <tbody v-if="viewType === 'year'">
-            <tr v-for="weeks in dates_in_one_year" class="text-center">
+        <tbody
+            v-if="viewType === 'year'"
+            v-for="weeks in dates_in_one_year"
+            class="text-center"
+        >
+            <tr>
                 <td>
-                    {{ months[moment(weeks.start_date).add(2, "d").month()] }}
+                    {{ months[moment(weeks.start_date).add(2, 'd').month()] }}
                 </td>
                 <td class="flex">
-                    <!-- <p>{{ weeks.week_number }} </p><br /> -->
                     {{ showToday(weeks.start_date) }}
                     <p class="mx-2">to</p>
                     {{ showToday(weeks.end_date) }}
@@ -302,8 +256,6 @@
                 </td>
             </tr>
         </tbody>
-
-        <!-- <div>{{ datesInWeek }}</div> -->
     </table>
 </template>
 
@@ -330,16 +282,15 @@ export default {
     mounted() {
         this.getActions();
         this.getUsers();
-        // this.selectedUser = document
-        //     .querySelector('meta[name="user-id"]')
-        //     .getAttribute("content");
-        this.selectedUser = 4;
+        this.selectedUser = document
+            .querySelector('meta[name="user-id"]')
+            .getAttribute("content");
 
         this.getCurrentDate();
         this.getDates(this.currentDate);
 
         this.selectedDate = this.currentDate;
-        console.log("selectedDate", this.selectedDate);
+        // console.log("selectedDate", this.selectedDate);
 
         this.m = parseInt(this.getSelectedMonth(this.selectedDate));
         this.y = parseInt(this.getSelectedYear(this.selectedDate));
@@ -362,6 +313,7 @@ export default {
         // this.selectedEndDate = "2022-11-06"
         // console.log("selectedEndDate", this.selectedEndDate);
         this.getUserPerformance();
+
     },
 
     props: {},
@@ -414,120 +366,6 @@ export default {
 
             sort_direction: "desc",
             sort_field: "todo_date",
-
-            // action_fields: {
-            //     ID: "id",
-            //     Name: "name",
-            // },
-
-            performance_week: {
-                // Week: {
-                //     callback: (value) => {
-                //         let week_date = this.datesInWeek;
-   
-                //         for (let date of week_date) {
-                //             return `${date}`;
-                //         }
-                //         // return `${week_date}`;
-                //     },
-                // },
-
-
-                // <td v-for="(action, index) in actions" :key="action.id">
-                //     <span v-if="user_performance[0][`${date}`]">
-                //         <span
-                //             v-if="
-                //                 !user_performance[0][`${date}`][`${action.name}`]
-                //             "
-                //         >
-                //             0
-                //         </span>
-                //         <span v-else class="font-bold">
-                //             {{ user_performance[0][`${date}`][`${action.name}`] }}
-                //         </span>
-                //     </span>
-                //     <span v-else> 0 </span>
-                // </td>
-
-                Attended: 
-                // "2022-10-31",
-                {
-                    callback: (value) => {
-                        // let week_date = this.datesInWeek;
-
-                        // for (let date in this.datesInWeek) {
-                        //     return `${value[date]}`;
-                        // }
-                        return `${value["2022-10-31"]['Attended']}`;
-                    },
-                },
-
-                // Called: {
-                //     callback: (value) => {
-                //         let week_date = this.datesInWeek;
-
-                //         for (let date in week_date) {
-                //             return `${value[date]['Attended']}`;
-                //         }
-                //     },
-                // },
-
-                // "Telephone 2": {
-                //     field: "phone.landline",
-                //     callback: (value) => {
-                //       return `Landline Phone - ${value}`;
-                //   },
-                // },
-
-                // "Appointment Visitation": {
-                //     callback: (value) => {
-                //         let week_date = this.datesInWeek;
-                //         for (date in week_date){
-                //             return `${value[date][`${action.name}`]}`;
-                //         }
-                //     }
-                // },
-                // "Approval obtained": {
-                //     callback: (value) => {
-                //         return ``;
-                //     }
-                // },
-                // "Attended": {
-                //     callback: (value) => {
-                //         return ``;
-                //     }
-                // },
-                // "Called": {
-                //     callback: (value) => {
-                //         return ``;
-                //     }
-                // },
-                // "Carried Forward": {
-                //     callback: (value) => {
-                //         return ``;
-                //     }
-                // },
-                // "Payment": {
-                //     callback: (value) => {
-                //         return ``;
-                //     }
-                // },
-                // "To Call": {
-                //     callback: (value) => {
-                //         return ``;
-                //     }
-                // },
-            },
-            
-            performance_month: {
-                // Week: `${this.weeksInMonth}`,
-            },
-
-            performance_year: {
-                // "Site No.": "site_id",
-                // Location: "bboard_location",
-                // Size: "bboard_size",
-            },
         };
     },
     watch: {
@@ -548,7 +386,7 @@ export default {
                 this.getUserPerformance();
             }
             if (value === "year") {
-                this.monthsInYear = [];
+                this.dates_in_one_year = [];
                 this.displayYear(this.selectedYear, this.selectedDate); //for year view
                 this.getUserPerformance();
             }
@@ -569,6 +407,22 @@ export default {
     },
 
     methods: {
+        exportExcel(type, fn, dl) {
+            var elt = this.$refs.performance_table;
+            var wb = XLSX.utils.table_to_book(elt, { sheet: "Performance" });
+
+            return dl
+                ? XLSX.write(wb, {
+                      bookType: type,
+                      bookSST: true,
+                      type: "base64",
+                  })
+                : XLSX.writeFile(
+                      wb,
+                      fn || "PerformanceExport." + (type || "xlsx")
+                  );
+        },
+
         getUsers() {
             axios
                 .get("/api/users/users_list")
@@ -686,7 +540,7 @@ export default {
             let m = parseInt(this.getSelectedMonth(monthYear));
 
             const month = moment([y, m - 1]);
-            console.log("month", month);
+            // console.log("month", month);
 
             const weekList = this.weeks(month);
 
@@ -757,13 +611,13 @@ export default {
                     .add(1, "M")
                     .format("YYYY-MM-DD");
 
-                console.log("monthYearAdd : " + monthYearAdd);
+                // console.log("monthYearAdd : " + monthYearAdd);
                 this.selectedMonthYear = monthYearAdd;
 
                 var selected_month = this.getSelectedMonth(monthYearAdd);
                 var selected_year = this.getSelectedYear(monthYearAdd);
-                console.log("selected_month", selected_month);
-                console.log("selected_month", selected_year);
+                // console.log("selected_month", selected_month);
+                // console.log("selected_month", selected_year);
 
                 this.weeksInMonth = [];
                 this.getSelectedMonth(monthYearAdd);
@@ -780,13 +634,13 @@ export default {
 
                 var monthYearBefore =
                     this.selectedYear + "-" + this.selectedMonth + "-" + "01";
-                console.log("monthYearBefore : " + monthYearBefore);
+                // console.log("monthYearBefore : " + monthYearBefore);
 
                 var monthYearAdd = moment(monthYearBefore)
                     .add(1, "y")
                     .format("YYYY-MM-DD");
 
-                console.log("monthYearAdd : " + monthYearAdd);
+                // console.log("monthYearAdd : " + monthYearAdd);
 
                 this.getSelectedYear(monthYearAdd);
                 this.dates_in_one_year = [];
@@ -820,7 +674,7 @@ export default {
                     .subtract(1, "M")
                     .format("YYYY-MM-DD");
 
-                console.log("monthYearMinus : " + monthYearMinus);
+                // console.log("monthYearMinus : " + monthYearMinus);
                 this.selectedMonthYear = monthYearMinus;
 
                 var new_month_year = new Date(monthYearMinus);
@@ -828,8 +682,8 @@ export default {
                 var selected_month = this.getSelectedMonth(new_month_year);
                 var selected_year = this.getSelectedYear(new_month_year);
 
-                console.log("selected_month", selected_month);
-                console.log("selected_month", selected_year);
+                // console.log("selected_month", selected_month);
+                // console.log("selected_month", selected_year);
 
                 this.weeksInMonth = [];
                 this.getSelectedMonth(monthYearMinus);
@@ -846,13 +700,13 @@ export default {
 
                 var monthYearBefore =
                     this.selectedYear + "-" + this.selectedMonth + "-" + "01";
-                console.log("monthYearBefore : " + monthYearBefore);
+                // console.log("monthYearBefore : " + monthYearBefore);
 
                 var monthYearAdd = moment(monthYearBefore)
                     .subtract(1, "y")
                     .format("YYYY-MM-DD");
 
-                console.log("monthYearAdd : " + monthYearAdd);
+                // console.log("monthYearAdd : " + monthYearAdd);
 
                 this.getSelectedYear(monthYearAdd);
                 this.dates_in_one_year = [];

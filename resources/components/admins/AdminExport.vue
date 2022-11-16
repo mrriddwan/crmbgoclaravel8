@@ -2398,6 +2398,34 @@ export default {
             }
             this.getModule();
         },
+        getExcelData(e) {
+            this.excel = this.$refs.contact_file.files[0]
+            console.log(this.excel);
+        },
+
+        importContacts() {
+            const config = {
+                headers: {
+                    "content-type": "multipart/form-data",
+                },
+            };
+
+            let data = new FormData();
+
+            data.append("file", this.excel);
+
+            this.buffering = true;
+
+            axios
+                .post("/api/contacts/import", data, config)
+                .then((response) => {
+                    this.buffering = false;
+                    alert("Contact imported");
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        },
     },
 };
 </script>

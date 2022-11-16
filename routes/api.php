@@ -107,13 +107,12 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     Route::delete('/admin/supervisors/delete/{supervisor}', [SupervisorController::class, 'delete'])->name('supervisor:delete');
     Route::delete('/admin/supervisors/users/remove/{supervisor}', [SupervisorController::class, 'user_remove'])->name('supervisor:user_remove');
     Route::post('/admin/supervisors/users/add', [SupervisorController::class, 'user_add'])->name('supervisor:user_add');
-
     Route::get('/admin/checksupervisor', [AdminController::class, 'check_supervisor'])->name('admin:check_supervisor');
 
     Route::get('/admin/roles/index', [RoleController::class, 'index'])->name('role:index');
-    Route::post('admin/roles/create', [RoleController::class, 'role_create'])->name('role:create');
-    Route::put('admin/roles/update/{role}', [RoleController::class, 'role_update'])->name('role:update');
-    Route::delete('admin/roles/delete/{role}', [RoleController::class, 'role_delete'])->name('role:delete');
+    Route::post('/admin/roles/create', [RoleController::class, 'role_create'])->name('role:create');
+    Route::put('/admin/roles/update/{role}', [RoleController::class, 'role_update'])->name('role:update');
+    Route::delete('/admin/roles/delete/{role}', [RoleController::class, 'role_delete'])->name('role:delete');
     Route::get('/admin/roles/info/{role}', [RoleController::class, 'info'])->name('role:info');
     Route::get('/admin/roles/permissions', [RoleController::class, 'role_permissions'])->name('role:permissions');
     Route::post('/admin/roles/add/permission/{role}', [RoleController::class, 'add_permission'])->name('role:add_permission');
@@ -122,7 +121,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
     Route::get('/admin/permissions/index', [PermissionController::class, 'index'])->name('permission:index');
     Route::post('admin/permissions/create', [PermissionController::class, 'permission_create'])->name('permission:create');
-    Route::delete('admin/permissions/delete/{permission}', [PermissionController::class, 'permission_delete'])->name('permission:delete');
+    Route::delete('/admin/permissions/delete/{permission}', [PermissionController::class, 'permission_delete'])->name('permission:delete');
     Route::put('admin/permissions/update/{permission}', [PermissionController::class, 'permission_update'])->name('permission:update');
     Route::get('/admin/permissions/info/{permission}', [PermissionController::class, 'info'])->name('permission:info');
 
@@ -164,7 +163,7 @@ Route::get('/contacts/summary_todo', [ContactController::class, 'summary_todo'])
 Route::get('/contacts/remark/{contact}', [ContactController::class, 'remark'])->name('contact:remark');
 Route::get('/followups/remark/{followup}', [FollowUpController::class, 'remark'])->name('followup:remark');
 Route::get('/todos/remark/{todo}', [ToDoController::class, 'remark'])->name('todo:remark');
-Route::get('/projects/remark/{project}', [ProjectController::class, 'remark'])->name('project:remark');
+
 Route::get('/tempboards/remark/{tempboard}', [TempboardController::class, 'remark'])->name('tempboard:remark');
 
 
@@ -258,11 +257,13 @@ Route::get('/forecasts/type/info/{type}', [ForecastTypeController::class, 'info'
 
 Route::get('/forecasts/result/index', [ForecastResultController::class, 'index'])->name('forecastresult:index');
 
-/*Forecast API*/
+/*Projects API*/
 Route::get('/projects/index', [ProjectController::class, 'index'])->name('project:index');
 Route::post('/projects/store', [ProjectController::class, 'store'])->name('project:store');
 Route::get('/projects/show/{project}', [ProjectController::class, 'show'])->name('project:show');
 Route::put('/projects/update/{project}', [ProjectController::class, 'update'])->name('project:update');
+Route::delete('/projects/delete/{project}', [ProjectController::class, 'delete'])->name('project:delete');
+Route::get('/projects/remark/{project}', [ProjectController::class, 'remark'])->name('project:remark');
 
 /*Billboard/Tempboard API*/
 Route::get('/billboards/index', [BillboardController::class, 'index'])->name('billboard:index');

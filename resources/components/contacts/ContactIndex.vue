@@ -790,16 +790,9 @@ export default {
 
     mounted() {
         this.getStatus();
-        // console.log(
-        //     "user_id",
-        //     document
-        //         .querySelector('meta[name="user-id"]')
-        //         .getAttribute("content")
-        // );
-        // this.selectedUser = document
-        //     .querySelector('meta[name="user-id"]')
-        //     .getAttribute("content");
-        this.selectedUser = 4;
+        this.selectedUser = document
+            .querySelector('meta[name="user-id"]')
+            .getAttribute("content");
 
         this.getUsers();
         this.getIndustries();
@@ -818,7 +811,7 @@ export default {
             contact_remark_visibility: false,
             contact_remark: null,
 
-            paginate: 10,
+            paginate: 100,
             selectPage: false,
             selectAll: false,
             checked: [],

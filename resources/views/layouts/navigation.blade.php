@@ -186,7 +186,7 @@
                                 </x-nav-link>
                                 <br>
                                 <x-nav-link :href="route('admin-export')" :active="request()->routeIs('admin-export')">
-                                    {{ __('Export') }}
+                                    {{ __('Export/Import') }}
                                 </x-nav-link>
                             </x-slot>
                         </x-dropdown>
