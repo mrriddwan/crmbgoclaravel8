@@ -1139,6 +1139,9 @@ select {
   -moz-column-gap: 2.5rem;
        column-gap: 2.5rem;
 }
+.gap-y-5 {
+  row-gap: 1.25rem;
+}
 .space-x-8 > :not([hidden]) ~ :not([hidden]) {
   --tw-space-x-reverse: 0;
   margin-right: calc(2rem * var(--tw-space-x-reverse));
@@ -1444,10 +1447,6 @@ select {
 .bg-yellow-500 {
   --tw-bg-opacity: 1;
   background-color: rgb(234 179 8 / var(--tw-bg-opacity));
-}
-.bg-pink-400 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(244 114 182 / var(--tw-bg-opacity));
 }
 .bg-clip-padding {
   background-clip: padding-box;

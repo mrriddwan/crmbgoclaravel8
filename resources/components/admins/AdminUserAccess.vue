@@ -206,6 +206,7 @@
                                         <input
                                             v-model="new_role.name"
                                             type="text"
+                                            placeholder="eg:Project"
                                             class="block mt-1 w-full text-center rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                                         />
                                     </div>
@@ -220,6 +221,7 @@
                                     <input
                                         v-model="new_role.description"
                                         type="text"
+                                        placeholder="eg:Manage project and billboard"
                                         class="block mt-1 w-full text-center rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                                     />
                                 </div>
@@ -236,7 +238,7 @@
                                 <p
                                     class="inline uppercase font-bold text-sm h-1"
                                 >
-                                    Roles
+                                    Role
                                 </p>
                             </button>
                         </div>
@@ -308,7 +310,7 @@
                         </div>
                         <div class="text-center mt-1">
                             <select
-                                class="text-center w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                class="mt-2 text-center w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                                 @change="getRoles"
                                 v-model="selectedRole"
                             >
@@ -343,7 +345,10 @@
                                     </p>
                                 </span>
                             </div>
-                            <div class="grid grid-cols-2 py-1">
+                            <div
+                                class="grid grid-cols-2 py-1"
+                                v-if="selectedRole"
+                            >
                                 <div>
                                     <label>Name</label>
                                 </div>
@@ -371,22 +376,24 @@
                                         />
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                        <div
-                            class="container w-max h-max text-center align-middle my-2"
-                        >
-                            <button
-                                @click="updateItem(edit_role)"
-                                class="border-1 border-black w-max rounded-md bg-blue-300 px-2"
-                            >
-                                <LockClosedIcon class="inline h-4 w-4" />
-                                <p
-                                    class="inline uppercase font-bold text-sm h-1"
+                                <div
+                                    class="container w-max h-max text-center align-middle my-2"
                                 >
-                                    Role
-                                </p>
-                            </button>
+                                    <button
+                                        @click="updateItem(edit_role)"
+                                        class="border-1 border-black w-max rounded-md bg-blue-300 px-2"
+                                    >
+                                        <LockClosedIcon
+                                            class="inline h-4 w-4"
+                                        />
+                                        <p
+                                            class="inline uppercase font-bold text-sm h-1"
+                                        >
+                                            Role
+                                        </p>
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -690,52 +697,58 @@
                                 </span>
                             </div>
 
-                            <div class="grid grid-cols-2 py-1">
-                                <div>
-                                    <label>Name</label>
-                                </div>
-                                <div>
+                            <div v-if="selectedPermission">
+                                <div class="grid grid-cols-2 py-1">
+                                    <div>
+                                        <label>Name</label>
+                                    </div>
+                                    <div>
+                                        <div class="form-group">
+                                            <div class="form-group">
+                                                <input
+                                                    v-model="
+                                                        edit_permission.name
+                                                    "
+                                                    type="text"
+                                                    class="block mt-1 w-full text-center rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label>Description</label>
+                                    </div>
+
                                     <div class="form-group">
                                         <div class="form-group">
                                             <input
-                                                v-model="edit_permission.name"
+                                                v-model="
+                                                    edit_permission.description
+                                                "
                                                 type="text"
                                                 class="block mt-1 w-full text-center rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                                             />
                                         </div>
                                     </div>
                                 </div>
-                                <div>
-                                    <label>Description</label>
-                                </div>
 
-                                <div class="form-group">
-                                    <div class="form-group">
-                                        <input
-                                            v-model="
-                                                edit_permission.description
-                                            "
-                                            type="text"
-                                            class="block mt-1 w-full text-center rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                                        />
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div
-                                class="container w-max h-max text-center align-middle my-2"
-                            >
-                                <button
-                                    @click="updateItem(edit_permission)"
-                                    class="border-1 border-black w-max rounded-md bg-blue-300 px-2"
+                                <div
+                                    class="container w-max h-max text-center align-middle my-2"
                                 >
-                                    <LockClosedIcon class="inline h-4 w-4" />
-                                    <p
-                                        class="inline uppercase font-bold text-sm h-1"
+                                    <button
+                                        @click="updateItem(edit_permission)"
+                                        class="border-1 border-black w-max rounded-md bg-blue-300 px-2"
                                     >
-                                        Permission
-                                    </p>
-                                </button>
+                                        <LockClosedIcon
+                                            class="inline h-4 w-4"
+                                        />
+                                        <p
+                                            class="inline uppercase font-bold text-sm h-1"
+                                        >
+                                            Permission
+                                        </p>
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -848,6 +861,9 @@ export default {
     },
 
     mounted() {
+        this.selectedUser = document
+            .querySelector('meta[name="user-id"]')
+            .getAttribute("content");
         this.getUserRolePermissions();
         this.getUsers();
         this.getRoles();

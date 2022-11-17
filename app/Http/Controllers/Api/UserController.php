@@ -535,31 +535,14 @@ class UserController extends Controller
 
     public function check_subordinate(Request $request)
     {
-        $id = Auth::id();
-        // $id = 2;
-
+        // $id = Auth::id();
+        $id = 2;
 
         $contact_user_id = $request->contact_user_id;
 
-        $true = array("id"=>"1", "result"=>"true");
-        $false = array("id"=>"2", "result"=>"false");
+        $true = array("id"=>1, "result"=>"true");
+        $false = array("id"=>2, "result"=>"false");
 
-        if (
-            (DB::table('model_has_roles')
-                ->where('model_id', '=', $id)
-                ->where('role_id', '=', 2)
-                ->exists()) ||
-            (DB::table('model_has_roles')
-                ->where('model_id', '=', $id)
-                ->where('role_id', '=', 1)
-                ->exists())
-        ) {
-            return response()->json([
-                'data' => $true,
-                'status' => true,
-                'message' => 'An admin.',
-            ]);
-        } else {
             // check if the $id is supervisor
 
             //if no, return false
@@ -585,10 +568,10 @@ class UserController extends Controller
                     return response()->json([
                         'data' => $false,
                         'status' => true,
-                        'message' => 'Not a supervisor/admin.',
+                        'message' => 'This user is NOT under this user.',
                     ]);
                 }
             }
-        }
+        
     }
 }

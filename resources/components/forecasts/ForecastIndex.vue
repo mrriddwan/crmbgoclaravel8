@@ -755,7 +755,7 @@ export default {
             forecast_types: [],
             results: [],
 
-            paginate: 50,
+            paginate: 100,
             selectPage: false,
             selectAll: false,
             checked: [],

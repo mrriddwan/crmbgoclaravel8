@@ -22,9 +22,9 @@
             <select v-model="import_type" class="form-control mx-2">
                 <option value="">Select module</option>
                 <option value="contact">Contact</option>
-                <option value="todo">To Do</option>
+                <!-- <option value="todo">To Do</option>
                 <option value="forecast">Forecast</option>
-                <option value="project">Project</option>
+                <option value="project">Project</option> -->
             </select>
         </div>
 

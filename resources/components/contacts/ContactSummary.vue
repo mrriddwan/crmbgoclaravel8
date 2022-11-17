@@ -471,6 +471,11 @@
                         </tr>
                     </thead>
                     <tbody class="mt-2">
+                        <tr v-show="buffering" >
+                            <td class="text-center text-sm font-bold" colspan="18">
+                                Loading . .
+                            </td>
+                        </tr>
                         <tr
                             v-for="(contact, index) in contacts.data"
                             :key="contact.id"
@@ -1001,6 +1006,7 @@ export default {
             checked: [],
             url: "",
             viewType: "todo",
+            buffering: false,
 
             search: "",
             selectedYear: "",
@@ -1348,24 +1354,31 @@ export default {
     },
     watch: {
         paginate: function (value) {
+            this.contacts = [];
             this.getContactsByTodo();
         },
         search: function (value) {
+            this.contacts = [];
             this.getContactsByTodo();
         },
         selectedStatus: function (value) {
+            this.contacts = [];
             this.getContactsByTodo();
         },
         selectedUser: function (value) {
+            this.contacts = [];
             this.getContactsByTodo();
         },
         selectedType: function (value) {
+            this.contacts = [];
             this.getContactsByTodo();
         },
         selectedCategory: function (value) {
+            this.contacts = [];
             this.getContactsByTodo();
         },
         selectedIndustry: function (value) {
+            this.contacts = [];
             this.getContactsByTodo();
         },
 
@@ -1393,6 +1406,7 @@ export default {
             if (typeof page === "undefined") {
                 page = 1;
             }
+            this.buffering = true;
             axios
                 .get(
                     "/api/contacts/summary_todo?" +
@@ -1420,6 +1434,7 @@ export default {
                         this.sort_field
                 )
                 .then((res) => {
+                    this.buffering = false;
                     this.contacts = res.data;
                 })
                 .catch((error) => {

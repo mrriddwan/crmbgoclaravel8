@@ -612,6 +612,11 @@
                         </tr>
                     </thead>
                     <tbody class="mt-2">
+                        <tr v-show="buffering" >
+                            <td class="text-center text-sm font-bold" colspan="11">
+                                Loading . .
+                            </td>
+                        </tr>
                         <tr
                             v-for="contact in contacts.data"
                             :key="contact.id"
@@ -636,14 +641,12 @@
                             </td>
                             <td class="text-xs">{{ contact.user.name }}</td>
                             <td class="text-xs">{{ contact.status.name }}</td>
-                            <!-- <td class="text-xs">{{ contact.user.id }}</td> -->
-                            <!-- <td class="text-xs">{{ is_subordinate}} </td> -->
                             <td class="text-xs">{{ contact.type.name }} </td>
                             <td class="text-xs">{{ contact.industry.name }}</td>
                             <td
                                 v-if="
                                     check_id(contact.user.id) ||
-                                    is('admin | super-admin')
+                                    is('supervisor | admin | super-admin')
                                 "
                                 class="items-center text-xs text-center h-6 w-24"
                             >
@@ -665,6 +668,7 @@
                             </td>
                             <td class="text-xs">{{ contact.category.name }}</td>
                             <td class="text-xs">{{ contact.address }}</td>
+                            <!-- <td class="text-xs">{{ check_if_subordinate(contact.user.id)['id'] }}</td> -->
                             <td class="text-xs">
                                 {{ contact.remark }}
                                 <button
@@ -680,7 +684,7 @@
                                 class="text-xs"
                                 v-if="
                                     check_id(contact.user.id) ||
-                                    is('admin | super-admin')
+                                    is('supervisor | admin | super-admin')
                                 "
                             >
                                 <div
@@ -793,6 +797,7 @@ export default {
         this.selectedUser = document
             .querySelector('meta[name="user-id"]')
             .getAttribute("content");
+        // this.selectedUser = 3;
 
         this.getUsers();
         this.getIndustries();
@@ -816,6 +821,7 @@ export default {
             selectAll: false,
             checked: [],
             url: "",
+            buffering: false,
 
             is_subordinate: false,
 
@@ -833,27 +839,35 @@ export default {
     },
     watch: {
         paginate: function (value) {
+            this.contacts = [];
             this.getContacts();
         },
         search: function (value) {
+            this.contacts = [];
             this.getContacts();
         },
         selectedUser: function (value) {
+            this.contacts = [];
             this.getContacts();
         },
         selectedStatus: function (value) {
+            this.contacts = [];
             this.getContacts();
         },
         selectedType: function (value) {
+            this.contacts = [];
             this.getContacts();
         },
         selectedCategory: function (value) {
+            this.contacts = [];
             this.getContacts();
         },
         selectedIndustry: function (value) {
+            this.contacts = [];
             this.getContacts();
         },
         selectedCategory: function (value) {
+            this.contacts = [];
             this.getContacts();
         },
 
@@ -905,22 +919,21 @@ export default {
                     return response.data.data;
                 })
                 console.log("result: ", result);
-
-            for(let final_result in result){
-                return final_result.result;
-            }
-        },
-
-        result_subordinate_check(contact_user_id) {
-            const final_result = this.check_if_subordinate(contact_user_id);
-            console.log("result final check: ", final_result);
-            return final_result;
+            
+                if(result.id === 1){
+                    // console.log("this is under the user")
+                    return "true";
+                } else {
+                    // console.log("this is not under the user")
+                    return "false";
+                }
         },
 
         async getContacts(page = 1) {
             if (typeof page === "undefined") {
                 page = 1;
             }
+            this.buffering = true;
             await axios
                 .get(
                     "/api/contacts/index?" +
@@ -946,6 +959,7 @@ export default {
                         this.sort_field
                 )
                 .then((res) => {
+                    this.buffering = false;
                     this.contacts = res.data;
                 })
                 .catch((error) => {

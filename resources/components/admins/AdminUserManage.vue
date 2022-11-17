@@ -35,7 +35,7 @@
                 <div class="grid grid-cols-2 gap-10">
                     <!-- Create User-->
                     <form
-                        class="grid grid-cols-1 mt-2"
+                        class="grid grid-cols-1 mt-2 gap-y-5"
                         @submit.prevent="createUser"
                     >
                         <div
@@ -65,6 +65,7 @@
                                     class="form-control"
                                     name="name"
                                     required
+                                    placeholder="eg: Telesales 2"
                                 />
                             </div>
                         </div>
@@ -83,6 +84,7 @@
                                     class="form-control"
                                     name="email"
                                     required
+                                    placeholder="eg: telesales2@bluedale.com.my"
                                 />
 
                                 <!-- @error('password') -->
@@ -178,7 +180,7 @@
                                     v-model="selectedUser"
                                 >
                                     <option disabled value="">
-                                        Please select user to edit
+                                        Select user to edit
                                     </option>
 
                                     <option
@@ -191,109 +193,112 @@
                                 </select>
                             </div>
                         </div>
-                        <div>
-                            
-                        </div>
-                        <div class="text-md text-center mt-2">Name</div>
-                        <div class="text-md text-center">
-                            <div class="form-group">
-                                <input
-                                    v-model="edit_user.name"
-                                    type="text"
-                                    class="block mt-1 w-full text-center rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                                />
-                            </div>
-                        </div>
-                        <div
-                            class="container w-max h-max text-center align-middle my-1"
-                        >
-                            <button
-                                @click="updateUser(edit_user.name)"
-                                class="border-1 border-black w-max rounded-md bg-blue-300 px-1"
-                            >
-                                <LockClosedIcon class="inline h-4 w-4" />
-                                <p
-                                    class="inline uppercase font-semibold text-xs h-1"
-                                >
-                                    Name
-                                </p>
-                            </button>
-                        </div>
-
-                        <div class="grid grid-cols-2 gap-10">
-                            <div class="grid grid-cols-1">
-                                <div class="text-center">Password</div>
+                        <div v-if="selectedUser">
+                            <div class="text-md text-center mt-2">Name</div>
+                            <div class="text-md text-center">
                                 <div class="form-group">
                                     <input
-                                        v-model="edit_user.password"
-                                        type="password"
-                                        class="block mt-1 w-full text-center rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                                    />
-                                </div>
-                            </div>
-                            <div class="grid grid-cols-1">
-                                <div class="text-center">Confirm Password</div>
-                                <div class="form-group">
-                                    <input
-                                        v-model="edit_user.confirm_password"
-                                        type="password"
-                                        class="block mt-1 w-full text-center rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                                    />
-                                </div>
-                            </div>
-                        </div>
-                        <div
-                            class="container w-max h-max text-center align-middle my-1"
-                        >
-                            <button
-                                @click="updateUser(edit_user.password)"
-                                class="border-1 border-black w-max rounded-md bg-blue-300 px-1"
-                            >
-                                <LockClosedIcon class="inline h-4 w-4" />
-                                <p
-                                    class="text-center inline uppercase font-semibold text-xs h-1"
-                                >
-                                    Password
-                                </p>
-                            </button>
-                        </div>
-
-                        <div class="grid grid-cols-2 gap-10">
-                            <div class="grid grid-cols-1">
-                                <div class="text-center">Email</div>
-                                <div class="form-group">
-                                    <input
-                                        v-model="edit_user.email"
+                                        v-model="edit_user.name"
                                         type="text"
                                         class="block mt-1 w-full text-center rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                                     />
                                 </div>
                             </div>
-                            <div class="grid grid-cols-1">
-                                <div class="text-center">Email Password</div>
-                                <div class="form-group">
-                                    <input
-                                        v-model="edit_user.email_password"
-                                        type="password"
-                                        class="block mt-1 w-full text-center rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                                    />
+                            <div
+                                class="container w-max h-max text-center align-middle my-1"
+                            >
+                                <button
+                                    @click="updateUser(edit_user.name)"
+                                    class="border-1 border-black w-max rounded-md bg-blue-300 px-1"
+                                >
+                                    <LockClosedIcon class="inline h-4 w-4" />
+                                    <p
+                                        class="inline uppercase font-semibold text-xs h-1"
+                                    >
+                                        Name
+                                    </p>
+                                </button>
+                            </div>
+
+                            <div class="grid grid-cols-2 gap-10">
+                                <div class="grid grid-cols-1">
+                                    <div class="text-center">Password</div>
+                                    <div class="form-group">
+                                        <input
+                                            v-model="edit_user.password"
+                                            type="password"
+                                            class="block mt-1 w-full text-center rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                        />
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-1">
+                                    <div class="text-center">
+                                        Confirm Password
+                                    </div>
+                                    <div class="form-group">
+                                        <input
+                                            v-model="edit_user.confirm_password"
+                                            type="password"
+                                            class="block mt-1 w-full text-center rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                        />
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div
-                            class="container w-max h-max text-center align-middle my-1"
-                        >
-                            <button
-                                @click="updateUser(edit_user.email)"
-                                class="border-1 border-black w-max rounded-md bg-blue-300 px-1"
+                            <div
+                                class="container w-max h-max text-center align-middle my-1"
                             >
-                                <LockClosedIcon class="inline h-4 w-4" />
-                                <p
-                                    class="inline uppercase font-semibold text-xs h-1"
+                                <button
+                                    @click="updateUser(edit_user.password)"
+                                    class="border-1 border-black w-max rounded-md bg-blue-300 px-1"
                                 >
-                                    Email
-                                </p>
-                            </button>
+                                    <LockClosedIcon class="inline h-4 w-4" />
+                                    <p
+                                        class="text-center inline uppercase font-semibold text-xs h-1"
+                                    >
+                                        Password
+                                    </p>
+                                </button>
+                            </div>
+
+                            <div class="grid grid-cols-2 gap-10">
+                                <div class="grid grid-cols-1">
+                                    <div class="text-center">Email</div>
+                                    <div class="form-group">
+                                        <input
+                                            v-model="edit_user.email"
+                                            type="text"
+                                            class="block mt-1 w-full text-center rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                        />
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-1">
+                                    <div class="text-center">
+                                        Email Password
+                                    </div>
+                                    <div class="form-group">
+                                        <input
+                                            v-model="edit_user.email_password"
+                                            type="password"
+                                            class="block mt-1 w-full text-center rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                            <div
+                                class="container w-max h-max text-center align-middle my-1"
+                            >
+                                <button
+                                    @click="updateUser(edit_user.email)"
+                                    class="border-1 border-black w-max rounded-md bg-blue-300 px-1"
+                                >
+                                    <LockClosedIcon class="inline h-4 w-4" />
+                                    <p
+                                        class="inline uppercase font-semibold text-xs h-1"
+                                    >
+                                        Email
+                                    </p>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -345,7 +350,7 @@
                                 v-model="add_supervisor"
                             >
                                 <option disabled value="">
-                                    Please select user
+                                    Select user to add
                                 </option>
 
                                 <option
@@ -395,7 +400,7 @@
                                 v-model="deleteSupervisor"
                             >
                                 <option disabled value="">
-                                    Please select supervisor
+                                    Select supervisor to remove
                                 </option>
 
                                 <option
@@ -448,7 +453,7 @@
                                 v-model="selectedSupervisor"
                             >
                                 <option disabled value="">
-                                    Please select supervisor
+                                    Select supervisor to edit
                                 </option>
 
                                 <option
@@ -532,7 +537,7 @@
                             <h3
                                 class="bg-blue-300 px-2 py-2 font-bold font-mono text-sm uppercase rounded-md"
                             >
-                                Select user
+                                Select supervisor
                             </h3>
                         </div>
                     </div>
@@ -588,6 +593,7 @@
                             <div class="form-group">
                                 <input
                                     v-model="new_category"
+                                    placeholder="Enter new user category"
                                     type="text"
                                     class="block mt-1 w-full text-center rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                                 />
@@ -630,9 +636,7 @@
                                 @change="getUserCategories"
                                 v-model="deleteCategory"
                             >
-                                <option disabled value="">
-                                    Please select user
-                                </option>
+                                <option value="">Select user to remove</option>
 
                                 <option
                                     v-for="user_category in user_categories"
@@ -683,7 +687,9 @@
                                 @change="getUserCategories"
                                 v-model="selectedCategory"
                             >
-                                <option value="">Please select user</option>
+                                <option value="">
+                                    Select user category to edit
+                                </option>
 
                                 <option
                                     v-for="user_category in user_categories"
@@ -714,29 +720,33 @@
                                 </p>
                             </span>
                         </div>
-                        <div class="form-group">
-                            <input
-                                v-model="user_category.name"
-                                type="text"
-                                class="block mt-1 w-full text-center rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                            />
-                        </div>
-                        <div
-                            class="container w-max h-max text-center align-middle my-2"
-                        >
-                            <button
-                                @click="
-                                    updateUserCategory(this.selectedCategory)
-                                "
-                                class="border-1 border-black w-max rounded-md bg-blue-300 px-2"
+                        <div v-if="selectedCategory">
+                            <div class="form-group">
+                                <input
+                                    v-model="user_category.name"
+                                    type="text"
+                                    class="block mt-1 w-full text-center rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                />
+                            </div>
+                            <div
+                                class="container w-max h-max text-center align-middle my-2"
                             >
-                                <LockClosedIcon class="inline h-4 w-4" />
-                                <p
-                                    class="inline uppercase font-bold text-sm h-1"
+                                <button
+                                    @click="
+                                        updateUserCategory(
+                                            this.selectedCategory
+                                        )
+                                    "
+                                    class="border-1 border-black w-max rounded-md bg-blue-300 px-2"
                                 >
-                                    Category
-                                </p>
-                            </button>
+                                    <LockClosedIcon class="inline h-4 w-4" />
+                                    <p
+                                        class="inline uppercase font-bold text-sm h-1"
+                                    >
+                                        Category
+                                    </p>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
