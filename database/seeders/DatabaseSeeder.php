@@ -43,7 +43,8 @@ class DatabaseSeeder extends Seeder
             BillboardSeeder::class,
             TempboardSeeder::class,
             BillboardTenureSeeder::class,
-
+            TrackingGeneralSeeder::class,
+            WIPGeneralSeeder::class,
         ]);
     }
 }

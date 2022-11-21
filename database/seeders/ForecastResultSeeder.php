@@ -23,6 +23,10 @@ class ForecastResultSeeder extends Seeder
                 'id' => 2,
                 'name' => 'Rejected'
             ],
+            [
+                'id' => 3,
+                'name' => 'Pending'
+            ],
         ]);
     }
 }

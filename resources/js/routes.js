@@ -50,6 +50,10 @@ import TempboardIndex from "../components/billboards/TempboardIndex.vue";
 import TempboardCreate from "../components/billboards/TempboardCreate.vue";
 import TempboardEdit from "../components/billboards/TempboardEdit.vue";
 
+/**Performance Imports */
+import TrackingGeneralIndex from "../components/trackings/TrackingGeneralIndex.vue";
+import TrackingTravelGuideIndex from "../components/trackings/TrackingTravelGuideIndex.vue";
+import TrackingGeneralCreate from "../components/trackings/TrackingGeneralCreate.vue";
 
 
 const routes = [
@@ -257,37 +261,43 @@ const routes = [
             Billboard Routes 
     */
 
-    { //Billboard Index
+    {
+        //Billboard Index
         path: "/billboard/index",
         name: "billboard_index",
         component: BillboardIndex,
     },
 
-    {//Billboard Create
+    {
+        //Billboard Create
         path: "/billboard/create",
         name: "billboard_create",
         component: BillboardCreate,
     },
 
-    {//Billboard Tenure
+    {
+        //Billboard Tenure
         path: "/billboard/:id/tenure",
         name: "billboard_tenure",
         component: BillboardTenure,
     },
 
-    { //Tempboard Index
+    {
+        //Tempboard Index
         path: "/tempboard/index",
         name: "tempboard_index",
         component: TempboardIndex,
     },
 
-    { //Tempboard Create
+    {
+        //Tempboard Create
         path: "/tempboard/create",
         name: "tempboard_create",
         component: TempboardCreate,
     },
 
-    { //Tempboard Edit
+    {
+        //Tempboard Edit
         path: "/tempboard/:id/edit",
         name: "tempboard_edit",
         component: TempboardEdit,
@@ -297,26 +307,53 @@ const routes = [
             Admin Routes 
     */
 
-    {   //Admin Index
+    {
+        //Admin Index
         path: "/admin/data",
         name: "admin_data",
         component: AdminData,
     },
-    {   //Admin Management
+    {
+        //Admin Management
         path: "/admin/user/management",
         name: "admin_userManagement",
         component: AdminUserManage,
     },
-    {   //Admin Access
+    {
+        //Admin Access
         path: "/admin/user/access",
         name: "admin_userAccess",
         component: AdminUserAccess,
     },
 
-    {   //Admin Export
+    {
+        //Admin Export
         path: "/admin/export",
         name: "admin_export",
         component: AdminExport,
+    },
+
+    /*                                                  
+        Job Tracking Routes 
+    */
+
+    {
+        //Tracking General Index
+        path: "/tracking/general/index",
+        name: "tracking_general",
+        component: TrackingGeneralIndex,
+    },
+    {
+        //Tracking General Index
+        path: "/tracking/travel_guide/index",
+        name: "tracking_travel_guide",
+        component: TrackingTravelGuideIndex,
+    },
+    {
+        //Tracking General Create
+        path: "/tracking/general/create",
+        name: "tracking_general_create",
+        component: TrackingGeneralCreate,
     },
 ];
 

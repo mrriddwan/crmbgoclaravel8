@@ -26,6 +26,7 @@ use App\Http\Controllers\Api\Project\ProjectController;
 use App\Http\Controllers\Api\ToDo\TaskController;
 use App\Http\Controllers\Api\ToDo\ToDoController;
 use App\Http\Controllers\Api\ToDo\ToDoSourceController;
+use App\Http\Controllers\Api\Tracking\TrackingGeneralController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -282,3 +283,5 @@ Route::delete('/tempboards/delete/{tempboard}', [TempboardController::class, 'de
 
 Route::post('/billboards/tenure/store', [BillboardTenureController::class, 'store'])->name('tenure:store');
 Route::delete('/billboards/tenure/delete/{tenure}', [BillboardTenureController::class, 'delete'])->name('tenure:delete');
+
+Route::get('/trackings/general/index', [TrackingGeneralController::class, 'index'])->name('tracking_general:index');

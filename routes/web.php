@@ -87,6 +87,14 @@ Route::get('/tempboard/index', function () {
     return view('tempboard');
 })->middleware(['auth'])->name('tempboard');
 
+Route::get('/tracking/general/index', function () {
+    return view('tracking_general');
+})->middleware(['auth'])->name('tracking-general');
+
+Route::get('/tracking/travel_guide/index', function () {
+    return view('tracking_tg');
+})->middleware(['auth'])->name('tracking-travel_guide');
+
 Route::get('/admin/data', function () {
     return view('admin_data');
 })->middleware(['auth'])->name('admin-data');
