@@ -17,8 +17,8 @@ class CreateTrackingGeneralsTable extends Migration
         Schema::create('tracking_generals', function (Blueprint $table) {
             $table->id();
             $table->string('progress')->nullable();
-            $table->date('track_startdate')->nullable();
-            $table->date('track_enddate')->nullable();
+            $table->date('general_startdate')->nullable();
+            $table->date('general_enddate')->nullable();
 
             $table->unsignedBigInteger('user_id')->nullable()->constrained();
             $table->foreign('user_id')
@@ -44,11 +44,11 @@ class CreateTrackingGeneralsTable extends Migration
             $table->string('category_description')->nullable();
 
             $table->integer('art_frequency')->nullable();
-            $table->string('tracking_type')->nullable();
-            $table->string('general_amount')->nullable();
+            $table->string('general_type')->nullable();
+            $table->integer('general_amount')->nullable();
             
-            $table->string('general_reach')->nullable();
-            $table->string('general_tenure')->nullable();
+            $table->integer('general_reach')->nullable();
+            $table->integer('general_tenure')->nullable();
             $table->string('art_format')->nullable();
             $table->string('general_remark')->nullable();
 

@@ -3,7 +3,7 @@
         <h1
             class="items-center text-center text-5xl text-white font-extrabold bg-slate-400 px-2 rounded-md"
         >
-            Tracking - General Record
+            Tracking - General
         </h1>
 
         <div class="flex">
@@ -16,6 +16,7 @@
                     Tracking</router-link
                 >
             </div>
+
             <div
                 class="py-2 px-2"
                 v-if="can('export project') || is('admin | super-admin')"
@@ -32,6 +33,14 @@
                     />
                     Export
                 </download-excel>
+            </div>
+            <div class="py-2 flex">
+                View:
+                <select v-model="view_type" class="form-control mx-2">
+                    <option value="">Select one</option>
+                    <option value="master">Master</option>
+                    <option value="wip">WIP</option>
+                </select>
             </div>
         </div>
 
@@ -66,7 +75,22 @@
             />
         </div>
         <div>
+            <div v-if="view_type === 'wip'">
+                <h3
+                    class="items-center text-center text-2xl uppercase font-mono text-white font-extrabold bg-amber-600 px-2 rounded-md"
+                >
+                    Work In Progress
+                </h3>
+            </div>
+            <div v-if="view_type === 'master'">
+                <h3
+                    class="items-center text-center text-2xl uppercase font-mono text-white font-extrabold bg-blue-500 px-2 rounded-md"
+                >
+                    Master Record
+                </h3>
+            </div>
             <div
+                v-if="view_type === 'master'"
                 class="table-wrp block max-h-screen overflow-y-auto overflow-x-auto"
             >
                 <table class="table table-hover w-full mt-0">
@@ -101,7 +125,7 @@
                                     <a
                                         href="#"
                                         @click.prevent="
-                                            change_sort('project_startdate')
+                                            change_sort('created_at')
                                         "
                                         class="text-white inline-flex"
                                     >
@@ -112,10 +136,7 @@
                                                     !(
                                                         sort_direction == 'desc'
                                                     )) &&
-                                                !(
-                                                    sort_field ==
-                                                    'project_startdate'
-                                                )
+                                                !(sort_field == 'created_at')
                                             "
                                             class="inline-block"
                                             ><ArrowsUpDownIcon class="h-4 w-4"
@@ -123,8 +144,7 @@
                                         <span
                                             v-if="
                                                 sort_direction == 'desc' &&
-                                                sort_field ==
-                                                    'project_startdate'
+                                                sort_field == 'created_at'
                                             "
                                             class="inline-block"
                                             ><ArrowUpIcon
@@ -133,8 +153,7 @@
                                         <span
                                             v-if="
                                                 sort_direction == 'asc' &&
-                                                sort_field ==
-                                                    'project_startdate'
+                                                sort_field == 'created_at'
                                             "
                                             class="inline-block"
                                             ><ArrowDownIcon
@@ -148,7 +167,7 @@
                                     <a
                                         href="#"
                                         @click.prevent="
-                                            change_sort('project_enddate')
+                                            change_sort('user_name')
                                         "
                                         class="text-white inline-flex"
                                     >
@@ -159,10 +178,7 @@
                                                     !(
                                                         sort_direction == 'desc'
                                                     )) &&
-                                                !(
-                                                    sort_field ==
-                                                    'project_enddate'
-                                                )
+                                                !(sort_field == 'user_name')
                                             "
                                             class="inline-block"
                                             ><ArrowsUpDownIcon class="h-4 w-4"
@@ -170,7 +186,7 @@
                                         <span
                                             v-if="
                                                 sort_direction == 'desc' &&
-                                                sort_field == 'project_enddate'
+                                                sort_field == 'user_name'
                                             "
                                             class="inline-block"
                                             ><ArrowUpIcon
@@ -179,7 +195,7 @@
                                         <span
                                             v-if="
                                                 sort_direction == 'asc' &&
-                                                sort_field == 'project_enddate'
+                                                sort_field == 'user_name'
                                             "
                                             class="inline-block"
                                             ><ArrowDownIcon
@@ -194,7 +210,7 @@
                                     <a
                                         href="#"
                                         @click.prevent="
-                                            change_sort('contact_name')
+                                            change_sort('company_name')
                                         "
                                         class="text-white inline-flex"
                                     >
@@ -205,7 +221,7 @@
                                                     !(
                                                         sort_direction == 'desc'
                                                     )) &&
-                                                !(sort_field == 'contact_name')
+                                                !(sort_field == 'company_name')
                                             "
                                             class="inline-block"
                                             ><ArrowsUpDownIcon class="h-4 w-4"
@@ -213,7 +229,7 @@
                                         <span
                                             v-if="
                                                 sort_direction == 'desc' &&
-                                                sort_field == 'contact_name'
+                                                sort_field == 'company_name'
                                             "
                                             class="inline-block"
                                             ><ArrowUpIcon
@@ -222,7 +238,7 @@
                                         <span
                                             v-if="
                                                 sort_direction == 'asc' &&
-                                                sort_field == 'contact_name'
+                                                sort_field == 'company_name'
                                             "
                                             class="inline-block"
                                             ><ArrowDownIcon
@@ -237,7 +253,7 @@
                                     <a
                                         href="#"
                                         @click.prevent="
-                                            change_sort('project_duration')
+                                            change_sort('category_name')
                                         "
                                         class="text-white inline-flex"
                                     >
@@ -248,10 +264,7 @@
                                                     !(
                                                         sort_direction == 'desc'
                                                     )) &&
-                                                !(
-                                                    sort_field ==
-                                                    'project_duration'
-                                                )
+                                                !(sort_field == 'category_name')
                                             "
                                             class="inline-block"
                                             ><ArrowsUpDownIcon class="h-4 w-4"
@@ -259,7 +272,7 @@
                                         <span
                                             v-if="
                                                 sort_direction == 'desc' &&
-                                                sort_field == 'project_duration'
+                                                sort_field == 'category_name'
                                             "
                                             class="inline-block"
                                             ><ArrowUpIcon
@@ -268,7 +281,7 @@
                                         <span
                                             v-if="
                                                 sort_direction == 'asc' &&
-                                                sort_field == 'project_duration'
+                                                sort_field == 'category_name'
                                             "
                                             class="inline-block"
                                             ><ArrowDownIcon
@@ -283,7 +296,7 @@
                                     <a
                                         href="#"
                                         @click.prevent="
-                                            change_sort('project_duration')
+                                            change_sort('category_description')
                                         "
                                         class="text-white inline-flex"
                                     >
@@ -297,7 +310,7 @@
                                                     )) &&
                                                 !(
                                                     sort_field ==
-                                                    'project_duration'
+                                                    'category_description'
                                                 )
                                             "
                                             class="inline-block"
@@ -306,7 +319,8 @@
                                         <span
                                             v-if="
                                                 sort_direction == 'desc' &&
-                                                sort_field == 'project_duration'
+                                                sort_field ==
+                                                    'category_description'
                                             "
                                             class="inline-block"
                                             ><ArrowUpIcon
@@ -315,7 +329,743 @@
                                         <span
                                             v-if="
                                                 sort_direction == 'asc' &&
-                                                sort_field == 'project_duration'
+                                                sort_field ==
+                                                    'category_description'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowDownIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
+                                    </a>
+                                </div>
+                            </th>
+
+                            <th class="py-3">
+                                <div class="text-sm text-center h-6">
+                                    <a
+                                        href="#"
+                                        @click.prevent="
+                                            change_sort('general_type')
+                                        "
+                                        class="text-white inline-flex"
+                                    >
+                                        Type
+                                        <span
+                                            v-if="
+                                                (!(sort_direction == 'asc') ||
+                                                    !(
+                                                        sort_direction == 'desc'
+                                                    )) &&
+                                                !(sort_field == 'general_type')
+                                            "
+                                            class="inline-block"
+                                            ><ArrowsUpDownIcon class="h-4 w-4"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'desc' &&
+                                                sort_field == 'general_type'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowUpIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'asc' &&
+                                                sort_field == 'general_type'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowDownIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
+                                    </a>
+                                </div>
+                            </th>
+                            <th class="py-3">
+                                <div class="text-sm text-center h-6">
+                                    <a
+                                        href="#"
+                                        @click.prevent="
+                                            change_sort('general_amount')
+                                        "
+                                        class="text-white inline-flex"
+                                    >
+                                        Amount
+                                        <span
+                                            v-if="
+                                                (!(sort_direction == 'asc') ||
+                                                    !(
+                                                        sort_direction == 'desc'
+                                                    )) &&
+                                                !(
+                                                    sort_field ==
+                                                    'general_amount'
+                                                )
+                                            "
+                                            class="inline-block"
+                                            ><ArrowsUpDownIcon class="h-4 w-4"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'desc' &&
+                                                sort_field == 'general_amount'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowUpIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'asc' &&
+                                                sort_field == 'general_amount'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowDownIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
+                                    </a>
+                                </div>
+                            </th>
+                            <th class="py-3">
+                                <div class="text-sm text-center h-6">
+                                    <a
+                                        href="#"
+                                        @click.prevent="
+                                            change_sort('art_format')
+                                        "
+                                        class="text-white inline-flex"
+                                    >
+                                        Artwork <br />
+                                        Format
+                                        <span
+                                            v-if="
+                                                (!(sort_direction == 'asc') ||
+                                                    !(
+                                                        sort_direction == 'desc'
+                                                    )) &&
+                                                !(sort_field == 'art_format')
+                                            "
+                                            class="inline-block"
+                                            ><ArrowsUpDownIcon class="h-4 w-4"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'desc' &&
+                                                sort_field == 'art_format'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowUpIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'asc' &&
+                                                sort_field == 'art_format'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowDownIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
+                                    </a>
+                                </div>
+                            </th>
+                            <th class="py-3">
+                                <div class="text-sm text-center h-6">
+                                    <a
+                                        href="#"
+                                        @click.prevent="
+                                            change_sort('art_frequency')
+                                        "
+                                        class="text-white inline-flex"
+                                    >
+                                        Artwork <br />
+                                        Frequency
+                                        <span
+                                            v-if="
+                                                (!(sort_direction == 'asc') ||
+                                                    !(
+                                                        sort_direction == 'desc'
+                                                    )) &&
+                                                !(sort_field == 'art_frequency')
+                                            "
+                                            class="inline-block"
+                                            ><ArrowsUpDownIcon class="h-4 w-4"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'desc' &&
+                                                sort_field == 'art_frequency'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowUpIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'asc' &&
+                                                sort_field == 'art_frequency'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowDownIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
+                                    </a>
+                                </div>
+                            </th>
+                            <th class="py-3">
+                                <div class="text-sm text-center h-6">
+                                    <a
+                                        href="#"
+                                        @click.prevent="
+                                            change_sort('general_reach')
+                                        "
+                                        class="text-white inline-flex"
+                                    >
+                                        REACH
+                                        <span
+                                            v-if="
+                                                (!(sort_direction == 'asc') ||
+                                                    !(
+                                                        sort_direction == 'desc'
+                                                    )) &&
+                                                !(sort_field == 'general_reach')
+                                            "
+                                            class="inline-block"
+                                            ><ArrowsUpDownIcon class="h-4 w-4"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'desc' &&
+                                                sort_field == 'general_reach'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowUpIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'asc' &&
+                                                sort_field == 'general_reach'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowDownIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
+                                    </a>
+                                </div>
+                            </th>
+                            <th class="py-3">
+                                <div class="text-sm text-center h-6">
+                                    <a
+                                        href="#"
+                                        @click.prevent="
+                                            change_sort('general_tenure')
+                                        "
+                                        class="text-white inline-flex"
+                                    >
+                                        Tenure
+                                        <span
+                                            v-if="
+                                                (!(sort_direction == 'asc') ||
+                                                    !(
+                                                        sort_direction == 'desc'
+                                                    )) &&
+                                                !(
+                                                    sort_field ==
+                                                    'general_tenure'
+                                                )
+                                            "
+                                            class="inline-block"
+                                            ><ArrowsUpDownIcon class="h-4 w-4"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'desc' &&
+                                                sort_field == 'general_tenure'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowUpIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'asc' &&
+                                                sort_field == 'general_tenure'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowDownIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
+                                    </a>
+                                </div>
+                            </th>
+                            <th class="py-3">
+                                <div class="text-sm text-center h-6">
+                                    <a
+                                        href="#"
+                                        @click.prevent="
+                                            change_sort('general_startdate')
+                                        "
+                                        class="text-white inline-flex"
+                                    >
+                                        Start <br />
+                                        Date
+                                        <span
+                                            v-if="
+                                                (!(sort_direction == 'asc') ||
+                                                    !(
+                                                        sort_direction == 'desc'
+                                                    )) &&
+                                                !(
+                                                    sort_field ==
+                                                    'general_startdate'
+                                                )
+                                            "
+                                            class="inline-block"
+                                            ><ArrowsUpDownIcon class="h-4 w-4"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'desc' &&
+                                                sort_field ==
+                                                    'general_startdate'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowUpIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'asc' &&
+                                                sort_field ==
+                                                    'general_startdate'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowDownIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
+                                    </a>
+                                </div>
+                            </th>
+                            <th class="py-3">
+                                <div class="text-sm text-center h-6">
+                                    <a
+                                        href="#"
+                                        @click.prevent="
+                                            change_sort('general_enddate')
+                                        "
+                                        class="text-white inline-flex"
+                                    >
+                                        End <br />
+                                        Date
+                                        <span
+                                            v-if="
+                                                (!(sort_direction == 'asc') ||
+                                                    !(
+                                                        sort_direction == 'desc'
+                                                    )) &&
+                                                !(
+                                                    sort_field ==
+                                                    'general_enddate'
+                                                )
+                                            "
+                                            class="inline-block"
+                                            ><ArrowsUpDownIcon class="h-4 w-4"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'desc' &&
+                                                sort_field == 'general_enddate'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowUpIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'asc' &&
+                                                sort_field == 'general_enddate'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowDownIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
+                                    </a>
+                                </div>
+                            </th>
+
+                            <th class="py-3">
+                                <div class="text-sm text-center h-6">
+                                    <a
+                                        href="#"
+                                        @click.prevent=""
+                                        class="text-white inline-flex"
+                                    >
+                                        Remark
+                                    </a>
+                                </div>
+                            </th>
+
+                            <th class="py-3">
+                                <div class="text-sm text-center h-6">
+                                    <a
+                                        href="#"
+                                        @click.prevent="change_sort('progress')"
+                                        class="text-white inline-flex"
+                                    >
+                                        Status
+                                        <span
+                                            v-if="
+                                                (!(sort_direction == 'asc') ||
+                                                    !(
+                                                        sort_direction == 'desc'
+                                                    )) &&
+                                                !(sort_field == 'progress')
+                                            "
+                                            class="inline-block"
+                                            ><ArrowsUpDownIcon class="h-4 w-4"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'desc' &&
+                                                sort_field == 'progress'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowUpIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'asc' &&
+                                                sort_field == 'progress'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowDownIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
+                                    </a>
+                                </div>
+                            </th>
+
+                            <th class="py-3">
+                                <div class="text-sm text-center h-6 text-white">
+                                    Action
+                                </div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="mt-2">
+                        <tr
+                            v-for="(tracking, index) in tracking_generals.data"
+                            :key="tracking.id"
+                        >
+                            <td class="text-xs text-center">{{ index + 1 }}</td>
+                            <td class="text-xs text-center">
+                                {{ showToday(tracking.created_at) }}
+                            </td>
+                            <td class="text-xs text-center">
+                                {{ tracking.user_name }}
+                            </td>
+                            <td class="text-xs text-center">
+                                {{ tracking.company_name }}
+                            </td>
+                            <td class="text-xs text-center">
+                                {{ tracking.category_name }}
+                            </td>
+                            <td class="text-xs text-center">
+                                {{ tracking.category_description }}
+                            </td>
+                            <td class="text-xs text-center">
+                                {{ tracking.general_type }}
+                            </td>
+                            <td class="text-xs text-center">
+                                {{ tracking.general_amount }}
+                            </td>
+                            <td class="text-xs text-center">
+                                {{ tracking.art_format }}
+                            </td>
+                            <td class="text-xs text-center">
+                                {{ tracking.art_frequency }}
+                            </td>
+                            <td class="text-xs text-center">
+                                {{ tracking.general_reach }}
+                            </td>
+                            <td class="text-xs text-center">
+                                {{ tracking.general_tenure }}
+                            </td>
+                            <td class="text-xs text-center">
+                                {{ tracking.general_startdate }}
+                            </td>
+                            <td class="text-xs text-center">
+                                {{ tracking.general_enddate }}
+                            </td>
+                            <td class="text-xs text-center">
+                                {{ tracking.general_remark }}
+                            </td>
+                            <td class="text-xs text-center">
+                                {{ tracking.progress }}
+                            </td>
+                            <td class="text-xs text-center">
+                                <router-link
+                                    :to="{}"
+                                    class="mr-2 mb-2 inline-flex items-center px-2 py-1 bg-yellow-400 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
+                                >
+                                    <PencilSquareIcon class="h-3 w-3"
+                                /></router-link>
+                                <button
+                                    class="mr-2 mb-2 inline-flex items-center px-2 py-1 bg-red-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
+                                    @click=""
+                                >
+                                    <TrashIcon class="h-3 w-3" />
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div
+                v-if="view_type === 'wip'"
+                class="table-wrp block max-h-screen overflow-y-auto overflow-x-auto"
+            >
+                <table class="table table-hover w-full mt-0">
+                    <thead class="bg-slate-500 border-b sticky top-0">
+                        <tr>
+                            <th class="py-3">
+                                <div class="text-sm text-center h-6">
+                                    <a
+                                        href="#"
+                                        @click.prevent=""
+                                        class="text-white"
+                                    >
+                                    </a>
+                                    <span
+                                        v-if="
+                                            sort_direction == 'desc' &&
+                                            sort_field == ''
+                                        "
+                                        >&uarr;</span
+                                    >
+                                    <span
+                                        v-if="
+                                            sort_direction == 'asc' &&
+                                            sort_field == ''
+                                        "
+                                        >&darr;</span
+                                    >
+                                </div>
+                            </th>
+                            <th class="py-3">
+                                <div class="text-sm text-center h-6">
+                                    <a
+                                        href="#"
+                                        @click.prevent="
+                                            change_sort('created_at')
+                                        "
+                                        class="text-white inline-flex"
+                                    >
+                                        Date
+                                        <span
+                                            v-if="
+                                                (!(sort_direction == 'asc') ||
+                                                    !(
+                                                        sort_direction == 'desc'
+                                                    )) &&
+                                                !(sort_field == 'created_at')
+                                            "
+                                            class="inline-block"
+                                            ><ArrowsUpDownIcon class="h-4 w-4"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'desc' &&
+                                                sort_field == 'created_at'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowUpIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'asc' &&
+                                                sort_field == 'created_at'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowDownIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
+                                    </a>
+                                </div>
+                            </th>
+                            <th class="py-3">
+                                <div class="text-sm text-center h-6">
+                                    <a
+                                        href="#"
+                                        @click.prevent="
+                                            change_sort('user_name')
+                                        "
+                                        class="text-white inline-flex"
+                                    >
+                                        CS
+                                        <span
+                                            v-if="
+                                                (!(sort_direction == 'asc') ||
+                                                    !(
+                                                        sort_direction == 'desc'
+                                                    )) &&
+                                                !(sort_field == 'user_name')
+                                            "
+                                            class="inline-block"
+                                            ><ArrowsUpDownIcon class="h-4 w-4"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'desc' &&
+                                                sort_field == 'user_name'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowUpIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'asc' &&
+                                                sort_field == 'user_name'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowDownIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
+                                    </a>
+                                </div>
+                            </th>
+
+                            <th class="py-3">
+                                <div class="text-sm text-center h-6 w-full">
+                                    <a
+                                        href="#"
+                                        @click.prevent="
+                                            change_sort('company_name')
+                                        "
+                                        class="text-white inline-flex"
+                                    >
+                                        Company
+                                        <span
+                                            v-if="
+                                                (!(sort_direction == 'asc') ||
+                                                    !(
+                                                        sort_direction == 'desc'
+                                                    )) &&
+                                                !(sort_field == 'company_name')
+                                            "
+                                            class="inline-block"
+                                            ><ArrowsUpDownIcon class="h-4 w-4"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'desc' &&
+                                                sort_field == 'company_name'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowUpIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'asc' &&
+                                                sort_field == 'company_name'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowDownIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
+                                    </a>
+                                </div>
+                            </th>
+
+                            <th class="py-3">
+                                <div class="text-sm text-center h-6">
+                                    <a
+                                        href="#"
+                                        @click.prevent="
+                                            change_sort('category_name')
+                                        "
+                                        class="text-white inline-flex"
+                                    >
+                                        Product
+                                        <span
+                                            v-if="
+                                                (!(sort_direction == 'asc') ||
+                                                    !(
+                                                        sort_direction == 'desc'
+                                                    )) &&
+                                                !(sort_field == 'category_name')
+                                            "
+                                            class="inline-block"
+                                            ><ArrowsUpDownIcon class="h-4 w-4"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'desc' &&
+                                                sort_field == 'category_name'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowUpIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'asc' &&
+                                                sort_field == 'category_name'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowDownIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
+                                    </a>
+                                </div>
+                            </th>
+
+                            <th class="py-3">
+                                <div class="text-sm text-center h-6">
+                                    <a
+                                        href="#"
+                                        @click.prevent="
+                                            change_sort('category_description')
+                                        "
+                                        class="text-white inline-flex"
+                                    >
+                                        Product <br />
+                                        Description
+                                        <span
+                                            v-if="
+                                                (!(sort_direction == 'asc') ||
+                                                    !(
+                                                        sort_direction == 'desc'
+                                                    )) &&
+                                                !(
+                                                    sort_field ==
+                                                    'category_description'
+                                                )
+                                            "
+                                            class="inline-block"
+                                            ><ArrowsUpDownIcon class="h-4 w-4"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'desc' &&
+                                                sort_field ==
+                                                    'category_description'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowUpIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'asc' &&
+                                                sort_field ==
+                                                    'category_description'
                                             "
                                             class="inline-block"
                                             ><ArrowDownIcon
@@ -418,135 +1168,7 @@
                                         "
                                         class="text-white inline-flex"
                                     >
-                                        Artwork <br />
-                                        Format
-                                        <span
-                                            v-if="
-                                                (!(sort_direction == 'asc') ||
-                                                    !(
-                                                        sort_direction == 'desc'
-                                                    )) &&
-                                                !(sort_field == 'project_name')
-                                            "
-                                            class="inline-block"
-                                            ><ArrowsUpDownIcon class="h-4 w-4"
-                                        /></span>
-                                        <span
-                                            v-if="
-                                                sort_direction == 'desc' &&
-                                                sort_field == 'project_name'
-                                            "
-                                            class="inline-block"
-                                            ><ArrowUpIcon
-                                                class="h-4 w-4 text-amber-400 font-extrabold"
-                                        /></span>
-                                        <span
-                                            v-if="
-                                                sort_direction == 'asc' &&
-                                                sort_field == 'project_name'
-                                            "
-                                            class="inline-block"
-                                            ><ArrowDownIcon
-                                                class="h-4 w-4 text-amber-400 font-extrabold"
-                                        /></span>
-                                    </a>
-                                </div>
-                            </th>
-                            <th class="py-3">
-                                <div class="text-sm text-center h-6">
-                                    <a
-                                        href="#"
-                                        @click.prevent="
-                                            change_sort('project_name')
-                                        "
-                                        class="text-white inline-flex"
-                                    >
-                                        Artwork <br />
                                         Frequency
-                                        <span
-                                            v-if="
-                                                (!(sort_direction == 'asc') ||
-                                                    !(
-                                                        sort_direction == 'desc'
-                                                    )) &&
-                                                !(sort_field == 'project_name')
-                                            "
-                                            class="inline-block"
-                                            ><ArrowsUpDownIcon class="h-4 w-4"
-                                        /></span>
-                                        <span
-                                            v-if="
-                                                sort_direction == 'desc' &&
-                                                sort_field == 'project_name'
-                                            "
-                                            class="inline-block"
-                                            ><ArrowUpIcon
-                                                class="h-4 w-4 text-amber-400 font-extrabold"
-                                        /></span>
-                                        <span
-                                            v-if="
-                                                sort_direction == 'asc' &&
-                                                sort_field == 'project_name'
-                                            "
-                                            class="inline-block"
-                                            ><ArrowDownIcon
-                                                class="h-4 w-4 text-amber-400 font-extrabold"
-                                        /></span>
-                                    </a>
-                                </div>
-                            </th>
-                            <th class="py-3">
-                                <div class="text-sm text-center h-6">
-                                    <a
-                                        href="#"
-                                        @click.prevent="
-                                            change_sort('project_name')
-                                        "
-                                        class="text-white inline-flex"
-                                    >
-                                        REACH
-                                        <span
-                                            v-if="
-                                                (!(sort_direction == 'asc') ||
-                                                    !(
-                                                        sort_direction == 'desc'
-                                                    )) &&
-                                                !(sort_field == 'project_name')
-                                            "
-                                            class="inline-block"
-                                            ><ArrowsUpDownIcon class="h-4 w-4"
-                                        /></span>
-                                        <span
-                                            v-if="
-                                                sort_direction == 'desc' &&
-                                                sort_field == 'project_name'
-                                            "
-                                            class="inline-block"
-                                            ><ArrowUpIcon
-                                                class="h-4 w-4 text-amber-400 font-extrabold"
-                                        /></span>
-                                        <span
-                                            v-if="
-                                                sort_direction == 'asc' &&
-                                                sort_field == 'project_name'
-                                            "
-                                            class="inline-block"
-                                            ><ArrowDownIcon
-                                                class="h-4 w-4 text-amber-400 font-extrabold"
-                                        /></span>
-                                    </a>
-                                </div>
-                            </th>
-                            <th class="py-3">
-                                <div class="text-sm text-center h-6">
-                                    <a
-                                        href="#"
-                                        @click.prevent="
-                                            change_sort('project_name')
-                                        "
-                                        class="text-white inline-flex"
-                                    >
-                                        Tenure
                                         <span
                                             v-if="
                                                 (!(sort_direction == 'asc') ||
@@ -665,19 +1287,6 @@
                                     </a>
                                 </div>
                             </th>
-
-                            <th class="py-3">
-                                <div class="text-sm text-center h-6">
-                                    <a
-                                        href="#"
-                                        @click.prevent=""
-                                        class="text-white inline-flex"
-                                    >
-                                        Remark
-                                    </a>
-                                </div>
-                            </th>
-
                             <th class="py-3">
                                 <div class="text-sm text-center h-6">
                                     <a
@@ -687,7 +1296,94 @@
                                         "
                                         class="text-white inline-flex"
                                     >
-                                        Status
+                                        Status <br />
+                                        (Progress)
+                                        <span
+                                            v-if="
+                                                (!(sort_direction == 'asc') ||
+                                                    !(
+                                                        sort_direction == 'desc'
+                                                    )) &&
+                                                !(sort_field == 'project_name')
+                                            "
+                                            class="inline-block"
+                                            ><ArrowsUpDownIcon class="h-4 w-4"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'desc' &&
+                                                sort_field == 'project_name'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowUpIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'asc' &&
+                                                sort_field == 'project_name'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowDownIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
+                                    </a>
+                                </div>
+                            </th>
+                            <th class="py-3">
+                                <div class="text-sm text-center h-6">
+                                    <a
+                                        href="#"
+                                        @click.prevent="
+                                            change_sort('project_name')
+                                        "
+                                        class="text-white inline-flex"
+                                    >
+                                        Art <br />
+                                        Chase
+                                        <span
+                                            v-if="
+                                                (!(sort_direction == 'asc') ||
+                                                    !(
+                                                        sort_direction == 'desc'
+                                                    )) &&
+                                                !(sort_field == 'project_name')
+                                            "
+                                            class="inline-block"
+                                            ><ArrowsUpDownIcon class="h-4 w-4"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'desc' &&
+                                                sort_field == 'project_name'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowUpIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'asc' &&
+                                                sort_field == 'project_name'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowDownIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
+                                    </a>
+                                </div>
+                            </th>
+                            <th class="py-3">
+                                <div class="text-sm text-center h-6">
+                                    <a
+                                        href="#"
+                                        @click.prevent="
+                                            change_sort('project_name')
+                                        "
+                                        class="text-white inline-flex"
+                                    >
+                                        Art <br />
+                                        Received
                                         <span
                                             v-if="
                                                 (!(sort_direction == 'asc') ||
@@ -722,6 +1418,324 @@
                             </th>
 
                             <th class="py-3">
+                                <div class="text-sm text-center h-6">
+                                    <a
+                                        href="#"
+                                        @click.prevent="
+                                            change_sort('project_name')
+                                        "
+                                        class="text-white inline-flex"
+                                    >
+                                        Art <br />
+                                        To Do
+                                        <span
+                                            v-if="
+                                                (!(sort_direction == 'asc') ||
+                                                    !(
+                                                        sort_direction == 'desc'
+                                                    )) &&
+                                                !(sort_field == 'project_name')
+                                            "
+                                            class="inline-block"
+                                            ><ArrowsUpDownIcon class="h-4 w-4"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'desc' &&
+                                                sort_field == 'project_name'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowUpIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'asc' &&
+                                                sort_field == 'project_name'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowDownIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
+                                    </a>
+                                </div>
+                            </th>
+
+                            <th class="py-3">
+                                <div class="text-sm text-center h-6">
+                                    <a
+                                        href="#"
+                                        @click.prevent="
+                                            change_sort('project_name')
+                                        "
+                                        class="text-white inline-flex"
+                                    >
+                                        C&S <br />
+                                        Sent
+                                        <span
+                                            v-if="
+                                                (!(sort_direction == 'asc') ||
+                                                    !(
+                                                        sort_direction == 'desc'
+                                                    )) &&
+                                                !(sort_field == 'project_name')
+                                            "
+                                            class="inline-block"
+                                            ><ArrowsUpDownIcon class="h-4 w-4"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'desc' &&
+                                                sort_field == 'project_name'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowUpIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'asc' &&
+                                                sort_field == 'project_name'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowDownIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
+                                    </a>
+                                </div>
+                            </th>
+
+                            <th class="py-3">
+                                <div class="text-sm text-center h-6">
+                                    <a
+                                        href="#"
+                                        @click.prevent="
+                                            change_sort('project_name')
+                                        "
+                                        class="text-white inline-flex"
+                                    >
+                                        C&S <br />
+                                        Record
+                                        <span
+                                            v-if="
+                                                (!(sort_direction == 'asc') ||
+                                                    !(
+                                                        sort_direction == 'desc'
+                                                    )) &&
+                                                !(sort_field == 'project_name')
+                                            "
+                                            class="inline-block"
+                                            ><ArrowsUpDownIcon class="h-4 w-4"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'desc' &&
+                                                sort_field == 'project_name'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowUpIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'asc' &&
+                                                sort_field == 'project_name'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowDownIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
+                                    </a>
+                                </div>
+                            </th>
+
+                            <th class="py-3">
+                                <div class="text-sm text-center h-6">
+                                    <a
+                                        href="#"
+                                        @click.prevent="
+                                            change_sort('project_name')
+                                        "
+                                        class="text-white inline-flex"
+                                    >
+                                        Schedule <br />
+                                        Date
+                                        <span
+                                            v-if="
+                                                (!(sort_direction == 'asc') ||
+                                                    !(
+                                                        sort_direction == 'desc'
+                                                    )) &&
+                                                !(sort_field == 'project_name')
+                                            "
+                                            class="inline-block"
+                                            ><ArrowsUpDownIcon class="h-4 w-4"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'desc' &&
+                                                sort_field == 'project_name'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowUpIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'asc' &&
+                                                sort_field == 'project_name'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowDownIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
+                                    </a>
+                                </div>
+                            </th>
+
+                            <th class="py-3">
+                                <div class="text-sm text-center h-6">
+                                    <a
+                                        href="#"
+                                        @click.prevent="
+                                            change_sort('project_name')
+                                        "
+                                        class="text-white inline-flex"
+                                    >
+                                        Report
+                                        <span
+                                            v-if="
+                                                (!(sort_direction == 'asc') ||
+                                                    !(
+                                                        sort_direction == 'desc'
+                                                    )) &&
+                                                !(sort_field == 'project_name')
+                                            "
+                                            class="inline-block"
+                                            ><ArrowsUpDownIcon class="h-4 w-4"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'desc' &&
+                                                sort_field == 'project_name'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowUpIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'asc' &&
+                                                sort_field == 'project_name'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowDownIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
+                                    </a>
+                                </div>
+                            </th>
+
+                            <th class="py-3">
+                                <div class="text-sm text-center h-6">
+                                    <a
+                                        href="#"
+                                        @click.prevent="
+                                            change_sort('project_name')
+                                        "
+                                        class="text-white inline-flex"
+                                    >
+                                        Client <br />
+                                        Posting
+                                        <span
+                                            v-if="
+                                                (!(sort_direction == 'asc') ||
+                                                    !(
+                                                        sort_direction == 'desc'
+                                                    )) &&
+                                                !(sort_field == 'project_name')
+                                            "
+                                            class="inline-block"
+                                            ><ArrowsUpDownIcon class="h-4 w-4"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'desc' &&
+                                                sort_field == 'project_name'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowUpIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'asc' &&
+                                                sort_field == 'project_name'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowDownIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
+                                    </a>
+                                </div>
+                            </th>
+
+                            <th class="py-3">
+                                <div class="text-sm text-center h-6">
+                                    <a
+                                        href="#"
+                                        @click.prevent="
+                                            change_sort('project_name')
+                                        "
+                                        class="text-white inline-flex"
+                                    >
+                                        Actual Live <br />
+                                        Date
+                                        <span
+                                            v-if="
+                                                (!(sort_direction == 'asc') ||
+                                                    !(
+                                                        sort_direction == 'desc'
+                                                    )) &&
+                                                !(sort_field == 'project_name')
+                                            "
+                                            class="inline-block"
+                                            ><ArrowsUpDownIcon class="h-4 w-4"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'desc' &&
+                                                sort_field == 'project_name'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowUpIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'asc' &&
+                                                sort_field == 'project_name'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowDownIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
+                                    </a>
+                                </div>
+                            </th>
+
+                            <th class="py-3">
+                                <div class="text-sm text-center h-6">
+                                    <a
+                                        href="#"
+                                        @click.prevent=""
+                                        class="text-white inline-flex"
+                                    >
+                                        Remark
+                                    </a>
+                                </div>
+                            </th>
+                            <th class="py-3">
                                 <div class="text-sm text-center h-6 text-white">
                                     Action
                                 </div>
@@ -729,25 +1743,204 @@
                         </tr>
                     </thead>
                     <tbody class="mt-2">
-                        <tr v-for="tracking,index in tracking_generals.data" :key="tracking.id">
+                        <tr
+                            v-for="(tracking, index) in tracking_generals.data"
+                            :key="tracking.id"
+                        >
                             <td class="text-xs text-center">{{ index + 1 }}</td>
-                            <td class="text-xs text-center">{{ tracking.created_at }}</td>
-                            <td class="text-xs text-center">{{ tracking.user_name }}</td>
-                            <td class="text-xs text-center">{{ tracking.company_name }}</td>
-                            <td class="text-xs text-center">{{ tracking.category_name }}</td>
                             <td class="text-xs text-center">
-                                {{ tracking.category_description }}
+                                {{ showToday(tracking.created_at) }}
                             </td>
-                            <td class="text-xs text-center">{{ tracking.tracking_type }}</td>
-                            <td class="text-xs text-center">{{ tracking.general_amount }}</td>
-                            <td class="text-xs text-center">{{ tracking.art_format }}</td>
-                            <td class="text-xs text-center">{{ tracking.art_frequency }}</td>
-                            <td class="text-xs text-center">{{ tracking.general_reach }}</td>
-                            <td class="text-xs text-center">{{ tracking.general_tenure }}</td>
-                            <td class="text-xs text-center">{{ tracking.track_startdate }}</td>
-                            <td class="text-xs text-center">{{ tracking.track_enddate }}</td>
-                            <td class="text-xs text-center">{{ tracking.general_remark }}</td>
-                            <td class="text-xs text-center">{{ tracking.progress }}</td>
+                            <td class="text-xs text-center">
+                                {{ tracking.tracking_general.user.name }}
+                            </td>
+                            <td class="text-xs text-center">
+                                {{ tracking.tracking_general.company.name }}
+                            </td>
+                            <td class="text-xs text-center">
+                                {{ tracking.tracking_general.category.name }}
+                            </td>
+                            <td class="text-xs text-center">
+                                {{
+                                    tracking.tracking_general
+                                        .category_description
+                                }}
+                            </td>
+                            <td class="text-xs text-center">
+                                {{ tracking.tracking_general.general_type }}
+                            </td>
+                            <td class="text-xs text-center">
+                                RM
+                                {{
+                                    tracking.tracking_general.general_amount.toLocaleString(
+                                        "en-US"
+                                    )
+                                }}
+                            </td>
+                            <td class="text-xs text-center">
+                                {{ tracking.tracking_general.art_frequency }}
+                            </td>
+                            <td class="text-xs text-center">
+                                {{
+                                    tracking.tracking_general.general_startdate
+                                }}
+                            </td>
+                            <td class="text-xs text-center">
+                                {{ tracking.tracking_general.general_enddate }}
+                            </td>
+                            <td class="text-xs text-center">
+                                {{ tracking.tracking_general.progress }}
+                            </td>
+                            <td
+                                v-if="
+                                    !tracking.art_chase_date &&
+                                    !tracking.art_chase_user.name &&
+                                    !tracking.art_chase_remark
+                                "
+                                class="text-xs text-center"
+                            >
+                                <div class="bg-green-300 rounded-md p-1 mb-1">
+                                    {{ showToday(tracking.art_chase_date) }}
+                                </div>
+
+                                <div class="bg-blue-300 rounded-md p-1 mb-1">
+                                    {{ tracking.art_chase_user.name }}
+                                </div>
+
+                                <div class="bg-indigo-300 rounded-md p-1">
+                                    {{ tracking.art_chase_remark }}
+                                </div>
+                            </td>
+                            <td
+                                v-else
+                                class="text-xs text-center"
+                                style="background-color: yellow"
+                            >
+                                <div class="bg-green-300 rounded-md p-1 mb-1">
+                                    {{ showToday(tracking.art_chase_date) }}
+                                </div>
+
+                                <div class="bg-blue-300 rounded-md p-1 mb-1">
+                                    {{ tracking.art_chase_user.name }}
+                                </div>
+
+                                <div class="bg-indigo-300 rounded-md p-1">
+                                    {{ tracking.art_chase_remark }}
+                                </div>
+                            </td>
+                            <td class="text-xs text-center bg-amber-600">
+                                <div class="bg-green-300 rounded-md p-1 mb-1">
+                                    {{ showToday(tracking.art_received_date) }}
+                                </div>
+
+                                <div class="bg-blue-300 rounded-md p-1 mb-1">
+                                    {{ tracking.art_received_user.name }}
+                                </div>
+
+                                <div class="bg-indigo-300 rounded-md p-1">
+                                    {{ tracking.art_received_remark }}
+                                </div>
+                            </td>
+                            <td class="text-xs text-center">
+                                <div class="bg-green-300 rounded-md p-1 mb-1">
+                                    {{ showToday(tracking.art_todo_date) }}
+                                </div>
+
+                                <div class="bg-blue-300 rounded-md p-1 mb-1">
+                                    {{ tracking.art_todo_user.name }}
+                                </div>
+
+                                <div class="bg-indigo-300 rounded-md p-1">
+                                    {{ tracking.art_todo_remark }}
+                                </div>
+                            </td>
+                            <td class="text-xs text-center">
+                                <div class="bg-green-300 rounded-md p-1 mb-1">
+                                    {{ showToday(tracking.cns_sent_date) }}
+                                </div>
+
+                                <div class="bg-blue-300 rounded-md p-1 mb-1">
+                                    {{ tracking.cns_sent_user.name }}
+                                </div>
+
+                                <div class="bg-indigo-300 rounded-md p-1">
+                                    {{ tracking.cns_sent_remark }}
+                                </div>
+                            </td>
+                            <td class="text-xs text-center">
+                                <div class="bg-green-300 rounded-md p-1 mb-1">
+                                    {{ showToday(tracking.cns_record_date) }}
+                                </div>
+
+                                <div class="bg-blue-300 rounded-md p-1 mb-1">
+                                    {{ tracking.cns_record_user.name }}
+                                </div>
+
+                                <div class="bg-indigo-300 rounded-md p-1">
+                                    {{ tracking.cns_record_remark }}
+                                </div>
+                            </td>
+                            <td class="text-xs text-center">
+                                <div class="bg-green-300 rounded-md p-1 mb-1">
+                                    {{ showToday(tracking.schedule_date) }}
+                                </div>
+
+                                <div class="bg-blue-300 rounded-md p-1 mb-1">
+                                    {{ tracking.schedule_user.name }}
+                                </div>
+
+                                <div class="bg-indigo-300 rounded-md p-1">
+                                    {{ tracking.schedule_remark }}
+                                </div>
+                            </td>
+                            <td class="text-xs text-center">
+                                <div class="bg-green-300 rounded-md p-1 mb-1">
+                                    {{ showToday(tracking.report_date) }}
+                                </div>
+
+                                <div class="bg-blue-300 rounded-md p-1 mb-1">
+                                    {{ tracking.report_user.name }}
+                                </div>
+
+                                <div class="bg-indigo-300 rounded-md p-1">
+                                    {{ tracking.report_remark }}
+                                </div>
+                            </td>
+                            <td class="text-xs text-center">
+                                <div class="bg-green-300 rounded-md p-1 mb-1">
+                                    {{
+                                        showToday(tracking.client_posting_date)
+                                    }}
+                                </div>
+
+                                <div class="bg-blue-300 rounded-md p-1 mb-1">
+                                    {{ tracking.client_posting_user.name }}
+                                </div>
+
+                                <div class="bg-indigo-300 rounded-md p-1">
+                                    {{ tracking.client_posting_remark }}
+                                </div>
+                            </td>
+                            <td class="text-xs text-center">
+                                <div class="bg-green-300 rounded-md p-1 mb-1">
+                                    {{ showToday(tracking.actual_live_date) }}
+                                </div>
+
+                                <div class="bg-blue-300 rounded-md p-1 mb-1">
+                                    {{ tracking.actual_live_user.name }}
+                                </div>
+
+                                <div class="bg-indigo-300 rounded-md p-1">
+                                    {{ tracking.actual_live_remark }}
+                                </div>
+                            </td>
+                            <td class="text-xs text-center">
+                                {{ tracking.tracking_general.general_remark }}
+                            </td>
+                            <td class="text-xs text-center">
+                                {{ tracking.tracking_general.progress }}
+                            </td>
+
                             <td class="text-xs text-center">
                                 <router-link
                                     :to="{}"
@@ -814,33 +2007,30 @@ export default {
             paginate: 100,
 
             search: "",
-            searchStartDate: "",
-            searchEndDate: "",
-            searchDuration: "",
-            searchEntryDate: "",
 
             sort_direction: "desc",
-            sort_field: "project_startdate",
-            project_remark_visibility: false,
-            project_remark: null,
+            sort_field: "created_at",
+            general_remark_visibility: false,
+            general_remark: null,
+            view_type: "wip",
 
             project_fields: {
-                CS: {
-                    callback: (value) => {
-                        return `${value.user.name}`;
-                    },
-                },
-                "Start Date": "project_startdate",
-                "End Date": "project_enddate",
-                // Duration: "user_name",
-                Company: {
-                    callback: (value) => {
-                        return `${value.contact.name}`;
-                    },
-                },
-                Project: "project_name",
-                Remark: "project_remark",
-                "Entry Date": "updated_at",
+                // CS: {
+                //     callback: (value) => {
+                //         return `${value.user.name}`;
+                //     },
+                // },
+                // "Start Date": "project_startdate",
+                // "End Date": "project_enddate",
+                // // Duration: "user_name",
+                // Company: {
+                //     callback: (value) => {
+                //         return `${value.contact.name}`;
+                //     },
+                // },
+                // Project: "project_name",
+                // Remark: "general_remark",
+                // "Entry Date": "updated_at",
             },
         };
     },
@@ -863,12 +2053,15 @@ export default {
         searchEntryDate: function (value) {
             this.getTrackingGenerals();
         },
+        view_type: function (value) {
+            this.getTrackingGenerals();
+        },
     },
 
     methods: {
-        toggleRemark(project_id) {
-            this.project_remark = project_id;
-            this.project_remark_visibility = !this.project_remark_visibility;
+        toggleRemark(general_id) {
+            this.general_remark = general_id;
+            this.general_remark_visibility = !this.general_remark_visibility;
         },
 
         getTrackingGenerals(page = 1) {
@@ -887,7 +2080,9 @@ export default {
                         "&sort_direction=" +
                         this.sort_direction +
                         "&sort_field=" +
-                        this.sort_field
+                        this.sort_field +
+                        "&view_type=" +
+                        this.view_type
                 )
                 .then((res) => {
                     this.tracking_generals = res.data;

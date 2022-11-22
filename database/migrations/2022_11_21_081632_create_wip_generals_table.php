@@ -15,7 +15,7 @@ class CreateWipGeneralsTable extends Migration
     {
         Schema::create('wip_generals', function (Blueprint $table) {
             $table->id();
-
+            $table->string('wip_remark')->nullable();
             $table->unsignedBigInteger('tracking_general_id')->nullable()->constrained();
             $table->foreign('tracking_general_id')
                 ->references('id')
@@ -52,19 +52,19 @@ class CreateWipGeneralsTable extends Migration
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
             
-            $table->date('c&s_sent_date')->nullable();
-            $table->string('c&s_sent_remark')->nullable();
-            $table->unsignedBigInteger('c&s_sent_user_id')->nullable()->constrained();
-            $table->foreign('c&s_sent_user_id')
+            $table->date('cns_sent_date')->nullable();
+            $table->string('cns_sent_remark')->nullable();
+            $table->unsignedBigInteger('cns_sent_user_id')->nullable()->constrained();
+            $table->foreign('cns_sent_user_id')
                 ->references('id')
                 ->on('users')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
 
-            $table->date('c&s_record_date')->nullable();
-            $table->string('c&s_record_remark')->nullable();
-            $table->unsignedBigInteger('c&s_record_user_id')->nullable()->constrained();
-            $table->foreign('c&s_record_user_id')
+            $table->date('cns_record_date')->nullable();
+            $table->string('cns_record_remark')->nullable();
+            $table->unsignedBigInteger('cns_record_user_id')->nullable()->constrained();
+            $table->foreign('cns_record_user_id')
                 ->references('id')
                 ->on('users')
                 ->onUpdate('cascade')
@@ -79,10 +79,10 @@ class CreateWipGeneralsTable extends Migration
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
 
-            $table->date('live_date')->nullable();
-            $table->string('live_remark')->nullable();
-            $table->unsignedBigInteger('live_user_id')->nullable()->constrained();
-            $table->foreign('live_user_id')
+            $table->date('actual_live_date')->nullable();
+            $table->string('actual_live_remark')->nullable();
+            $table->unsignedBigInteger('actual_live_user_id')->nullable()->constrained();
+            $table->foreign('actual_live_user_id')
                 ->references('id')
                 ->on('users')
                 ->onUpdate('cascade')

@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Api\Tracking;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Tracking\TrackingGeneralResource;
+use App\Http\Resources\Tracking\WIPGeneralResource;
 use App\Models\Admin\SvSbPivot;
 use App\Models\Tracking\TrackingGeneral;
+use App\Models\Tracking\WipGeneral;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -22,6 +24,7 @@ class TrackingGeneralController extends Controller
 
         $selectedUser = request('selectedUser');
         $selectedCategory = request('selectedtCategory');
+        $view_type = request('view_type');
 
 
         $id = Auth::id();
@@ -36,6 +39,7 @@ class TrackingGeneralController extends Controller
         //         ->where('role_id', '=', 1)
         //         ->exists())
         // ) {
+        if ($view_type === 'master') {
             $tracking = TrackingGeneral::select([
                 'tracking_generals.*',
                 'contact_categories.name as category_name',
@@ -46,17 +50,108 @@ class TrackingGeneralController extends Controller
                 ->join('contact_categories', 'tracking_generals.contact_category_id', '=', 'contact_categories.id')
                 ->join('users', 'tracking_generals.user_id', '=', 'users.id')
                 ->when($selectedCategory, function ($query) use ($selectedCategory) {
-                    $query->where('to_dos.status_id', $selectedCategory);
+                    $query->where('tracking_generals.contact_category_id', $selectedCategory);
                 })
                 ->when($selectedUser, function ($query) use ($selectedUser) {
-                    $query->where('to_dos.user_id', $selectedUser);
+                    $query->where('tracking_generals.user_id', $selectedUser);
                 })
-                // ->orderBy($sort_field, $sort_direction)
-                // ->search(trim($search_term))
-                // ->paginate($paginate);
-                ->get();
+                ->orderBy($sort_field, $sort_direction)
+                ->search(trim($search_term))
+                ->paginate($paginate);
+            // ->get();
 
             return TrackingGeneralResource::collection($tracking);
+        } else {
+            $wip = WipGeneral::with([
+                'tracking_general' => function ($q) {
+                    $q->select([
+                        'tracking_generals.id',
+                        'tracking_generals.company_id',
+                        'tracking_generals.user_id',
+                        'tracking_generals.contact_category_id',
+                        'tracking_generals.category_description',
+                        'tracking_generals.general_amount',
+                        'tracking_generals.art_frequency',
+                        'tracking_generals.general_type',
+                        'tracking_generals.general_startdate',
+                        'tracking_generals.general_enddate',
+                        'tracking_generals.progress',
+                        'tracking_generals.general_remark',
+                    ]);
+                },
+                'art_chase_user' => function ($q) {
+                    $q->select([
+                        'id',
+                        'name',
+                    ]);
+                },
+                'art_received_user' => function ($q) {
+                    $q->select([
+                        'id',
+                        'name',
+                    ]);
+                },
+                'art_todo_user' => function ($q) {
+                    $q->select([
+                        'id',
+                        'name',
+                    ]);
+                },
+                'cns_sent_user' => function ($q) {
+                    $q->select([
+                        'id',
+                        'name',
+                    ]);
+                },
+                'cns_record_user' => function ($q) {
+                    $q->select([
+                        'id',
+                        'name',
+                    ]);
+                },
+                'schedule_user' => function ($q) {
+                    $q->select([
+                        'id',
+                        'name',
+                    ]);
+                },
+                'actual_live_user' => function ($q) {
+                    $q->select([
+                        'id',
+                        'name',
+                    ]);
+                },
+                'client_posting_user' => function ($q) {
+                    $q->select([
+                        'id',
+                        'name',
+                    ]);
+                },
+                'report_user' => function ($q) {
+                    $q->select([
+                        'id',
+                        'name',
+                    ]);
+                },
+            ])
+                ->select([
+                    'wip_generals.*',
+                ])
+                ->join('tracking_generals', 'wip_generals.tracking_general_id', '=', 'tracking_generals.id')
+                // ->when($selectedCategory, function ($query) use ($selectedCategory) {
+                //     $query->where('tracking_generals.contact_category_id', $selectedCategory);
+                // })
+                // ->when($selectedUser, function ($query) use ($selectedUser) {
+                //     $query->where('tracking_generals.user_id', $selectedUser);
+                // })
+                ->orderBy($sort_field, $sort_direction)
+                ->search(trim($search_term))
+                ->paginate($paginate);
+            // ->get();
+
+            return WIPGeneralResource::collection($wip);
+        }
+
         // } else {
         //     $sv_sb = "";
         //     $final = [$id];

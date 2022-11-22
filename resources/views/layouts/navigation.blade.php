@@ -32,12 +32,12 @@
                             </x-slot>
 
                             <x-slot name="content" class="w-full">
-                                <x-nav-link :href="route('contact')" :active="request()->routeIs('contact')">
+                                <x-nav-link class="w-full" :href="route('contact')" :active="request()->routeIs('contact')">
                                     {{ __('List') }}
                                 </x-nav-link>
                                 <br>
                                 @can('view contact summary')
-                                <x-nav-link :href="route('contact-summary')" :active="request()->routeIs('contact-summary')">
+                                <x-nav-link class="w-full" :href="route('contact-summary')" :active="request()->routeIs('contact-summary')">
                                     {{ __('Summary') }}
                                 </x-nav-link>
                                 @endcan
@@ -84,12 +84,12 @@
                                 </x-slot>
 
                                 <x-slot name="content" class="">
-                                    <x-nav-link :href="route('forecast')" :active="request()->routeIs('forecast')">
+                                    <x-nav-link class="w-full" :href="route('forecast')" :active="request()->routeIs('forecast')">
                                         {{ __('List') }}
                                     </x-nav-link>
                                     <br>
                                     @can('view forecast summary')
-                                    <x-nav-link :href="route('forecast-summary')" :active="request()->routeIs('forecast-summary')">
+                                    <x-nav-link class="w-full" :href="route('forecast-summary')" :active="request()->routeIs('forecast-summary')">
                                         {{ __('Summary') }}
                                     </x-nav-link>
                                     @endcan
@@ -134,16 +134,12 @@
                                         </div>
                                     </button>
                                 </x-slot>
-
-
-
-
                                 <x-slot name="content" class="">
-                                    <x-nav-link :href="route('billboard')" :active="request()->routeIs('billboard')">
+                                    <x-nav-link class="w-full" :href="route('billboard')" :active="request()->routeIs('billboard')">
                                         {{ __('Billboard') }}
                                     </x-nav-link>
                                     <br>
-                                    <x-nav-link :href="route('tempboard')" :active="request()->routeIs('tempboard')">
+                                    <x-nav-link class="w-full" :href="route('tempboard')" :active="request()->routeIs('tempboard')">
                                         {{ __('Tempboard') }}
                                     </x-nav-link>
                                 </x-slot>
@@ -173,12 +169,12 @@
                             </x-slot>
 
                             <x-slot name="content" class="w-full">
-                                <x-nav-link :href="route('tracking-general')" :active="request()->routeIs('tracking-general')">
+                                <x-nav-link class="w-full hover:bg-blue-300" :href="route('tracking-general')" :active="request()->routeIs('tracking-general')" >
                                     {{ __('General') }}
                                 </x-nav-link>
                                 <br>
                                 {{-- @can('view contact summary') --}}
-                                <x-nav-link :href="route('tracking-travel_guide')" :active="request()->routeIs('tracking-travel_guide')">
+                                <x-nav-link class="w-full" :href="route('tracking-travel_guide')" :active="request()->routeIs('tracking-travel_guide')">
                                     {{ __('Travel Guide') }}
                                 </x-nav-link>
                                 {{-- @endcan --}}
