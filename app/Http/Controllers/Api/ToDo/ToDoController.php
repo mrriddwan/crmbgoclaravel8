@@ -304,8 +304,6 @@ class ToDoController extends Controller
         }
     }
 
-
-
     public function daterange()
     {
         $paginate = request('paginate');
@@ -445,8 +443,6 @@ class ToDoController extends Controller
             return ToDoResource::collection($todo);
         }
     }
-
-
 
     public function store(ToDoInternalRequest $request)
     {

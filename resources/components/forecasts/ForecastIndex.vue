@@ -105,7 +105,7 @@
                 v-model.lazy="search"
                 type="search"
                 class="form-control"
-                placeholder="Search by any..."
+                placeholder="Search + Press ENTER"
             />
         </div>
         <div class="mt-1">

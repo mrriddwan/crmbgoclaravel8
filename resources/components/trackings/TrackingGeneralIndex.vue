@@ -44,7 +44,7 @@
             </div>
         </div>
 
-        <div class="grid grid-cols-2">
+        <div class="grid grid-cols-3">
             <div class="grid grid-cols-2 items-center align-middle w-max">
                 <label for="paginate" class="px-2 inline-block">Per page</label>
                 <input v-model.lazy="paginate" class="form-control" />
@@ -55,25 +55,26 @@
                     </select> -->
                 <!-- <label for="paginate" class="px-2 inline-block">of 100</label> -->
             </div>
-            <div class="py-2">
+            <div class="py-2 mx-5">
                 <input
                     v-model.lazy="search"
                     type="search"
                     class="form-control"
-                    placeholder="Search by any..."
+                    placeholder="Search + Press ENTER"
+                />
+            </div>
+            <div class="mt-1">
+                <Pagination
+                    :data="tracking_generals"
+                    :limit="2"
+                    @pagination-change-page="getTrackingGenerals"
+                    :size="'small'"
+                    :align="'center'"
+                    class="pagination"
                 />
             </div>
         </div>
-        <div class="mt-1">
-            <Pagination
-                :data="tracking_generals"
-                :limit="2"
-                @pagination-change-page="getTrackingGenerals"
-                :size="'small'"
-                :align="'center'"
-                class="pagination"
-            />
-        </div>
+
         <div>
             <div v-if="view_type === 'wip'">
                 <h3
@@ -795,10 +796,10 @@
                                 {{ tracking.general_tenure }}
                             </td>
                             <td class="text-xs text-center">
-                                {{ tracking.general_startdate }}
+                                {{ showToday(tracking.general_startdate) }}
                             </td>
                             <td class="text-xs text-center">
-                                {{ tracking.general_enddate }}
+                                {{ showToday(tracking.general_enddate) }}
                             </td>
                             <td class="text-xs text-center">
                                 {{ tracking.general_remark }}
@@ -808,7 +809,10 @@
                             </td>
                             <td class="text-xs text-center">
                                 <router-link
-                                    :to="{}"
+                                    :to="{
+                                        name: 'tracking_general_edit',
+                                        params: { id: tracking.id },
+                                    }"
                                     class="mr-2 mb-2 inline-flex items-center px-2 py-1 bg-yellow-400 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
                                 >
                                     <PencilSquareIcon class="h-3 w-3"
@@ -1778,7 +1782,11 @@
                                 }}
                             </td>
                             <td class="text-xs text-center">
-                                {{ tracking.tracking_general.art_frequency }}
+                                {{
+                                    tracking.frequency_no +
+                                    " / " +
+                                    tracking.tracking_general.art_frequency
+                                }}
                             </td>
                             <td class="text-xs text-center">
                                 {{
@@ -1791,14 +1799,26 @@
                             <td class="text-xs text-center">
                                 {{ tracking.tracking_general.progress }}
                             </td>
+                            <!-- style="background-color: yellow" -->
                             <td
                                 v-if="
                                     !tracking.art_chase_date &&
-                                    !tracking.art_chase_user.name &&
+                                    !tracking.art_chase_user &&
                                     !tracking.art_chase_remark
                                 "
                                 class="text-xs text-center"
                             >
+                                <div class="bg-yellow-300 rounded-md p-1 mb-1">
+                                    -
+                                </div>
+                                <div class="bg-yellow-300 rounded-md p-1 mb-1">
+                                    -
+                                </div>
+                                <div class="bg-yellow-300 rounded-md p-1 mb-1">
+                                    -
+                                </div>
+                            </td>
+                            <td v-else class="text-xs text-center">
                                 <div class="bg-green-300 rounded-md p-1 mb-1">
                                     {{ showToday(tracking.art_chase_date) }}
                                 </div>
@@ -1812,23 +1832,24 @@
                                 </div>
                             </td>
                             <td
-                                v-else
+                                v-if="
+                                    !tracking.art_received_date &&
+                                    !tracking.art_received_user &&
+                                    !tracking.art_received_remark
+                                "
                                 class="text-xs text-center"
-                                style="background-color: yellow"
                             >
-                                <div class="bg-green-300 rounded-md p-1 mb-1">
-                                    {{ showToday(tracking.art_chase_date) }}
+                                <div class="bg-yellow-300 rounded-md p-1 mb-1">
+                                    -
                                 </div>
-
-                                <div class="bg-blue-300 rounded-md p-1 mb-1">
-                                    {{ tracking.art_chase_user.name }}
+                                <div class="bg-yellow-300 rounded-md p-1 mb-1">
+                                    -
                                 </div>
-
-                                <div class="bg-indigo-300 rounded-md p-1">
-                                    {{ tracking.art_chase_remark }}
+                                <div class="bg-yellow-300 rounded-md p-1 mb-1">
+                                    -
                                 </div>
                             </td>
-                            <td class="text-xs text-center bg-amber-600">
+                            <td v-else class="text-xs text-center bg-amber-600">
                                 <div class="bg-green-300 rounded-md p-1 mb-1">
                                     {{ showToday(tracking.art_received_date) }}
                                 </div>
@@ -1841,7 +1862,25 @@
                                     {{ tracking.art_received_remark }}
                                 </div>
                             </td>
-                            <td class="text-xs text-center">
+                            <td
+                                v-if="
+                                    !tracking.art_todo_date &&
+                                    !tracking.art_todo_user &&
+                                    !tracking.art_todo_remark
+                                "
+                                class="text-xs text-center"
+                            >
+                                <div class="bg-yellow-300 rounded-md p-1 mb-1">
+                                    -
+                                </div>
+                                <div class="bg-yellow-300 rounded-md p-1 mb-1">
+                                    -
+                                </div>
+                                <div class="bg-yellow-300 rounded-md p-1 mb-1">
+                                    -
+                                </div>
+                            </td>
+                            <td v-else class="text-xs text-center">
                                 <div class="bg-green-300 rounded-md p-1 mb-1">
                                     {{ showToday(tracking.art_todo_date) }}
                                 </div>
@@ -1854,7 +1893,25 @@
                                     {{ tracking.art_todo_remark }}
                                 </div>
                             </td>
-                            <td class="text-xs text-center">
+                            <td
+                                v-if="
+                                    !tracking.cns_sent_date &&
+                                    !tracking.cns_sent_user &&
+                                    !tracking.cns_sent_remark
+                                "
+                                class="text-xs text-center"
+                            >
+                                <div class="bg-yellow-300 rounded-md p-1 mb-1">
+                                    -
+                                </div>
+                                <div class="bg-yellow-300 rounded-md p-1 mb-1">
+                                    -
+                                </div>
+                                <div class="bg-yellow-300 rounded-md p-1 mb-1">
+                                    -
+                                </div>
+                            </td>
+                            <td v-else class="text-xs text-center">
                                 <div class="bg-green-300 rounded-md p-1 mb-1">
                                     {{ showToday(tracking.cns_sent_date) }}
                                 </div>
@@ -1867,7 +1924,25 @@
                                     {{ tracking.cns_sent_remark }}
                                 </div>
                             </td>
-                            <td class="text-xs text-center">
+                            <td
+                                v-if="
+                                    !tracking.cns_record_date &&
+                                    !tracking.cns_record_user &&
+                                    !tracking.cns_record_remark
+                                "
+                                class="text-xs text-center"
+                            >
+                                <div class="bg-yellow-300 rounded-md p-1 mb-1">
+                                    -
+                                </div>
+                                <div class="bg-yellow-300 rounded-md p-1 mb-1">
+                                    -
+                                </div>
+                                <div class="bg-yellow-300 rounded-md p-1 mb-1">
+                                    -
+                                </div>
+                            </td>
+                            <td v-else class="text-xs text-center">
                                 <div class="bg-green-300 rounded-md p-1 mb-1">
                                     {{ showToday(tracking.cns_record_date) }}
                                 </div>
@@ -1880,7 +1955,25 @@
                                     {{ tracking.cns_record_remark }}
                                 </div>
                             </td>
-                            <td class="text-xs text-center">
+                            <td
+                                v-if="
+                                    !tracking.schedule_date &&
+                                    !tracking.schedule_user &&
+                                    !tracking.schedule_remark
+                                "
+                                class="text-xs text-center"
+                            >
+                                <div class="bg-yellow-300 rounded-md p-1 mb-1">
+                                    -
+                                </div>
+                                <div class="bg-yellow-300 rounded-md p-1 mb-1">
+                                    -
+                                </div>
+                                <div class="bg-yellow-300 rounded-md p-1 mb-1">
+                                    -
+                                </div>
+                            </td>
+                            <td v-else class="text-xs text-center">
                                 <div class="bg-green-300 rounded-md p-1 mb-1">
                                     {{ showToday(tracking.schedule_date) }}
                                 </div>
@@ -1893,7 +1986,25 @@
                                     {{ tracking.schedule_remark }}
                                 </div>
                             </td>
-                            <td class="text-xs text-center">
+                            <td
+                                v-if="
+                                    !tracking.report_date &&
+                                    !tracking.report_user &&
+                                    !tracking.report_remark
+                                "
+                                class="text-xs text-center"
+                            >
+                                <div class="bg-yellow-300 rounded-md p-1 mb-1">
+                                    -
+                                </div>
+                                <div class="bg-yellow-300 rounded-md p-1 mb-1">
+                                    -
+                                </div>
+                                <div class="bg-yellow-300 rounded-md p-1 mb-1">
+                                    -
+                                </div>
+                            </td>
+                            <td v-else class="text-xs text-center">
                                 <div class="bg-green-300 rounded-md p-1 mb-1">
                                     {{ showToday(tracking.report_date) }}
                                 </div>
@@ -1906,7 +2017,25 @@
                                     {{ tracking.report_remark }}
                                 </div>
                             </td>
-                            <td class="text-xs text-center">
+                            <td
+                                v-if="
+                                    !tracking.client_posting_date &&
+                                    !tracking.client_posting_user &&
+                                    !tracking.client_posting_remark
+                                "
+                                class="text-xs text-center"
+                            >
+                                <div class="bg-yellow-300 rounded-md p-1 mb-1">
+                                    -
+                                </div>
+                                <div class="bg-yellow-300 rounded-md p-1 mb-1">
+                                    -
+                                </div>
+                                <div class="bg-yellow-300 rounded-md p-1 mb-1">
+                                    -
+                                </div>
+                            </td>
+                            <td v-else class="text-xs text-center">
                                 <div class="bg-green-300 rounded-md p-1 mb-1">
                                     {{
                                         showToday(tracking.client_posting_date)
@@ -1921,7 +2050,25 @@
                                     {{ tracking.client_posting_remark }}
                                 </div>
                             </td>
-                            <td class="text-xs text-center">
+                            <td
+                                v-if="
+                                    !tracking.actual_live_date &&
+                                    !tracking.actual_live_user &&
+                                    !tracking.actual_live_remark
+                                "
+                                class="text-xs text-center"
+                            >
+                                <div class="bg-yellow-300 rounded-md p-1 mb-1">
+                                    -
+                                </div>
+                                <div class="bg-yellow-300 rounded-md p-1 mb-1">
+                                    -
+                                </div>
+                                <div class="bg-yellow-300 rounded-md p-1 mb-1">
+                                    -
+                                </div>
+                            </td>
+                            <td v-else class="text-xs text-center">
                                 <div class="bg-green-300 rounded-md p-1 mb-1">
                                     {{ showToday(tracking.actual_live_date) }}
                                 </div>
@@ -1935,15 +2082,14 @@
                                 </div>
                             </td>
                             <td class="text-xs text-center">
-                                {{ tracking.tracking_general.general_remark }}
+                                {{ tracking.wip_remark }}
                             </td>
-                            <td class="text-xs text-center">
-                                {{ tracking.tracking_general.progress }}
-                            </td>
-
                             <td class="text-xs text-center">
                                 <router-link
-                                    :to="{}"
+                                    :to="{
+                                        name: 'tracking_wip_edit',
+                                        params: { id: tracking.id },
+                                    }"
                                     class="mr-2 mb-2 inline-flex items-center px-2 py-1 bg-yellow-400 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
                                 >
                                     <PencilSquareIcon class="h-3 w-3"
@@ -2010,8 +2156,8 @@ export default {
 
             sort_direction: "desc",
             sort_field: "created_at",
-            general_remark_visibility: false,
-            general_remark: null,
+            // general_remark_visibility: false,
+            // general_remark: null,
             view_type: "wip",
 
             project_fields: {
@@ -2059,10 +2205,10 @@ export default {
     },
 
     methods: {
-        toggleRemark(general_id) {
-            this.general_remark = general_id;
-            this.general_remark_visibility = !this.general_remark_visibility;
-        },
+        // toggleRemark(general_id) {
+        //     this.general_remark = general_id;
+        //     this.general_remark_visibility = !this.general_remark_visibility;
+        // },
 
         getTrackingGenerals(page = 1) {
             if (typeof page === "undefined") {

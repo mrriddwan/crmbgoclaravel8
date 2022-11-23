@@ -118,8 +118,7 @@ class ContactController extends Controller
             'address' => $request->address ?? 'None',
             'remark' => $request->remark ?? 'None',
             'category_id' => $request->category_id,
-            // 'user_id' => $request->user_id ?? 2, //change to current user later
-            'user_id' => Auth::id(), //change to current user later
+            'user_id' => Auth::id(),
             'type_id' => $request->type_id,
             'status_id' => $request->status_id,
         ]);

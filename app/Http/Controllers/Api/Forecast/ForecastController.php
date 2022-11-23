@@ -140,7 +140,6 @@ class ForecastController extends Controller
             'forecast_date' => $request->forecast_date,
             'forecast_updatedate' => now(),
             'amount' => $request->amount,
-            // 'user_id' => $request->user_id ?? 2, //change to current user later
             'user_id' => Auth::id(),
             'forecast_type_id' => $request->forecast_type_id,
             'contact_id' => $request->contact_id,

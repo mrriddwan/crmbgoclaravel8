@@ -26,7 +26,7 @@ class ProjectRequest extends FormRequest
     {
         return [
             'project_startdate' => ['required','after:'. Carbon::yesterday()->format('d-m-Y')],
-            'project_enddate' => ['required', 'date'],
+            'project_enddate' => ['required', 'after:project_startdate'],
             'project_name' => ['required', 'string'],
             'project_remark' => ['required', 'string'],
             'contact_id' => ['required', 'int'],

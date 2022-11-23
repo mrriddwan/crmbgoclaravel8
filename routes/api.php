@@ -285,3 +285,6 @@ Route::post('/billboards/tenure/store', [BillboardTenureController::class, 'stor
 Route::delete('/billboards/tenure/delete/{tenure}', [BillboardTenureController::class, 'delete'])->name('tenure:delete');
 
 Route::get('/trackings/general/index', [TrackingGeneralController::class, 'index'])->name('tracking_general:index');
+Route::post('/trackings/general/store', [TrackingGeneralController::class, 'store'])->name('tracking_general:store');
+Route::get('/trackings/general/show/{general}', [TrackingGeneralController::class, 'show'])->name('tracking_general:show');
+Route::put('/trackings/general/update/{general}', [TrackingGeneralController::class, 'store'])->name('tracking_general:store');

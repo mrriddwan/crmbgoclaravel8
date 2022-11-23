@@ -24,6 +24,7 @@ class TrackingGeneral extends Model
         'general_type',
         'general_reach',
         'general_tenure',
+        'general_amount',
         'art_format',
         'general_remark',
     ];

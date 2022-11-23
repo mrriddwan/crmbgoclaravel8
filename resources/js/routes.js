@@ -53,8 +53,9 @@ import TempboardEdit from "../components/billboards/TempboardEdit.vue";
 /**Performance Imports */
 import TrackingGeneralIndex from "../components/trackings/TrackingGeneralIndex.vue";
 import TrackingTravelGuideIndex from "../components/trackings/TrackingTravelGuideIndex.vue";
-import TrackingGeneralCreate from "../components/trackings/TrackingGeneralCreate.vue";
-
+import MasterGeneralCreate from "../components/trackings/MasterGeneralCreate.vue";
+import MasterGeneralEdit from "../components/trackings/MasterGeneralEdit.vue";
+import WIPGeneralEdit from "../components/trackings/WIPGeneralEdit.vue";
 
 const routes = [
     /*                      
@@ -71,6 +72,12 @@ const routes = [
     /*                      
         Contact Routes                      
     */
+    {
+        //No route
+        path: "",
+        name: "no_route",
+        component: ContactIndex,
+    },
 
     {
         //No route
@@ -353,7 +360,19 @@ const routes = [
         //Tracking General Create
         path: "/tracking/general/create",
         name: "tracking_general_create",
-        component: TrackingGeneralCreate,
+        component: MasterGeneralCreate,
+    },
+    {
+        //Tracking General Edit
+        path: "/tracking/general/:id/edit",
+        name: "tracking_general_edit",
+        component: MasterGeneralEdit,
+    },
+    {
+        //WIP General Edit
+        path: "/tracking/wip/:id/edit",
+        name: "tracking_wip_edit",
+        component: WIPGeneralEdit,
     },
 ];
 

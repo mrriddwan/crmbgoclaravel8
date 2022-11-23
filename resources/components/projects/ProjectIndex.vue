@@ -45,7 +45,7 @@
                 v-model.lazy="search"
                 type="search"
                 class="form-control"
-                placeholder="Search by any..."
+                placeholder="Search + Press ENTER"
             />
         </div>
     </div>
@@ -380,7 +380,7 @@
                                 }}</a>
                             </router-link>
                         </td>
-                        <td class="text-xs">{{ project.project_name }}</td>
+                        <td class="text-xs w-72">{{ project.project_name }}</td>
                         <td class="text-xs">{{ project.project_remark }}
                             <button
                                     @click="toggleRemark(project.id)"
@@ -389,7 +389,7 @@
                                     <QuestionMarkCircleIcon class="inline h-4 w-4" />
                                 </button></td>
                         <td class="text-xs">
-                            {{ showToday(project.updated_at) }}
+                            {{ showToday(project.created_at) }}
                         </td>
 
                         <td class="text-xs">
@@ -586,15 +586,20 @@ export default {
         },
 
         calculateDuration(start_date, end_date) {
-            const start = new Date(start_date);
-            const end = new Date(end_date);
+            let start = new Date(start_date).getTime();
+            let end = new Date(end_date).getTime();
 
-            return moment(end - start).format("D");
+            const day_diff = (end - start) / (1000 * 3600 * 24)
+            // console.log('start date', start)
+            // console.log('end date', end)
+
+            // return moment((end - start)).format("D");
+            return day_diff;
         },
 
         showToday(date) {
-            let new_date = new Date(date)
-            let day = moment(new_date).format("DD-MM-YY");
+            // let new_date = new Date(date)
+            let day = moment(date).format("DD-MM-YY");
             return day;
         },
     },

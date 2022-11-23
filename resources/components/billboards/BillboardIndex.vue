@@ -54,7 +54,7 @@
                         v-model.lazy="selectedYear"
                         type="search"
                         class="form-control"
-                        placeholder="Search by any..."
+                        placeholder="Search + Press ENTER"
                     />
                 </div>
                 <div class="grid grid-cols-1 items-left m-2">
@@ -63,7 +63,7 @@
                         v-model.lazy="search"
                         type="search"
                         class="form-control"
-                        placeholder="Search by any..."
+                        placeholder="Search + Press ENTER"
                     />
                 </div>
             </div>
