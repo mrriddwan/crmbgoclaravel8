@@ -32,12 +32,12 @@
                             </x-slot>
 
                             <x-slot name="content" class="w-full">
-                                <x-nav-link class="w-full" :href="route('contact')" :active="request()->routeIs('contact')">
+                                <x-nav-link class="w-full hover:bg-blue-300 hover:font-bold" :href="route('contact')" :active="request()->routeIs('contact')">
                                     {{ __('List') }}
                                 </x-nav-link>
                                 <br>
                                 @can('view contact summary')
-                                <x-nav-link class="w-full" :href="route('contact-summary')" :active="request()->routeIs('contact-summary')">
+                                <x-nav-link class="w-full hover:bg-blue-300 hover:font-bold" :href="route('contact-summary')" :active="request()->routeIs('contact-summary')">
                                     {{ __('Summary') }}
                                 </x-nav-link>
                                 @endcan
@@ -49,7 +49,7 @@
 
                 @can('view todo')
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                    <x-nav-link :href="route('todo')" :active="request()->routeIs('todo')">
+                    <x-nav-link class="w-full" :href="route('todo')" :active="request()->routeIs('todo')">
                         {{ __('To Do') }}
                     </x-nav-link>
                 </div>
@@ -57,7 +57,7 @@
 
                 @can('view followup')
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                    <x-nav-link :href="route('followup')" :active="request()->routeIs('followup')">
+                    <x-nav-link class="w-full" :href="route('followup')" :active="request()->routeIs('followup')">
                         {{ __('Follow Up') }}
                     </x-nav-link>
                 </div>
@@ -84,12 +84,12 @@
                                 </x-slot>
 
                                 <x-slot name="content" class="">
-                                    <x-nav-link class="w-full" :href="route('forecast')" :active="request()->routeIs('forecast')">
+                                    <x-nav-link class="w-full hover:bg-blue-300 hover:font-bold" :href="route('forecast')" :active="request()->routeIs('forecast')">
                                         {{ __('List') }}
                                     </x-nav-link>
                                     <br>
                                     @can('view forecast summary')
-                                    <x-nav-link class="w-full" :href="route('forecast-summary')" :active="request()->routeIs('forecast-summary')">
+                                    <x-nav-link class="w-full hover:bg-blue-300 hover:font-bold" :href="route('forecast-summary')" :active="request()->routeIs('forecast-summary')">
                                         {{ __('Summary') }}
                                     </x-nav-link>
                                     @endcan
@@ -101,7 +101,7 @@
 
                 @can('view project')
                     <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                        <x-nav-link :href="route('project')" :active="request()->routeIs('project')">
+                        <x-nav-link class="w-full"  :href="route('project')" :active="request()->routeIs('project')">
                             {{ __('Project') }}
                         </x-nav-link>
                     </div>
@@ -109,7 +109,7 @@
 
                 @can('view performance')
                     <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                        <x-nav-link :href="route('performance')" :active="request()->routeIs('performance')">
+                        <x-nav-link class="w-full"  :href="route('performance')" :active="request()->routeIs('performance')">
                             {{ __('Performance') }}
                         </x-nav-link>
                     </div>
@@ -135,11 +135,11 @@
                                     </button>
                                 </x-slot>
                                 <x-slot name="content" class="">
-                                    <x-nav-link class="w-full" :href="route('billboard')" :active="request()->routeIs('billboard')">
+                                    <x-nav-link class="w-full hover:bg-blue-300 hover:font-bold" :href="route('billboard')" :active="request()->routeIs('billboard')">
                                         {{ __('Billboard') }}
                                     </x-nav-link>
                                     <br>
-                                    <x-nav-link class="w-full" :href="route('tempboard')" :active="request()->routeIs('tempboard')">
+                                    <x-nav-link class="w-full hover:bg-blue-300 hover:font-bold" :href="route('tempboard')" :active="request()->routeIs('tempboard')">
                                         {{ __('Tempboard') }}
                                     </x-nav-link>
                                 </x-slot>
@@ -148,7 +148,7 @@
                     </div>
                 @endcan
 
-                {{-- @can('view contact') --}}
+                @can('view tracking')
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                     <div class="hidden sm:flex sm:items-center sm:ml-0 px-1">
                         <x-dropdown align="right" width="w-max">
@@ -169,20 +169,22 @@
                             </x-slot>
 
                             <x-slot name="content" class="w-full">
-                                <x-nav-link class="w-full hover:bg-blue-300" :href="route('tracking-general')" :active="request()->routeIs('tracking-general')" >
+                                @can('view tracking general')
+                                <x-nav-link class="w-full hover:bg-blue-300 hover:font-bold" :href="route('tracking-general')" :active="request()->routeIs('tracking-general')" >
                                     {{ __('General') }}
                                 </x-nav-link>
+                                @endcan
                                 <br>
-                                {{-- @can('view contact summary') --}}
-                                <x-nav-link class="w-full" :href="route('tracking-travel_guide')" :active="request()->routeIs('tracking-travel_guide')">
+                                @can('view tracking tguide')
+                                <x-nav-link class="w-full hover:bg-blue-300 hover:font-bold" :href="route('tracking-travel_guide')" :active="request()->routeIs('tracking-travel_guide')">
                                     {{ __('Travel Guide') }}
                                 </x-nav-link>
-                                {{-- @endcan --}}
+                                @endcan
                             </x-slot>
                         </x-dropdown>
                     </div>
                 </div>
-                {{-- @endcan --}}
+                @endcan
 
                 @can('view admin')
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
@@ -205,19 +207,19 @@
                             </x-slot>
 
                             <x-slot name="content" class="">
-                                <x-nav-link :href="route('admin-data')" :active="request()->routeIs('admin-data')">
+                                <x-nav-link class="w-full hover:bg-blue-300 hover:font-bold" :href="route('admin-data')" :active="request()->routeIs('admin-data')">
                                     {{ __('Data') }}
                                 </x-nav-link>
                                 <br>
-                                <x-nav-link :href="route('admin-management')" :active="request()->routeIs('admin-management')">
+                                <x-nav-link class="w-full hover:bg-blue-300 hover:font-bold" :href="route('admin-management')" :active="request()->routeIs('admin-management')">
                                     {{ __('User Management') }}
                                 </x-nav-link>
                                 <br>
-                                <x-nav-link :href="route('admin-access')" :active="request()->routeIs('admin-access')">
+                                <x-nav-link class="w-full hover:bg-blue-300 hover:font-bold" :href="route('admin-access')" :active="request()->routeIs('admin-access')">
                                     {{ __('User Access') }}
                                 </x-nav-link>
                                 <br>
-                                <x-nav-link :href="route('admin-export')" :active="request()->routeIs('admin-export')">
+                                <x-nav-link class="w-full hover:bg-blue-300 hover:font-bold" :href="route('admin-export')" :active="request()->routeIs('admin-export')">
                                     {{ __('Export/Import') }}
                                 </x-nav-link>
                             </x-slot>

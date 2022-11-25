@@ -24,7 +24,8 @@ class TrackingGeneralController extends Controller
         $sort_field = request('sort_field');
 
         $selectedUser = request('selectedUser');
-        $selectedCategory = request('selectedtCategory');
+        $selectedCategory = request('selectedCategory');
+        $selectedResult = request('selectedResult');
         $view_type = request('view_type');
 
 
@@ -56,6 +57,9 @@ class TrackingGeneralController extends Controller
                 ->when($selectedUser, function ($query) use ($selectedUser) {
                     $query->where('tracking_generals.user_id', $selectedUser);
                 })
+                ->when($selectedResult, function ($query) use ($selectedResult) {
+                    $query->where('tracking_generals.progress', $selectedResult);
+                })
                 ->orderBy($sort_field, $sort_direction)
                 ->search(trim($search_term))
                 ->paginate($paginate);
@@ -63,23 +67,23 @@ class TrackingGeneralController extends Controller
 
             return TrackingGeneralResource::collection($general);
         } else {
-            $wip = WipGeneral::with([
-                'tracking_general' => function ($q) {
-                    $q->select([
-                        'tracking_generals.id',
-                        'tracking_generals.company_id',
-                        'tracking_generals.user_id',
-                        'tracking_generals.contact_category_id',
-                        'tracking_generals.category_description',
-                        'tracking_generals.general_amount',
-                        'tracking_generals.art_frequency',
-                        'tracking_generals.general_type',
-                        'tracking_generals.general_startdate',
-                        'tracking_generals.general_enddate',
-                        'tracking_generals.progress',
-                        'tracking_generals.general_remark',
-                    ]);
-                },
+            $wip_general = WipGeneral::with([
+                // 'tracking_general' => function ($q) {
+                //     $q->select([
+                //         'tracking_generals.id',
+                //         'tracking_generals.company_id',
+                //         'tracking_generals.user_id',
+                //         'tracking_generals.contact_category_id',
+                //         'tracking_generals.category_description',
+                //         'tracking_generals.general_amount',
+                //         'tracking_generals.art_frequency',
+                //         'tracking_generals.general_type',
+                //         'tracking_generals.general_startdate',
+                //         'tracking_generals.general_enddate',
+                //         'tracking_generals.progress',
+                //         'tracking_generals.general_remark',
+                //     ]);
+                // },
                 'art_chase_user' => function ($q) {
                     $q->select([
                         'id',
@@ -137,20 +141,44 @@ class TrackingGeneralController extends Controller
             ])
                 ->select([
                     'wip_generals.*',
+                    'contacts.name as company_name',
+                    'users.name as user_name',
+                    'contact_categories.name as category_name',
+                    'tracking_generals.id as general_id',
+                    'tracking_generals.company_id',
+                    'tracking_generals.user_id',
+                    'tracking_generals.contact_category_id',
+                    'tracking_generals.category_description as general_category_description',
+                    'tracking_generals.general_amount as general_amount',
+                    'tracking_generals.art_frequency as general_art_freq',
+                    'tracking_generals.general_type as general_type',
+                    'tracking_generals.general_startdate as general_startdate',
+                    'tracking_generals.general_enddate as general_enddate',
+                    'tracking_generals.progress as general_progress',
+                    'tracking_generals.general_remark as general_remark',
+                    
                 ])
                 ->join('tracking_generals', 'wip_generals.tracking_general_id', '=', 'tracking_generals.id')
-                // ->when($selectedCategory, function ($query) use ($selectedCategory) {
-                //     $query->where('tracking_generals.contact_category_id', $selectedCategory);
-                // })
-                // ->when($selectedUser, function ($query) use ($selectedUser) {
-                //     $query->where('tracking_generals.user_id', $selectedUser);
-                // })
+                ->join('contacts', 'tracking_generals.company_id', '=', 'contacts.id')
+                ->join('users', 'tracking_generals.user_id', '=', 'users.id')
+                ->join('contact_categories', 'tracking_generals.contact_category_id', '=', 'contact_categories.id')
+                ->when($selectedCategory, function ($query) use ($selectedCategory) {
+                    $query->where('tracking_generals.contact_category_id', $selectedCategory);
+                })
+                ->when($selectedUser, function ($query) use ($selectedUser) {
+                    $query->where('tracking_generals.user_id', $selectedUser);
+                })
+                ->when($selectedResult, function ($query) use ($selectedResult) {
+                    $query->where('wip_generals.wip_progress', $selectedResult);
+                })
                 ->orderBy($sort_field, $sort_direction)
                 ->search(trim($search_term))
                 ->paginate($paginate);
             // ->get();
 
-            return WIPGeneralResource::collection($wip);
+            // $general = 
+
+            return WIPGeneralResource::collection($wip_general);
         }
 
         // } else {
@@ -258,10 +286,11 @@ class TrackingGeneralController extends Controller
             $wip = WipGeneral::create([
                 'tracking_general_id' => $general->id,
                 'frequency_no' => $x,
+                'wip_progress' => 'Pending',
             ]);
         }
 
-        
+
         return response()->json([
             'data' => [$general, $wip],
             'status' => true,
@@ -310,7 +339,7 @@ class TrackingGeneralController extends Controller
 
 
         $general->update([
-            'progress' => 'Pending',
+            'progress' => $request->progress,
             'general_startdate' => Carbon::parse($request->general_startdate)->toDate(),
             'general_enddate' => Carbon::parse($request->general_enddate)->toDate(),
             'user_id' => $request->user_id,
@@ -326,7 +355,7 @@ class TrackingGeneralController extends Controller
             'general_remark' => $request->general_remark,
         ]);
 
-        
+
         return response()->json([
             'data' => $general,
             'status' => true,

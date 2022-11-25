@@ -17,7 +17,7 @@
         <div class="flex w-full row">
             <div class="col-lg-20">
                 <form
-                    @submit.prevent="updateTrackingGeneral"
+                    @submit.prevent="updateWIPGeneral"
                     class="rounded px-8 pt-1 pb-8 mb-4"
                 >
                     <div
@@ -37,7 +37,7 @@
                         >
                         <select
                             class="block mt-1 w-full text-center rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                            v-model="tracking.user_id"
+                            v-model="wip.tracking_general.user_id"
                             @change="getUsers"
                         >
                             <option value="">Select user</option>
@@ -57,7 +57,7 @@
                         >
                         <select
                             class="text-center overflow-y block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                            v-model="tracking.company_id"
+                            v-model="wip.tracking_general.company_id"
                             @change="getContacts"
                         >
                             <option value="">Select company</option>
@@ -79,7 +79,7 @@
                         >
                         <select
                             class="block mt-1 text-center w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                            v-model="tracking.contact_category_id"
+                            v-model="wip.tracking_general.contact_category_id"
                             @change="getCategory"
                         >
                             <option value="">Select product</option>
@@ -110,16 +110,16 @@
                                 maxlength="800"
                                 type="number"
                                 class="mx-1 bg-slate-500 text-center form-control block px-3 py-1.5 text-base font-normal text-gray-700 bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-                                v-model="tracking.art_frequency"
+                                v-model="wip.frequency_no"
                                 placeholder="eg: 6"
                             />
-                            /
+                            <p class="text-lg mx-3">/</p>
                             <input
                                 disabled
                                 maxlength="800"
                                 type="number"
                                 class="mx-1 bg-slate-500 text-center form-control block px-3 py-1.5 text-base font-normal text-gray-700 bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-                                v-model="tracking.art_frequency"
+                                v-model="wip.tracking_general.art_frequency"
                                 placeholder="eg: 6"
                             />
                         </div>
@@ -137,7 +137,9 @@
                         <div>
                             <div class="w-full">
                                 <VueDatePicker
-                                    v-model="tracking.general_startdate"
+                                    v-model="
+                                        wip.tracking_general.general_startdate
+                                    "
                                     showNowButton
                                     nowButtonLabel="Today"
                                     :enableTimePicker="false"
@@ -159,7 +161,9 @@
                         <div>
                             <div class="w-full">
                                 <VueDatePicker
-                                    v-model="tracking.general_enddate"
+                                    v-model="
+                                        wip.tracking_general.general_enddate
+                                    "
                                     showNowButton
                                     nowButtonLabel="Today"
                                     :enableTimePicker="false"
@@ -176,7 +180,7 @@
                         >
                         <select
                             class="block mt-1 text-center w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                            v-model="tracking.contact_category_id"
+                            v-model="wip.wip_progress"
                         >
                             <option value="Pending">Pending</option>
                             <option value="Completed">Completed</option>
@@ -187,12 +191,22 @@
                         class="text-center border-2 px-1 py-1 border-slate-300 my-2"
                     >
                         <label class="font-bold">Artwork Chase </label>
-                        <div class="grid grid-cols-5">
+                        <div class="grid grid-cols-6">
+                            <div class="mx-1 grid grid-cols-1">
+                                <label class="font-bold">Progress</label>
+                                <select
+                                    class="block h-max w-full text-center rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                    v-model="wip.art_chase_done"
+                                >
+                                    <option value="2">Pending</option>
+                                    <option value="1">Completed</option>
+                                </select>
+                            </div>
                             <div class="mx-1 grid grid-cols-1">
                                 <label class="font-bold">Date</label>
                                 <div class="w-full">
                                     <VueDatePicker
-                                        v-model="tracking.general_enddate"
+                                        v-model="wip.art_chase_date"
                                         showNowButton
                                         nowButtonLabel="Today"
                                         :enableTimePicker="false"
@@ -204,7 +218,7 @@
                                 <label class="font-bold">User</label>
                                 <select
                                     class="block h-max w-full text-center rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                                    v-model="tracking.user_id"
+                                    v-model="wip.art_chase_user_id"
                                     @change="getUsers"
                                 >
                                     <option value="">Select user</option>
@@ -223,14 +237,14 @@
                                     maxlength="800"
                                     type="text"
                                     class="form-control block w-96 h-24 px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-                                    v-model="tracking.general_remark"
+                                    v-model="wip.general_remark"
                                     placeholder="eg: Artwork by Bluedale"
                                 /> -->
                                 <textarea
                                     id="message"
                                     maxlength="800"
                                     rows="1"
-                                    v-model="tracking.general_remark"
+                                    v-model="wip.art_chase_remark"
                                     placeholder="eg: Artwork by Bluedale"
                                     class="block w-full text-sm rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
                                 ></textarea>
@@ -242,12 +256,22 @@
                         class="text-center border-2 px-1 py-1 border-slate-300 my-2"
                     >
                         <label class="font-bold">Artwork To Do </label>
-                        <div class="grid grid-cols-5">
+                        <div class="grid grid-cols-6">
+                            <div class="mx-1 grid grid-cols-1">
+                                <label class="font-bold">Progress</label>
+                                <select
+                                    class="block h-max w-full text-center rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                    v-model="wip.art_todo_done"
+                                >
+                                    <option value="2">Pending</option>
+                                    <option value="1">Completed</option>
+                                </select>
+                            </div>
                             <div class="mx-1 grid grid-cols-1">
                                 <label class="font-bold">Date</label>
                                 <div class="w-full">
                                     <VueDatePicker
-                                        v-model="tracking.general_enddate"
+                                        v-model="wip.art_todo_date"
                                         showNowButton
                                         nowButtonLabel="Today"
                                         :enableTimePicker="false"
@@ -259,7 +283,7 @@
                                 <label class="font-bold">User</label>
                                 <select
                                     class="block w-full text-center h-max rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                                    v-model="tracking.user_id"
+                                    v-model="wip.art_todo_user_id"
                                     @change="getUsers"
                                 >
                                     <option value="">Select user</option>
@@ -278,14 +302,14 @@
                                     maxlength="800"
                                     type="text"
                                     class="form-control block w-96 h-24 px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-                                    v-model="tracking.general_remark"
+                                    v-model="wip.general_remark"
                                     placeholder="eg: Artwork by Bluedale"
                                 /> -->
                                 <textarea
                                     id="message"
                                     maxlength="800"
                                     rows="1"
-                                    v-model="tracking.general_remark"
+                                    v-model="wip.art_todo_remark"
                                     placeholder="eg: Artwork by Bluedale"
                                     class="block p-2.5 w-full text-sm rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
                                 ></textarea>
@@ -297,12 +321,22 @@
                         class="text-center border-2 px-1 py-1 border-slate-300 my-2"
                     >
                         <label class="font-bold">Cop & Signed Sent </label>
-                        <div class="grid grid-cols-5">
+                        <div class="grid grid-cols-6">
+                            <div class="mx-1 grid grid-cols-1">
+                                <label class="font-bold">Progress</label>
+                                <select
+                                    class="block h-max w-full text-center rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                    v-model="wip.cns_sent_done"
+                                >
+                                    <option value="2">Pending</option>
+                                    <option value="1">Completed</option>
+                                </select>
+                            </div>
                             <div class="mx-1 grid grid-cols-1">
                                 <label class="font-bold">Date</label>
                                 <div class="w-full">
                                     <VueDatePicker
-                                        v-model="tracking.general_enddate"
+                                        v-model="wip.cns_sent_date"
                                         showNowButton
                                         nowButtonLabel="Today"
                                         :enableTimePicker="false"
@@ -314,7 +348,7 @@
                                 <label class="font-bold">User</label>
                                 <select
                                     class="block w-full text-center h-max rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                                    v-model="tracking.user_id"
+                                    v-model="wip.cns_sent_user_id"
                                     @change="getUsers"
                                 >
                                     <option value="">Select user</option>
@@ -333,14 +367,13 @@
                                     maxlength="800"
                                     type="text"
                                     class="form-control block w-96 h-24 px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-                                    v-model="tracking.general_remark"
+                                    v-model="wip.general_remark"
                                     placeholder="eg: Artwork by Bluedale"
                                 /> -->
                                 <textarea
                                     id="message"
                                     maxlength="800"
-                                    
-                                    v-model="tracking.general_remark"
+                                    v-model="wip.cns_sent_remark"
                                     placeholder="eg: Artwork by Bluedale"
                                     class="block p-2.5 w-full text-sm rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
                                 ></textarea>
@@ -352,12 +385,22 @@
                         class="text-center border-2 px-1 py-1 border-slate-300 my-2"
                     >
                         <label class="font-bold">Cop & Signed Record </label>
-                        <div class="grid grid-cols-5">
+                        <div class="grid grid-cols-6">
+                            <div class="mx-1 grid grid-cols-1">
+                                <label class="font-bold">Progress</label>
+                                <select
+                                    class="block h-max w-full text-center rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                    v-model="wip.cns_record_done"
+                                >
+                                    <option value="2">Pending</option>
+                                    <option value="1">Completed</option>
+                                </select>
+                            </div>
                             <div class="mx-1 grid grid-cols-1">
                                 <label class="font-bold">Date</label>
                                 <div class="w-full">
                                     <VueDatePicker
-                                        v-model="tracking.general_enddate"
+                                        v-model="wip.cns_record_date"
                                         showNowButton
                                         nowButtonLabel="Today"
                                         :enableTimePicker="false"
@@ -369,7 +412,7 @@
                                 <label class="font-bold">User</label>
                                 <select
                                     class="block w-full text-center h-max rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                                    v-model="tracking.user_id"
+                                    v-model="wip.cns_record_user_id"
                                     @change="getUsers"
                                 >
                                     <option value="">Select user</option>
@@ -388,14 +431,14 @@
                                     maxlength="800"
                                     type="text"
                                     class="form-control block w-96 h-24 px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-                                    v-model="tracking.general_remark"
+                                    v-model="wip.general_remark"
                                     placeholder="eg: Artwork by Bluedale"
                                 /> -->
                                 <textarea
                                     id="message"
                                     maxlength="800"
                                     rows="1"
-                                    v-model="tracking.general_remark"
+                                    v-model="wip.cns_record_remark"
                                     placeholder="eg: Artwork by Bluedale"
                                     class="block p-2.5 w-full text-sm rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
                                 ></textarea>
@@ -407,12 +450,22 @@
                         class="text-center border-2 px-1 py-1 border-slate-300 my-2"
                     >
                         <label class="font-bold">Schedule</label>
-                        <div class="grid grid-cols-5">
+                        <div class="grid grid-cols-6">
+                            <div class="mx-1 grid grid-cols-1">
+                                <label class="font-bold">Progress</label>
+                                <select
+                                    class="block h-max w-full text-center rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                    v-model="wip.schedule_done"
+                                >
+                                    <option value="2">Pending</option>
+                                    <option value="1">Completed</option>
+                                </select>
+                            </div>
                             <div class="mx-1 grid grid-cols-1">
                                 <label class="font-bold">Date</label>
                                 <div class="w-full">
                                     <VueDatePicker
-                                        v-model="tracking.general_enddate"
+                                        v-model="wip.schedule_date"
                                         showNowButton
                                         nowButtonLabel="Today"
                                         :enableTimePicker="false"
@@ -424,7 +477,7 @@
                                 <label class="font-bold">User</label>
                                 <select
                                     class="block w-full text-center h-max rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                                    v-model="tracking.user_id"
+                                    v-model="wip.schedule_user_id"
                                     @change="getUsers"
                                 >
                                     <option value="">Select user</option>
@@ -443,14 +496,14 @@
                                     maxlength="800"
                                     type="text"
                                     class="form-control block w-96 h-24 px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-                                    v-model="tracking.general_remark"
+                                    v-model="wip.general_remark"
                                     placeholder="eg: Artwork by Bluedale"
                                 /> -->
                                 <textarea
                                     id="message"
                                     maxlength="800"
                                     rows="1"
-                                    v-model="tracking.general_remark"
+                                    v-model="wip.schedule_remark"
                                     placeholder="eg: Artwork by Bluedale"
                                     class="block p-2.5 w-full text-sm rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
                                 ></textarea>
@@ -462,12 +515,22 @@
                         class="text-center border-2 px-1 py-1 border-slate-300 my-2"
                     >
                         <label class="font-bold">Live</label>
-                        <div class="grid grid-cols-5">
+                        <div class="grid grid-cols-6">
+                            <div class="mx-1 grid grid-cols-1">
+                                <label class="font-bold">Progress</label>
+                                <select
+                                    class="block h-max w-full text-center rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                    v-model="wip.actual_live_done"
+                                >
+                                    <option value="2">Pending</option>
+                                    <option value="1">Completed</option>
+                                </select>
+                            </div>
                             <div class="mx-1 grid grid-cols-1">
                                 <label class="font-bold">Date</label>
                                 <div class="w-full">
                                     <VueDatePicker
-                                        v-model="tracking.general_enddate"
+                                        v-model="wip.actual_live_date"
                                         showNowButton
                                         nowButtonLabel="Today"
                                         :enableTimePicker="false"
@@ -479,7 +542,7 @@
                                 <label class="font-bold">User</label>
                                 <select
                                     class="block w-full text-center h-max rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                                    v-model="tracking.user_id"
+                                    v-model="wip.actual_live_user_id"
                                     @change="getUsers"
                                 >
                                     <option value="">Select user</option>
@@ -498,14 +561,14 @@
                                     maxlength="800"
                                     type="text"
                                     class="form-control block w-96 h-24 px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-                                    v-model="tracking.general_remark"
+                                    v-model="wip.general_remark"
                                     placeholder="eg: Artwork by Bluedale"
                                 /> -->
                                 <textarea
                                     id="message"
                                     maxlength="800"
                                     rows="1"
-                                    v-model="tracking.general_remark"
+                                    v-model="wip.actual_live_remark"
                                     placeholder="eg: Artwork by Bluedale"
                                     class="block p-2.5 w-full text-sm rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
                                 ></textarea>
@@ -517,12 +580,22 @@
                         class="text-center border-2 px-1 py-1 border-slate-300 my-2"
                     >
                         <label class="font-bold">Client Posting </label>
-                        <div class="grid grid-cols-5">
+                        <div class="grid grid-cols-6">
+                            <div class="mx-1 grid grid-cols-1">
+                                <label class="font-bold">Progress</label>
+                                <select
+                                    class="block h-max w-full text-center rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                    v-model="wip.client_posting_done"
+                                >
+                                    <option value="2">Pending</option>
+                                    <option value="1">Completed</option>
+                                </select>
+                            </div>
                             <div class="mx-1 grid grid-cols-1">
                                 <label class="font-bold">Date</label>
                                 <div class="w-full">
                                     <VueDatePicker
-                                        v-model="tracking.general_enddate"
+                                        v-model="wip.client_posting_date"
                                         showNowButton
                                         nowButtonLabel="Today"
                                         :enableTimePicker="false"
@@ -534,7 +607,7 @@
                                 <label class="font-bold">User</label>
                                 <select
                                     class="block w-full text-center h-max rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                                    v-model="tracking.user_id"
+                                    v-model="wip.client_posting_user_id"
                                     @change="getUsers"
                                 >
                                     <option value="">Select user</option>
@@ -553,14 +626,14 @@
                                     maxlength="800"
                                     type="text"
                                     class="form-control block w-96 h-24 px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-                                    v-model="tracking.general_remark"
+                                    v-model="wip.general_remark"
                                     placeholder="eg: Artwork by Bluedale"
                                 /> -->
                                 <textarea
                                     id="message"
                                     maxlength="800"
                                     rows="1"
-                                    v-model="tracking.general_remark"
+                                    v-model="wip.client_posting_remark"
                                     placeholder="eg: Artwork by Bluedale"
                                     class="block p-2.5 w-full text-sm rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
                                 ></textarea>
@@ -572,12 +645,22 @@
                         class="text-center border-2 px-1 py-1 border-slate-300 my-2"
                     >
                         <label class="font-bold">Report</label>
-                        <div class="grid grid-cols-5">
+                        <div class="grid grid-cols-6">
+                            <div class="mx-1 grid grid-cols-1">
+                                <label class="font-bold">Progress</label>
+                                <select
+                                    class="block h-max w-full text-center rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                    v-model="wip.report_done"
+                                >
+                                    <option value="2">Pending</option>
+                                    <option value="1">Completed</option>
+                                </select>
+                            </div>
                             <div class="mx-1 grid grid-cols-1">
                                 <label class="font-bold">Date</label>
                                 <div class="w-full">
                                     <VueDatePicker
-                                        v-model="tracking.general_enddate"
+                                        v-model="wip.report_date"
                                         showNowButton
                                         nowButtonLabel="Today"
                                         :enableTimePicker="false"
@@ -589,7 +672,7 @@
                                 <label class="font-bold">User</label>
                                 <select
                                     class="block w-full text-center h-max rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                                    v-model="tracking.user_id"
+                                    v-model="wip.report_user_id"
                                     @change="getUsers"
                                 >
                                     <option value="">Select user</option>
@@ -608,14 +691,14 @@
                                     maxlength="800"
                                     type="text"
                                     class="form-control block w-96 h-24 px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-                                    v-model="tracking.general_remark"
+                                    v-model="wip.general_remark"
                                     placeholder="eg: Artwork by Bluedale"
                                 /> -->
                                 <textarea
                                     id="message"
                                     maxlength="800"
                                     rows="1"
-                                    v-model="tracking.general_remark"
+                                    v-model="wip.report_user_id"
                                     placeholder="eg: Artwork by Bluedale"
                                     class="block p-2.5 w-full text-sm rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
                                 ></textarea>
@@ -639,7 +722,7 @@
                             maxlength="800"
                             type="text"
                             class="form-control block w-96 h-40 px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-                            v-model="tracking.general_remark"
+                            v-model="wip.wip_remark"
                             placeholder="eg: Artwork by Bluedale"
                         />
                     </div>
@@ -664,20 +747,58 @@ import moment from "moment";
 export default {
     data() {
         return {
-            tracking: {
-                user_id: "",
-                company_id: "",
-                contact_category_id: "",
-                category_description: "",
-                general_type: "",
-                general_amount: "",
-                art_format: "",
-                art_frequency: "",
-                general_reach: "",
-                general_tenure: "",
-                general_startdate: "",
-                general_enddate: "",
-                general_remark: "",
+            wip: {
+                wip_remark: "",
+                wip_progress: "",
+                art_chase_date: "",
+                art_chase_done: "",
+                art_chase_remark: "",
+                art_chase_user_id: "",
+                art_received_date: "",
+                art_received_done: "",
+                art_received_remark: "",
+                art_received_user_id: "",
+                art_todo_date: "",
+                art_todo_done: "",
+                art_todo_remark: "",
+                art_todo_user_id: "",
+                cns_sent_date: "",
+                cns_sent_done: "",
+                cns_sent_remark: "",
+                cns_sent_user_id: "",
+                cns_record_date: "",
+                cns_record_done: "",
+                cns_record_remark: "",
+                cns_record_user_id: "",
+                schedule_date: "",
+                schedule_done: "",
+                schedule_user_id: "",
+                schedule_remark: "",
+                actual_live_date: "",
+                actual_live_done: "",
+                actual_live_remark: "",
+                actual_live_user_id: "",
+                client_posting_date: "",
+                client_posting_done: "",
+                client_posting_user_id: "",
+                client_posting_remark: "",
+                report_date: "",
+                report_done: "",
+                report_remark: "",
+                report_user_id: "",
+                frequency_no: "",
+                tracking_general_id: "",
+                tracking_general: {
+                    id: "",
+                    company_id: "",
+                    user_id: "",
+                    contact_category_id: "",
+                    art_frequency: "",
+                    general_startdate: "",
+                    general_enddate: "",
+                    progress: "",
+                    general_remark: "",
+                },
             },
 
             moment: moment,
@@ -690,7 +811,7 @@ export default {
     },
 
     mounted() {
-        this.getTracking();
+        this.getWIPGeneral();
         this.getUsers();
         this.getCategory();
         this.getContacts();
@@ -699,11 +820,11 @@ export default {
     created() {},
 
     methods: {
-        async getTracking() {
+        async getWIPGeneral() {
             await axios
-                .get("/api/trackings/general/show/" + this.$route.params.id)
+                .get("/api/trackings/wip/general/show/" + this.$route.params.id)
                 .then((res) => {
-                    this.tracking = res.data.data;
+                    this.wip = res.data.data[0];
                     // this.tracking.general_tenure = (
                     //     this.tracking.general_tenure / 30
                     // ).toFixed(1);
@@ -746,43 +867,107 @@ export default {
                 });
         },
 
-        async updateTrackingGeneral() {
-            let tenure = Number;
-
-            if (this.tenure_length === "month") {
-                tenure = this.tracking.general_tenure * 30;
-            } else if (this.tenure_length === "year") {
-                tenure = this.tracking.general_tenure * 365;
-            } else {
-                tenure = this.tracking.general_tenure;
-            }
-
+        async updateWIPGeneral() {
             try {
                 await axios
                     .put(
-                        "/api/trackings/general/update/" +
+                        "/api/trackings/wip/general/update/" +
                             this.$route.params.id,
                         {
-                            user_id: this.tracking.user_id,
-                            company_id: this.tracking.company_id,
+                            wip_remark: this.wip.wip_remark,
+                            wip_progress: this.wip.wip_progress,
+                            art_chase_date: this.wip.art_chase_date
+                                ? this.moment(this.wip.art_chase_date).format(
+                                      "YYYY-MM-DD"
+                                  )
+                                : null,
+                            art_chase_done: this.wip.art_chase_done,
+                            art_chase_remark: this.wip.art_chase_remark,
+                            art_chase_user_id: this.wip.art_chase_user_id,
+                            art_received_date: this.wip.art_received_date
+                                ? this.moment(
+                                      this.wip.art_received_date
+                                  ).format("YYYY-MM-DD")
+                                : null,
+                            art_received_done: this.wip.art_received_done,
+                            art_received_remark: this.wip.art_received_remark,
+                            art_received_user_id: this.wip.art_received_user_id,
+                            art_todo_date: this.wip.art_todo_date
+                                ? this.moment(this.wip.art_todo_date).format(
+                                      "YYYY-MM-DD"
+                                  )
+                                : null,
+                            art_todo_done: this.wip.art_todo_done,
+                            art_todo_remark: this.wip.art_todo_remark,
+                            art_todo_user_id: this.wip.art_todo_user_id,
+                            cns_sent_date: this.wip.cns_sent_date
+                                ? this.moment(this.wip.cns_sent_date).format(
+                                      "YYYY-MM-DD"
+                                  )
+                                : null,
+                            cns_sent_done: this.wip.cns_sent_done,
+                            cns_sent_remark: this.wip.cns_sent_remark,
+                            cns_sent_user_id: this.wip.cns_sent_user_id,
+                            cns_record_date: this.wip.cns_record_date
+                                ? this.moment(this.wip.cns_record_date).format(
+                                      "YYYY-MM-DD"
+                                  )
+                                : null,
+                            cns_record_done: this.wip.cns_record_done,
+                            cns_record_remark: this.wip.cns_record_remark,
+                            cns_record_user_id: this.wip.cns_record_user_id,
+                            schedule_date: this.wip.schedule_date
+                                ? this.moment(this.wip.schedule_date).format(
+                                      "YYYY-MM-DD"
+                                  )
+                                : null,
+                            schedule_done: this.wip.schedule_done,
+                            schedule_user_id: this.wip.schedule_user_id,
+                            schedule_remark: this.wip.schedule_remark,
+                            actual_live_date: this.wip.actual_live_date
+                                ? this.moment(this.wip.actual_live_date).format(
+                                      "YYYY-MM-DD"
+                                  )
+                                : null,
+                            actual_live_done: this.wip.actual_live_done,
+                            actual_live_remark: this.wip.actual_live_remark,
+                            actual_live_user_id: this.wip.actual_live_user_id,
+                            client_posting_date: this.wip.client_posting_date
+                                ? this.moment(
+                                      this.wip.client_posting_date
+                                  ).format("YYYY-MM-DD")
+                                : null,
+                            client_posting_done: this.wip.client_posting_done,
+                            client_posting_user_id:
+                                this.wip.client_posting_user_id,
+                            client_posting_remark:
+                                this.wip.client_posting_remark,
+                            report_date: this.wip.report_date
+                                ? this.moment(this.wip.report_date).format(
+                                      "YYYY-MM-DD"
+                                  )
+                                : null,
+                            report_done: this.wip.report_done,
+                            report_remark: this.wip.report_remark,
+                            report_user_id: this.wip.report_user_id,
+                            tracking_general_id: this.wip.tracking_general_id,
+
+                            //tracking general info
+                            user_id: this.wip.tracking_general.user_id,
+                            company_id: this.wip.tracking_general.company_id,
                             contact_category_id:
-                                this.tracking.contact_category_id,
+                                this.wip.tracking_general.contact_category_id,
                             category_description:
-                                this.tracking.category_description,
-                            general_type: this.tracking.general_type,
-                            general_amount: this.tracking.general_amount,
-                            art_format: this.tracking.art_format,
-                            art_frequency: this.tracking.art_frequency,
-                            general_reach: this.tracking.general_reach,
-                            general_tenure: tenure,
+                                this.wip.tracking_general.category_description,
                             general_startdate: this.moment(
-                                this.tracking.general_startdate
+                                this.wip.tracking_general.general_startdate
                             ).format("YYYY-MM-DD"),
                             general_enddate: this.moment(
-                                this.tracking.general_enddate
+                                this.wip.tracking_general.general_enddate
                             ).format("YYYY-MM-DD"),
-                            general_remark: this.tracking.general_remark
-                                ? this.tracking.general_remark
+                            general_remark: this.wip.tracking_general
+                                .general_remark
+                                ? this.wip.general_remark
                                 : "No remark",
                         }
                     )

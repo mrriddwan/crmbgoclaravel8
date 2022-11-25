@@ -866,10 +866,7 @@ export default {
             this.contacts = [];
             this.getContacts();
         },
-        selectedCategory: function (value) {
-            this.contacts = [];
-            this.getContacts();
-        },
+        
 
         selectPage: function (value) {
             this.checked = [];

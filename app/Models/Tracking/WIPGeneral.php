@@ -11,6 +11,8 @@ class WipGeneral extends Model
     use HasFactory;
 
     protected $fillable = [
+        'wip_remark',
+        'wip_progress',
         'tracking_general_id',
         'frequency_no',
         'art_chase_date',
@@ -31,9 +33,9 @@ class WipGeneral extends Model
         'schedule_date',
         'schedule_remark',
         'schedule_user_id',
-        'live_date',
-        'live_remark',
-        'live_user_id',
+        'actual_live_date',
+        'actual_live_remark',
+        'actual_live_user_id',
         'client_posting_date',
         'client_posting_user_id',
         'client_posting_remark',
@@ -45,42 +47,15 @@ class WipGeneral extends Model
     public function tracking_general()
     {
         return $this->belongsTo(TrackingGeneral::class, 'tracking_general_id')
-            ->with([
-                'company' => function ($q) {
-                    $q->select([
-                        'id', 'name'
-                    ]);
-                },
-                'user' => function ($q) {
-                    $q->select([
-                        'id', 'name'
-                    ]);
-                },
-                'category' => function ($q) {
-                    $q->select([
-                        'id', 'name'
-                    ]);
-                },
-            ])
-            // ->select(
-            //     'tracking_generals.id',
-            //     'tracking_generals.company_id',
-            //     'tracking_generals.user_id',
-            //     'tracking_generals.contact_category_id',
-            //     'contacts.name as company_name',
-            //     'users.name as user_name',
-            //     'contact_categories.name as category_name',
-            // )
-            // ->join('contacts', 'tracking_generals.company_id', '=', 'contacts.id')
-            // ->join('users', 'tracking_generals.user_id', '=', 'contacts.id')
-            // ->join('contact_categories', 'tracking_generals.contact_category_id', '=', 'contact_categories.id')
-            // ->get();
-            ;
+        ;
     }
 
     public function art_chase_user()
     {
-        return $this->belongsTo(User::class, 'art_chase_user_id');
+        return $this->belongsTo(User::class, 'art_chase_user_id')
+            // ->join('users', 'wip_generals.art_chase_user_id', '=', 'users.id')
+            // ->select('tracking_generals.id', 'users.name as art_chase_username', 'users.id as art_chase_user_id')
+        ;
     }
 
     public function art_received_user()

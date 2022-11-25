@@ -27,6 +27,7 @@ use App\Http\Controllers\Api\ToDo\TaskController;
 use App\Http\Controllers\Api\ToDo\ToDoController;
 use App\Http\Controllers\Api\ToDo\ToDoSourceController;
 use App\Http\Controllers\Api\Tracking\TrackingGeneralController;
+use App\Http\Controllers\Api\Tracking\WIPGeneralController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -287,4 +288,7 @@ Route::delete('/billboards/tenure/delete/{tenure}', [BillboardTenureController::
 Route::get('/trackings/general/index', [TrackingGeneralController::class, 'index'])->name('tracking_general:index');
 Route::post('/trackings/general/store', [TrackingGeneralController::class, 'store'])->name('tracking_general:store');
 Route::get('/trackings/general/show/{general}', [TrackingGeneralController::class, 'show'])->name('tracking_general:show');
-Route::put('/trackings/general/update/{general}', [TrackingGeneralController::class, 'store'])->name('tracking_general:store');
+Route::put('/trackings/general/update/{general}', [TrackingGeneralController::class, 'update'])->name('tracking_general:update');
+
+Route::get('/trackings/wip/general/show/{wip_general}', [WIPGeneralController::class, 'show'])->name('wip_general:show');
+Route::put('/trackings/wip/general/update/{wip_general}', [WIPGeneralController::class, 'update'])->name('tracking_general:update');

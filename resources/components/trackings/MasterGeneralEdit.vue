@@ -141,31 +141,34 @@
 
                     <div class="form-group mt-2 grid grid-cols-2">
                         <div>
-                            <div>
-                                <label class="font-bold">Amount</label>
-                                <p class="inline text-red-600 text-lg">*</p>
-                                <!-- <div
+                            <label class="font-bold">Amount</label>
+                            <p class="inline text-red-600 text-lg">*</p>
+                            <!-- <div
                             v-if="form.remark.length >= 800"
                             class="text-red-600 inline text-xs uppercase"
                         >
                             Exceeded limit
                         </div> -->
-                            </div>
                         </div>
-                        <div>
-                            <div class="flex">
-                                <span
-                                    class="bg-slate-600 px-2 py-1 inline-block rounded-md text-white"
-                                    >RM</span
-                                >
-                                <input
-                                    maxlength="800"
-                                    type="number"
-                                    class="form-control block px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-                                    v-model="tracking.general_amount"
-                                    placeholder="eg: 10 000"
-                                />
-                            </div>
+
+                        <div
+                            class="flex"
+                            v-if="
+                                can('view tracking general amount') ||
+                                is('admin | super-admin')
+                            "
+                        >
+                            <span
+                                class="bg-slate-600 px-2 py-1 inline-block rounded-md text-white"
+                                >RM</span
+                            >
+                            <input
+                                maxlength="800"
+                                type="number"
+                                class="form-control block px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                                v-model="tracking.general_amount"
+                                placeholder="eg: 10 000"
+                            />
                         </div>
                     </div>
 
@@ -365,6 +368,7 @@ export default {
                 general_startdate: "",
                 general_enddate: "",
                 general_remark: "",
+                progress: "",
             },
 
             moment: moment,
@@ -446,28 +450,34 @@ export default {
 
             try {
                 await axios
-                    .put("/api/trackings/general/update/" + this.$route.params.id, {
-                        user_id: this.tracking.user_id,
-                        company_id: this.tracking.company_id,
-                        contact_category_id: this.tracking.contact_category_id,
-                        category_description:
-                            this.tracking.category_description,
-                        general_type: this.tracking.general_type,
-                        general_amount: this.tracking.general_amount,
-                        art_format: this.tracking.art_format,
-                        art_frequency: this.tracking.art_frequency,
-                        general_reach: this.tracking.general_reach,
-                        general_tenure: tenure,
-                        general_startdate: this.moment(
-                            this.tracking.general_startdate
-                        ).format("YYYY-MM-DD"),
-                        general_enddate: this.moment(
-                            this.tracking.general_enddate
-                        ).format("YYYY-MM-DD"),
-                        general_remark: this.tracking.general_remark
-                            ? this.tracking.general_remark
-                            : "No remark",
-                    })
+                    .put(
+                        "/api/trackings/general/update/" +
+                            this.$route.params.id,
+                        {
+                            progress: this.tracking.progress,
+                            user_id: this.tracking.user_id,
+                            company_id: this.tracking.company_id,
+                            contact_category_id:
+                                this.tracking.contact_category_id,
+                            category_description:
+                                this.tracking.category_description,
+                            general_type: this.tracking.general_type,
+                            general_amount: this.tracking.general_amount,
+                            art_format: this.tracking.art_format,
+                            art_frequency: this.tracking.art_frequency,
+                            general_reach: this.tracking.general_reach,
+                            general_tenure: tenure,
+                            general_startdate: this.moment(
+                                this.tracking.general_startdate
+                            ).format("YYYY-MM-DD"),
+                            general_enddate: this.moment(
+                                this.tracking.general_enddate
+                            ).format("YYYY-MM-DD"),
+                            general_remark: this.tracking.general_remark
+                                ? this.tracking.general_remark
+                                : "No remark",
+                        }
+                    )
                     .then((res) => {
                         this.$router.push({ name: "tracking_general" });
                     });

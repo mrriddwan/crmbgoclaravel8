@@ -21,7 +21,7 @@
                 class="py-2 px-2"
                 v-if="can('export project') || is('admin | super-admin')"
             >
-                <download-excel
+                <!-- <download-excel
                     :data="tracking_generals.data"
                     :fields="project_fields"
                     worksheet="tracking_generalsummary"
@@ -32,7 +32,7 @@
                         class="h-5 w-5 mr-1 inline-block"
                     />
                     Export
-                </download-excel>
+                </download-excel> -->
             </div>
             <div class="py-2 flex">
                 View:
@@ -44,18 +44,12 @@
             </div>
         </div>
 
-        <div class="grid grid-cols-3">
+        <div class="grid grid-cols-3 gap-20">
             <div class="grid grid-cols-2 items-center align-middle w-max">
                 <label for="paginate" class="px-2 inline-block">Per page</label>
                 <input v-model.lazy="paginate" class="form-control" />
-                <!-- <select v-model="paginate" class="form-control">
-                        <option value="10">10</option>
-                        <option value="50">50</option>
-                        <option value="100">100</option>
-                    </select> -->
-                <!-- <label for="paginate" class="px-2 inline-block">of 100</label> -->
             </div>
-            <div class="py-2 mx-5">
+            <div class="py-2 mx-8">
                 <input
                     v-model.lazy="search"
                     type="search"
@@ -98,7 +92,7 @@
                     <thead class="bg-slate-500 border-b sticky top-0">
                         <tr>
                             <th class="py-3">
-                                <div class="text-sm text-center h-6">
+                                <div class="text-sm text-center h-12">
                                     <a
                                         href="#"
                                         @click.prevent=""
@@ -121,8 +115,8 @@
                                     >
                                 </div>
                             </th>
-                            <th class="py-3">
-                                <div class="text-sm text-center h-6">
+                            <th class="py-3 w-max">
+                                <div class="text-sm text-center h-12">
                                     <a
                                         href="#"
                                         @click.prevent="
@@ -204,6 +198,24 @@
                                         /></span>
                                     </a>
                                 </div>
+                                <div class="text-sm text-center h-6">
+                                    <select
+                                        v-model="selectedUser"
+                                        class="form-control form-control-sm text-xs"
+                                    >
+                                        <option class="text-xs" value="">
+                                            All
+                                        </option>
+                                        <option
+                                            class="text-xs"
+                                            v-for="user in users.data"
+                                            :key="user.id"
+                                            :value="user.id"
+                                        >
+                                            {{ user.name }}
+                                        </option>
+                                    </select>
+                                </div>
                             </th>
 
                             <th class="py-3">
@@ -247,6 +259,7 @@
                                         /></span>
                                     </a>
                                 </div>
+                                <div class="text-sm text-center h-6"></div>
                             </th>
 
                             <th class="py-3">
@@ -290,10 +303,30 @@
                                         /></span>
                                     </a>
                                 </div>
+                                <div
+                                    class="items-center text-xs text-center h-6 w-24"
+                                >
+                                    <select
+                                        v-model="selectedCategory"
+                                        class="form-control form-control-sm text-xs"
+                                    >
+                                        <option class="text-xs" value="">
+                                            All
+                                        </option>
+                                        <option
+                                            class="text-xs"
+                                            v-for="category in categories.data"
+                                            :key="category.id"
+                                            :value="category.id"
+                                        >
+                                            {{ category.name }}
+                                        </option>
+                                    </select>
+                                </div>
                             </th>
 
                             <th class="py-3">
-                                <div class="text-sm text-center h-6">
+                                <div class="text-sm text-center h-12">
                                     <a
                                         href="#"
                                         @click.prevent="
@@ -342,7 +375,7 @@
                             </th>
 
                             <th class="py-3">
-                                <div class="text-sm text-center h-6">
+                                <div class="text-sm text-center h-12">
                                     <a
                                         href="#"
                                         @click.prevent="
@@ -383,8 +416,14 @@
                                     </a>
                                 </div>
                             </th>
-                            <th class="py-3">
-                                <div class="text-sm text-center h-6">
+                            <th
+                                class="py-3"
+                                v-if="
+                                    can('view tracking general amount') ||
+                                    is('admin | super-admin')
+                                "
+                            >
+                                <div class="text-sm text-center h-12">
                                     <a
                                         href="#"
                                         @click.prevent="
@@ -429,7 +468,7 @@
                                 </div>
                             </th>
                             <th class="py-3">
-                                <div class="text-sm text-center h-6">
+                                <div class="text-sm text-center h-12">
                                     <a
                                         href="#"
                                         @click.prevent="
@@ -472,7 +511,7 @@
                                 </div>
                             </th>
                             <th class="py-3">
-                                <div class="text-sm text-center h-6">
+                                <div class="text-sm text-center h-12">
                                     <a
                                         href="#"
                                         @click.prevent="
@@ -515,7 +554,7 @@
                                 </div>
                             </th>
                             <th class="py-3">
-                                <div class="text-sm text-center h-6">
+                                <div class="text-sm text-center h-12">
                                     <a
                                         href="#"
                                         @click.prevent="
@@ -557,7 +596,7 @@
                                 </div>
                             </th>
                             <th class="py-3">
-                                <div class="text-sm text-center h-6">
+                                <div class="text-sm text-center h-12">
                                     <a
                                         href="#"
                                         @click.prevent="
@@ -602,7 +641,7 @@
                                 </div>
                             </th>
                             <th class="py-3">
-                                <div class="text-sm text-center h-6">
+                                <div class="text-sm text-center h-12">
                                     <a
                                         href="#"
                                         @click.prevent="
@@ -650,7 +689,7 @@
                                 </div>
                             </th>
                             <th class="py-3">
-                                <div class="text-sm text-center h-6">
+                                <div class="text-sm text-center h-12">
                                     <a
                                         href="#"
                                         @click.prevent="
@@ -697,7 +736,7 @@
                             </th>
 
                             <th class="py-3">
-                                <div class="text-sm text-center h-6">
+                                <div class="text-sm text-center h-12">
                                     <a
                                         href="#"
                                         @click.prevent=""
@@ -747,10 +786,31 @@
                                         /></span>
                                     </a>
                                 </div>
+                                <div class="text-sm text-center h-6">
+                                    <select
+                                        v-model="selectedResult"
+                                        class="form-control form-control-sm text-xs"
+                                    >
+                                        <option class="text-xs" value="">
+                                            All
+                                        </option>
+                                        <option class="text-xs" value="Pending">
+                                            Pending
+                                        </option>
+                                        <option
+                                            class="text-xs"
+                                            value="Completed"
+                                        >
+                                            Completed
+                                        </option>
+                                    </select>
+                                </div>
                             </th>
 
                             <th class="py-3">
-                                <div class="text-sm text-center h-6 text-white">
+                                <div
+                                    class="text-sm text-center h-12 text-white"
+                                >
                                     Action
                                 </div>
                             </th>
@@ -780,8 +840,19 @@
                             <td class="text-xs text-center">
                                 {{ tracking.general_type }}
                             </td>
-                            <td class="text-xs text-center">
-                                {{ tracking.general_amount }}
+                            <td
+                                class="text-xs text-center"
+                                v-if="
+                                    can('view tracking general amount') ||
+                                    is('admin | super-admin')
+                                "
+                            >
+                                RM
+                                {{
+                                    tracking.general_amount.toLocaleString(
+                                        "en-US"
+                                    )
+                                }}
                             </td>
                             <td class="text-xs text-center">
                                 {{ tracking.art_format }}
@@ -790,7 +861,11 @@
                                 {{ tracking.art_frequency }}
                             </td>
                             <td class="text-xs text-center">
-                                {{ tracking.general_reach }}
+                                {{
+                                    tracking.general_reach.toLocaleString(
+                                        "en-US"
+                                    )
+                                }}
                             </td>
                             <td class="text-xs text-center">
                                 {{ tracking.general_tenure }}
@@ -858,6 +933,7 @@
                                         >&darr;</span
                                     >
                                 </div>
+                                <div class="text-sm text-center h-6"></div>
                             </th>
                             <th class="py-3">
                                 <div class="text-sm text-center h-6">
@@ -900,6 +976,7 @@
                                         /></span>
                                     </a>
                                 </div>
+                                <div class="text-sm text-center h-6"></div>
                             </th>
                             <th class="py-3">
                                 <div class="text-sm text-center h-6">
@@ -941,6 +1018,24 @@
                                                 class="h-4 w-4 text-amber-400 font-extrabold"
                                         /></span>
                                     </a>
+                                </div>
+                                <div class="text-sm text-center h-6">
+                                    <select
+                                        v-model="selectedUser"
+                                        class="form-control form-control-sm text-xs"
+                                    >
+                                        <option class="text-xs" value="">
+                                            All
+                                        </option>
+                                        <option
+                                            class="text-xs"
+                                            v-for="user in users.data"
+                                            :key="user.id"
+                                            :value="user.id"
+                                        >
+                                            {{ user.name }}
+                                        </option>
+                                    </select>
                                 </div>
                             </th>
 
@@ -985,6 +1080,7 @@
                                         /></span>
                                     </a>
                                 </div>
+                                <div class="text-sm text-center h-6"></div>
                             </th>
 
                             <th class="py-3">
@@ -1028,6 +1124,26 @@
                                         /></span>
                                     </a>
                                 </div>
+                                <div
+                                    class="items-center text-xs text-center h-6 w-24"
+                                >
+                                    <select
+                                        v-model="selectedCategory"
+                                        class="form-control form-control-sm text-xs"
+                                    >
+                                        <option class="text-xs" value="">
+                                            All
+                                        </option>
+                                        <option
+                                            class="text-xs"
+                                            v-for="category in categories.data"
+                                            :key="category.id"
+                                            :value="category.id"
+                                        >
+                                            {{ category.name }}
+                                        </option>
+                                    </select>
+                                </div>
                             </th>
 
                             <th class="py-3">
@@ -1035,7 +1151,9 @@
                                     <a
                                         href="#"
                                         @click.prevent="
-                                            change_sort('category_description')
+                                            change_sort(
+                                                'general_category_description'
+                                            )
                                         "
                                         class="text-white inline-flex"
                                     >
@@ -1049,7 +1167,7 @@
                                                     )) &&
                                                 !(
                                                     sort_field ==
-                                                    'category_description'
+                                                    'general_category_description'
                                                 )
                                             "
                                             class="inline-block"
@@ -1059,7 +1177,7 @@
                                             v-if="
                                                 sort_direction == 'desc' &&
                                                 sort_field ==
-                                                    'category_description'
+                                                    'general_category_description'
                                             "
                                             class="inline-block"
                                             ><ArrowUpIcon
@@ -1069,7 +1187,7 @@
                                             v-if="
                                                 sort_direction == 'asc' &&
                                                 sort_field ==
-                                                    'category_description'
+                                                    'general_category_description'
                                             "
                                             class="inline-block"
                                             ><ArrowDownIcon
@@ -1077,6 +1195,7 @@
                                         /></span>
                                     </a>
                                 </div>
+                                <div class="text-sm text-center h-6"></div>
                             </th>
 
                             <th class="py-3">
@@ -1084,7 +1203,7 @@
                                     <a
                                         href="#"
                                         @click.prevent="
-                                            change_sort('project_name')
+                                            change_sort('general_type')
                                         "
                                         class="text-white inline-flex"
                                     >
@@ -1095,7 +1214,7 @@
                                                     !(
                                                         sort_direction == 'desc'
                                                     )) &&
-                                                !(sort_field == 'project_name')
+                                                !(sort_field == 'general_type')
                                             "
                                             class="inline-block"
                                             ><ArrowsUpDownIcon class="h-4 w-4"
@@ -1103,7 +1222,7 @@
                                         <span
                                             v-if="
                                                 sort_direction == 'desc' &&
-                                                sort_field == 'project_name'
+                                                sort_field == 'general_type'
                                             "
                                             class="inline-block"
                                             ><ArrowUpIcon
@@ -1112,7 +1231,7 @@
                                         <span
                                             v-if="
                                                 sort_direction == 'asc' &&
-                                                sort_field == 'project_name'
+                                                sort_field == 'general_type'
                                             "
                                             class="inline-block"
                                             ><ArrowDownIcon
@@ -1120,13 +1239,14 @@
                                         /></span>
                                     </a>
                                 </div>
+                                <div class="text-sm text-center h-6"></div>
                             </th>
                             <th class="py-3">
                                 <div class="text-sm text-center h-6">
                                     <a
                                         href="#"
                                         @click.prevent="
-                                            change_sort('project_name')
+                                            change_sort('general_amount')
                                         "
                                         class="text-white inline-flex"
                                     >
@@ -1137,7 +1257,10 @@
                                                     !(
                                                         sort_direction == 'desc'
                                                     )) &&
-                                                !(sort_field == 'project_name')
+                                                !(
+                                                    sort_field ==
+                                                    'general_amount'
+                                                )
                                             "
                                             class="inline-block"
                                             ><ArrowsUpDownIcon class="h-4 w-4"
@@ -1145,7 +1268,7 @@
                                         <span
                                             v-if="
                                                 sort_direction == 'desc' &&
-                                                sort_field == 'project_name'
+                                                sort_field == 'general_amount'
                                             "
                                             class="inline-block"
                                             ><ArrowUpIcon
@@ -1154,7 +1277,7 @@
                                         <span
                                             v-if="
                                                 sort_direction == 'asc' &&
-                                                sort_field == 'project_name'
+                                                sort_field == 'general_amount'
                                             "
                                             class="inline-block"
                                             ><ArrowDownIcon
@@ -1162,13 +1285,14 @@
                                         /></span>
                                     </a>
                                 </div>
+                                <div class="text-sm text-center h-6"></div>
                             </th>
                             <th class="py-3">
                                 <div class="text-sm text-center h-6">
                                     <a
                                         href="#"
                                         @click.prevent="
-                                            change_sort('project_name')
+                                            change_sort('frequency_no')
                                         "
                                         class="text-white inline-flex"
                                     >
@@ -1179,7 +1303,7 @@
                                                     !(
                                                         sort_direction == 'desc'
                                                     )) &&
-                                                !(sort_field == 'project_name')
+                                                !(sort_field == 'frequency_no')
                                             "
                                             class="inline-block"
                                             ><ArrowsUpDownIcon class="h-4 w-4"
@@ -1187,7 +1311,7 @@
                                         <span
                                             v-if="
                                                 sort_direction == 'desc' &&
-                                                sort_field == 'project_name'
+                                                sort_field == 'frequency_no'
                                             "
                                             class="inline-block"
                                             ><ArrowUpIcon
@@ -1196,7 +1320,7 @@
                                         <span
                                             v-if="
                                                 sort_direction == 'asc' &&
-                                                sort_field == 'project_name'
+                                                sort_field == 'frequency_no'
                                             "
                                             class="inline-block"
                                             ><ArrowDownIcon
@@ -1204,13 +1328,14 @@
                                         /></span>
                                     </a>
                                 </div>
+                                <div class="text-sm text-center h-6"></div>
                             </th>
                             <th class="py-3">
                                 <div class="text-sm text-center h-6">
                                     <a
                                         href="#"
                                         @click.prevent="
-                                            change_sort('project_name')
+                                            change_sort('general_startdate')
                                         "
                                         class="text-white inline-flex"
                                     >
@@ -1222,7 +1347,10 @@
                                                     !(
                                                         sort_direction == 'desc'
                                                     )) &&
-                                                !(sort_field == 'project_name')
+                                                !(
+                                                    sort_field ==
+                                                    'general_startdate'
+                                                )
                                             "
                                             class="inline-block"
                                             ><ArrowsUpDownIcon class="h-4 w-4"
@@ -1230,7 +1358,8 @@
                                         <span
                                             v-if="
                                                 sort_direction == 'desc' &&
-                                                sort_field == 'project_name'
+                                                sort_field ==
+                                                    'general_startdate'
                                             "
                                             class="inline-block"
                                             ><ArrowUpIcon
@@ -1239,7 +1368,8 @@
                                         <span
                                             v-if="
                                                 sort_direction == 'asc' &&
-                                                sort_field == 'project_name'
+                                                sort_field ==
+                                                    'general_startdate'
                                             "
                                             class="inline-block"
                                             ><ArrowDownIcon
@@ -1247,13 +1377,14 @@
                                         /></span>
                                     </a>
                                 </div>
+                                <div class="text-sm text-center h-6"></div>
                             </th>
                             <th class="py-3">
                                 <div class="text-sm text-center h-6">
                                     <a
                                         href="#"
                                         @click.prevent="
-                                            change_sort('project_name')
+                                            change_sort('general_enddate')
                                         "
                                         class="text-white inline-flex"
                                     >
@@ -1265,7 +1396,10 @@
                                                     !(
                                                         sort_direction == 'desc'
                                                     )) &&
-                                                !(sort_field == 'project_name')
+                                                !(
+                                                    sort_field ==
+                                                    'general_enddate'
+                                                )
                                             "
                                             class="inline-block"
                                             ><ArrowsUpDownIcon class="h-4 w-4"
@@ -1273,7 +1407,7 @@
                                         <span
                                             v-if="
                                                 sort_direction == 'desc' &&
-                                                sort_field == 'project_name'
+                                                sort_field == 'general_enddate'
                                             "
                                             class="inline-block"
                                             ><ArrowUpIcon
@@ -1282,7 +1416,7 @@
                                         <span
                                             v-if="
                                                 sort_direction == 'asc' &&
-                                                sort_field == 'project_name'
+                                                sort_field == 'general_enddate'
                                             "
                                             class="inline-block"
                                             ><ArrowDownIcon
@@ -1290,62 +1424,19 @@
                                         /></span>
                                     </a>
                                 </div>
+                                <div class="text-sm text-center h-6"></div>
                             </th>
+                            
                             <th class="py-3">
                                 <div class="text-sm text-center h-6">
                                     <a
                                         href="#"
-                                        @click.prevent="
-                                            change_sort('project_name')
-                                        "
-                                        class="text-white inline-flex"
-                                    >
-                                        Status <br />
-                                        (Progress)
-                                        <span
-                                            v-if="
-                                                (!(sort_direction == 'asc') ||
-                                                    !(
-                                                        sort_direction == 'desc'
-                                                    )) &&
-                                                !(sort_field == 'project_name')
-                                            "
-                                            class="inline-block"
-                                            ><ArrowsUpDownIcon class="h-4 w-4"
-                                        /></span>
-                                        <span
-                                            v-if="
-                                                sort_direction == 'desc' &&
-                                                sort_field == 'project_name'
-                                            "
-                                            class="inline-block"
-                                            ><ArrowUpIcon
-                                                class="h-4 w-4 text-amber-400 font-extrabold"
-                                        /></span>
-                                        <span
-                                            v-if="
-                                                sort_direction == 'asc' &&
-                                                sort_field == 'project_name'
-                                            "
-                                            class="inline-block"
-                                            ><ArrowDownIcon
-                                                class="h-4 w-4 text-amber-400 font-extrabold"
-                                        /></span>
-                                    </a>
-                                </div>
-                            </th>
-                            <th class="py-3">
-                                <div class="text-sm text-center h-6">
-                                    <a
-                                        href="#"
-                                        @click.prevent="
-                                            change_sort('project_name')
-                                        "
+                                        @click.prevent=""
                                         class="text-white inline-flex"
                                     >
                                         Art <br />
                                         Chase
-                                        <span
+                                        <!-- <span
                                             v-if="
                                                 (!(sort_direction == 'asc') ||
                                                     !(
@@ -1373,22 +1464,21 @@
                                             class="inline-block"
                                             ><ArrowDownIcon
                                                 class="h-4 w-4 text-amber-400 font-extrabold"
-                                        /></span>
+                                        /></span> -->
                                     </a>
                                 </div>
+                                <div class="text-sm text-center h-6"></div>
                             </th>
                             <th class="py-3">
                                 <div class="text-sm text-center h-6">
                                     <a
                                         href="#"
-                                        @click.prevent="
-                                            change_sort('project_name')
-                                        "
+                                        @click.prevent=""
                                         class="text-white inline-flex"
                                     >
                                         Art <br />
                                         Received
-                                        <span
+                                        <!-- <span
                                             v-if="
                                                 (!(sort_direction == 'asc') ||
                                                     !(
@@ -1416,23 +1506,22 @@
                                             class="inline-block"
                                             ><ArrowDownIcon
                                                 class="h-4 w-4 text-amber-400 font-extrabold"
-                                        /></span>
+                                        /></span> -->
                                     </a>
                                 </div>
+                                <div class="text-sm text-center h-6"></div>
                             </th>
 
                             <th class="py-3">
                                 <div class="text-sm text-center h-6">
                                     <a
                                         href="#"
-                                        @click.prevent="
-                                            change_sort('project_name')
-                                        "
+                                        @click.prevent=""
                                         class="text-white inline-flex"
                                     >
                                         Art <br />
-                                        To Do
-                                        <span
+                                        ToDo
+                                        <!-- <span
                                             v-if="
                                                 (!(sort_direction == 'asc') ||
                                                     !(
@@ -1460,23 +1549,22 @@
                                             class="inline-block"
                                             ><ArrowDownIcon
                                                 class="h-4 w-4 text-amber-400 font-extrabold"
-                                        /></span>
+                                        /></span> -->
                                     </a>
                                 </div>
+                                <div class="text-sm text-center h-6"></div>
                             </th>
 
                             <th class="py-3">
                                 <div class="text-sm text-center h-6">
                                     <a
                                         href="#"
-                                        @click.prevent="
-                                            change_sort('project_name')
-                                        "
+                                        @click.prevent=""
                                         class="text-white inline-flex"
                                     >
                                         C&S <br />
                                         Sent
-                                        <span
+                                        <!-- <span
                                             v-if="
                                                 (!(sort_direction == 'asc') ||
                                                     !(
@@ -1504,23 +1592,22 @@
                                             class="inline-block"
                                             ><ArrowDownIcon
                                                 class="h-4 w-4 text-amber-400 font-extrabold"
-                                        /></span>
+                                        /></span> -->
                                     </a>
                                 </div>
+                                <div class="text-sm text-center h-6"></div>
                             </th>
 
                             <th class="py-3">
                                 <div class="text-sm text-center h-6">
                                     <a
                                         href="#"
-                                        @click.prevent="
-                                            change_sort('project_name')
-                                        "
+                                        @click.prevent=""
                                         class="text-white inline-flex"
                                     >
                                         C&S <br />
                                         Record
-                                        <span
+                                        <!-- <span
                                             v-if="
                                                 (!(sort_direction == 'asc') ||
                                                     !(
@@ -1548,23 +1635,22 @@
                                             class="inline-block"
                                             ><ArrowDownIcon
                                                 class="h-4 w-4 text-amber-400 font-extrabold"
-                                        /></span>
+                                        /></span> -->
                                     </a>
                                 </div>
+                                <div class="text-sm text-center h-6"></div>
                             </th>
 
                             <th class="py-3">
                                 <div class="text-sm text-center h-6">
                                     <a
                                         href="#"
-                                        @click.prevent="
-                                            change_sort('project_name')
-                                        "
+                                        @click.prevent=""
                                         class="text-white inline-flex"
                                     >
                                         Schedule <br />
                                         Date
-                                        <span
+                                        <!-- <span
                                             v-if="
                                                 (!(sort_direction == 'asc') ||
                                                     !(
@@ -1592,22 +1678,21 @@
                                             class="inline-block"
                                             ><ArrowDownIcon
                                                 class="h-4 w-4 text-amber-400 font-extrabold"
-                                        /></span>
+                                        /></span> -->
                                     </a>
                                 </div>
+                                <div class="text-sm text-center h-6"></div>
                             </th>
 
                             <th class="py-3">
                                 <div class="text-sm text-center h-6">
                                     <a
                                         href="#"
-                                        @click.prevent="
-                                            change_sort('project_name')
-                                        "
+                                        @click.prevent=""
                                         class="text-white inline-flex"
                                     >
                                         Report
-                                        <span
+                                        <!-- <span
                                             v-if="
                                                 (!(sort_direction == 'asc') ||
                                                     !(
@@ -1635,23 +1720,22 @@
                                             class="inline-block"
                                             ><ArrowDownIcon
                                                 class="h-4 w-4 text-amber-400 font-extrabold"
-                                        /></span>
+                                        /></span> -->
                                     </a>
                                 </div>
+                                <div class="text-sm text-center h-6"></div>
                             </th>
 
                             <th class="py-3">
                                 <div class="text-sm text-center h-6">
                                     <a
                                         href="#"
-                                        @click.prevent="
-                                            change_sort('project_name')
-                                        "
+                                        @click.prevent=""
                                         class="text-white inline-flex"
                                     >
                                         Client <br />
                                         Posting
-                                        <span
+                                        <!-- <span
                                             v-if="
                                                 (!(sort_direction == 'asc') ||
                                                     !(
@@ -1679,23 +1763,22 @@
                                             class="inline-block"
                                             ><ArrowDownIcon
                                                 class="h-4 w-4 text-amber-400 font-extrabold"
-                                        /></span>
+                                        /></span> -->
                                     </a>
                                 </div>
+                                <div class="text-sm text-center h-6"></div>
                             </th>
 
                             <th class="py-3">
                                 <div class="text-sm text-center h-6">
                                     <a
                                         href="#"
-                                        @click.prevent="
-                                            change_sort('project_name')
-                                        "
+                                        @click.prevent=""
                                         class="text-white inline-flex"
                                     >
                                         Actual Live <br />
                                         Date
-                                        <span
+                                        <!-- <span
                                             v-if="
                                                 (!(sort_direction == 'asc') ||
                                                     !(
@@ -1723,9 +1806,10 @@
                                             class="inline-block"
                                             ><ArrowDownIcon
                                                 class="h-4 w-4 text-amber-400 font-extrabold"
-                                        /></span>
+                                        /></span> -->
                                     </a>
                                 </div>
+                                <div class="text-sm text-center h-6"></div>
                             </th>
 
                             <th class="py-3">
@@ -1738,11 +1822,77 @@
                                         Remark
                                     </a>
                                 </div>
+                                <div class="text-sm text-center h-6"></div>
+                            </th>
+                            <th class="py-3">
+                                <div class="text-sm text-center h-6">
+                                    <a
+                                        href="#"
+                                        @click.prevent="
+                                            change_sort('wip_progress')
+                                        "
+                                        class="text-white inline-flex"
+                                    >
+                                        Status
+                                        <span
+                                            v-if="
+                                                (!(sort_direction == 'asc') ||
+                                                    !(
+                                                        sort_direction == 'desc'
+                                                    )) &&
+                                                !(
+                                                    sort_field ==
+                                                    'wip_progress'
+                                                )
+                                            "
+                                            class="inline-block"
+                                            ><ArrowsUpDownIcon class="h-4 w-4"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'desc' &&
+                                                sort_field == 'wip_progress'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowUpIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'asc' &&
+                                                sort_field == 'wip_progress'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowDownIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
+                                    </a>
+                                </div>
+                                <div class="text-sm text-center h-6">
+                                    <select
+                                        v-model="selectedResult"
+                                        class="form-control form-control-sm text-xs"
+                                    >
+                                        <option class="text-xs" value="">
+                                            All
+                                        </option>
+                                        <option class="text-xs" value="Pending">
+                                            Pending
+                                        </option>
+                                        <option
+                                            class="text-xs"
+                                            value="Completed"
+                                        >
+                                            Completed
+                                        </option>
+                                    </select>
+                                </div>
                             </th>
                             <th class="py-3">
                                 <div class="text-sm text-center h-6 text-white">
                                     Action
                                 </div>
+                                <div class="text-sm text-center h-6"></div>
                             </th>
                         </tr>
                     </thead>
@@ -1756,27 +1906,32 @@
                                 {{ showToday(tracking.created_at) }}
                             </td>
                             <td class="text-xs text-center">
-                                {{ tracking.tracking_general.user.name }}
+                                {{ tracking.user_name }}
                             </td>
                             <td class="text-xs text-center">
-                                {{ tracking.tracking_general.company.name }}
+                                {{ tracking.company_name }}
                             </td>
                             <td class="text-xs text-center">
-                                {{ tracking.tracking_general.category.name }}
+                                {{ tracking.category_name }}
                             </td>
                             <td class="text-xs text-center">
                                 {{
-                                    tracking.tracking_general
-                                        .category_description
+                                    tracking.general_category_description
                                 }}
                             </td>
                             <td class="text-xs text-center">
-                                {{ tracking.tracking_general.general_type }}
+                                {{ tracking.general_type }}
                             </td>
-                            <td class="text-xs text-center">
+                            <td
+                                class="text-xs text-center"
+                                v-if="
+                                    can('view tracking general amount') ||
+                                    is('admin | super-admin')
+                                "
+                            >
                                 RM
                                 {{
-                                    tracking.tracking_general.general_amount.toLocaleString(
+                                    tracking.general_amount.toLocaleString(
                                         "en-US"
                                     )
                                 }}
@@ -1785,304 +1940,549 @@
                                 {{
                                     tracking.frequency_no +
                                     " / " +
-                                    tracking.tracking_general.art_frequency
+                                    tracking.general_art_freq
                                 }}
                             </td>
                             <td class="text-xs text-center">
                                 {{
-                                    tracking.tracking_general.general_startdate
+                                    tracking.general_startdate
                                 }}
                             </td>
                             <td class="text-xs text-center">
-                                {{ tracking.tracking_general.general_enddate }}
-                            </td>
-                            <td class="text-xs text-center">
-                                {{ tracking.tracking_general.progress }}
+                                {{ tracking.general_enddate }}
                             </td>
                             <!-- style="background-color: yellow" -->
-                            <td
-                                v-if="
-                                    !tracking.art_chase_date &&
-                                    !tracking.art_chase_user &&
-                                    !tracking.art_chase_remark
-                                "
-                                class="text-xs text-center"
-                            >
-                                <div class="bg-yellow-300 rounded-md p-1 mb-1">
-                                    -
+
+                            <td class="text-xs text-center">
+                                <div
+                                    v-if="!tracking.art_chase_date"
+                                    class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300"
+                                >
+                                    Unset yet
                                 </div>
-                                <div class="bg-yellow-300 rounded-md p-1 mb-1">
-                                    -
-                                </div>
-                                <div class="bg-yellow-300 rounded-md p-1 mb-1">
-                                    -
-                                </div>
-                            </td>
-                            <td v-else class="text-xs text-center">
-                                <div class="bg-green-300 rounded-md p-1 mb-1">
+                                <div
+                                    v-else-if="tracking.art_chase_done === 2"
+                                    class="bg-yellow-300 rounded-md p-1 mb-1"
+                                >
                                     {{ showToday(tracking.art_chase_date) }}
                                 </div>
-
-                                <div class="bg-blue-300 rounded-md p-1 mb-1">
+                                <div
+                                    v-else
+                                    class="bg-green-300 rounded-md p-1 mb-1"
+                                >
+                                    {{ showToday(tracking.art_chase_date) }}
+                                </div>
+                                <div
+                                    v-if="!tracking.art_chase_user"
+                                    class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300"
+                                >
+                                    Unset yet
+                                </div>
+                                <div
+                                    v-else-if="tracking.art_chase_done === 2"
+                                    class="bg-yellow-300 rounded-md p-1 mb-1"
+                                >
                                     {{ tracking.art_chase_user.name }}
                                 </div>
-
-                                <div class="bg-indigo-300 rounded-md p-1">
+                                <div
+                                    v-else
+                                    class="bg-blue-300 rounded-md p-1 mb-1"
+                                >
+                                    {{ tracking.art_chase_user.name }}
+                                </div>
+                                <div
+                                    v-if="!tracking.art_chase_remark"
+                                    class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300"
+                                >
+                                    Unset yet
+                                </div>
+                                <div
+                                    v-else-if="tracking.art_chase_done === 2"
+                                    class="bg-yellow-300 rounded-md p-1 mb-1"
+                                >
+                                    {{ tracking.art_chase_remark }}
+                                </div>
+                                <div
+                                    v-else
+                                    class="bg-indigo-300 rounded-md p-1"
+                                >
                                     {{ tracking.art_chase_remark }}
                                 </div>
                             </td>
-                            <td
-                                v-if="
-                                    !tracking.art_received_date &&
-                                    !tracking.art_received_user &&
-                                    !tracking.art_received_remark
-                                "
-                                class="text-xs text-center"
-                            >
-                                <div class="bg-yellow-300 rounded-md p-1 mb-1">
-                                    -
+
+                            <td class="text-xs text-center bg-amber-600">
+                                <div
+                                    v-if="!tracking.art_received_date"
+                                    class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300"
+                                >
+                                    Unset yet
                                 </div>
-                                <div class="bg-yellow-300 rounded-md p-1 mb-1">
-                                    -
+                                <div
+                                    v-else-if="tracking.art_received_done === 2"
+                                    class="bg-yellow-300 rounded-md p-1 mb-1"
+                                >
+                                    {{ tracking.art_chase_user.name }}
                                 </div>
-                                <div class="bg-yellow-300 rounded-md p-1 mb-1">
-                                    -
-                                </div>
-                            </td>
-                            <td v-else class="text-xs text-center bg-amber-600">
-                                <div class="bg-green-300 rounded-md p-1 mb-1">
+                                <div
+                                    v-else
+                                    class="bg-green-300 rounded-md p-1 mb-1"
+                                >
                                     {{ showToday(tracking.art_received_date) }}
                                 </div>
+                                <div
+                                    v-if="!tracking.art_received_user"
+                                    class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300"
+                                >
+                                    Unset yet
+                                </div>
+                                <div
+                                    v-else-if="tracking.art_received_done === 2"
+                                    class="bg-yellow-300 rounded-md p-1 mb-1"
+                                >
+                                    {{ tracking.art_chase_user.name }}
+                                </div>
 
-                                <div class="bg-blue-300 rounded-md p-1 mb-1">
+                                <div
+                                    v-else
+                                    class="bg-blue-300 rounded-md p-1 mb-1"
+                                >
                                     {{ tracking.art_received_user.name }}
                                 </div>
 
-                                <div class="bg-indigo-300 rounded-md p-1">
+                                <div
+                                    v-if="!tracking.art_received_remark"
+                                    class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300"
+                                >
+                                    Unset yet
+                                </div>
+                                <div
+                                    v-else-if="tracking.art_received_done === 2"
+                                    class="bg-yellow-300 rounded-md p-1 mb-1"
+                                >
+                                    {{ tracking.art_chase_user.name }}
+                                </div>
+
+                                <div
+                                    v-else
+                                    class="bg-indigo-300 rounded-md p-1"
+                                >
                                     {{ tracking.art_received_remark }}
                                 </div>
                             </td>
-                            <td
-                                v-if="
-                                    !tracking.art_todo_date &&
-                                    !tracking.art_todo_user &&
-                                    !tracking.art_todo_remark
-                                "
-                                class="text-xs text-center"
-                            >
-                                <div class="bg-yellow-300 rounded-md p-1 mb-1">
-                                    -
+
+                            <td class="text-xs text-center">
+                                <div
+                                    v-if="!tracking.art_todo_date"
+                                    class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300"
+                                >
+                                    Unset yet
                                 </div>
-                                <div class="bg-yellow-300 rounded-md p-1 mb-1">
-                                    -
+                                <div
+                                    v-else-if="tracking.art_todo_done === 2"
+                                    class="bg-yellow-300 rounded-md p-1 mb-1"
+                                >
+                                    {{ tracking.art_chase_user.name }}
                                 </div>
-                                <div class="bg-yellow-300 rounded-md p-1 mb-1">
-                                    -
-                                </div>
-                            </td>
-                            <td v-else class="text-xs text-center">
-                                <div class="bg-green-300 rounded-md p-1 mb-1">
+                                <div
+                                    v-else
+                                    class="bg-green-300 rounded-md p-1 mb-1"
+                                >
                                     {{ showToday(tracking.art_todo_date) }}
                                 </div>
 
-                                <div class="bg-blue-300 rounded-md p-1 mb-1">
+                                <div
+                                    v-if="!tracking.art_todo_user"
+                                    class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300"
+                                >
+                                    Unset yet
+                                </div>
+                                <div
+                                    v-else-if="tracking.art_todo_done === 2"
+                                    class="bg-yellow-300 rounded-md p-1 mb-1"
+                                >
+                                    {{ tracking.art_chase_user.name }}
+                                </div>
+                                <div
+                                    v-else
+                                    class="bg-blue-300 rounded-md p-1 mb-1"
+                                >
                                     {{ tracking.art_todo_user.name }}
                                 </div>
 
-                                <div class="bg-indigo-300 rounded-md p-1">
+                                <div
+                                    v-if="!tracking.art_todo_remark"
+                                    class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300"
+                                >
+                                    Unset yet
+                                </div>
+                                <div
+                                    v-else-if="tracking.art_todo_done === 2"
+                                    class="bg-yellow-300 rounded-md p-1 mb-1"
+                                >
+                                    {{ tracking.art_chase_user.name }}
+                                </div>
+
+                                <div
+                                    v-else
+                                    class="bg-indigo-300 rounded-md p-1"
+                                >
                                     {{ tracking.art_todo_remark }}
                                 </div>
                             </td>
-                            <td
-                                v-if="
-                                    !tracking.cns_sent_date &&
-                                    !tracking.cns_sent_user &&
-                                    !tracking.cns_sent_remark
-                                "
-                                class="text-xs text-center"
-                            >
-                                <div class="bg-yellow-300 rounded-md p-1 mb-1">
-                                    -
+
+                            <td class="text-xs text-center">
+                                <div
+                                    v-if="!tracking.cns_sent_date"
+                                    class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300"
+                                >
+                                    Unset yet
                                 </div>
-                                <div class="bg-yellow-300 rounded-md p-1 mb-1">
-                                    -
+                                <div
+                                    v-else-if="tracking.cns_sent_done === 2"
+                                    class="bg-yellow-300 rounded-md p-1 mb-1"
+                                >
+                                    {{ tracking.art_chase_user.name }}
                                 </div>
-                                <div class="bg-yellow-300 rounded-md p-1 mb-1">
-                                    -
-                                </div>
-                            </td>
-                            <td v-else class="text-xs text-center">
-                                <div class="bg-green-300 rounded-md p-1 mb-1">
+                                <div
+                                    v-else
+                                    class="bg-green-300 rounded-md p-1 mb-1"
+                                >
                                     {{ showToday(tracking.cns_sent_date) }}
                                 </div>
 
-                                <div class="bg-blue-300 rounded-md p-1 mb-1">
+                                <div
+                                    v-if="!tracking.cns_sent_user"
+                                    class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300"
+                                >
+                                    Unset yet
+                                </div>
+                                <div
+                                    v-else-if="tracking.cns_sent_done === 2"
+                                    class="bg-yellow-300 rounded-md p-1 mb-1"
+                                >
+                                    {{ tracking.art_chase_user.name }}
+                                </div>
+
+                                <div
+                                    v-else
+                                    class="bg-blue-300 rounded-md p-1 mb-1"
+                                >
                                     {{ tracking.cns_sent_user.name }}
                                 </div>
 
-                                <div class="bg-indigo-300 rounded-md p-1">
+                                <div
+                                    v-if="!tracking.cns_sent_remark"
+                                    class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300"
+                                >
+                                    Unset yet
+                                </div>
+                                <div
+                                    v-else-if="tracking.cns_sent_done === 2"
+                                    class="bg-yellow-300 rounded-md p-1 mb-1"
+                                >
+                                    {{ tracking.art_chase_user.name }}
+                                </div>
+
+                                <div
+                                    v-else
+                                    class="bg-indigo-300 rounded-md p-1"
+                                >
                                     {{ tracking.cns_sent_remark }}
                                 </div>
                             </td>
-                            <td
-                                v-if="
-                                    !tracking.cns_record_date &&
-                                    !tracking.cns_record_user &&
-                                    !tracking.cns_record_remark
-                                "
-                                class="text-xs text-center"
-                            >
-                                <div class="bg-yellow-300 rounded-md p-1 mb-1">
-                                    -
+
+                            <td class="text-xs text-center">
+                                <div
+                                    v-if="!tracking.cns_record_date"
+                                    class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300"
+                                >
+                                    Unset yet
                                 </div>
-                                <div class="bg-yellow-300 rounded-md p-1 mb-1">
-                                    -
+                                <div
+                                    v-else-if="tracking.cns_record_done === 2"
+                                    class="bg-yellow-300 rounded-md p-1 mb-1"
+                                >
+                                    {{ tracking.art_chase_user.name }}
                                 </div>
-                                <div class="bg-yellow-300 rounded-md p-1 mb-1">
-                                    -
-                                </div>
-                            </td>
-                            <td v-else class="text-xs text-center">
-                                <div class="bg-green-300 rounded-md p-1 mb-1">
+                                <div
+                                    v-else
+                                    class="bg-green-300 rounded-md p-1 mb-1"
+                                >
                                     {{ showToday(tracking.cns_record_date) }}
                                 </div>
-
-                                <div class="bg-blue-300 rounded-md p-1 mb-1">
+                                <div
+                                    v-if="!tracking.cns_record_user"
+                                    class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300"
+                                >
+                                    Unset yet
+                                </div>
+                                <div
+                                    v-else-if="tracking.cns_record_done === 2"
+                                    class="bg-yellow-300 rounded-md p-1 mb-1"
+                                >
+                                    {{ tracking.art_chase_user.name }}
+                                </div>
+                                <div
+                                    v-else
+                                    class="bg-blue-300 rounded-md p-1 mb-1"
+                                >
                                     {{ tracking.cns_record_user.name }}
                                 </div>
-
-                                <div class="bg-indigo-300 rounded-md p-1">
+                                <div
+                                    v-if="!tracking.cns_record_remark"
+                                    class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300"
+                                >
+                                    Unset yet
+                                </div>
+                                <div
+                                    v-else-if="tracking.cns_record_done === 2"
+                                    class="bg-yellow-300 rounded-md p-1 mb-1"
+                                >
+                                    {{ tracking.art_chase_user.name }}
+                                </div>
+                                <div
+                                    v-else
+                                    class="bg-indigo-300 rounded-md p-1"
+                                >
                                     {{ tracking.cns_record_remark }}
                                 </div>
                             </td>
-                            <td
-                                v-if="
-                                    !tracking.schedule_date &&
-                                    !tracking.schedule_user &&
-                                    !tracking.schedule_remark
-                                "
-                                class="text-xs text-center"
-                            >
-                                <div class="bg-yellow-300 rounded-md p-1 mb-1">
-                                    -
+
+                            <td class="text-xs text-center">
+                                <div
+                                    v-if="!tracking.schedule_date"
+                                    class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300"
+                                >
+                                    Unset yet
                                 </div>
-                                <div class="bg-yellow-300 rounded-md p-1 mb-1">
-                                    -
+                                <div
+                                    v-else-if="tracking.schedule_done === 2"
+                                    class="bg-yellow-300 rounded-md p-1 mb-1"
+                                >
+                                    {{ tracking.art_chase_user.name }}
                                 </div>
-                                <div class="bg-yellow-300 rounded-md p-1 mb-1">
-                                    -
-                                </div>
-                            </td>
-                            <td v-else class="text-xs text-center">
-                                <div class="bg-green-300 rounded-md p-1 mb-1">
+                                <div
+                                    v-else
+                                    class="bg-green-300 rounded-md p-1 mb-1"
+                                >
                                     {{ showToday(tracking.schedule_date) }}
                                 </div>
-
-                                <div class="bg-blue-300 rounded-md p-1 mb-1">
+                                <div
+                                    v-if="!tracking.schedule_user"
+                                    class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300"
+                                >
+                                    Unset yet
+                                </div>
+                                <div
+                                    v-else-if="tracking.schedule_done === 2"
+                                    class="bg-yellow-300 rounded-md p-1 mb-1"
+                                >
+                                    {{ tracking.art_chase_user.name }}
+                                </div>
+                                <div
+                                    v-else
+                                    class="bg-blue-300 rounded-md p-1 mb-1"
+                                >
                                     {{ tracking.schedule_user.name }}
                                 </div>
-
-                                <div class="bg-indigo-300 rounded-md p-1">
+                                <div
+                                    v-if="!tracking.schedule_remark"
+                                    class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300"
+                                >
+                                    Unset yet
+                                </div>
+                                <div
+                                    v-else-if="tracking.schedule_done === 2"
+                                    class="bg-yellow-300 rounded-md p-1 mb-1"
+                                >
+                                    {{ tracking.art_chase_user.name }}
+                                </div>
+                                <div
+                                    v-else
+                                    class="bg-indigo-300 rounded-md p-1"
+                                >
                                     {{ tracking.schedule_remark }}
                                 </div>
                             </td>
-                            <td
-                                v-if="
-                                    !tracking.report_date &&
-                                    !tracking.report_user &&
-                                    !tracking.report_remark
-                                "
-                                class="text-xs text-center"
-                            >
-                                <div class="bg-yellow-300 rounded-md p-1 mb-1">
-                                    -
+
+                            <td class="text-xs text-center">
+                                <div
+                                    v-if="!tracking.report_date"
+                                    class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300"
+                                >
+                                    Unset yet
                                 </div>
-                                <div class="bg-yellow-300 rounded-md p-1 mb-1">
-                                    -
+                                <div
+                                    v-else-if="tracking.report_done === 2"
+                                    class="bg-yellow-300 rounded-md p-1 mb-1"
+                                >
+                                    {{ tracking.art_chase_user.name }}
                                 </div>
-                                <div class="bg-yellow-300 rounded-md p-1 mb-1">
-                                    -
-                                </div>
-                            </td>
-                            <td v-else class="text-xs text-center">
-                                <div class="bg-green-300 rounded-md p-1 mb-1">
+                                <div
+                                    v-else
+                                    class="bg-green-300 rounded-md p-1 mb-1"
+                                >
                                     {{ showToday(tracking.report_date) }}
                                 </div>
-
-                                <div class="bg-blue-300 rounded-md p-1 mb-1">
+                                <div
+                                    v-if="!tracking.report_user"
+                                    class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300"
+                                >
+                                    Unset yet
+                                </div>
+                                <div
+                                    v-else-if="tracking.report_done === 2"
+                                    class="bg-yellow-300 rounded-md p-1 mb-1"
+                                >
+                                    {{ tracking.art_chase_user.name }}
+                                </div>
+                                <div
+                                    v-else
+                                    class="bg-blue-300 rounded-md p-1 mb-1"
+                                >
                                     {{ tracking.report_user.name }}
                                 </div>
-
-                                <div class="bg-indigo-300 rounded-md p-1">
+                                <div
+                                    v-if="!tracking.report_remark"
+                                    class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300"
+                                >
+                                    Unset yet
+                                </div>
+                                <div
+                                    v-else-if="tracking.report_done === 2"
+                                    class="bg-yellow-300 rounded-md p-1 mb-1"
+                                >
+                                    {{ tracking.art_chase_user.name }}
+                                </div>
+                                <div
+                                    v-else
+                                    class="bg-indigo-300 rounded-md p-1"
+                                >
                                     {{ tracking.report_remark }}
                                 </div>
                             </td>
-                            <td
-                                v-if="
-                                    !tracking.client_posting_date &&
-                                    !tracking.client_posting_user &&
-                                    !tracking.client_posting_remark
-                                "
-                                class="text-xs text-center"
-                            >
-                                <div class="bg-yellow-300 rounded-md p-1 mb-1">
-                                    -
+
+                            <td class="text-xs text-center">
+                                <div
+                                    v-if="!tracking.client_posting_date"
+                                    class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300"
+                                >
+                                    Unset yet
                                 </div>
-                                <div class="bg-yellow-300 rounded-md p-1 mb-1">
-                                    -
+                                <div
+                                    v-else-if="tracking.client_posting_done === 2"
+                                    class="bg-yellow-300 rounded-md p-1 mb-1"
+                                >
+                                    {{ tracking.art_chase_user.name }}
                                 </div>
-                                <div class="bg-yellow-300 rounded-md p-1 mb-1">
-                                    -
-                                </div>
-                            </td>
-                            <td v-else class="text-xs text-center">
-                                <div class="bg-green-300 rounded-md p-1 mb-1">
+                                <div
+                                    v-else
+                                    class="bg-green-300 rounded-md p-1 mb-1"
+                                >
                                     {{
                                         showToday(tracking.client_posting_date)
                                     }}
                                 </div>
-
-                                <div class="bg-blue-300 rounded-md p-1 mb-1">
+                                <div
+                                    v-if="!tracking.client_posting_user"
+                                    class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300"
+                                >
+                                    Unset yet
+                                </div>
+                                <div
+                                    v-else-if="tracking.client_posting_done === 2"
+                                    class="bg-yellow-300 rounded-md p-1 mb-1"
+                                >
+                                    {{ tracking.art_chase_user.name }}
+                                </div>
+                                <div
+                                    v-else
+                                    class="bg-blue-300 rounded-md p-1 mb-1"
+                                >
                                     {{ tracking.client_posting_user.name }}
                                 </div>
-
-                                <div class="bg-indigo-300 rounded-md p-1">
+                                <div
+                                    v-if="!tracking.client_posting_remark"
+                                    class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300"
+                                >
+                                    Unset yet
+                                </div>
+                                <div
+                                    v-else-if="tracking.client_posting_done === 2"
+                                    class="bg-yellow-300 rounded-md p-1 mb-1"
+                                >
+                                    {{ tracking.art_chase_user.name }}
+                                </div>
+                                <div
+                                    v-else
+                                    class="bg-indigo-300 rounded-md p-1"
+                                >
                                     {{ tracking.client_posting_remark }}
                                 </div>
                             </td>
-                            <td
-                                v-if="
-                                    !tracking.actual_live_date &&
-                                    !tracking.actual_live_user &&
-                                    !tracking.actual_live_remark
-                                "
-                                class="text-xs text-center"
-                            >
-                                <div class="bg-yellow-300 rounded-md p-1 mb-1">
-                                    -
+
+                            <td class="text-xs text-center">
+                                <div
+                                    v-if="!tracking.actual_live_date"
+                                    class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300"
+                                >
+                                    Unset yet
                                 </div>
-                                <div class="bg-yellow-300 rounded-md p-1 mb-1">
-                                    -
+                                <div
+                                    v-else-if="tracking.actual_live_done === 2"
+                                    class="bg-yellow-300 rounded-md p-1 mb-1"
+                                >
+                                    {{ tracking.art_chase_user.name }}
                                 </div>
-                                <div class="bg-yellow-300 rounded-md p-1 mb-1">
-                                    -
-                                </div>
-                            </td>
-                            <td v-else class="text-xs text-center">
-                                <div class="bg-green-300 rounded-md p-1 mb-1">
+                                <div
+                                    v-else
+                                    class="bg-green-300 rounded-md p-1 mb-1"
+                                >
                                     {{ showToday(tracking.actual_live_date) }}
                                 </div>
-
-                                <div class="bg-blue-300 rounded-md p-1 mb-1">
+                                <div
+                                    v-if="!tracking.actual_live_user"
+                                    class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300"
+                                >
+                                    Unset yet
+                                </div>
+                                <div
+                                    v-else-if="tracking.actual_live_done === 2"
+                                    class="bg-yellow-300 rounded-md p-1 mb-1"
+                                >
+                                    {{ tracking.art_chase_user.name }}
+                                </div>
+                                <div
+                                    v-else
+                                    class="bg-blue-300 rounded-md p-1 mb-1"
+                                >
                                     {{ tracking.actual_live_user.name }}
                                 </div>
-
-                                <div class="bg-indigo-300 rounded-md p-1">
+                                <div
+                                    v-if="!tracking.actual_live_remark"
+                                    class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300"
+                                >
+                                    Unset yet
+                                </div>
+                                <div
+                                    v-else-if="tracking.actual_live_done === 2"
+                                    class="bg-yellow-300 rounded-md p-1 mb-1"
+                                >
+                                    {{ tracking.art_chase_user.name }}
+                                </div>
+                                <div
+                                    v-else
+                                    class="bg-indigo-300 rounded-md p-1"
+                                >
                                     {{ tracking.actual_live_remark }}
                                 </div>
                             </td>
                             <td class="text-xs text-center">
                                 {{ tracking.wip_remark }}
+                            </td>
+                            
+                            <td class="text-xs text-center">
+                                {{ tracking.wip_progress }}
                             </td>
                             <td class="text-xs text-center">
                                 <router-link
@@ -2146,6 +2546,8 @@ export default {
 
     mounted() {
         this.getTrackingGenerals();
+        this.getUsers();
+        this.getCategories();
     },
     data() {
         return {
@@ -2159,8 +2561,13 @@ export default {
             // general_remark_visibility: false,
             // general_remark: null,
             view_type: "wip",
+            selectedUser: "",
+            selectedCategory: "",
+            selectedResult: "",
+            users: [],
+            categories: [],
 
-            project_fields: {
+            general_fields: {
                 // CS: {
                 //     callback: (value) => {
                 //         return `${value.user.name}`;
@@ -2187,19 +2594,23 @@ export default {
         search: function (value) {
             this.getTrackingGenerals();
         },
-        searchStartDate: function (value) {
-            this.getTrackingGenerals();
-        },
-        searchEndDate: function (value) {
-            this.getTrackingGenerals();
-        },
-        searchDuration: function (value) {
-            this.getTrackingGenerals();
-        },
-        searchEntryDate: function (value) {
-            this.getTrackingGenerals();
-        },
+
         view_type: function (value) {
+            this.getTrackingGenerals();
+        },
+
+        selectedUser: function (value) {
+            this.tracking_generals = [];
+            this.getTrackingGenerals();
+        },
+
+        selectedCategory: function (value) {
+            this.tracking_generals = [];
+            this.getTrackingGenerals();
+        },
+
+        selectedResult: function (value) {
+            this.tracking_generals = [];
             this.getTrackingGenerals();
         },
     },
@@ -2228,10 +2639,38 @@ export default {
                         "&sort_field=" +
                         this.sort_field +
                         "&view_type=" +
-                        this.view_type
+                        this.view_type +
+                        "&selectedUser=" +
+                        this.selectedUser +
+                        "&selectedCategory=" +
+                        this.selectedCategory +
+                        "&selectedResult=" +
+                        this.selectedResult
                 )
                 .then((res) => {
                     this.tracking_generals = res.data;
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        },
+
+        async getUsers() {
+            await axios
+                .get("/api/users/users_list")
+                .then((res) => {
+                    this.users = res.data;
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        },
+
+        async getCategories() {
+            await axios
+                .get("/api/contacts/category/index")
+                .then((res) => {
+                    this.categories = res.data;
                 })
                 .catch((error) => {
                     console.log(error);
