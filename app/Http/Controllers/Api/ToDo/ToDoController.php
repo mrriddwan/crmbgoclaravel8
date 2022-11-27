@@ -49,19 +49,24 @@ class ToDoController extends Controller
         ) {
             $todo = ToDo::select([
                 'to_dos.*',
+                'contacts.id as contact_id',
+                'contacts.name as contact_name',
                 'contact_statuses.name as status_name',
                 'contact_types.name as type_name',
                 'users.name as user_name',
                 'tasks.name as task_name',
                 'priorities.name as priority_name',
                 'text_colors.color_code as color_name',
-                'contacts.name as contact_name',
+                'contacts.type_id as contact_type_id',
+                'contacts.status_id as contact_status_id',
+                // 'contacts.name as contact_name',
                 'to_do_sources.name as source_name',
                 'actions.name as action_name',
             ])
                 ->join('contacts', 'to_dos.contact_id', '=', 'contacts.id')
-                ->join('contact_statuses', 'to_dos.status_id', '=', 'contact_statuses.id')
-                ->join('contact_types', 'to_dos.type_id', '=', 'contact_types.id')
+                ->join('contact_statuses', 'contacts.status_id', '=', 'contact_statuses.id')
+                ->join('contact_types', 'contacts.type_id', '=', 'contact_types.id')
+                // ->join('contact_types', 'to_dos.type_id', '=', 'contact_types.id')
                 ->join('tasks', 'to_dos.task_id', '=', 'tasks.id')
                 ->join('priorities', 'to_dos.priority_id', '=', 'priorities.id')
                 ->join('users', 'to_dos.user_id', '=', 'users.id')
@@ -109,20 +114,26 @@ class ToDoController extends Controller
 
             $todo = ToDo::select([
                 'to_dos.*',
+                'contacts.id as contact_id',
+                'contacts.name as contact_name',
                 'contact_statuses.name as status_name',
                 'contact_types.name as type_name',
                 'users.name as user_name',
                 'tasks.name as task_name',
                 'priorities.name as priority_name',
                 'text_colors.color_code as color_name',
-                'contacts.name as contact_name',
+                'contacts.type_id as contact_type_id',
+                'contacts.status_id as contact_status_id',
+                // 'contacts.name as contact_name',
                 'to_do_sources.name as source_name',
                 'actions.name as action_name',
             ])
                 ->whereIn('to_dos.user_id', $final) // for view under supervisor and the subordinates
+
                 ->join('contacts', 'to_dos.contact_id', '=', 'contacts.id')
-                ->join('contact_statuses', 'to_dos.status_id', '=', 'contact_statuses.id')
-                ->join('contact_types', 'to_dos.type_id', '=', 'contact_types.id')
+                ->join('contact_statuses', 'contacts.status_id', '=', 'contact_statuses.id')
+                ->join('contact_types', 'contacts.type_id', '=', 'contact_types.id')
+                // ->join('contact_types', 'to_dos.type_id', '=', 'contact_types.id')
                 ->join('tasks', 'to_dos.task_id', '=', 'tasks.id')
                 ->join('priorities', 'to_dos.priority_id', '=', 'priorities.id')
                 ->join('users', 'to_dos.user_id', '=', 'users.id')
@@ -177,6 +188,8 @@ class ToDoController extends Controller
 
         $id = Auth::id();
 
+        $id = Auth::id();
+
         if (
             (DB::table('model_has_roles')
                 ->where('model_id', '=', $id)
@@ -189,19 +202,24 @@ class ToDoController extends Controller
         ) {
             $todo = ToDo::select([
                 'to_dos.*',
+                'contacts.id as contact_id',
+                'contacts.name as contact_name',
                 'contact_statuses.name as status_name',
                 'contact_types.name as type_name',
                 'users.name as user_name',
                 'tasks.name as task_name',
                 'priorities.name as priority_name',
                 'text_colors.color_code as color_name',
-                'contacts.name as contact_name',
+                'contacts.type_id as contact_type_id',
+                'contacts.status_id as contact_status_id',
+                // 'contacts.name as contact_name',
                 'to_do_sources.name as source_name',
                 'actions.name as action_name',
             ])
                 ->join('contacts', 'to_dos.contact_id', '=', 'contacts.id')
-                ->join('contact_statuses', 'to_dos.status_id', '=', 'contact_statuses.id')
-                ->join('contact_types', 'to_dos.type_id', '=', 'contact_types.id')
+                ->join('contact_statuses', 'contacts.status_id', '=', 'contact_statuses.id')
+                ->join('contact_types', 'contacts.type_id', '=', 'contact_types.id')
+                // ->join('contact_types', 'to_dos.type_id', '=', 'contact_types.id')
                 ->join('tasks', 'to_dos.task_id', '=', 'tasks.id')
                 ->join('priorities', 'to_dos.priority_id', '=', 'priorities.id')
                 ->join('users', 'to_dos.user_id', '=', 'users.id')
@@ -252,20 +270,26 @@ class ToDoController extends Controller
 
             $todo = ToDo::select([
                 'to_dos.*',
+                'contacts.id as contact_id',
+                'contacts.name as contact_name',
                 'contact_statuses.name as status_name',
                 'contact_types.name as type_name',
                 'users.name as user_name',
                 'tasks.name as task_name',
                 'priorities.name as priority_name',
                 'text_colors.color_code as color_name',
-                'contacts.name as contact_name',
+                'contacts.type_id as contact_type_id',
+                'contacts.status_id as contact_status_id',
+                // 'contacts.name as contact_name',
                 'to_do_sources.name as source_name',
                 'actions.name as action_name',
             ])
                 ->whereIn('to_dos.user_id', $final) // for view under supervisor and the subordinates
+
                 ->join('contacts', 'to_dos.contact_id', '=', 'contacts.id')
-                ->join('contact_statuses', 'to_dos.status_id', '=', 'contact_statuses.id')
-                ->join('contact_types', 'to_dos.type_id', '=', 'contact_types.id')
+                ->join('contact_statuses', 'contacts.status_id', '=', 'contact_statuses.id')
+                ->join('contact_types', 'contacts.type_id', '=', 'contact_types.id')
+                // ->join('contact_types', 'to_dos.type_id', '=', 'contact_types.id')
                 ->join('tasks', 'to_dos.task_id', '=', 'tasks.id')
                 ->join('priorities', 'to_dos.priority_id', '=', 'priorities.id')
                 ->join('users', 'to_dos.user_id', '=', 'users.id')
@@ -303,6 +327,7 @@ class ToDoController extends Controller
             return ToDoResource::collection($todo);
         }
     }
+    
 
     public function daterange()
     {
@@ -335,19 +360,24 @@ class ToDoController extends Controller
         ) {
             $todo = ToDo::select([
                 'to_dos.*',
+                'contacts.id as contact_id',
+                'contacts.name as contact_name',
                 'contact_statuses.name as status_name',
                 'contact_types.name as type_name',
                 'users.name as user_name',
                 'tasks.name as task_name',
                 'priorities.name as priority_name',
                 'text_colors.color_code as color_name',
-                'contacts.name as contact_name',
+                'contacts.type_id as contact_type_id',
+                'contacts.status_id as contact_status_id',
+                // 'contacts.name as contact_name',
                 'to_do_sources.name as source_name',
                 'actions.name as action_name',
             ])
                 ->join('contacts', 'to_dos.contact_id', '=', 'contacts.id')
-                ->join('contact_statuses', 'to_dos.status_id', '=', 'contact_statuses.id')
-                ->join('contact_types', 'to_dos.type_id', '=', 'contact_types.id')
+                ->join('contact_statuses', 'contacts.status_id', '=', 'contact_statuses.id')
+                ->join('contact_types', 'contacts.type_id', '=', 'contact_types.id')
+                // ->join('contact_types', 'to_dos.type_id', '=', 'contact_types.id')
                 ->join('tasks', 'to_dos.task_id', '=', 'tasks.id')
                 ->join('priorities', 'to_dos.priority_id', '=', 'priorities.id')
                 ->join('users', 'to_dos.user_id', '=', 'users.id')
@@ -395,20 +425,26 @@ class ToDoController extends Controller
 
             $todo = ToDo::select([
                 'to_dos.*',
+                'contacts.id as contact_id',
+                'contacts.name as contact_name',
                 'contact_statuses.name as status_name',
                 'contact_types.name as type_name',
                 'users.name as user_name',
                 'tasks.name as task_name',
                 'priorities.name as priority_name',
                 'text_colors.color_code as color_name',
-                'contacts.name as contact_name',
+                'contacts.type_id as contact_type_id',
+                'contacts.status_id as contact_status_id',
+                // 'contacts.name as contact_name',
                 'to_do_sources.name as source_name',
                 'actions.name as action_name',
             ])
                 ->whereIn('to_dos.user_id', $final) // for view under supervisor and the subordinates
+
                 ->join('contacts', 'to_dos.contact_id', '=', 'contacts.id')
-                ->join('contact_statuses', 'to_dos.status_id', '=', 'contact_statuses.id')
-                ->join('contact_types', 'to_dos.type_id', '=', 'contact_types.id')
+                ->join('contact_statuses', 'contacts.status_id', '=', 'contact_statuses.id')
+                ->join('contact_types', 'contacts.type_id', '=', 'contact_types.id')
+                // ->join('contact_types', 'to_dos.type_id', '=', 'contact_types.id')
                 ->join('tasks', 'to_dos.task_id', '=', 'tasks.id')
                 ->join('priorities', 'to_dos.priority_id', '=', 'priorities.id')
                 ->join('users', 'to_dos.user_id', '=', 'users.id')
@@ -443,6 +479,7 @@ class ToDoController extends Controller
             return ToDoResource::collection($todo);
         }
     }
+    
 
     public function store(ToDoInternalRequest $request)
     {

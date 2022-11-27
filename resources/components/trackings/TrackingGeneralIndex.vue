@@ -21,18 +21,36 @@
                 class="py-2 px-2"
                 v-if="can('export project') || is('admin | super-admin')"
             >
-                <!-- <download-excel
-                    :data="tracking_generals.data"
-                    :fields="project_fields"
-                    worksheet="tracking_generalsummary"
-                    name="Project Summary.xls"
-                    class="btn btn-success btn-sm"
+                <div
+                    class="inline-block"
+                    v-if="
+                        (can('export general master') || is('admin | super-admin')) && view_type === 'master'
+                    "
                 >
-                    <ArrowTopRightOnSquareIcon
-                        class="h-5 w-5 mr-1 inline-block"
-                    />
-                    Export
-                </download-excel> -->
+                    <button
+                        class="bg-green-500 px-2 py-2 rounded-lg text-xs"
+                        @click="exportMasterGeneralExcel('xls')"
+                    >
+                        <ArrowTopRightOnSquareIcon
+                            class="h-5 w-5 mr-1 inline-block"
+                        />Export Master
+                    </button>
+                </div>
+                <div
+                    class="inline-block"
+                    v-if="
+                        (can('export general wip') || is('admin | super-admin')) && view_type === 'wip'
+                    "
+                >
+                    <button
+                        class="bg-green-500 px-2 py-2 rounded-lg text-xs"
+                        @click="exportWIPGeneralExcel('xls')"
+                    >
+                        <ArrowTopRightOnSquareIcon
+                            class="h-5 w-5 mr-1 inline-block"
+                        />Export WIP
+                    </button>
+                </div>
             </div>
             <div class="py-2 flex">
                 View:
@@ -87,8 +105,10 @@
             <div
                 v-if="view_type === 'master'"
                 class="table-wrp block max-h-screen overflow-y-auto overflow-x-auto"
+                
             >
-                <table class="table table-hover w-full mt-0">
+                <table class="table table-hover w-full mt-0"
+                ref="general_master_table">
                     <thead class="bg-slate-500 border-b sticky top-0">
                         <tr>
                             <th class="py-3">
@@ -894,7 +914,7 @@
                                 /></router-link>
                                 <button
                                     class="mr-2 mb-2 inline-flex items-center px-2 py-1 bg-red-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
-                                    @click=""
+                                    @click="deleteMasterGeneral(tracking.id)"
                                 >
                                     <TrashIcon class="h-3 w-3" />
                                 </button>
@@ -907,7 +927,8 @@
                 v-if="view_type === 'wip'"
                 class="table-wrp block max-h-screen overflow-y-auto overflow-x-auto"
             >
-                <table class="table table-hover w-full mt-0">
+                <table class="table table-hover w-full mt-0"
+                ref="general_wip_table">
                     <thead class="bg-slate-500 border-b sticky top-0">
                         <tr>
                             <th class="py-3">
@@ -1426,7 +1447,7 @@
                                 </div>
                                 <div class="text-sm text-center h-6"></div>
                             </th>
-                            
+
                             <th class="py-3">
                                 <div class="text-sm text-center h-6">
                                     <a
@@ -1840,10 +1861,7 @@
                                                     !(
                                                         sort_direction == 'desc'
                                                     )) &&
-                                                !(
-                                                    sort_field ==
-                                                    'wip_progress'
-                                                )
+                                                !(sort_field == 'wip_progress')
                                             "
                                             class="inline-block"
                                             ><ArrowsUpDownIcon class="h-4 w-4"
@@ -1915,9 +1933,7 @@
                                 {{ tracking.category_name }}
                             </td>
                             <td class="text-xs text-center">
-                                {{
-                                    tracking.general_category_description
-                                }}
+                                {{ tracking.general_category_description }}
                             </td>
                             <td class="text-xs text-center">
                                 {{ tracking.general_type }}
@@ -1944,9 +1960,7 @@
                                 }}
                             </td>
                             <td class="text-xs text-center">
-                                {{
-                                    tracking.general_startdate
-                                }}
+                                {{ tracking.general_startdate }}
                             </td>
                             <td class="text-xs text-center">
                                 {{ tracking.general_enddate }}
@@ -2021,7 +2035,7 @@
                                     v-else-if="tracking.art_received_done === 2"
                                     class="bg-yellow-300 rounded-md p-1 mb-1"
                                 >
-                                    {{ tracking.art_chase_user.name }}
+                                    {{ showToday(tracking.art_received_date) }}
                                 </div>
                                 <div
                                     v-else
@@ -2029,6 +2043,7 @@
                                 >
                                     {{ showToday(tracking.art_received_date) }}
                                 </div>
+                                <!-- Art received user-->
                                 <div
                                     v-if="!tracking.art_received_user"
                                     class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300"
@@ -2039,7 +2054,7 @@
                                     v-else-if="tracking.art_received_done === 2"
                                     class="bg-yellow-300 rounded-md p-1 mb-1"
                                 >
-                                    {{ tracking.art_chase_user.name }}
+                                    {{ tracking.art_received_user.name }}
                                 </div>
 
                                 <div
@@ -2048,7 +2063,7 @@
                                 >
                                     {{ tracking.art_received_user.name }}
                                 </div>
-
+                                <!-- Art received remark-->
                                 <div
                                     v-if="!tracking.art_received_remark"
                                     class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300"
@@ -2059,7 +2074,7 @@
                                     v-else-if="tracking.art_received_done === 2"
                                     class="bg-yellow-300 rounded-md p-1 mb-1"
                                 >
-                                    {{ tracking.art_chase_user.name }}
+                                    {{ tracking.art_received_remark }}
                                 </div>
 
                                 <div
@@ -2071,6 +2086,7 @@
                             </td>
 
                             <td class="text-xs text-center">
+                                <!-- Art todo date-->
                                 <div
                                     v-if="!tracking.art_todo_date"
                                     class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300"
@@ -2081,7 +2097,7 @@
                                     v-else-if="tracking.art_todo_done === 2"
                                     class="bg-yellow-300 rounded-md p-1 mb-1"
                                 >
-                                    {{ tracking.art_chase_user.name }}
+                                    {{ showToday(tracking.art_todo_date) }}
                                 </div>
                                 <div
                                     v-else
@@ -2089,7 +2105,7 @@
                                 >
                                     {{ showToday(tracking.art_todo_date) }}
                                 </div>
-
+                                <!-- Art todo user-->
                                 <div
                                     v-if="!tracking.art_todo_user"
                                     class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300"
@@ -2100,7 +2116,7 @@
                                     v-else-if="tracking.art_todo_done === 2"
                                     class="bg-yellow-300 rounded-md p-1 mb-1"
                                 >
-                                    {{ tracking.art_chase_user.name }}
+                                    {{ tracking.art_todo_user.name }}
                                 </div>
                                 <div
                                     v-else
@@ -2108,7 +2124,7 @@
                                 >
                                     {{ tracking.art_todo_user.name }}
                                 </div>
-
+                                <!-- Art todo remark-->
                                 <div
                                     v-if="!tracking.art_todo_remark"
                                     class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300"
@@ -2119,7 +2135,7 @@
                                     v-else-if="tracking.art_todo_done === 2"
                                     class="bg-yellow-300 rounded-md p-1 mb-1"
                                 >
-                                    {{ tracking.art_chase_user.name }}
+                                    {{ tracking.art_todo_remark }}
                                 </div>
 
                                 <div
@@ -2131,6 +2147,7 @@
                             </td>
 
                             <td class="text-xs text-center">
+                                <!-- Art cns sent date-->
                                 <div
                                     v-if="!tracking.cns_sent_date"
                                     class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300"
@@ -2141,7 +2158,7 @@
                                     v-else-if="tracking.cns_sent_done === 2"
                                     class="bg-yellow-300 rounded-md p-1 mb-1"
                                 >
-                                    {{ tracking.art_chase_user.name }}
+                                    {{ showToday(tracking.cns_sent_date) }}
                                 </div>
                                 <div
                                     v-else
@@ -2149,7 +2166,7 @@
                                 >
                                     {{ showToday(tracking.cns_sent_date) }}
                                 </div>
-
+                                <!-- Art cns sent user-->
                                 <div
                                     v-if="!tracking.cns_sent_user"
                                     class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300"
@@ -2160,7 +2177,7 @@
                                     v-else-if="tracking.cns_sent_done === 2"
                                     class="bg-yellow-300 rounded-md p-1 mb-1"
                                 >
-                                    {{ tracking.art_chase_user.name }}
+                                    {{ tracking.cns_sent_user.name }}
                                 </div>
 
                                 <div
@@ -2169,7 +2186,7 @@
                                 >
                                     {{ tracking.cns_sent_user.name }}
                                 </div>
-
+                                <!-- Art cns sent remark-->
                                 <div
                                     v-if="!tracking.cns_sent_remark"
                                     class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300"
@@ -2180,7 +2197,7 @@
                                     v-else-if="tracking.cns_sent_done === 2"
                                     class="bg-yellow-300 rounded-md p-1 mb-1"
                                 >
-                                    {{ tracking.art_chase_user.name }}
+                                    {{ tracking.cns_sent_remark }}
                                 </div>
 
                                 <div
@@ -2192,6 +2209,7 @@
                             </td>
 
                             <td class="text-xs text-center">
+                                <!-- Art cns record date-->
                                 <div
                                     v-if="!tracking.cns_record_date"
                                     class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300"
@@ -2202,7 +2220,7 @@
                                     v-else-if="tracking.cns_record_done === 2"
                                     class="bg-yellow-300 rounded-md p-1 mb-1"
                                 >
-                                    {{ tracking.art_chase_user.name }}
+                                    {{ showToday(tracking.cns_record_date) }}
                                 </div>
                                 <div
                                     v-else
@@ -2210,6 +2228,7 @@
                                 >
                                     {{ showToday(tracking.cns_record_date) }}
                                 </div>
+                                <!-- Art cns record user-->
                                 <div
                                     v-if="!tracking.cns_record_user"
                                     class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300"
@@ -2220,7 +2239,7 @@
                                     v-else-if="tracking.cns_record_done === 2"
                                     class="bg-yellow-300 rounded-md p-1 mb-1"
                                 >
-                                    {{ tracking.art_chase_user.name }}
+                                    {{ tracking.cns_record_user.name }}
                                 </div>
                                 <div
                                     v-else
@@ -2228,6 +2247,7 @@
                                 >
                                     {{ tracking.cns_record_user.name }}
                                 </div>
+                                <!-- Art cns record remark-->
                                 <div
                                     v-if="!tracking.cns_record_remark"
                                     class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300"
@@ -2238,7 +2258,7 @@
                                     v-else-if="tracking.cns_record_done === 2"
                                     class="bg-yellow-300 rounded-md p-1 mb-1"
                                 >
-                                    {{ tracking.art_chase_user.name }}
+                                    {{ tracking.cns_record_remark }}
                                 </div>
                                 <div
                                     v-else
@@ -2249,6 +2269,7 @@
                             </td>
 
                             <td class="text-xs text-center">
+                                <!-- Art cns schedule date -->
                                 <div
                                     v-if="!tracking.schedule_date"
                                     class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300"
@@ -2259,7 +2280,7 @@
                                     v-else-if="tracking.schedule_done === 2"
                                     class="bg-yellow-300 rounded-md p-1 mb-1"
                                 >
-                                    {{ tracking.art_chase_user.name }}
+                                    {{ showToday(tracking.schedule_date) }}
                                 </div>
                                 <div
                                     v-else
@@ -2267,6 +2288,7 @@
                                 >
                                     {{ showToday(tracking.schedule_date) }}
                                 </div>
+                                <!-- Art cns schedule user -->
                                 <div
                                     v-if="!tracking.schedule_user"
                                     class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300"
@@ -2277,7 +2299,7 @@
                                     v-else-if="tracking.schedule_done === 2"
                                     class="bg-yellow-300 rounded-md p-1 mb-1"
                                 >
-                                    {{ tracking.art_chase_user.name }}
+                                    {{ tracking.schedule_user.name }}
                                 </div>
                                 <div
                                     v-else
@@ -2285,6 +2307,7 @@
                                 >
                                     {{ tracking.schedule_user.name }}
                                 </div>
+                                <!-- Art cns schedule remark -->
                                 <div
                                     v-if="!tracking.schedule_remark"
                                     class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300"
@@ -2295,7 +2318,7 @@
                                     v-else-if="tracking.schedule_done === 2"
                                     class="bg-yellow-300 rounded-md p-1 mb-1"
                                 >
-                                    {{ tracking.art_chase_user.name }}
+                                    {{ tracking.schedule_remark }}
                                 </div>
                                 <div
                                     v-else
@@ -2306,6 +2329,7 @@
                             </td>
 
                             <td class="text-xs text-center">
+                                <!-- Art report date -->
                                 <div
                                     v-if="!tracking.report_date"
                                     class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300"
@@ -2316,7 +2340,7 @@
                                     v-else-if="tracking.report_done === 2"
                                     class="bg-yellow-300 rounded-md p-1 mb-1"
                                 >
-                                    {{ tracking.art_chase_user.name }}
+                                    {{ showToday(tracking.report_date) }}
                                 </div>
                                 <div
                                     v-else
@@ -2324,6 +2348,7 @@
                                 >
                                     {{ showToday(tracking.report_date) }}
                                 </div>
+                                <!-- Art report user -->
                                 <div
                                     v-if="!tracking.report_user"
                                     class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300"
@@ -2334,7 +2359,7 @@
                                     v-else-if="tracking.report_done === 2"
                                     class="bg-yellow-300 rounded-md p-1 mb-1"
                                 >
-                                    {{ tracking.art_chase_user.name }}
+                                    {{ tracking.report_user.name }}
                                 </div>
                                 <div
                                     v-else
@@ -2342,6 +2367,7 @@
                                 >
                                     {{ tracking.report_user.name }}
                                 </div>
+                                <!-- Art report remark -->
                                 <div
                                     v-if="!tracking.report_remark"
                                     class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300"
@@ -2352,7 +2378,7 @@
                                     v-else-if="tracking.report_done === 2"
                                     class="bg-yellow-300 rounded-md p-1 mb-1"
                                 >
-                                    {{ tracking.art_chase_user.name }}
+                                    {{ tracking.report_remark }}
                                 </div>
                                 <div
                                     v-else
@@ -2363,6 +2389,7 @@
                             </td>
 
                             <td class="text-xs text-center">
+                                <!-- Client posting date -->
                                 <div
                                     v-if="!tracking.client_posting_date"
                                     class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300"
@@ -2370,10 +2397,14 @@
                                     Unset yet
                                 </div>
                                 <div
-                                    v-else-if="tracking.client_posting_done === 2"
+                                    v-else-if="
+                                        tracking.client_posting_done === 2
+                                    "
                                     class="bg-yellow-300 rounded-md p-1 mb-1"
                                 >
-                                    {{ tracking.art_chase_user.name }}
+                                    {{
+                                        showToday(tracking.client_posting_date)
+                                    }}
                                 </div>
                                 <div
                                     v-else
@@ -2383,6 +2414,7 @@
                                         showToday(tracking.client_posting_date)
                                     }}
                                 </div>
+                                <!-- Client posting user -->
                                 <div
                                     v-if="!tracking.client_posting_user"
                                     class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300"
@@ -2390,10 +2422,12 @@
                                     Unset yet
                                 </div>
                                 <div
-                                    v-else-if="tracking.client_posting_done === 2"
+                                    v-else-if="
+                                        tracking.client_posting_done === 2
+                                    "
                                     class="bg-yellow-300 rounded-md p-1 mb-1"
                                 >
-                                    {{ tracking.art_chase_user.name }}
+                                    {{ tracking.client_posting_user.name }}
                                 </div>
                                 <div
                                     v-else
@@ -2401,6 +2435,7 @@
                                 >
                                     {{ tracking.client_posting_user.name }}
                                 </div>
+                                <!-- Client posting remark -->
                                 <div
                                     v-if="!tracking.client_posting_remark"
                                     class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300"
@@ -2408,10 +2443,12 @@
                                     Unset yet
                                 </div>
                                 <div
-                                    v-else-if="tracking.client_posting_done === 2"
+                                    v-else-if="
+                                        tracking.client_posting_done === 2
+                                    "
                                     class="bg-yellow-300 rounded-md p-1 mb-1"
                                 >
-                                    {{ tracking.art_chase_user.name }}
+                                    {{ tracking.client_posting_remark }}
                                 </div>
                                 <div
                                     v-else
@@ -2422,6 +2459,7 @@
                             </td>
 
                             <td class="text-xs text-center">
+                                <!-- Actual live date -->
                                 <div
                                     v-if="!tracking.actual_live_date"
                                     class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300"
@@ -2432,14 +2470,16 @@
                                     v-else-if="tracking.actual_live_done === 2"
                                     class="bg-yellow-300 rounded-md p-1 mb-1"
                                 >
-                                    {{ tracking.art_chase_user.name }}
+                                    {{ tracking.actual_live_date }}
                                 </div>
+
                                 <div
                                     v-else
                                     class="bg-green-300 rounded-md p-1 mb-1"
                                 >
                                     {{ showToday(tracking.actual_live_date) }}
                                 </div>
+                                <!-- Actual live user -->
                                 <div
                                     v-if="!tracking.actual_live_user"
                                     class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300"
@@ -2450,7 +2490,7 @@
                                     v-else-if="tracking.actual_live_done === 2"
                                     class="bg-yellow-300 rounded-md p-1 mb-1"
                                 >
-                                    {{ tracking.art_chase_user.name }}
+                                    {{ tracking.actual_live_user.name }}
                                 </div>
                                 <div
                                     v-else
@@ -2458,6 +2498,7 @@
                                 >
                                     {{ tracking.actual_live_user.name }}
                                 </div>
+                                <!-- Actual live remark -->
                                 <div
                                     v-if="!tracking.actual_live_remark"
                                     class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300"
@@ -2468,7 +2509,7 @@
                                     v-else-if="tracking.actual_live_done === 2"
                                     class="bg-yellow-300 rounded-md p-1 mb-1"
                                 >
-                                    {{ tracking.art_chase_user.name }}
+                                    {{ tracking.actual_live_remark }}
                                 </div>
                                 <div
                                     v-else
@@ -2477,10 +2518,11 @@
                                     {{ tracking.actual_live_remark }}
                                 </div>
                             </td>
+                            <!-- WIP remark -->
                             <td class="text-xs text-center">
                                 {{ tracking.wip_remark }}
                             </td>
-                            
+
                             <td class="text-xs text-center">
                                 {{ tracking.wip_progress }}
                             </td>
@@ -2496,7 +2538,7 @@
                                 /></router-link>
                                 <button
                                     class="mr-2 mb-2 inline-flex items-center px-2 py-1 bg-red-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
-                                    @click=""
+                                    @click="deleteWIPGeneral(tracking.id)"
                                 >
                                     <TrashIcon class="h-3 w-3" />
                                 </button>
@@ -2560,7 +2602,7 @@ export default {
             sort_field: "created_at",
             // general_remark_visibility: false,
             // general_remark: null,
-            view_type: "wip",
+            view_type: "master",
             selectedUser: "",
             selectedCategory: "",
             selectedResult: "",
@@ -2687,11 +2729,19 @@ export default {
             this.getTrackingGenerals();
         },
 
-        deleteProject(id) {
+        deleteMasterGeneral(id) {
             if (!window.confirm("Confirm delete?")) {
                 return;
             }
-            axios.delete("/api/tracking_generals/delete/" + id);
+            axios.delete("/api/trackings/general/delete/" + id);
+            this.getTrackingGenerals();
+        },
+
+        deleteWIPGeneral(id) {
+            if (!window.confirm("Confirm delete?")) {
+                return;
+            }
+            axios.delete("/api/trackings/wip/general/delete/" + id);
             this.getTrackingGenerals();
         },
 
@@ -2706,6 +2756,38 @@ export default {
             let new_date = new Date(date);
             let day = moment(new_date).format("DD-MM-YY");
             return day;
+        },
+
+        exportMasterGeneralExcel(type, fn, dl) {
+            var elt = this.$refs.general_master_table;
+            var wb = XLSX.utils.table_to_book(elt, { sheet: "Master General" });
+
+            return dl
+                ? XLSX.write(wb, {
+                      bookType: type,
+                      bookSST: true,
+                      type: "base64",
+                  })
+                : XLSX.writeFile(
+                      wb,
+                      fn || "MasterGeneralExport." + (type || "xlsx")
+                  );
+        },
+
+        exportWIPGeneralExcel(type, fn, dl) {
+            var elt = this.$refs.general_wip_table;
+            var wb = XLSX.utils.table_to_book(elt, { sheet: "WIP General" });
+
+            return dl
+                ? XLSX.write(wb, {
+                      bookType: type,
+                      bookSST: true,
+                      type: "base64",
+                  })
+                : XLSX.writeFile(
+                      wb,
+                      fn || "WIPGeneralExport." + (type || "xlsx")
+                  );
         },
     },
 };

@@ -528,6 +528,11 @@
                     </tr>
                 </thead>
                 <tbody class="mt-2 text-center">
+                    <tr v-show="buffering">
+                        <td class="text-center text-sm font-bold" colspan="11">
+                            Loading . .
+                        </td>
+                    </tr>
                     <tr
                         v-for="(forecast, index) in forecasts.data"
                         :key="forecast.id"
@@ -759,6 +764,7 @@ export default {
             selectPage: false,
             selectAll: false,
             checked: [],
+            buffering: false,
             url: "",
 
             search: "",
@@ -827,6 +833,7 @@ export default {
             if (typeof page === "undefined") {
                 page = 1;
             }
+            this.buffering = true;
             axios
                 .get(
                     "/api/forecasts/index?" +
@@ -852,6 +859,7 @@ export default {
                         this.sort_field
                 )
                 .then((res) => {
+                    this.buffering = false;
                     this.forecasts = res.data;
                 })
                 .catch((error) => {

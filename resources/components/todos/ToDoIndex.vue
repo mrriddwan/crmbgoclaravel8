@@ -712,6 +712,11 @@
                     </tr>
                 </thead>
                 <tbody>
+                    <tr v-show="buffering">
+                        <td class="text-center text-sm font-bold" colspan="20">
+                            Loading . .
+                        </td>
+                    </tr>
                     <tr
                         v-for="(todo, index) in todos.data"
                         :key="todo.id"
@@ -729,7 +734,7 @@
                             />
                         </td>
                         <td class="text-xs">{{ index + 1 }}</td>
-                        <td class="text-xs">{{ todo.source.name }}</td>
+                        <td class="text-xs">{{ todo.source_name }}</td>
                         <td class="text-xs">{{ showToday(todo.todo_date) }}</td>
                         <td class="text-xs">
                             <span v-if="todo.todo_deadline === '2000-01-01'">
@@ -744,23 +749,23 @@
                                 Unset yet
                             </span>
                         </td>
-                        <td class="text-xs">{{ todo.status.name }}</td>
-                        <td class="text-xs">{{ todo.type.name }}</td>
+                        <td class="text-xs">{{ todo.status_name }}</td>
+                        <td class="text-xs">{{ todo.type_name }}</td>
                         <td class="text-xs">
                             <router-link
-                                :to="`/contact/${todo.contact.id}/info`"
+                                :to="`/contact/${todo.contact_id}/info`"
                                 custom
                                 v-slot="{ navigate, href }"
                             >
                                 <a :href="href" @click.stop="navigate">{{
-                                    todo.contact.name
+                                    todo.contact_name
                                 }}</a>
                             </router-link>
                         </td>
-                        <td class="text-xs">{{ todo.user.name }}</td>
-                        <td class="text-xs">{{ todo.task.name }}</td>
+                        <td class="text-xs">{{ todo.user_name }}</td>
+                        <td class="text-xs">{{ todo.task_name }}</td>
                         <td class="text-xs">
-                            {{ todo.todo_remark }}
+                            {{ todo.todo_remark.substring(0, 10) + ". . ." }}
                             <button
                                 @click="toggleRemark(todo.id)"
                                 class="align-middle border-1 border-black w-max rounded-md px-1"
@@ -776,7 +781,7 @@
                                     <div
                                         class="text-xs break-words align-middle font-extrabold uppercase text-white bg-green-500 rounded-md py-1 px-1 text-center"
                                     >
-                                        {{ todo.action.name }}
+                                        {{ todo.action_name }}
                                     </div>
                                     <div class="inline-block">
                                         <button
@@ -794,7 +799,7 @@
                                                         this.todo_action
                                                             .action_id,
                                                         todo.id,
-                                                        todo.contact.id
+                                                        todo.contact_id
                                                     )
                                                 "
                                                 v-model="todo_action.action_id"
@@ -824,7 +829,7 @@
                                             actionSelected(
                                                 this.todo_action.action_id,
                                                 todo.id,
-                                                todo.contact.id
+                                                todo.contact_id
                                             )
                                         "
                                         v-model="todo_action.action_id"
@@ -856,7 +861,7 @@
                                     :to="{
                                         name: 'followup_create',
                                         params: {
-                                            id: todo.contact.id,
+                                            id: todo.contact_id,
                                             todo_id: todo.id,
                                         },
                                     }"
@@ -1023,6 +1028,7 @@ export default {
             checked: [],
             url: "",
             changeAction: false,
+            buffering: false,
 
             todo_remark_visibility: false,
             todo_remark: null,
@@ -1218,6 +1224,7 @@ export default {
             if (typeof page === "undefined") {
                 page = 1;
             }
+            this.buffering = true;
             axios
                 .get(
                     "/api/todos/index?" +
@@ -1247,6 +1254,7 @@ export default {
                         this.sort_field
                 )
                 .then((res) => {
+                    this.buffering = false;
                     this.todos = res.data;
                 })
                 .catch((error) => {
@@ -1258,6 +1266,7 @@ export default {
             if (typeof page === "undefined") {
                 page = 1;
             }
+            this.buffering = true;
             axios
                 .get(
                     "/api/todos/index/monthrange?" +
@@ -1289,6 +1298,7 @@ export default {
                         this.sort_field
                 )
                 .then((res) => {
+                    this.buffering = false;
                     this.todos = res.data;
                 })
                 .catch((error) => {
@@ -1300,6 +1310,7 @@ export default {
             if (typeof page === "undefined") {
                 page = 1;
             }
+            this.buffering = true;
             axios
                 .get(
                     "/api/todos/index/daterange?" +
@@ -1321,6 +1332,7 @@ export default {
                         this.sort_field
                 )
                 .then((res) => {
+                    this.buffering = false;
                     this.todos = res.data;
                 })
                 .catch((error) => {

@@ -100,7 +100,7 @@
 
                 <div class="border-gray-400 inline-block px-1 py-1">
                     <p for="paginate">Per page</p>
-                    <input v-model.lazy="paginate" class="form-control"/>
+                    <input v-model.lazy="paginate" class="form-control" />
                     <!-- <select v-model="paginate" class="form-control">
                         <option value="10">10</option>
                         <option value="50">50</option>
@@ -278,7 +278,12 @@
             <table class="table table-hover table-bordered" id="example">
                 <thead class="bg-slate-500">
                     <tr>
-                        <th v-if="can('export followup') || is('admin | super-admin')">
+                        <th
+                            v-if="
+                                can('export followup') ||
+                                is('admin | super-admin')
+                            "
+                        >
                             <input type="checkbox" v-model="selectPage" />
                         </th>
                         <th>#</th>
@@ -508,11 +513,21 @@
                     </tr>
                 </thead>
                 <tbody>
+                    <tr v-show="buffering">
+                        <td class="text-center text-sm font-bold" colspan="13">
+                            Loading . .
+                        </td>
+                    </tr>
                     <tr
                         v-for="(followup, index) in followups.data"
                         :key="followup.id"
                     >
-                        <td v-if="can('export followup') || is('admin | super-admin')">
+                        <td
+                            v-if="
+                                can('export followup') ||
+                                is('admin | super-admin')
+                            "
+                        >
                             <input
                                 type="checkbox"
                                 :value="followup.id"
@@ -540,13 +555,17 @@
                         </td>
                         <td>{{ followup.user.name }}</td>
                         <td>{{ followup.task.name }}</td>
-                        <td>{{ followup.followup_remark }}
+                        <td>
+                            {{ followup.followup_remark }}
                             <button
-                                    @click="toggleRemark(followup.id)"
-                                    class="align-middle border-1 border-black w-max rounded-md px-1"
-                                >
-                                    <QuestionMarkCircleIcon class="inline h-4 w-4" />
-                                </button></td>
+                                @click="toggleRemark(followup.id)"
+                                class="align-middle border-1 border-black w-max rounded-md px-1"
+                            >
+                                <QuestionMarkCircleIcon
+                                    class="inline h-4 w-4"
+                                />
+                            </button>
+                        </td>
                         <td>
                             <div
                                 v-if="
@@ -595,7 +614,7 @@ import LaravelVuePagination from "laravel-vue-pagination";
 import axios from "axios";
 import moment from "moment";
 import { VueDatePicker } from "@vuepic/vue-datepicker";
-import FollowupRemarkModalVue from "./FollowupRemarkModal.vue"
+import FollowupRemarkModalVue from "./FollowupRemarkModal.vue";
 import {
     PencilSquareIcon,
     TrashIcon,
@@ -609,12 +628,12 @@ import {
     ArrowUpIcon,
     ArrowDownIcon,
     QuestionMarkCircleIcon,
-
 } from "@heroicons/vue/24/solid";
 
 export default {
     components: {
-        Pagination: LaravelVuePagination,FollowupRemarkModalVue,
+        Pagination: LaravelVuePagination,
+        FollowupRemarkModalVue,
         PencilSquareIcon,
         TrashIcon,
         ChevronDoubleLeftIcon,
@@ -633,7 +652,9 @@ export default {
     mounted() {
         this.getActions();
         this.getUsers();
-        this.selectedUser = document.querySelector('meta[name="user-id"]').getAttribute('content');
+        this.selectedUser = document
+            .querySelector('meta[name="user-id"]')
+            .getAttribute("content");
         this.getTasks();
         // console.log(
         //     "this is the route params from follow up, month?:" +
@@ -700,6 +721,7 @@ export default {
             selectAll: false,
             checked: [],
             url: "",
+            buffering: false,
 
             selectedUser: "",
             selectedTask: "",
@@ -846,11 +868,11 @@ export default {
             this.followup_remark_visibility = !this.followup_remark_visibility;
         },
 
-
         getFollowUpsSelectDate(page = 1) {
             if (typeof page === "undefined") {
                 page = 1;
             }
+            this.buffering = true;
             axios
                 .get(
                     "/api/followups/index?" +
@@ -872,6 +894,7 @@ export default {
                         this.sort_field
                 )
                 .then((res) => {
+                    this.buffering = false;
                     this.followups = res.data;
                 })
                 .catch((error) => {
@@ -883,6 +906,7 @@ export default {
             if (typeof page === "undefined") {
                 page = 1;
             }
+            this.buffering = true;
             axios
                 .get(
                     "/api/followups/index/monthrange?" +
@@ -906,6 +930,7 @@ export default {
                         this.sort_field
                 )
                 .then((res) => {
+                    this.buffering = false;
                     this.followups = res.data;
                 })
                 .catch((error) => {
@@ -917,6 +942,7 @@ export default {
             if (typeof page === "undefined") {
                 page = 1;
             }
+            this.buffering = true;
             axios
                 .get(
                     "/api/followups/index/daterange?" +
@@ -940,6 +966,7 @@ export default {
                         this.sort_field
                 )
                 .then((res) => {
+                    this.buffering = false;
                     this.followups = res.data;
                 })
                 .catch((error) => {

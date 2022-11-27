@@ -2,6 +2,8 @@
 
 namespace App\Exports;
 
+use App\Models\Contact\ContactStatus;
+use App\Models\Contact\ContactType;
 use App\Models\ToDo\ToDo;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\FromCollection;
@@ -28,12 +30,15 @@ class TodoExport implements FromQuery, WithMapping, WithHeadings
 
     public function map($todos): array
     {
+        $status_id = ContactStatus::where('id', '=', $todos->contact->status_id)->value('name');
+        $type_id = ContactType::where('id', '=', $todos->contact->type_id)->value('name') ;
+
         return [
             $todos->source->name,
             $todos->todo_date,
             $todos->todo_deadline,
-            $todos->status->name,
-            $todos->type->name,
+            $status_id,
+            $type_id,
             $todos->contact->name,
             $todos->user->name,
             $todos->task->name,

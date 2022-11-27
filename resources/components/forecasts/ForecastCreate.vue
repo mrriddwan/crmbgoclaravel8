@@ -40,6 +40,33 @@
                     <div class="grid grid-cols-2 w-auto items-center py-2 px-2">
                         <div class="">
                             <label class="ml-7"
+                                >User
+                                <p class="inline text-red-600 text-lg">
+                                    *
+                                </p></label
+                            >
+                        </div>
+                        <div class="">
+                            <select
+                                v-model="form.user_id"
+                                class="form-control"
+                            >
+                                <option value="">
+                                    Please select user
+                                </option>
+                                <option
+                                    v-for="user in users"
+                                    :key="user.id"
+                                    :value="user.id"
+                                >
+                                    {{ user.name }}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 w-auto items-center py-2 px-2">
+                        <div class="">
+                            <label class="ml-7"
                                 >Product
                                 <p class="inline text-red-600 text-lg">
                                     *
@@ -266,6 +293,7 @@ export default {
             info: "",
             contact_infos: [],
             form: {
+                user_id: "",
                 contact_id: "",
                 product_id: "",
                 amount: "",
@@ -279,8 +307,12 @@ export default {
     },
     mounted() {
         this.showForecast();
+        this.getUsers()
         this.getProducts();
         this.getForecastTypes();
+        this.form.user_id = document
+            .querySelector('meta[name="user-id"]')
+            .getAttribute("content");
     },
     methods: {
         showForecast() {
@@ -301,11 +333,10 @@ export default {
                 await axios.post("/api/forecasts/store", {
                     forecast_date: this.moment(this.form.forecast_date).format("YYYY-MM-DD"),
                     amount: this.form.amount,
+                    user_id: this.form.user_id,
                     contact_id: contact[0].id,
                     contact_type_id: contact[0].type_id,
                     contact_status_id: contact[0].status_id,
-                    contact_id: contact[0].id,
-                    user_id: 2, //replace with current user id later
                     product_id: this.form.product_id,
                     forecast_type_id: this.form.forecast_type_id,
                 });
@@ -334,6 +365,18 @@ export default {
                 }
             }
         },
+
+        async getUsers() {
+            await axios
+                .get("/api/users/users_list")
+                .then((res) => {
+                    this.users = res.data.data;
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        },
+
         async getForecastTypes() {
             await axios
                 .get("/api/forecasts/type/index")

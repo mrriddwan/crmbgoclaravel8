@@ -347,6 +347,11 @@
                     </tr>
                 </thead>
                 <tbody class="mt-2">
+                    <tr v-show="buffering">
+                        <td class="text-center text-sm font-bold" colspan="13">
+                            Loading . .
+                        </td>
+                    </tr>
                     <tr
                         v-for="(project, index) in projects.data"
                         :key="project.id"
@@ -488,6 +493,7 @@ export default {
             sort_field: "project_startdate",
             project_remark_visibility: false,
             project_remark: null,
+            buffering: false,
 
             project_fields: {
                 CS: {
@@ -545,6 +551,7 @@ export default {
             if (typeof page === "undefined") {
                 page = 1;
             }
+            this.buffering = true;
             axios
                 .get(
                     "/api/projects/index?" +
@@ -560,6 +567,7 @@ export default {
                         this.sort_field
                 )
                 .then((res) => {
+                    this.buffering = false;
                     this.projects = res.data;
                 })
                 .catch((error) => {

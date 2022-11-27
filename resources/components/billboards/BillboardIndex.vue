@@ -351,6 +351,11 @@
                         </tr>
                     </thead>
                     <tbody class="text-xs font-bold bg-gray-500 text-black">
+                        <tr v-show="buffering">
+                        <td class="text-center text-sm font-bold text-white" colspan="20">
+                            Loading . .
+                        </td>
+                    </tr>
                         <tr
                             v-for="(billboard, index) in billboards.data"
                             :key="billboard.id"
@@ -1271,6 +1276,7 @@ export default {
             sort_direction: "asc",
             sort_field: "site_id",
             currentDate: "",
+            buffering: false,
 
             billboard_fields: {
                 "Site No.": "site_id",
@@ -1976,6 +1982,7 @@ export default {
             if (typeof page === "undefined") {
                 page = 1;
             }
+            this.buffering = true;
             axios
                 .get(
                     "/api/billboards/index?" +
@@ -1985,6 +1992,7 @@ export default {
                         this.sort_field
                 )
                 .then((res) => {
+                    this.buffering = false;
                     this.billboards = res.data;
                 })
                 .catch((error) => {
@@ -1996,6 +2004,7 @@ export default {
             if (typeof page === "undefined") {
                 page = 1;
             }
+            this.buffering = true;
             axios
                 .get(
                     "/api/billboards/index?" +
@@ -2018,6 +2027,7 @@ export default {
                         this.sort_field
                 )
                 .then((res) => {
+                    this.buffering = false;
                     this.billboards = res.data;
                 })
                 .catch((error) => {

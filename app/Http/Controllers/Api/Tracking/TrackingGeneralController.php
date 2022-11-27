@@ -362,4 +362,11 @@ class TrackingGeneralController extends Controller
             'message' => 'Successfully update master tracking general',
         ]);
     }
+
+    public function delete(TrackingGeneral $tracking_general)
+    {
+        $tracking_general->delete();
+        return response()->json('tracking_general deleted.');
+    }
+
 }

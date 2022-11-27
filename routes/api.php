@@ -289,6 +289,8 @@ Route::get('/trackings/general/index', [TrackingGeneralController::class, 'index
 Route::post('/trackings/general/store', [TrackingGeneralController::class, 'store'])->name('tracking_general:store');
 Route::get('/trackings/general/show/{general}', [TrackingGeneralController::class, 'show'])->name('tracking_general:show');
 Route::put('/trackings/general/update/{general}', [TrackingGeneralController::class, 'update'])->name('tracking_general:update');
+Route::delete('/trackings/general/delete/{tracking_general}', [TrackingGeneralController::class, 'delete'])->name('tracking_general:delete');
 
 Route::get('/trackings/wip/general/show/{wip_general}', [WIPGeneralController::class, 'show'])->name('wip_general:show');
 Route::put('/trackings/wip/general/update/{wip_general}', [WIPGeneralController::class, 'update'])->name('tracking_general:update');
+Route::delete('/trackings/wip/general/delete/{wip_general}', [WIPGeneralController::class, 'delete'])->name('tracking_general:delete');

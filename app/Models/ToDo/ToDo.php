@@ -34,7 +34,7 @@ class ToDo extends Model
     }
 
     public function contact(){
-        return $this -> belongsTo(Contact::class);
+        return $this -> belongsTo(Contact::class)->with('type', 'status');
     }
 
     public function task(){

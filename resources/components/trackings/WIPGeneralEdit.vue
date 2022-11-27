@@ -881,7 +881,7 @@ export default {
                                       "YYYY-MM-DD"
                                   )
                                 : null,
-                            art_chase_done: this.wip.art_chase_done,
+                            art_chase_done: parseInt(this.wip.art_chase_done),
                             art_chase_remark: this.wip.art_chase_remark,
                             art_chase_user_id: this.wip.art_chase_user_id,
                             art_received_date: this.wip.art_received_date
@@ -889,7 +889,7 @@ export default {
                                       this.wip.art_received_date
                                   ).format("YYYY-MM-DD")
                                 : null,
-                            art_received_done: this.wip.art_received_done,
+                            art_received_done: parseInt(this.wip.art_received_done),
                             art_received_remark: this.wip.art_received_remark,
                             art_received_user_id: this.wip.art_received_user_id,
                             art_todo_date: this.wip.art_todo_date
@@ -897,7 +897,7 @@ export default {
                                       "YYYY-MM-DD"
                                   )
                                 : null,
-                            art_todo_done: this.wip.art_todo_done,
+                            art_todo_done: parseInt(this.wip.art_todo_done),
                             art_todo_remark: this.wip.art_todo_remark,
                             art_todo_user_id: this.wip.art_todo_user_id,
                             cns_sent_date: this.wip.cns_sent_date
@@ -905,7 +905,7 @@ export default {
                                       "YYYY-MM-DD"
                                   )
                                 : null,
-                            cns_sent_done: this.wip.cns_sent_done,
+                            cns_sent_done: parseInt(this.wip.cns_sent_done),
                             cns_sent_remark: this.wip.cns_sent_remark,
                             cns_sent_user_id: this.wip.cns_sent_user_id,
                             cns_record_date: this.wip.cns_record_date
@@ -913,7 +913,7 @@ export default {
                                       "YYYY-MM-DD"
                                   )
                                 : null,
-                            cns_record_done: this.wip.cns_record_done,
+                            cns_record_done: parseInt(this.wip.cns_record_done),
                             cns_record_remark: this.wip.cns_record_remark,
                             cns_record_user_id: this.wip.cns_record_user_id,
                             schedule_date: this.wip.schedule_date
@@ -921,7 +921,7 @@ export default {
                                       "YYYY-MM-DD"
                                   )
                                 : null,
-                            schedule_done: this.wip.schedule_done,
+                            schedule_done: parseInt(this.wip.schedule_done),
                             schedule_user_id: this.wip.schedule_user_id,
                             schedule_remark: this.wip.schedule_remark,
                             actual_live_date: this.wip.actual_live_date
@@ -929,7 +929,7 @@ export default {
                                       "YYYY-MM-DD"
                                   )
                                 : null,
-                            actual_live_done: this.wip.actual_live_done,
+                            actual_live_done: parseInt(this.wip.actual_live_done),
                             actual_live_remark: this.wip.actual_live_remark,
                             actual_live_user_id: this.wip.actual_live_user_id,
                             client_posting_date: this.wip.client_posting_date
@@ -937,7 +937,7 @@ export default {
                                       this.wip.client_posting_date
                                   ).format("YYYY-MM-DD")
                                 : null,
-                            client_posting_done: this.wip.client_posting_done,
+                            client_posting_done: parseInt(this.wip.client_posting_done),
                             client_posting_user_id:
                                 this.wip.client_posting_user_id,
                             client_posting_remark:
@@ -947,7 +947,7 @@ export default {
                                       "YYYY-MM-DD"
                                   )
                                 : null,
-                            report_done: this.wip.report_done,
+                            report_done: parseInt(this.wip.report_done),
                             report_remark: this.wip.report_remark,
                             report_user_id: this.wip.report_user_id,
                             tracking_general_id: this.wip.tracking_general_id,

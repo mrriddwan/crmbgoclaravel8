@@ -40,7 +40,12 @@
                     class="text-center font-bold uppercase bg-slate-700 text-yellow-600"
                     >Contact</label
                 >
-                <input class="file-input" type="file" ref="contact_file" name="file" />
+                <input
+                    class="file-input"
+                    type="file"
+                    ref="contact_file"
+                    name="file"
+                />
                 <button
                     type="submit"
                     class="inline-block items-center font-semibold text-xs text-white uppercase px-2 py-1 bg-green-800 border border-transparent rounded-md tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
@@ -72,9 +77,11 @@
                 >
                     Search records
                 </button>
-                <label class="text-xs uppercase text-red-600 mx-2"
-                v-if="new_search"
-                ><ExclamationTriangleIcon class="h-6 w-6 inline" /></label>
+                <label
+                    class="text-xs uppercase text-red-600 mx-2"
+                    v-if="new_search"
+                    ><ExclamationTriangleIcon class="h-6 w-6 inline"
+                /></label>
             </div>
 
             <div class="py-2 mx-2" v-if="module_infos.length !== 0">
@@ -186,7 +193,8 @@
                                                 sort_field == 'created_at'
                                             "
                                             class="inline-block"
-                                            ><ArrowUpIcon class="h-4 w-4 text-amber-400 font-extrabold"
+                                            ><ArrowUpIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
                                         /></span>
                                         <span
                                             v-if="
@@ -194,7 +202,8 @@
                                                 sort_field == 'created_at'
                                             "
                                             class="inline-block"
-                                            ><ArrowDownIcon class="h-4 w-4 text-amber-400 font-extrabold"
+                                            ><ArrowDownIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
                                         /></span>
                                     </a>
                                 </div>
@@ -227,7 +236,8 @@
                                                 sort_field == 'user_name'
                                             "
                                             class="inline-block"
-                                            ><ArrowUpIcon class="h-4 w-4 text-amber-400 font-extrabold"
+                                            ><ArrowUpIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
                                         /></span>
                                         <span
                                             v-if="
@@ -235,7 +245,8 @@
                                                 sort_field == 'user_name'
                                             "
                                             class="inline-block"
-                                            ><ArrowDownIcon class="h-4 w-4 text-amber-400 font-extrabold"
+                                            ><ArrowDownIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
                                         /></span>
                                     </a>
                                 </div>
@@ -290,7 +301,8 @@
                                                 sort_field == 'status_name'
                                             "
                                             class="inline-block"
-                                            ><ArrowUpIcon class="h-4 w-4 text-amber-400 font-extrabold"
+                                            ><ArrowUpIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
                                         /></span>
                                         <span
                                             v-if="
@@ -298,7 +310,8 @@
                                                 sort_field == 'status_name'
                                             "
                                             class="inline-block"
-                                            ><ArrowDownIcon class="h-4 w-4 text-amber-400 font-extrabold"
+                                            ><ArrowDownIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
                                         /></span>
                                     </a>
                                 </div>
@@ -345,7 +358,8 @@
                                                 sort_field == 'type_name'
                                             "
                                             class="inline-block"
-                                            ><ArrowUpIcon class="h-4 w-4 text-amber-400 font-extrabold"
+                                            ><ArrowUpIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
                                         /></span>
                                         <span
                                             v-if="
@@ -353,7 +367,8 @@
                                                 sort_field == 'type_name'
                                             "
                                             class="inline-block"
-                                            ><ArrowDownIcon class="h-4 w-4 text-amber-400 font-extrabold"
+                                            ><ArrowDownIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
                                         /></span>
                                     </a>
                                 </div>
@@ -402,7 +417,8 @@
                                                 sort_field == 'industry_name'
                                             "
                                             class="inline-block"
-                                            ><ArrowUpIcon class="h-4 w-4 text-amber-400 font-extrabold"
+                                            ><ArrowUpIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
                                         /></span>
                                         <span
                                             v-if="
@@ -410,7 +426,8 @@
                                                 sort_field == 'industry_name'
                                             "
                                             class="inline-block"
-                                            ><ArrowDownIcon class="h-4 w-4 text-amber-400 font-extrabold"
+                                            ><ArrowDownIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
                                         /></span>
                                     </a>
                                 </div>
@@ -460,7 +477,8 @@
                                                 sort_field == 'name'
                                             "
                                             class="inline-block"
-                                            ><ArrowUpIcon class="h-4 w-4 text-amber-400 font-extrabold"
+                                            ><ArrowUpIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
                                         /></span>
                                         <span
                                             v-if="
@@ -468,7 +486,8 @@
                                                 sort_field == 'name'
                                             "
                                             class="inline-block"
-                                            ><ArrowDownIcon class="h-4 w-4 text-amber-400 font-extrabold"
+                                            ><ArrowDownIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
                                         /></span>
                                     </a>
                                 </div>
@@ -501,7 +520,8 @@
                                                 sort_field == 'category_name'
                                             "
                                             class="inline-block"
-                                            ><ArrowUpIcon class="h-4 w-4 text-amber-400 font-extrabold"
+                                            ><ArrowUpIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
                                         /></span>
                                         <span
                                             v-if="
@@ -509,7 +529,8 @@
                                                 sort_field == 'category_name'
                                             "
                                             class="inline-block"
-                                            ><ArrowDownIcon class="h-4 w-4 text-amber-400 font-extrabold"
+                                            ><ArrowDownIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
                                         /></span>
                                     </a>
                                 </div>
@@ -559,7 +580,8 @@
                                                 sort_field == 'address'
                                             "
                                             class="inline-block"
-                                            ><ArrowUpIcon class="h-4 w-4 text-amber-400 font-extrabold"
+                                            ><ArrowUpIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
                                         /></span>
                                         <span
                                             v-if="
@@ -567,7 +589,8 @@
                                                 sort_field == 'address'
                                             "
                                             class="inline-block"
-                                            ><ArrowDownIcon class="h-4 w-4 text-amber-400 font-extrabold"
+                                            ><ArrowDownIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
                                         /></span>
                                     </a>
                                 </div>
@@ -596,10 +619,10 @@
                                             v-if="
                                                 sort_direction == 'desc' &&
                                                 sort_field == 'remark'
-                                                
                                             "
                                             class="inline-block"
-                                            ><ArrowUpIcon class="h-4 w-4 text-amber-400 font-extrabold"
+                                            ><ArrowUpIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
                                         /></span>
                                         <span
                                             v-if="
@@ -607,7 +630,8 @@
                                                 sort_field == 'remark'
                                             "
                                             class="inline-block"
-                                            ><ArrowDownIcon class="h-4 w-4 text-amber-400 font-extrabold"
+                                            ><ArrowDownIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
                                         /></span>
                                     </a>
                                 </div>
@@ -616,8 +640,11 @@
                         </tr>
                     </thead>
                     <tbody class="mt-2">
-                        <tr v-show="buffering" >
-                            <td class="text-center text-sm font-bold" colspan="9">
+                        <tr v-show="buffering">
+                            <td
+                                class="text-center text-sm font-bold"
+                                colspan="9"
+                            >
                                 Loading . .
                             </td>
                         </tr>
@@ -963,7 +990,29 @@
                                             class="h-4 w-4 text-amber-400 font-extrabold"
                                     /></span>
                                 </a>
-                                <div class="text-sm text-center h-6"></div>
+                                <div
+                                    v-if="
+                                        is('admin | supervisor | super-admin')
+                                    "
+                                    class="items-center text-xs text-center h-6 w-24"
+                                >
+                                    <select
+                                        v-model="selectedUser"
+                                        class="form-control form-control-sm text-xs"
+                                    >
+                                        <option class="text-xs" value="">
+                                            All
+                                        </option>
+                                        <option
+                                            class="text-xs"
+                                            v-for="user in users.data"
+                                            :key="user.id"
+                                            :value="user.id"
+                                        >
+                                            {{ user.name }}
+                                        </option>
+                                    </select>
+                                </div>
                             </th>
                             <th class="text-sm text-center">
                                 <a
@@ -1144,7 +1193,8 @@
                                                     'forecast_updatedate'
                                             "
                                             class="inline-block"
-                                            ><ArrowUpIcon class="h-4 w-4 text-amber-400 font-extrabold"
+                                            ><ArrowUpIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
                                         /></span>
                                         <span
                                             v-if="
@@ -1153,7 +1203,8 @@
                                                     'forecast_updatedate'
                                             "
                                             class="inline-block"
-                                            ><ArrowDownIcon class="h-4 w-4 text-amber-400 font-extrabold"
+                                            ><ArrowDownIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
                                         /></span>
                                     </a>
                                 </div>
@@ -1186,7 +1237,8 @@
                                                 sort_field == 'contact_name'
                                             "
                                             class="inline-block"
-                                            ><ArrowUpIcon class="h-4 w-4 text-amber-400 font-extrabold"
+                                            ><ArrowUpIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
                                         /></span>
                                         <span
                                             v-if="
@@ -1194,7 +1246,8 @@
                                                 sort_field == 'contact_name'
                                             "
                                             class="inline-block"
-                                            ><ArrowDownIcon class="h-4 w-4 text-amber-400 font-extrabold"
+                                            ><ArrowDownIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
                                         /></span>
                                     </a>
                                 </div>
@@ -1227,7 +1280,8 @@
                                                 sort_field == 'user_name'
                                             "
                                             class="inline-block"
-                                            ><ArrowUpIcon class="h-4 w-4 text-amber-400 font-extrabold"
+                                            ><ArrowUpIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
                                         /></span>
                                         <span
                                             v-if="
@@ -1235,7 +1289,8 @@
                                                 sort_field == 'user_name'
                                             "
                                             class="inline-block"
-                                            ><ArrowDownIcon class="h-4 w-4 text-amber-400 font-extrabold"
+                                            ><ArrowDownIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
                                         /></span>
                                     </a>
                                 </div>
@@ -1287,7 +1342,8 @@
                                                 sort_field == 'product_name'
                                             "
                                             class="inline-block"
-                                            ><ArrowUpIcon class="h-4 w-4 text-amber-400 font-extrabold"
+                                            ><ArrowUpIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
                                         /></span>
                                         <span
                                             v-if="
@@ -1295,7 +1351,8 @@
                                                 sort_field == 'product_name'
                                             "
                                             class="inline-block"
-                                            ><ArrowDownIcon class="h-4 w-4 text-amber-400 font-extrabold"
+                                            ><ArrowDownIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
                                         /></span>
                                     </a>
                                 </div>
@@ -1343,7 +1400,8 @@
                                                 sort_field == 'amount'
                                             "
                                             class="inline-block"
-                                            ><ArrowUpIcon class="h-4 w-4 text-amber-400 font-extrabold"
+                                            ><ArrowUpIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
                                         /></span>
                                         <span
                                             v-if="
@@ -1351,7 +1409,8 @@
                                                 sort_field == 'amount'
                                             "
                                             class="inline-block"
-                                            ><ArrowDownIcon class="h-4 w-4 text-amber-400 font-extrabold"
+                                            ><ArrowDownIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
                                         /></span>
                                     </a>
                                 </div>
@@ -1384,7 +1443,8 @@
                                                 sort_field == 'forecast_date'
                                             "
                                             class="inline-block"
-                                            ><ArrowUpIcon class="h-4 w-4 text-amber-400 font-extrabold"
+                                            ><ArrowUpIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
                                         /></span>
                                         <span
                                             v-if="
@@ -1392,7 +1452,8 @@
                                                 sort_field == 'forecast_date'
                                             "
                                             class="inline-block"
-                                            ><ArrowDownIcon class="h-4 w-4 text-amber-400 font-extrabold"
+                                            ><ArrowDownIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
                                         /></span>
                                     </a>
                                 </div>
@@ -1429,7 +1490,8 @@
                                                     'forecast_type_name'
                                             "
                                             class="inline-block"
-                                            ><ArrowUpIcon class="h-4 w-4 text-amber-400 font-extrabold"
+                                            ><ArrowUpIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
                                         /></span>
                                         <span
                                             v-if="
@@ -1438,7 +1500,8 @@
                                                     'forecast_type_name'
                                             "
                                             class="inline-block"
-                                            ><ArrowDownIcon class="h-4 w-4 text-amber-400 font-extrabold"
+                                            ><ArrowDownIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
                                         /></span>
                                     </a>
                                 </div>
@@ -1490,7 +1553,8 @@
                                                 sort_field == 'forecast_result'
                                             "
                                             class="inline-block"
-                                            ><ArrowUpIcon class="h-4 w-4 text-amber-400 font-extrabold"
+                                            ><ArrowUpIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
                                         /></span>
                                         <span
                                             v-if="
@@ -1498,7 +1562,8 @@
                                                 sort_field == 'forecast_result'
                                             "
                                             class="inline-block"
-                                            ><ArrowDownIcon class="h-4 w-4 text-amber-400 font-extrabold"
+                                            ><ArrowDownIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
                                         /></span>
                                     </a>
                                 </div>
@@ -1526,8 +1591,11 @@
                         </tr>
                     </thead>
                     <tbody class="mt-2 text-center">
-                        <tr v-show="buffering" >
-                            <td class="text-center text-sm font-bold" colspan="8">
+                        <tr v-show="buffering">
+                            <td
+                                class="text-center text-sm font-bold"
+                                colspan="8"
+                            >
                                 Loading . .
                             </td>
                         </tr>
@@ -1564,30 +1632,33 @@
                                 {{ forecast.forecast_type_name }}
                             </td>
                             <td class="text-center align-middle">
-                            <span v-if="forecast.result_name">
-                                <span
-                                    v-if="forecast.result_id === 1"
-                                    class="w-max inline-block align-middle text-sm font-extrabold uppercase text-white bg-green-600 rounded-md py-1 px-2 text-center"
-                                >
-                                    {{ forecast.result_name }}
+                                <span v-if="forecast.result_name">
+                                    <span
+                                        v-if="forecast.result_id === 1"
+                                        class="w-max inline-block align-middle text-sm font-extrabold uppercase text-white bg-green-600 rounded-md py-1 px-2 text-center"
+                                    >
+                                        {{ forecast.result_name }}
+                                    </span>
+                                    <span
+                                        v-if="forecast.result_id === 2"
+                                        class="w-max inline-block align-middle text-sm font-extrabold uppercase text-white bg-red-600 rounded-md py-1 px-2 text-center"
+                                    >
+                                        {{ forecast.result_name }}
+                                    </span>
+                                    <span
+                                        v-if="forecast.result_id === 3"
+                                        class="w-max inline-block align-middle text-sm font-extrabold uppercase text-white bg-yellow-600 rounded-md py-1 px-2 text-center"
+                                    >
+                                        {{ forecast.result_name }}
+                                    </span>
                                 </span>
                                 <span
-                                    v-if="forecast.result_id === 2"
-                                    class="w-max inline-block align-middle text-sm font-extrabold uppercase text-white bg-red-600 rounded-md py-1 px-2 text-center"
+                                    v-show="!forecast.result_name"
+                                    class="text-xs"
                                 >
-                                    {{ forecast.result_name }}
+                                    No result
                                 </span>
-                                <span
-                                    v-if="forecast.result_id === 3"
-                                    class="w-max inline-block align-middle text-sm font-extrabold uppercase text-white bg-yellow-600 rounded-md py-1 px-2 text-center"
-                                >
-                                    {{ forecast.result_name }}
-                                </span>
-                            </span>
-                            <span v-show="!forecast.result_name" class="text-xs">
-                                No result
-                            </span>
-                        </td>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
@@ -1881,8 +1952,11 @@
                         </tr>
                     </thead>
                     <tbody class="mt-2">
-                        <tr v-show="buffering" >
-                            <td class="text-center text-sm font-bold" colspan="7">
+                        <tr v-show="buffering">
+                            <td
+                                class="text-center text-sm font-bold"
+                                colspan="7"
+                            >
                                 Loading . .
                             </td>
                         </tr>
@@ -2149,7 +2223,7 @@ export default {
                 "Contact Type": "contact_type_name",
                 Company: "contact_name",
                 "Forecast Product": "product_name",
-                Amount: "amount",                
+                Amount: "amount",
                 "Forecast Date": "forecast_date",
                 "Forecast Type": "forecast_type_name",
                 Result: "result_name",
@@ -2399,7 +2473,7 @@ export default {
             this.getModule();
         },
         getExcelData(e) {
-            this.excel = this.$refs.contact_file.files[0]
+            this.excel = this.$refs.contact_file.files[0];
             console.log(this.excel);
         },
 

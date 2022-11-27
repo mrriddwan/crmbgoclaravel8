@@ -31,7 +31,11 @@
                             Find Records
                         </button>
                     </div>
-                    <div v-if="can('export tempboard') || is('admin | super-admin')">
+                    <div
+                        v-if="
+                            can('export tempboard') || is('admin | super-admin')
+                        "
+                    >
                         <download-excel
                             :data="tempboards.data"
                             :fields="tempboard_fields"
@@ -65,7 +69,6 @@
                     />
                 </div>
 
-                
                 <div class="py-1 inline-block">
                     <Pagination
                         :data="tempboards"
@@ -120,7 +123,7 @@
                                                     'tpboard_entrydate'
                                             "
                                             class="inline-block"
-                                            ><ArrowUpIcon class="h-4 w-4 "
+                                            ><ArrowUpIcon class="h-4 w-4"
                                         /></span>
                                         <span
                                             v-if="
@@ -709,6 +712,14 @@
                         </tr>
                     </thead>
                     <tbody class="mt-2">
+                        <tr v-show="buffering">
+                            <td
+                                class="text-center text-sm font-bold"
+                                colspan="20"
+                            >
+                                Loading . .
+                            </td>
+                        </tr>
                         <tr
                             v-for="(tempboard, index) in tempboards.data"
                             :key="tempboard.id"
@@ -761,13 +772,13 @@
                             <td class="text-xs break-normal">
                                 {{ tempboard.tpboard_remark }}
                                 <button
-                                @click="toggleRemark(tempboard.id)"
-                                class="align-middle border-1 border-black w-max rounded-md px-1"
-                            >
-                                <QuestionMarkCircleIcon
-                                    class="inline h-4 w-4"
-                                />
-                            </button>
+                                    @click="toggleRemark(tempboard.id)"
+                                    class="align-middle border-1 border-black w-max rounded-md px-1"
+                                >
+                                    <QuestionMarkCircleIcon
+                                        class="inline h-4 w-4"
+                                    />
+                                </button>
                             </td>
                             <td class="text-xs">
                                 <br />
@@ -815,7 +826,6 @@ import {
     ArrowUpIcon,
     ArrowDownIcon,
     QuestionMarkCircleIcon,
-
 } from "@heroicons/vue/24/solid";
 import moment from "moment";
 
@@ -835,7 +845,9 @@ export default {
     },
 
     mounted() {
-        this.selectedUser = document.querySelector('meta[name="user-id"]').getAttribute('content');
+        this.selectedUser = document
+            .querySelector('meta[name="user-id"]')
+            .getAttribute("content");
         this.getUsers();
         this.getSelectedYear(this.getCurrentDate());
         this.getTempboards();
@@ -857,6 +869,7 @@ export default {
 
             tpboard_remark_visibility: false,
             tpboard_remark: null,
+            buffering: false,
 
             search: "",
             selectedYear: "",
@@ -911,11 +924,11 @@ export default {
             this.tpboard_remark_visibility = !this.tpboard_remark_visibility;
         },
 
-
         getTempboards(page = 1) {
             if (typeof page === "undefined") {
                 page = 1;
             }
+            this.buffering = true;
             axios
                 .get(
                     "/api/tempboards/index?" +
@@ -935,6 +948,7 @@ export default {
                         this.sort_field
                 )
                 .then((res) => {
+                    this.buffering = false;
                     this.tempboards = res.data;
                 })
                 .catch((error) => {
