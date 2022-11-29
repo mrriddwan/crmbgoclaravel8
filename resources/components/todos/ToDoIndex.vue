@@ -777,7 +777,7 @@
                         </td>
                         <td class="text-center align-middle w-max">
                             <div class="container">
-                                <div v-if="todo.action" class="inline-block">
+                                <div v-if="todo.action_id" class="inline-block">
                                     <div
                                         class="text-xs break-words align-middle font-extrabold uppercase text-white bg-green-500 rounded-md py-1 px-1 text-center"
                                     >
