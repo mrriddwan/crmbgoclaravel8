@@ -24,7 +24,9 @@
                 <div
                     class="inline-block"
                     v-if="
-                        (can('export general master') || is('admin | super-admin')) && view_type === 'master'
+                        (can('export general master') ||
+                            is('admin | super-admin')) &&
+                        view_type === 'master'
                     "
                 >
                     <button
@@ -39,7 +41,9 @@
                 <div
                     class="inline-block"
                     v-if="
-                        (can('export general wip') || is('admin | super-admin')) && view_type === 'wip'
+                        (can('export general wip') ||
+                            is('admin | super-admin')) &&
+                        view_type === 'wip'
                     "
                 >
                     <button
@@ -105,10 +109,11 @@
             <div
                 v-if="view_type === 'master'"
                 class="table-wrp block max-h-screen overflow-y-auto overflow-x-auto"
-                
             >
-                <table class="table table-hover w-full mt-0"
-                ref="general_master_table">
+                <table
+                    class="table table-hover w-full mt-0"
+                    ref="general_master_table"
+                >
                     <thead class="bg-slate-500 border-b sticky top-0">
                         <tr>
                             <th class="py-3">
@@ -837,6 +842,11 @@
                         </tr>
                     </thead>
                     <tbody class="mt-2">
+                        <tr v-show="buffering" >
+                            <td class="text-center text-sm font-bold" colspan="30">
+                                Loading . .
+                            </td>
+                        </tr>
                         <tr
                             v-for="(tracking, index) in tracking_generals.data"
                             :key="tracking.id"
@@ -927,8 +937,10 @@
                 v-if="view_type === 'wip'"
                 class="table-wrp block max-h-screen overflow-y-auto overflow-x-auto"
             >
-                <table class="table table-hover w-full mt-0"
-                ref="general_wip_table">
+                <table
+                    class="table table-hover w-full mt-0"
+                    ref="general_wip_table"
+                >
                     <thead class="bg-slate-500 border-b sticky top-0">
                         <tr>
                             <th class="py-3">
@@ -1262,7 +1274,13 @@
                                 </div>
                                 <div class="text-sm text-center h-6"></div>
                             </th>
-                            <th class="py-3">
+                            <th
+                                class="py-3"
+                                v-if="
+                                    can('view tracking general amount') ||
+                                    is('admin | super-admin')
+                                "
+                            >
                                 <div class="text-sm text-center h-6">
                                     <a
                                         href="#"
@@ -1915,6 +1933,11 @@
                         </tr>
                     </thead>
                     <tbody class="mt-2">
+                        <tr v-show="buffering" >
+                            <td class="text-center text-sm font-bold" colspan="30">
+                                Loading . .
+                            </td>
+                        </tr>
                         <tr
                             v-for="(tracking, index) in tracking_generals.data"
                             :key="tracking.id"
@@ -2597,9 +2620,10 @@ export default {
             paginate: 100,
 
             search: "",
-
+            
             sort_direction: "desc",
             sort_field: "created_at",
+            buffering: false,
             // general_remark_visibility: false,
             // general_remark: null,
             view_type: "master",
@@ -2608,25 +2632,6 @@ export default {
             selectedResult: "",
             users: [],
             categories: [],
-
-            general_fields: {
-                // CS: {
-                //     callback: (value) => {
-                //         return `${value.user.name}`;
-                //     },
-                // },
-                // "Start Date": "project_startdate",
-                // "End Date": "project_enddate",
-                // // Duration: "user_name",
-                // Company: {
-                //     callback: (value) => {
-                //         return `${value.contact.name}`;
-                //     },
-                // },
-                // Project: "project_name",
-                // Remark: "general_remark",
-                // "Entry Date": "updated_at",
-            },
         };
     },
     watch: {
@@ -2667,6 +2672,7 @@ export default {
             if (typeof page === "undefined") {
                 page = 1;
             }
+            this.buffering = true;
             axios
                 .get(
                     "/api/trackings/general/index?" +
@@ -2690,6 +2696,7 @@ export default {
                         this.selectedResult
                 )
                 .then((res) => {
+                    this.buffering = false;
                     this.tracking_generals = res.data;
                 })
                 .catch((error) => {

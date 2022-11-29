@@ -118,7 +118,8 @@
                             </option>
                         </select>
                     </div>
-                    <div class="form-group mb-4">
+                    <!-- added if check due to import of old contact data has null value-->
+                    <div v-if="contact.address" class="form-group mb-4">
                         <label class="font-bold">Address</label>
                         <div v-if="contact.address.length >= 800" class="text-red-600 inline text-xs uppercase">
                             Exceeded limit
@@ -134,7 +135,24 @@
                             v-model="contact.address"
                         ></textarea>
                     </div>
-                    <div class="form-group mb-4">
+                    <div v-else class="form-group mb-4">
+                        <label class="font-bold">Address</label>
+                        <div v-if="missing.address.length >= 800" class="text-red-600 inline text-xs uppercase">
+                            Exceeded limit
+                        </div>
+                        <textarea
+                            maxlength="800"
+                            type="text"
+                            name="address"
+                            id="address"
+                            class="form-control block w-96 h-40 px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                            rows="3"
+                            placeholder="Your message"
+                            v-model="missing.address"
+                        ></textarea>
+                    </div>
+                    <!-- added if check due to import of old contact data has null value-->
+                    <div v-if="contact.remark" class="form-group mb-4">
                         <label class="font-bold">Remark</label>
                         <div v-if="contact.remark.length >= 800" class="text-red-600 inline text-xs uppercase">
                             Exceeded limit
@@ -148,6 +166,22 @@
                             rows="3"
                             placeholder="Your message"
                             v-model="contact.remark"
+                        ></textarea>
+                    </div>
+                    <div v-else class="form-group mb-4">
+                        <label class="font-bold">Remark</label>
+                        <div v-if="missing.remark.length >= 800" class="text-red-600 inline text-xs uppercase">
+                            Exceeded limit
+                        </div>
+                        <textarea
+                            maxlength="800"
+                            type="text"
+                            name="remark"
+                            id="remark"
+                            class="form-control block w-96 h-40 px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                            rows="3"
+                            placeholder="Your message"
+                            v-model="missing.remark"
                         ></textarea>
                     </div>
 
@@ -180,6 +214,11 @@ export default {
                 address: "",
                 remark: "",
             },
+
+            missing: {
+                address: "No address",
+                remark: "No remark",
+            },
             users: [],
             statuses: [],
             types: [],
@@ -195,7 +234,7 @@ export default {
         this.getUser();
         this.getType();
         this.getIndustry();
-        // this.getFormSelections();
+
     },
     methods: {
         showContact() {
@@ -219,8 +258,8 @@ export default {
                     industry_id: this.contact.industry_id,
                     name: this.contact.name,
                     category_id: this.contact.category_id,
-                    address: this.contact.address,
-                    remark: this.contact.remark,
+                    address: this.contact.address ? this.contact.address : this.missing.address,
+                    remark: this.contact.remark ? this.contact.remark : this.missing.remark,
                 })
                 .then((res) => {
                     this.$router.push({

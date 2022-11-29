@@ -37,7 +37,12 @@
                                 {{ showToday(history.todo_date) }}
                             </td>
                             <td class="py-4 px-3">{{ history.user.name }}</td>
-                            <td class="py-4 px-3">{{ history.task.name }}</td>
+                            <td class="py-4 px-3">
+                                <span v-if="history.task">
+                                    {{ history.task.name }}
+                                </span>
+                                <span v-else> Task not available </span>
+                            </td>
                             <td class="py-4 px-3">
                                 <span v-if="history.action">
                                     {{ history.action.name }}

@@ -50,12 +50,15 @@ import TempboardIndex from "../components/billboards/TempboardIndex.vue";
 import TempboardCreate from "../components/billboards/TempboardCreate.vue";
 import TempboardEdit from "../components/billboards/TempboardEdit.vue";
 
-/**Performance Imports */
+/**Tracking General Imports */
 import TrackingGeneralIndex from "../components/trackings/TrackingGeneralIndex.vue";
-import TrackingTravelGuideIndex from "../components/trackings/TrackingTravelGuideIndex.vue";
 import MasterGeneralCreate from "../components/trackings/MasterGeneralCreate.vue";
 import MasterGeneralEdit from "../components/trackings/MasterGeneralEdit.vue";
 import WIPGeneralEdit from "../components/trackings/WIPGeneralEdit.vue";
+
+/**Tracking Travel Guide Imports */
+import TrackingTravelGuideIndex from "../components/trackings/TrackingTravelGuideIndex.vue";
+import MasterTGuideCreate from "../components/trackings/MasterTGuideCreate.vue";
 
 const routes = [
     /*                      
@@ -341,7 +344,7 @@ const routes = [
     },
 
     /*                                                  
-        Job Tracking Routes 
+        Tracking (General) Routes 
     */
 
     {
@@ -349,12 +352,6 @@ const routes = [
         path: "/tracking/general/index",
         name: "tracking_general",
         component: TrackingGeneralIndex,
-    },
-    {
-        //Tracking General Index
-        path: "/tracking/travel_guide/index",
-        name: "tracking_travel_guide",
-        component: TrackingTravelGuideIndex,
     },
     {
         //Tracking General Create
@@ -373,6 +370,23 @@ const routes = [
         path: "/tracking/wip/:id/edit",
         name: "tracking_wip_edit",
         component: WIPGeneralEdit,
+    },
+
+     /*                                                  
+        Tracking (Travel Guide) Routes 
+    */
+
+    {
+        //Tracking Tracvel Guide Index
+        path: "/tracking/travel_guide/index",
+        name: "tracking_travel_guide",
+        component: TrackingTravelGuideIndex,
+    },
+    {
+        //Tracking Tracvel Guide Create
+        path: "/tracking/travel_guide/create",
+        name: "tracking_travel_guide_create",
+        component: MasterTGuideCreate,
     },
 ];
 
