@@ -11,9 +11,9 @@ class WipTravelGuide extends Model
 
     protected $fillable = [
         'tracking_tguide_id',
-        'wip_assignment_date',
-        'wip_assignment_done',
-        'wip_assignment_user_id',
-        'wip_assignment_remark',
+        'wip_package_date',
+        'wip_package_done',
+        'wip_package_user_id',
+        'wip_package_remark',
     ];
 }

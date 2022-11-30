@@ -14,6 +14,6 @@ class TrackingTGuideSeeder extends Seeder
      */
     public function run()
     {
-        TrackingTravelGuide::factory(100)->create();
+        TrackingTravelGuide::factory(300)->create();
     }
 }

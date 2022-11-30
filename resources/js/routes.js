@@ -58,7 +58,8 @@ import WIPGeneralEdit from "../components/trackings/WIPGeneralEdit.vue";
 
 /**Tracking Travel Guide Imports */
 import TrackingTravelGuideIndex from "../components/trackings/TrackingTravelGuideIndex.vue";
-import MasterTGuideCreate from "../components/trackings/MasterTGuideCreate.vue";
+import MasterTravelGuideCreate from "../components/trackings/MasterTravelGuideCreate.vue";
+import MasterTravelGuideEdit from "../components/trackings/MasterTravelGuideEdit.vue";
 
 const routes = [
     /*                      
@@ -377,16 +378,22 @@ const routes = [
     */
 
     {
-        //Tracking Tracvel Guide Index
+        //Tracking Travel Guide Index
         path: "/tracking/travel_guide/index",
         name: "tracking_travel_guide",
         component: TrackingTravelGuideIndex,
     },
     {
-        //Tracking Tracvel Guide Create
+        //Tracking Travel Guide Create
         path: "/tracking/travel_guide/create",
         name: "tracking_travel_guide_create",
-        component: MasterTGuideCreate,
+        component: MasterTravelGuideCreate,
+    },
+    {
+        //Tracking Travel Guide Create
+        path: "/tracking/travel_guide/:id/edit",
+        name: "tracking_travel_guide_edit",
+        component: MasterTravelGuideEdit,
     },
 ];
 

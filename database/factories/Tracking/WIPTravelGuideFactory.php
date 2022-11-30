@@ -25,11 +25,12 @@ class WIPTravelGuideFactory extends Factory
         $date = $this->faker->dateTimeThisYear('+6 months');
 
         return [
-            'tracking_tguide_id'=> random_int(1, 20),
-            'wip_assignment_date' => $date,
-            'wip_assignment_done' => random_int(1,2),
-            'wip_assignment_user_id'=> random_int(1, 10),
-            'wip_assignment_remark' => $this->faker->realText(10),
+            'tracking_tguide_id'=> random_int(1, 150),
+            'wip_package_name' => $this->faker->realText(10),
+            'wip_package_date' => $date,
+            'wip_package_done' => random_int(1,2),
+            'wip_package_user_id'=> random_int(1, 10),
+            'wip_package_remark' => $this->faker->realText(10),
         ];
     }
 }

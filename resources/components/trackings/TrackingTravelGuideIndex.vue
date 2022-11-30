@@ -1,5 +1,6 @@
 <template>
     <div class="container">
+        <!-- <div class="max-w-full"> -->
         <h1
             class="items-center text-center text-5xl text-white font-extrabold bg-slate-400 px-2 rounded-md"
         >
@@ -9,7 +10,7 @@
         <div class="flex">
             <div class="py-2 px-2">
                 <router-link
-                    :to="{ name: 'tracking_travel_guide_create'}"
+                    :to="{ name: 'tracking_travel_guide_create' }"
                     class="inline-block items-center px-2 py-1 align-top bg-blue-800 border border-transparent rounded-md font-semibold text-m text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
                 >
                     <PlusIcon class="inline h-6 w-6 mr-1" />
@@ -56,22 +57,26 @@
                     </button>
                 </div>
             </div>
-            <div class="py-2 flex">
-                View:
+        </div>
+
+        <div class="grid grid-cols-6 gap-3">
+            <div class="grid grid-cols-2 items-center text-right">
+                <label for="paginate" class="mr-2">Per page</label>
+                <input v-model.lazy="paginate" class="form-control w-max" />
+            </div>
+            <div class="grid grid-cols-2 items-center text-right">
+                <label for="selectedYear" class="mr-2">Year</label>
+                <input v-model.lazy="selectedYear" class="form-control" />
+            </div>
+            <div class="grid grid-cols-2 items-center text-right">
+                <label for="selectedYear" class="mr-2">View</label>
                 <select v-model="view_type" class="form-control mx-2">
                     <option value="">Select one</option>
                     <option value="master">Master</option>
                     <option value="wip">WIP</option>
                 </select>
             </div>
-        </div>
-
-        <div class="grid grid-cols-3 gap-20">
-            <div class="grid grid-cols-2 items-center align-middle w-max">
-                <label for="paginate" class="px-2 inline-block">Per page</label>
-                <input v-model.lazy="paginate" class="form-control" />
-            </div>
-            <div class="py-2 mx-8">
+            <div class="py-2 mx-8 col-span-2">
                 <input
                     v-model.lazy="search"
                     type="search"
@@ -81,9 +86,9 @@
             </div>
             <div class="mt-1">
                 <Pagination
-                    :data="tracking_generals"
+                    :data="tracking_travel_guides"
                     :limit="2"
-                    @pagination-change-page="getTrackingGenerals"
+                    @pagination-change-page="getTrackingTravelGuides"
                     :size="'small'"
                     :align="'center'"
                     class="pagination"
@@ -560,30 +565,881 @@
                         </tr>
                     </thead>
                     <tbody class="mt-2">
-                        <tr>
-                            <td class="text-xs text-center">1</td>
-                            <td class="text-xs text-center">29-11-22</td>
-                            <td class="text-xs text-center">IT</td>
-                            <td class="text-xs text-center">Admin Limited</td>
-                            <td class="text-xs text-center">KLTG 42</td>
-                            <td class="text-xs text-center">FP</td>
-                            <td class="text-xs text-center">Jan</td>
-                            <td class="text-xs text-center">Feb</td>
-                            <td class="text-xs text-center">Mac</td>
-                            <td class="text-xs text-center">Apr</td>
-                            <td class="text-xs text-center">May</td>
-                            <td class="text-xs text-center">Jun</td>
-                            <td class="text-xs text-center">Jul</td>
-                            <td class="text-xs text-center">Aug</td>
-                            <td class="text-xs text-center">Sep</td>
-                            <td class="text-xs text-center">Oct</td>
-                            <td class="text-xs text-center">Nov</td>
-                            <td class="text-xs text-center">Dec</td>
-                            <td class="text-xs text-center">Remark</td>
+                        <tr
+                            v-for="(
+                                tracking, index
+                            ) in tracking_travel_guides.data"
+                            :key="tracking.id"
+                        >
+                            <td class="text-xs text-center">
+                                {{ index + 1 }}
+                            </td>
+                            <td class="text-xs text-center">
+                                {{ showToday(tracking.created_at) }}
+                            </td>
+                            <td class="text-xs text-center">
+                                {{ tracking.user_name }}
+                            </td>
+                            <td class="text-xs text-center">
+                                {{ tracking.company_name }}
+                            </td>
+                            <td class="text-xs text-center">
+                                {{ tracking.edition }}
+                            </td>
+                            <td class="text-xs text-center">
+                                {{ tracking.tguide_size }}
+                            </td>
+                            <td
+                                class="text-xs text-center"
+                                v-if="tracking.wip_travel_guide[0]"
+                            >
+                                <div
+                                    class="bg-yellow-300 p-1 rounded-md w-20"
+                                    v-if="
+                                        getMonth(
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_date
+                                        ) === `${selectedYear}-01` &&
+                                        tracking.wip_travel_guide[0]
+                                            .wip_package_done === 2
+                                    "
+                                >
+                                    <div
+                                        v-if="
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_name
+                                        "
+                                    >
+                                        {{
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_name
+                                        }}
+                                    </div>
+                                    <div v-else class="text-yellow-300">
+                                        No package
+                                    </div>
+                                </div>
+                                <div
+                                    class="bg-green-300 p-1 rounded-md w-20"
+                                    v-else-if="
+                                        getMonth(
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_date
+                                        ) === `${selectedYear}-01` &&
+                                        tracking.wip_travel_guide[0]
+                                            .wip_package_done === 1
+                                    "
+                                >
+                                    <div
+                                        v-if="
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_name
+                                        "
+                                    >
+                                        {{
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_name
+                                        }}
+                                    </div>
+                                    <div v-else class="text-yellow-300">
+                                        No package
+                                    </div>
+                                </div>
+                                <div
+                                    v-else
+                                    class="bg-red-300 p-1 rounded-md text-red-300"
+                                >
+                                    None
+                                </div>
+                            </td>
+                            <td class="text-xs text-center" v-else>
+                                <div
+                                    class="bg-red-300 p-1 rounded-md text-red-300"
+                                >
+                                    None
+                                </div>
+                            </td>
+                            <td
+                                class="text-xs text-center"
+                                v-if="tracking.wip_travel_guide[0]"
+                            >
+                                <div
+                                    class="bg-yellow-300 p-1 rounded-md w-20"
+                                    v-if="
+                                        getMonth(
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_date
+                                        ) === `${selectedYear}-02` &&
+                                        tracking.wip_travel_guide[0]
+                                            .wip_package_done === 2
+                                    "
+                                >
+                                    <div
+                                        v-if="
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_name
+                                        "
+                                    >
+                                        {{
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_name
+                                        }}
+                                    </div>
+                                    <div v-else class="text-yellow-300">
+                                        No package
+                                    </div>
+                                </div>
+                                <div
+                                    class="bg-green-300 p-1 rounded-md w-20"
+                                    v-else-if="
+                                        getMonth(
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_date
+                                        ) === `${selectedYear}-02` &&
+                                        tracking.wip_travel_guide[0]
+                                            .wip_package_done === 1
+                                    "
+                                >
+                                    <div
+                                        v-if="
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_name
+                                        "
+                                    >
+                                        {{
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_name
+                                        }}
+                                    </div>
+                                    <div v-else class="text-yellow-300">
+                                        No package
+                                    </div>
+                                </div>
+                                <div
+                                    v-else
+                                    class="bg-red-300 p-1 rounded-md text-red-300"
+                                >
+                                    None
+                                </div>
+                            </td>
+                            <td class="text-xs text-center" v-else>
+                                <div
+                                    class="bg-red-300 p-1 rounded-md text-red-300"
+                                >
+                                    None
+                                </div>
+                            </td>
+                            <td
+                                class="text-xs text-center"
+                                v-if="tracking.wip_travel_guide[0]"
+                            >
+                                <div
+                                    class="bg-yellow-300 p-1 rounded-md w-20"
+                                    v-if="
+                                        getMonth(
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_date
+                                        ) === `${selectedYear}-03` &&
+                                        tracking.wip_travel_guide[0]
+                                            .wip_package_done === 2
+                                    "
+                                >
+                                    <div
+                                        v-if="
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_name
+                                        "
+                                    >
+                                        {{
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_name
+                                        }}
+                                    </div>
+                                    <div v-else class="text-yellow-300">
+                                        No package
+                                    </div>
+                                </div>
+                                <div
+                                    class="bg-green-300 p-1 rounded-md w-20"
+                                    v-else-if="
+                                        getMonth(
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_date
+                                        ) === `${selectedYear}-03` &&
+                                        tracking.wip_travel_guide[0]
+                                            .wip_package_done === 1
+                                    "
+                                >
+                                    <div
+                                        v-if="
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_name
+                                        "
+                                    >
+                                        {{
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_name
+                                        }}
+                                    </div>
+                                    <div v-else class="text-yellow-300">
+                                        No package
+                                    </div>
+                                </div>
+                                <div
+                                    v-else
+                                    class="bg-red-300 p-1 rounded-md text-red-300"
+                                >
+                                    None
+                                </div>
+                            </td>
+                            <td class="text-xs text-center" v-else>
+                                <div
+                                    class="bg-red-300 p-1 rounded-md text-red-300"
+                                >
+                                    None
+                                </div>
+                            </td>
+                            <td
+                                class="text-xs text-center"
+                                v-if="tracking.wip_travel_guide[0]"
+                            >
+                                <div
+                                    class="bg-yellow-300 p-1 rounded-md w-20"
+                                    v-if="
+                                        getMonth(
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_date
+                                        ) === `${selectedYear}-04` &&
+                                        tracking.wip_travel_guide[0]
+                                            .wip_package_done === 2
+                                    "
+                                >
+                                    <div
+                                        v-if="
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_name
+                                        "
+                                    >
+                                        {{
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_name
+                                        }}
+                                    </div>
+                                    <div v-else class="text-yellow-300">
+                                        No package
+                                    </div>
+                                </div>
+                                <div
+                                    class="bg-green-300 p-1 rounded-md w-20"
+                                    v-else-if="
+                                        getMonth(
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_date
+                                        ) === `${selectedYear}-04` &&
+                                        tracking.wip_travel_guide[0]
+                                            .wip_package_done === 1
+                                    "
+                                >
+                                    <div
+                                        v-if="
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_name
+                                        "
+                                    >
+                                        {{
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_name
+                                        }}
+                                    </div>
+                                    <div v-else class="text-yellow-300">
+                                        No package
+                                    </div>
+                                </div>
+                                <div
+                                    v-else
+                                    class="bg-red-300 p-1 rounded-md text-red-300"
+                                >
+                                    None
+                                </div>
+                            </td>
+                            <td class="text-xs text-center" v-else>
+                                <div
+                                    class="bg-red-300 p-1 rounded-md text-red-300"
+                                >
+                                    None
+                                </div>
+                            </td>
+                            <td
+                                class="text-xs text-center"
+                                v-if="tracking.wip_travel_guide[0]"
+                            >
+                                <div
+                                    class="bg-yellow-300 p-1 rounded-md w-20"
+                                    v-if="
+                                        getMonth(
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_date
+                                        ) === `${selectedYear}-05` &&
+                                        tracking.wip_travel_guide[0]
+                                            .wip_package_done === 2
+                                    "
+                                >
+                                    <div
+                                        v-if="
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_name
+                                        "
+                                    >
+                                        {{
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_name
+                                        }}
+                                    </div>
+                                    <div v-else class="text-yellow-300">
+                                        No package
+                                    </div>
+                                </div>
+                                <div
+                                    class="bg-green-300 p-1 rounded-md w-20"
+                                    v-else-if="
+                                        getMonth(
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_date
+                                        ) === `${selectedYear}-05` &&
+                                        tracking.wip_travel_guide[0]
+                                            .wip_package_done === 1
+                                    "
+                                >
+                                    <div
+                                        v-if="
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_name
+                                        "
+                                    >
+                                        {{
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_name
+                                        }}
+                                    </div>
+                                    <div v-else class="text-yellow-300">
+                                        No package
+                                    </div>
+                                </div>
+                                <div
+                                    v-else
+                                    class="bg-red-300 p-1 rounded-md text-red-300"
+                                >
+                                    None
+                                </div>
+                            </td>
+                            <td class="text-xs text-center" v-else>
+                                <div
+                                    class="bg-red-300 p-1 rounded-md text-red-300"
+                                >
+                                    None
+                                </div>
+                            </td>
+                            <td
+                                class="text-xs text-center"
+                                v-if="tracking.wip_travel_guide[0]"
+                            >
+                                <div
+                                    class="bg-yellow-300 p-1 rounded-md w-20"
+                                    v-if="
+                                        getMonth(
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_date
+                                        ) === `${selectedYear}-06` &&
+                                        tracking.wip_travel_guide[0]
+                                            .wip_package_done === 2
+                                    "
+                                >
+                                    <div
+                                        v-if="
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_name
+                                        "
+                                    >
+                                        {{
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_name
+                                        }}
+                                    </div>
+                                    <div v-else class="text-yellow-300">
+                                        No package
+                                    </div>
+                                </div>
+                                <div
+                                    class="bg-green-300 p-1 rounded-md w-20"
+                                    v-else-if="
+                                        getMonth(
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_date
+                                        ) === `${selectedYear}-06` &&
+                                        tracking.wip_travel_guide[0]
+                                            .wip_package_done === 1
+                                    "
+                                >
+                                    <div
+                                        v-if="
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_name
+                                        "
+                                    >
+                                        {{
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_name
+                                        }}
+                                    </div>
+                                    <div v-else class="text-yellow-300">
+                                        No package
+                                    </div>
+                                </div>
+                                <div
+                                    v-else
+                                    class="bg-red-300 p-1 rounded-md text-red-300"
+                                >
+                                    None
+                                </div>
+                            </td>
+                            <td class="text-xs text-center" v-else>
+                                <div
+                                    class="bg-red-300 p-1 rounded-md text-red-300"
+                                >
+                                    None
+                                </div>
+                            </td>
+                            <td
+                                class="text-xs text-center"
+                                v-if="tracking.wip_travel_guide[0]"
+                            >
+                                <div
+                                    class="bg-yellow-300 p-1 rounded-md w-20"
+                                    v-if="
+                                        getMonth(
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_date
+                                        ) === `${selectedYear}-07` &&
+                                        tracking.wip_travel_guide[0]
+                                            .wip_package_done === 2
+                                    "
+                                >
+                                    <div
+                                        v-if="
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_name
+                                        "
+                                    >
+                                        {{
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_name
+                                        }}
+                                    </div>
+                                    <div v-else class="text-yellow-300">
+                                        No package
+                                    </div>
+                                </div>
+                                <div
+                                    class="bg-green-300 p-1 rounded-md w-20"
+                                    v-else-if="
+                                        getMonth(
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_date
+                                        ) === `${selectedYear}-07` &&
+                                        tracking.wip_travel_guide[0]
+                                            .wip_package_done === 1
+                                    "
+                                >
+                                    <div
+                                        v-if="
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_name
+                                        "
+                                    >
+                                        {{
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_name
+                                        }}
+                                    </div>
+                                    <div v-else class="text-yellow-300">
+                                        No package
+                                    </div>
+                                </div>
+                                <div
+                                    v-else
+                                    class="bg-red-300 p-1 rounded-md text-red-300"
+                                >
+                                    None
+                                </div>
+                            </td>
+                            <td class="text-xs text-center" v-else>
+                                <div
+                                    class="bg-red-300 p-1 rounded-md text-red-300"
+                                >
+                                    None
+                                </div>
+                            </td>
+                            <td
+                                class="text-xs text-center"
+                                v-if="tracking.wip_travel_guide[0]"
+                            >
+                                <div
+                                    class="bg-yellow-300 p-1 rounded-md w-20"
+                                    v-if="
+                                        getMonth(
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_date
+                                        ) === `${selectedYear}-08` &&
+                                        tracking.wip_travel_guide[0]
+                                            .wip_package_done === 2
+                                    "
+                                >
+                                    <div
+                                        v-if="
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_name
+                                        "
+                                    >
+                                        {{
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_name
+                                        }}
+                                    </div>
+                                    <div v-else class="text-yellow-300">
+                                        No package
+                                    </div>
+                                </div>
+                                <div
+                                    class="bg-green-300 p-1 rounded-md w-20"
+                                    v-else-if="
+                                        getMonth(
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_date
+                                        ) === `${selectedYear}-08` &&
+                                        tracking.wip_travel_guide[0]
+                                            .wip_package_done === 1
+                                    "
+                                >
+                                    <div
+                                        v-if="
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_name
+                                        "
+                                    >
+                                        {{
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_name
+                                        }}
+                                    </div>
+                                    <div v-else class="text-yellow-300">
+                                        No package
+                                    </div>
+                                </div>
+                                <div
+                                    v-else
+                                    class="bg-red-300 p-1 rounded-md text-red-300"
+                                >
+                                    None
+                                </div>
+                            </td>
+                            <td class="text-xs text-center" v-else>
+                                <div
+                                    class="bg-red-300 p-1 rounded-md text-red-300"
+                                >
+                                    None
+                                </div>
+                            </td>
+                            <td
+                                class="text-xs text-center"
+                                v-if="tracking.wip_travel_guide[0]"
+                            >
+                                <div
+                                    class="bg-yellow-300 p-1 rounded-md w-20"
+                                    v-if="
+                                        getMonth(
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_date
+                                        ) === `${selectedYear}-09` &&
+                                        tracking.wip_travel_guide[0]
+                                            .wip_package_done === 2
+                                    "
+                                >
+                                    <div
+                                        v-if="
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_name
+                                        "
+                                    >
+                                        {{
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_name
+                                        }}
+                                    </div>
+                                    <div v-else class="text-yellow-300">
+                                        No package
+                                    </div>
+                                </div>
+                                <div
+                                    class="bg-green-300 p-1 rounded-md w-20"
+                                    v-else-if="
+                                        getMonth(
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_date
+                                        ) === `${selectedYear}-09` &&
+                                        tracking.wip_travel_guide[0]
+                                            .wip_package_done === 1
+                                    "
+                                >
+                                    <div
+                                        v-if="
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_name
+                                        "
+                                    >
+                                        {{
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_name
+                                        }}
+                                    </div>
+                                    <div v-else class="text-yellow-300">
+                                        No package
+                                    </div>
+                                </div>
+                                <div
+                                    v-else
+                                    class="bg-red-300 p-1 rounded-md text-red-300"
+                                >
+                                    None
+                                </div>
+                            </td>
+                            <td class="text-xs text-center" v-else>
+                                <div
+                                    class="bg-red-300 p-1 rounded-md text-red-300"
+                                >
+                                    None
+                                </div>
+                            </td>
+                            <td
+                                class="text-xs text-center"
+                                v-if="tracking.wip_travel_guide[0]"
+                            >
+                                <div
+                                    class="bg-yellow-300 p-1 rounded-md w-20"
+                                    v-if="
+                                        getMonth(
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_date
+                                        ) === `${selectedYear}-10` &&
+                                        tracking.wip_travel_guide[0]
+                                            .wip_package_done === 2
+                                    "
+                                >
+                                    <div
+                                        v-if="
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_name
+                                        "
+                                    >
+                                        {{
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_name
+                                        }}
+                                    </div>
+                                    <div v-else class="text-yellow-300">
+                                        No package
+                                    </div>
+                                </div>
+                                <div
+                                    class="bg-green-300 p-1 rounded-md w-20"
+                                    v-else-if="
+                                        getMonth(
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_date
+                                        ) === `${selectedYear}-10` &&
+                                        tracking.wip_travel_guide[0]
+                                            .wip_package_done === 1
+                                    "
+                                >
+                                    <div
+                                        v-if="
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_name
+                                        "
+                                    >
+                                        {{
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_name
+                                        }}
+                                    </div>
+                                    <div v-else class="text-yellow-300">
+                                        No package
+                                    </div>
+                                </div>
+                                <div
+                                    v-else
+                                    class="bg-red-300 p-1 rounded-md text-red-300"
+                                >
+                                    None
+                                </div>
+                            </td>
+                            <td class="text-xs text-center" v-else>
+                                <div
+                                    class="bg-red-300 p-1 rounded-md text-red-300"
+                                >
+                                    None
+                                </div>
+                            </td>
+                            <td
+                                class="text-xs text-center"
+                                v-if="tracking.wip_travel_guide[0]"
+                            >
+                                <div
+                                    class="bg-yellow-300 p-1 rounded-md w-20"
+                                    v-if="
+                                        getMonth(
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_date
+                                        ) === `${selectedYear}-11` &&
+                                        tracking.wip_travel_guide[0]
+                                            .wip_package_done === 2
+                                    "
+                                >
+                                    <div
+                                        v-if="
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_name
+                                        "
+                                    >
+                                        {{
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_name
+                                        }}
+                                    </div>
+                                    <div v-else class="text-yellow-300">
+                                        No package
+                                    </div>
+                                </div>
+                                <div
+                                    class="bg-green-300 p-1 rounded-md w-20"
+                                    v-else-if="
+                                        getMonth(
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_date
+                                        ) === `${selectedYear}-11` &&
+                                        tracking.wip_travel_guide[0]
+                                            .wip_package_done === 1
+                                    "
+                                >
+                                    <div
+                                        v-if="
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_name
+                                        "
+                                    >
+                                        {{
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_name
+                                        }}
+                                    </div>
+                                    <div v-else class="text-yellow-300">
+                                        No package
+                                    </div>
+                                </div>
+                                <div
+                                    v-else
+                                    class="bg-red-300 p-1 rounded-md text-red-300"
+                                >
+                                    None
+                                </div>
+                            </td>
+                            <td class="text-xs text-center" v-else>
+                                <div
+                                    class="bg-red-300 p-1 rounded-md text-red-300"
+                                >
+                                    None
+                                </div>
+                            </td>
+                            <td
+                                class="text-xs text-center"
+                                v-if="tracking.wip_travel_guide[0]"
+                            >
+                                <div
+                                    class="bg-yellow-300 p-1 rounded-md w-20"
+                                    v-if="
+                                        getMonth(
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_date
+                                        ) === `${selectedYear}-12` &&
+                                        tracking.wip_travel_guide[0]
+                                            .wip_package_done === 2
+                                    "
+                                >
+                                    <div
+                                        v-if="
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_name
+                                        "
+                                    >
+                                        {{
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_name
+                                        }}
+                                    </div>
+                                    <div v-else class="text-yellow-300">
+                                        No package
+                                    </div>
+                                </div>
+                                <div
+                                    class="bg-green-300 p-1 rounded-md w-20"
+                                    v-else-if="
+                                        getMonth(
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_date
+                                        ) === `${selectedYear}-12` &&
+                                        tracking.wip_travel_guide[0]
+                                            .wip_package_done === 1
+                                    "
+                                >
+                                    <div
+                                        v-if="
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_name
+                                        "
+                                    >
+                                        {{
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_name
+                                        }}
+                                    </div>
+                                    <div v-else class="text-yellow-300">
+                                        No package
+                                    </div>
+                                </div>
+                                <div
+                                    v-else
+                                    class="bg-red-300 p-1 rounded-md text-red-300"
+                                >
+                                    None
+                                </div>
+                            </td>
+                            <td class="text-xs text-center" v-else>
+                                <div
+                                    class="bg-red-300 p-1 rounded-md text-red-300"
+                                >
+                                    None
+                                </div>
+                            </td>
+
+                            <td class="text-xs text-center">
+                                {{ tracking.tguide_remark }}
+                            </td>
                             <!-- :to="{ name: 'tracking_general_edit', params: { id: tracking.id },}" -->
                             <td class="text-xs text-center">
                                 <router-link
-                                    to=""
+                                    :to="{
+                                        name: 'tracking_travel_guide_edit',
+                                        params: { id: tracking.id },
+                                    }"
                                     class="mr-2 mb-2 inline-flex items-center px-2 py-1 bg-yellow-400 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
                                 >
                                     <PencilSquareIcon class="h-3 w-3"
@@ -888,7 +1744,7 @@
                                         "
                                         class="text-white inline-flex"
                                     >
-                                        Art Received
+                                        Art Reminder
                                         <span
                                             v-if="
                                                 (!(sort_direction == 'asc') ||
@@ -1147,40 +2003,2101 @@
                         </tr>
                     </thead>
                     <tbody class="mt-2">
-                        <tr>
-                            <td class="text-xs text-center">1</td>
-                            <td class="text-xs text-center">29-11-22</td>
-                            <td class="text-xs text-center">IT</td>
-                            <td class="text-xs text-center">Admin Limited</td>
-                            <td class="text-xs text-center">KLTG 42</td>
-                            <td class="text-xs text-center">FP</td>
+                        <tr
+                            v-for="(
+                                tracking, index
+                            ) in tracking_travel_guides.data"
+                            :key="tracking.id"
+                        >
                             <td class="text-xs text-center">
-                                30-11-22<br />
-                                Media 3<br />
-                                Accepted<br />
+                                {{ index + 1 }}
                             </td>
                             <td class="text-xs text-center">
-                                30-12-22<br />
-                                Telesales<br />
-                                Accepted<br />
+                                {{ showToday(tracking.created_at) }}
                             </td>
-                            <td class="text-xs text-center">Jan</td>
-                            <td class="text-xs text-center">Feb</td>
-                            <td class="text-xs text-center">Mac</td>
-                            <td class="text-xs text-center">Apr</td>
-                            <td class="text-xs text-center">May</td>
-                            <td class="text-xs text-center">Jun</td>
-                            <td class="text-xs text-center">Jul</td>
-                            <td class="text-xs text-center">Aug</td>
-                            <td class="text-xs text-center">Sep</td>
-                            <td class="text-xs text-center">Oct</td>
-                            <td class="text-xs text-center">Nov</td>
-                            <td class="text-xs text-center">Dec</td>
-                            <td class="text-xs text-center">Remark</td>
+                            <td class="text-xs text-center">
+                                {{ tracking.user_name }}
+                            </td>
+                            <td class="text-xs text-center">
+                                {{ tracking.company_name }}
+                            </td>
+                            <td class="text-xs text-center">
+                                {{ tracking.edition }}
+                            </td>
+                            <td class="text-xs text-center">
+                                {{ tracking.tguide_size }}
+                            </td>
+                            <td
+                                class="text-xs text-center"
+                                v-if="
+                                    !tracking.art_reminder_date &&
+                                    !tracking.art_reminder_user_id &&
+                                    !art_reminder_remark
+                                "
+                            >
+                                <div
+                                    class="bg-red-300 p-1 rounded-md w-20 text-red-300"
+                                >
+                                    Unset
+                                </div>
+                            </td>
+                            <td
+                                v-else-if="tracking.art_reminder_done === 2"
+                                class="text-xs text-center"
+                            >
+                                <div class="bg-yellow-300 p-1 rounded-md w-20">
+                                    <div v-if="!tracking.art_reminder_date">
+                                        No date
+                                    </div>
+                                    <div v-else="tracking.art_reminder_date">
+                                        {{
+                                            showToday(
+                                                tracking.art_reminder_date
+                                            )
+                                        }}
+                                    </div>
+                                    <div v-if="!tracking.art_reminder_user">
+                                        No user
+                                    </div>
+                                    <div v-else="tracking.art_reminder_user">
+                                        {{ tracking.art_reminder_user.name }}
+                                    </div>
+                                    <div v-if="!tracking.art_reminder_remark">
+                                        No remark
+                                    </div>
+                                    <div v-else="tracking.art_reminder_remark">
+                                        {{ tracking.art_reminder_remark }}
+                                    </div>
+                                </div>
+                            </td>
+                            <td
+                                v-else-if="tracking.art_reminder_done === 1"
+                                class="text-xs text-center"
+                            >
+                                <div class="bg-green-300 p-1 rounded-md w-20">
+                                    <div v-if="!tracking.art_reminder_date">
+                                        No date
+                                    </div>
+                                    <div v-else="tracking.art_reminder_date">
+                                        {{
+                                            showToday(
+                                                tracking.art_reminder_date
+                                            )
+                                        }}
+                                    </div>
+                                    <div v-if="!tracking.art_reminder_user">
+                                        No user
+                                    </div>
+                                    <div v-else="tracking.art_reminder_user">
+                                        {{ tracking.art_reminder_user.name }}
+                                    </div>
+                                    <div v-if="!tracking.art_reminder_remark">
+                                        No remark
+                                    </div>
+                                    <div v-else="tracking.art_reminder_remark">
+                                        {{ tracking.art_reminder_remark }}
+                                    </div>
+                                </div>
+                            </td>
+                            <td
+                                class="text-xs text-center"
+                                v-if="
+                                    !tracking.art_record_date &&
+                                    !tracking.art_reminder_user &&
+                                    !art_record_remark
+                                "
+                            >
+                                <div
+                                    class="bg-red-300 p-1 rounded-md w-20 text-red-300"
+                                >
+                                    Unset
+                                </div>
+                            </td>
+                            <td
+                                v-else-if="tracking.art_record_done === 2"
+                                class="text-xs text-center"
+                            >
+                                <div class="bg-yellow-300 p-1 rounded-md w-20">
+                                    <div v-if="!tracking.art_record_date">
+                                        No date
+                                    </div>
+                                    <div v-else="tracking.art_record_date">
+                                        {{
+                                            showToday(tracking.art_record_date)
+                                        }}
+                                    </div>
+                                    <div v-if="!tracking.art_record_user">
+                                        No user
+                                    </div>
+                                    <div v-else="tracking.art_record_user">
+                                        {{ tracking.art_record_user.name }}
+                                    </div>
+                                    <div v-if="!tracking.art_record_remark">
+                                        No remark
+                                    </div>
+                                    <div v-else="tracking.art_record_remark">
+                                        {{ tracking.art_record_remark }}
+                                    </div>
+                                </div>
+                            </td>
+                            <td
+                                v-else-if="tracking.art_record_done === 1"
+                                class="text-xs text-center"
+                            >
+                                <div class="bg-green-300 p-1 rounded-md w-20">
+                                    <div v-if="!tracking.art_record_date">
+                                        No date
+                                    </div>
+                                    <div v-else="tracking.art_record_date">
+                                        {{
+                                            showToday(tracking.art_record_date)
+                                        }}
+                                    </div>
+                                    <div v-if="!tracking.art_record_user">
+                                        No user
+                                    </div>
+                                    <div v-else="tracking.art_record_user">
+                                        {{ tracking.art_record_user.name }}
+                                    </div>
+                                    <div v-if="!tracking.art_record_remark">
+                                        No remark
+                                    </div>
+                                    <div v-else="tracking.art_record_remark">
+                                        {{ tracking.art_record_remark }}
+                                    </div>
+                                </div>
+                            </td>
+                            <td
+                                class="text-xs text-center"
+                                v-if="tracking.wip_travel_guide[0]"
+                            >
+                                <div
+                                    class="bg-yellow-300 p-1 rounded-md w-20"
+                                    v-if="
+                                        getMonth(
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_date
+                                        ) === `${selectedYear}-01` &&
+                                        tracking.wip_travel_guide[0]
+                                            .wip_package_done === 2
+                                    "
+                                >
+                                    <div
+                                        v-if="
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_name
+                                        "
+                                    >
+                                        {{
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_name
+                                        }}
+                                    </div>
+                                    <div v-else class="text-yellow-300">
+                                        No package
+                                    </div>
+                                    <div
+                                        v-if="
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_date
+                                        "
+                                    >
+                                        {{
+                                            showToday(
+                                                tracking.wip_travel_guide[0]
+                                                    .wip_package_date
+                                            )
+                                        }}
+                                    </div>
+                                    <div v-else class="text-yellow-300">
+                                        No date
+                                    </div>
+                                    <div
+                                        v-if="
+                                            tracking.wip_travel_guide[0]
+                                                .package_user_name
+                                        "
+                                    >
+                                        {{
+                                            tracking.wip_travel_guide[0]
+                                                .package_user_name
+                                        }}
+                                    </div>
+                                    <div v-else class="text-yellow-300">
+                                        No user
+                                    </div>
+
+                                    <div
+                                        v-if="
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_remark
+                                        "
+                                    >
+                                        {{
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_remark
+                                        }}
+                                    </div>
+                                    <div v-else class="text-yellow-300">
+                                        No remark
+                                    </div>
+                                </div>
+                                <div
+                                    class="bg-green-300 p-1 rounded-md w-20"
+                                    v-else-if="
+                                        getMonth(
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_date
+                                        ) === `${selectedYear}-01` &&
+                                        tracking.wip_travel_guide[0]
+                                            .wip_package_done === 1
+                                    "
+                                >
+                                    <div
+                                        v-if="
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_name
+                                        "
+                                    >
+                                        {{
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_name
+                                        }}
+                                    </div>
+                                    <div v-else class="text-yellow-300">
+                                        No package
+                                    </div>
+                                    <div
+                                        v-if="
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_date
+                                        "
+                                    >
+                                        {{
+                                            showToday(
+                                                tracking.wip_travel_guide[0]
+                                                    .wip_package_date
+                                            )
+                                        }}
+                                    </div>
+                                    <div v-else class="text-yellow-300">
+                                        No date
+                                    </div>
+                                    <div
+                                        v-if="
+                                            tracking.wip_travel_guide[0]
+                                                .package_user_name
+                                        "
+                                    >
+                                        {{
+                                            tracking.wip_travel_guide[0]
+                                                .package_user_name
+                                        }}
+                                    </div>
+                                    <div v-else class="text-yellow-300">
+                                        No user
+                                    </div>
+
+                                    <div
+                                        v-if="
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_remark
+                                        "
+                                    >
+                                        {{
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_remark
+                                        }}
+                                    </div>
+                                    <div v-else class="text-yellow-300">
+                                        No remark
+                                    </div>
+                                </div>
+                                <div
+                                    v-else
+                                    class="bg-red-300 p-1 rounded-md text-red-300"
+                                >
+                                    None
+                                </div>
+                            </td>
+                            <td class="text-xs text-center" v-else>
+                                <div
+                                    class="bg-red-300 p-1 rounded-md text-red-300"
+                                >
+                                    None
+                                </div>
+                            </td>
+                            <td
+                                class="text-xs text-center"
+                                v-if="tracking.wip_travel_guide[0]"
+                            >
+                                <div
+                                    class="bg-yellow-300 p-1 rounded-md w-20"
+                                    v-if="
+                                        getMonth(
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_date
+                                        ) === `${selectedYear}-02` &&
+                                        tracking.wip_travel_guide[0]
+                                            .wip_package_done === 2
+                                    "
+                                >
+                                    <div
+                                        v-if="
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_name
+                                        "
+                                    >
+                                        {{
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_name
+                                        }}
+                                    </div>
+                                    <div v-else class="text-yellow-300">
+                                        No package
+                                    </div>
+                                    <div
+                                        v-if="
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_date
+                                        "
+                                    >
+                                        {{
+                                            showToday(
+                                                tracking.wip_travel_guide[0]
+                                                    .wip_package_date
+                                            )
+                                        }}
+                                    </div>
+                                    <div v-else class="text-yellow-300">
+                                        No date
+                                    </div>
+                                    <div
+                                        v-if="
+                                            tracking.wip_travel_guide[0]
+                                                .package_user_name
+                                        "
+                                    >
+                                        {{
+                                            tracking.wip_travel_guide[0]
+                                                .package_user_name
+                                        }}
+                                    </div>
+                                    <div v-else class="text-yellow-300">
+                                        No user
+                                    </div>
+
+                                    <div
+                                        v-if="
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_remark
+                                        "
+                                    >
+                                        {{
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_remark
+                                        }}
+                                    </div>
+                                    <div v-else class="text-yellow-300">
+                                        No remark
+                                    </div>
+                                </div>
+                                <div
+                                    class="bg-green-300 p-1 rounded-md w-20"
+                                    v-else-if="
+                                        getMonth(
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_date
+                                        ) === `${selectedYear}-02` &&
+                                        tracking.wip_travel_guide[0]
+                                            .wip_package_done === 1
+                                    "
+                                >
+                                    <div
+                                        v-if="
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_name
+                                        "
+                                    >
+                                        {{
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_name
+                                        }}
+                                    </div>
+                                    <div v-else class="text-yellow-300">
+                                        No package
+                                    </div>
+                                    <div
+                                        v-if="
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_date
+                                        "
+                                    >
+                                        {{
+                                            showToday(
+                                                tracking.wip_travel_guide[0]
+                                                    .wip_package_date
+                                            )
+                                        }}
+                                    </div>
+                                    <div v-else class="text-yellow-300">
+                                        No date
+                                    </div>
+                                    <div
+                                        v-if="
+                                            tracking.wip_travel_guide[0]
+                                                .package_user_name
+                                        "
+                                    >
+                                        {{
+                                            tracking.wip_travel_guide[0]
+                                                .package_user_name
+                                        }}
+                                    </div>
+                                    <div v-else class="text-yellow-300">
+                                        No user
+                                    </div>
+
+                                    <div
+                                        v-if="
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_remark
+                                        "
+                                    >
+                                        {{
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_remark
+                                        }}
+                                    </div>
+                                    <div v-else class="text-yellow-300">
+                                        No remark
+                                    </div>
+                                </div>
+                                <div
+                                    v-else
+                                    class="bg-red-300 p-1 rounded-md text-red-300"
+                                >
+                                    None
+                                </div>
+                            </td>
+                            <td class="text-xs text-center" v-else>
+                                <div
+                                    class="bg-red-300 p-1 rounded-md text-red-300"
+                                >
+                                    None
+                                </div>
+                            </td>
+                            <td
+                                class="text-xs text-center"
+                                v-if="tracking.wip_travel_guide[0]"
+                            >
+                                <div
+                                    class="bg-yellow-300 p-1 rounded-md w-20"
+                                    v-if="
+                                        getMonth(
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_date
+                                        ) === `${selectedYear}-03` &&
+                                        tracking.wip_travel_guide[0]
+                                            .wip_package_done === 2
+                                    "
+                                >
+                                    <div
+                                        v-if="
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_name
+                                        "
+                                    >
+                                        {{
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_name
+                                        }}
+                                    </div>
+                                    <div v-else class="text-yellow-300">
+                                        No package
+                                    </div>
+                                    <div
+                                        v-if="
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_date
+                                        "
+                                    >
+                                        {{
+                                            showToday(
+                                                tracking.wip_travel_guide[0]
+                                                    .wip_package_date
+                                            )
+                                        }}
+                                    </div>
+                                    <div v-else class="text-yellow-300">
+                                        No date
+                                    </div>
+                                    <div
+                                        v-if="
+                                            tracking.wip_travel_guide[0]
+                                                .package_user_name
+                                        "
+                                    >
+                                        {{
+                                            tracking.wip_travel_guide[0]
+                                                .package_user_name
+                                        }}
+                                    </div>
+                                    <div v-else class="text-yellow-300">
+                                        No user
+                                    </div>
+
+                                    <div
+                                        v-if="
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_remark
+                                        "
+                                    >
+                                        {{
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_remark
+                                        }}
+                                    </div>
+                                    <div v-else class="text-yellow-300">
+                                        No remark
+                                    </div>
+                                </div>
+                                <div
+                                    class="bg-green-300 p-1 rounded-md w-20"
+                                    v-else-if="
+                                        getMonth(
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_date
+                                        ) === `${selectedYear}-03` &&
+                                        tracking.wip_travel_guide[0]
+                                            .wip_package_done === 1
+                                    "
+                                >
+                                    <div
+                                        v-if="
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_name
+                                        "
+                                    >
+                                        {{
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_name
+                                        }}
+                                    </div>
+                                    <div v-else class="text-yellow-300">
+                                        No package
+                                    </div>
+                                    <div
+                                        v-if="
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_date
+                                        "
+                                    >
+                                        {{
+                                            showToday(
+                                                tracking.wip_travel_guide[0]
+                                                    .wip_package_date
+                                            )
+                                        }}
+                                    </div>
+                                    <div v-else class="text-yellow-300">
+                                        No date
+                                    </div>
+                                    <div
+                                        v-if="
+                                            tracking.wip_travel_guide[0]
+                                                .package_user_name
+                                        "
+                                    >
+                                        {{
+                                            tracking.wip_travel_guide[0]
+                                                .package_user_name
+                                        }}
+                                    </div>
+                                    <div v-else class="text-yellow-300">
+                                        No user
+                                    </div>
+
+                                    <div
+                                        v-if="
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_remark
+                                        "
+                                    >
+                                        {{
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_remark
+                                        }}
+                                    </div>
+                                    <div v-else class="text-yellow-300">
+                                        No remark
+                                    </div>
+                                </div>
+                                <div
+                                    v-else
+                                    class="bg-red-300 p-1 rounded-md text-red-300"
+                                >
+                                    None
+                                </div>
+                            </td>
+                            <td class="text-xs text-center" v-else>
+                                <div
+                                    class="bg-red-300 p-1 rounded-md text-red-300"
+                                >
+                                    None
+                                </div>
+                            </td>
+                            <td
+                                class="text-xs text-center"
+                                v-if="tracking.wip_travel_guide[0]"
+                            >
+                                <div
+                                    class="bg-yellow-300 p-1 rounded-md w-20"
+                                    v-if="
+                                        getMonth(
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_date
+                                        ) === `${selectedYear}-04` &&
+                                        tracking.wip_travel_guide[0]
+                                            .wip_package_done === 2
+                                    "
+                                >
+                                    <div
+                                        v-if="
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_name
+                                        "
+                                    >
+                                        {{
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_name
+                                        }}
+                                    </div>
+                                    <div v-else class="text-yellow-300">
+                                        No package
+                                    </div>
+                                    <div
+                                        v-if="
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_date
+                                        "
+                                    >
+                                        {{
+                                            showToday(
+                                                tracking.wip_travel_guide[0]
+                                                    .wip_package_date
+                                            )
+                                        }}
+                                    </div>
+                                    <div v-else class="text-yellow-300">
+                                        No date
+                                    </div>
+                                    <div
+                                        v-if="
+                                            tracking.wip_travel_guide[0]
+                                                .package_user_name
+                                        "
+                                    >
+                                        {{
+                                            tracking.wip_travel_guide[0]
+                                                .package_user_name
+                                        }}
+                                    </div>
+                                    <div v-else class="text-yellow-300">
+                                        No user
+                                    </div>
+
+                                    <div
+                                        v-if="
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_remark
+                                        "
+                                    >
+                                        {{
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_remark
+                                        }}
+                                    </div>
+                                    <div v-else class="text-yellow-300">
+                                        No remark
+                                    </div>
+                                </div>
+                                <div
+                                    class="bg-green-300 p-1 rounded-md w-20"
+                                    v-else-if="
+                                        getMonth(
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_date
+                                        ) === `${selectedYear}-04` &&
+                                        tracking.wip_travel_guide[0]
+                                            .wip_package_done === 1
+                                    "
+                                >
+                                    <div
+                                        v-if="
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_name
+                                        "
+                                    >
+                                        {{
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_name
+                                        }}
+                                    </div>
+                                    <div v-else class="text-yellow-300">
+                                        No package
+                                    </div>
+                                    <div
+                                        v-if="
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_date
+                                        "
+                                    >
+                                        {{
+                                            showToday(
+                                                tracking.wip_travel_guide[0]
+                                                    .wip_package_date
+                                            )
+                                        }}
+                                    </div>
+                                    <div v-else class="text-yellow-300">
+                                        No date
+                                    </div>
+                                    <div
+                                        v-if="
+                                            tracking.wip_travel_guide[0]
+                                                .package_user_name
+                                        "
+                                    >
+                                        {{
+                                            tracking.wip_travel_guide[0]
+                                                .package_user_name
+                                        }}
+                                    </div>
+                                    <div v-else class="text-yellow-300">
+                                        No user
+                                    </div>
+
+                                    <div
+                                        v-if="
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_remark
+                                        "
+                                    >
+                                        {{
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_remark
+                                        }}
+                                    </div>
+                                    <div v-else class="text-yellow-300">
+                                        No remark
+                                    </div>
+                                </div>
+                                <div
+                                    v-else
+                                    class="bg-red-300 p-1 rounded-md text-red-300"
+                                >
+                                    None
+                                </div>
+                            </td>
+                            <td class="text-xs text-center" v-else>
+                                <div
+                                    class="bg-red-300 p-1 rounded-md text-red-300"
+                                >
+                                    None
+                                </div>
+                            </td>
+                            <td
+                                class="text-xs text-center"
+                                v-if="tracking.wip_travel_guide[0]"
+                            >
+                                <div
+                                    class="bg-yellow-300 p-1 rounded-md w-20"
+                                    v-if="
+                                        getMonth(
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_date
+                                        ) === `${selectedYear}-05` &&
+                                        tracking.wip_travel_guide[0]
+                                            .wip_package_done === 2
+                                    "
+                                >
+                                    <div
+                                        v-if="
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_name
+                                        "
+                                    >
+                                        {{
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_name
+                                        }}
+                                    </div>
+                                    <div v-else class="text-yellow-300">
+                                        No package
+                                    </div>
+                                    <div
+                                        v-if="
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_date
+                                        "
+                                    >
+                                        {{
+                                            showToday(
+                                                tracking.wip_travel_guide[0]
+                                                    .wip_package_date
+                                            )
+                                        }}
+                                    </div>
+                                    <div v-else class="text-yellow-300">
+                                        No date
+                                    </div>
+                                    <div
+                                        v-if="
+                                            tracking.wip_travel_guide[0]
+                                                .package_user_name
+                                        "
+                                    >
+                                        {{
+                                            tracking.wip_travel_guide[0]
+                                                .package_user_name
+                                        }}
+                                    </div>
+                                    <div v-else class="text-yellow-300">
+                                        No user
+                                    </div>
+
+                                    <div
+                                        v-if="
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_remark
+                                        "
+                                    >
+                                        {{
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_remark
+                                        }}
+                                    </div>
+                                    <div v-else class="text-yellow-300">
+                                        No remark
+                                    </div>
+                                </div>
+                                <div
+                                    class="bg-green-300 p-1 rounded-md w-20"
+                                    v-else-if="
+                                        getMonth(
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_date
+                                        ) === `${selectedYear}-05` &&
+                                        tracking.wip_travel_guide[0]
+                                            .wip_package_done === 1
+                                    "
+                                >
+                                    <div
+                                        v-if="
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_name
+                                        "
+                                    >
+                                        {{
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_name
+                                        }}
+                                    </div>
+                                    <div v-else class="text-yellow-300">
+                                        No package
+                                    </div>
+                                    <div
+                                        v-if="
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_date
+                                        "
+                                    >
+                                        {{
+                                            showToday(
+                                                tracking.wip_travel_guide[0]
+                                                    .wip_package_date
+                                            )
+                                        }}
+                                    </div>
+                                    <div v-else class="text-yellow-300">
+                                        No date
+                                    </div>
+                                    <div
+                                        v-if="
+                                            tracking.wip_travel_guide[0]
+                                                .package_user_name
+                                        "
+                                    >
+                                        {{
+                                            tracking.wip_travel_guide[0]
+                                                .package_user_name
+                                        }}
+                                    </div>
+                                    <div v-else class="text-yellow-300">
+                                        No user
+                                    </div>
+
+                                    <div
+                                        v-if="
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_remark
+                                        "
+                                    >
+                                        {{
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_remark
+                                        }}
+                                    </div>
+                                    <div v-else class="text-yellow-300">
+                                        No remark
+                                    </div>
+                                </div>
+                                <div
+                                    v-else
+                                    class="bg-red-300 p-1 rounded-md text-red-300"
+                                >
+                                    None
+                                </div>
+                            </td>
+                            <td class="text-xs text-center" v-else>
+                                <div
+                                    class="bg-red-300 p-1 rounded-md text-red-300"
+                                >
+                                    None
+                                </div>
+                            </td>
+                            <td
+                                class="text-xs text-center"
+                                v-if="tracking.wip_travel_guide[0]"
+                            >
+                                <div
+                                    class="bg-yellow-300 p-1 rounded-md w-20"
+                                    v-if="
+                                        getMonth(
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_date
+                                        ) === `${selectedYear}-06` &&
+                                        tracking.wip_travel_guide[0]
+                                            .wip_package_done === 2
+                                    "
+                                >
+                                    <div
+                                        v-if="
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_name
+                                        "
+                                    >
+                                        {{
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_name
+                                        }}
+                                    </div>
+                                    <div v-else class="text-yellow-300">
+                                        No package
+                                    </div>
+                                    <div
+                                        v-if="
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_date
+                                        "
+                                    >
+                                        {{
+                                            showToday(
+                                                tracking.wip_travel_guide[0]
+                                                    .wip_package_date
+                                            )
+                                        }}
+                                    </div>
+                                    <div v-else class="text-yellow-300">
+                                        No date
+                                    </div>
+                                    <div
+                                        v-if="
+                                            tracking.wip_travel_guide[0]
+                                                .package_user_name
+                                        "
+                                    >
+                                        {{
+                                            tracking.wip_travel_guide[0]
+                                                .package_user_name
+                                        }}
+                                    </div>
+                                    <div v-else class="text-yellow-300">
+                                        No user
+                                    </div>
+
+                                    <div
+                                        v-if="
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_remark
+                                        "
+                                    >
+                                        {{
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_remark
+                                        }}
+                                    </div>
+                                    <div v-else class="text-yellow-300">
+                                        No remark
+                                    </div>
+                                </div>
+                                <div
+                                    class="bg-green-300 p-1 rounded-md w-20"
+                                    v-else-if="
+                                        getMonth(
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_date
+                                        ) === `${selectedYear}-06` &&
+                                        tracking.wip_travel_guide[0]
+                                            .wip_package_done === 1
+                                    "
+                                >
+                                    <div
+                                        v-if="
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_name
+                                        "
+                                    >
+                                        {{
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_name
+                                        }}
+                                    </div>
+                                    <div v-else class="text-yellow-300">
+                                        No package
+                                    </div>
+                                    <div
+                                        v-if="
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_date
+                                        "
+                                    >
+                                        {{
+                                            showToday(
+                                                tracking.wip_travel_guide[0]
+                                                    .wip_package_date
+                                            )
+                                        }}
+                                    </div>
+                                    <div v-else class="text-yellow-300">
+                                        No date
+                                    </div>
+                                    <div
+                                        v-if="
+                                            tracking.wip_travel_guide[0]
+                                                .package_user_name
+                                        "
+                                    >
+                                        {{
+                                            tracking.wip_travel_guide[0]
+                                                .package_user_name
+                                        }}
+                                    </div>
+                                    <div v-else class="text-yellow-300">
+                                        No user
+                                    </div>
+
+                                    <div
+                                        v-if="
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_remark
+                                        "
+                                    >
+                                        {{
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_remark
+                                        }}
+                                    </div>
+                                    <div v-else class="text-yellow-300">
+                                        No remark
+                                    </div>
+                                </div>
+                                <div
+                                    v-else
+                                    class="bg-red-300 p-1 rounded-md text-red-300"
+                                >
+                                    None
+                                </div>
+                            </td>
+                            <td class="text-xs text-center" v-else>
+                                <div
+                                    class="bg-red-300 p-1 rounded-md text-red-300"
+                                >
+                                    None
+                                </div>
+                            </td>
+                            <td
+                                class="text-xs text-center"
+                                v-if="tracking.wip_travel_guide[0]"
+                            >
+                                <div
+                                    class="bg-yellow-300 p-1 rounded-md w-20"
+                                    v-if="
+                                        getMonth(
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_date
+                                        ) === `${selectedYear}-07` &&
+                                        tracking.wip_travel_guide[0]
+                                            .wip_package_done === 2
+                                    "
+                                >
+                                    <div
+                                        v-if="
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_name
+                                        "
+                                    >
+                                        {{
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_name
+                                        }}
+                                    </div>
+                                    <div v-else class="text-yellow-300">
+                                        No package
+                                    </div>
+                                    <div
+                                        v-if="
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_date
+                                        "
+                                    >
+                                        {{
+                                            showToday(
+                                                tracking.wip_travel_guide[0]
+                                                    .wip_package_date
+                                            )
+                                        }}
+                                    </div>
+                                    <div v-else class="text-yellow-300">
+                                        No date
+                                    </div>
+                                    <div
+                                        v-if="
+                                            tracking.wip_travel_guide[0]
+                                                .package_user_name
+                                        "
+                                    >
+                                        {{
+                                            tracking.wip_travel_guide[0]
+                                                .package_user_name
+                                        }}
+                                    </div>
+                                    <div v-else class="text-yellow-300">
+                                        No user
+                                    </div>
+
+                                    <div
+                                        v-if="
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_remark
+                                        "
+                                    >
+                                        {{
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_remark
+                                        }}
+                                    </div>
+                                    <div v-else class="text-yellow-300">
+                                        No remark
+                                    </div>
+                                </div>
+                                <div
+                                    class="bg-green-300 p-1 rounded-md w-20"
+                                    v-else-if="
+                                        getMonth(
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_date
+                                        ) === `${selectedYear}-07` &&
+                                        tracking.wip_travel_guide[0]
+                                            .wip_package_done === 1
+                                    "
+                                >
+                                    <div
+                                        v-if="
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_name
+                                        "
+                                    >
+                                        {{
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_name
+                                        }}
+                                    </div>
+                                    <div v-else class="text-yellow-300">
+                                        No package
+                                    </div>
+                                    <div
+                                        v-if="
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_date
+                                        "
+                                    >
+                                        {{
+                                            showToday(
+                                                tracking.wip_travel_guide[0]
+                                                    .wip_package_date
+                                            )
+                                        }}
+                                    </div>
+                                    <div v-else class="text-yellow-300">
+                                        No date
+                                    </div>
+                                    <div
+                                        v-if="
+                                            tracking.wip_travel_guide[0]
+                                                .package_user_name
+                                        "
+                                    >
+                                        {{
+                                            tracking.wip_travel_guide[0]
+                                                .package_user_name
+                                        }}
+                                    </div>
+                                    <div v-else class="text-yellow-300">
+                                        No user
+                                    </div>
+
+                                    <div
+                                        v-if="
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_remark
+                                        "
+                                    >
+                                        {{
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_remark
+                                        }}
+                                    </div>
+                                    <div v-else class="text-yellow-300">
+                                        No remark
+                                    </div>
+                                </div>
+                                <div
+                                    v-else
+                                    class="bg-red-300 p-1 rounded-md text-red-300"
+                                >
+                                    None
+                                </div>
+                            </td>
+                            <td class="text-xs text-center" v-else>
+                                <div
+                                    class="bg-red-300 p-1 rounded-md text-red-300"
+                                >
+                                    None
+                                </div>
+                            </td>
+                            <td
+                                class="text-xs text-center"
+                                v-if="tracking.wip_travel_guide[0]"
+                            >
+                                <div
+                                    class="bg-yellow-300 p-1 rounded-md w-20"
+                                    v-if="
+                                        getMonth(
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_date
+                                        ) === `${selectedYear}-08` &&
+                                        tracking.wip_travel_guide[0]
+                                            .wip_package_done === 2
+                                    "
+                                >
+                                    <div
+                                        v-if="
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_name
+                                        "
+                                    >
+                                        {{
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_name
+                                        }}
+                                    </div>
+                                    <div v-else class="text-yellow-300">
+                                        No package
+                                    </div>
+                                    <div
+                                        v-if="
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_date
+                                        "
+                                    >
+                                        {{
+                                            showToday(
+                                                tracking.wip_travel_guide[0]
+                                                    .wip_package_date
+                                            )
+                                        }}
+                                    </div>
+                                    <div v-else class="text-yellow-300">
+                                        No date
+                                    </div>
+                                    <div
+                                        v-if="
+                                            tracking.wip_travel_guide[0]
+                                                .package_user_name
+                                        "
+                                    >
+                                        {{
+                                            tracking.wip_travel_guide[0]
+                                                .package_user_name
+                                        }}
+                                    </div>
+                                    <div v-else class="text-yellow-300">
+                                        No user
+                                    </div>
+
+                                    <div
+                                        v-if="
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_remark
+                                        "
+                                    >
+                                        {{
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_remark
+                                        }}
+                                    </div>
+                                    <div v-else class="text-yellow-300">
+                                        No remark
+                                    </div>
+                                </div>
+                                <div
+                                    class="bg-green-300 p-1 rounded-md w-20"
+                                    v-else-if="
+                                        getMonth(
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_date
+                                        ) === `${selectedYear}-08` &&
+                                        tracking.wip_travel_guide[0]
+                                            .wip_package_done === 1
+                                    "
+                                >
+                                    <div
+                                        v-if="
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_name
+                                        "
+                                    >
+                                        {{
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_name
+                                        }}
+                                    </div>
+                                    <div v-else class="text-yellow-300">
+                                        No package
+                                    </div>
+                                    <div
+                                        v-if="
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_date
+                                        "
+                                    >
+                                        {{
+                                            showToday(
+                                                tracking.wip_travel_guide[0]
+                                                    .wip_package_date
+                                            )
+                                        }}
+                                    </div>
+                                    <div v-else class="text-yellow-300">
+                                        No date
+                                    </div>
+                                    <div
+                                        v-if="
+                                            tracking.wip_travel_guide[0]
+                                                .package_user_name
+                                        "
+                                    >
+                                        {{
+                                            tracking.wip_travel_guide[0]
+                                                .package_user_name
+                                        }}
+                                    </div>
+                                    <div v-else class="text-yellow-300">
+                                        No user
+                                    </div>
+
+                                    <div
+                                        v-if="
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_remark
+                                        "
+                                    >
+                                        {{
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_remark
+                                        }}
+                                    </div>
+                                    <div v-else class="text-yellow-300">
+                                        No remark
+                                    </div>
+                                </div>
+                                <div
+                                    v-else
+                                    class="bg-red-300 p-1 rounded-md text-red-300"
+                                >
+                                    None
+                                </div>
+                            </td>
+                            <td class="text-xs text-center" v-else>
+                                <div
+                                    class="bg-red-300 p-1 rounded-md text-red-300"
+                                >
+                                    None
+                                </div>
+                            </td>
+                            <td
+                                class="text-xs text-center"
+                                v-if="tracking.wip_travel_guide[0]"
+                            >
+                                <div
+                                    class="bg-yellow-300 p-1 rounded-md w-20"
+                                    v-if="
+                                        getMonth(
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_date
+                                        ) === `${selectedYear}-09` &&
+                                        tracking.wip_travel_guide[0]
+                                            .wip_package_done === 2
+                                    "
+                                >
+                                    <div
+                                        v-if="
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_name
+                                        "
+                                    >
+                                        {{
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_name
+                                        }}
+                                    </div>
+                                    <div v-else class="text-yellow-300">
+                                        No package
+                                    </div>
+                                    <div
+                                        v-if="
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_date
+                                        "
+                                    >
+                                        {{
+                                            showToday(
+                                                tracking.wip_travel_guide[0]
+                                                    .wip_package_date
+                                            )
+                                        }}
+                                    </div>
+                                    <div v-else class="text-yellow-300">
+                                        No date
+                                    </div>
+                                    <div
+                                        v-if="
+                                            tracking.wip_travel_guide[0]
+                                                .package_user_name
+                                        "
+                                    >
+                                        {{
+                                            tracking.wip_travel_guide[0]
+                                                .package_user_name
+                                        }}
+                                    </div>
+                                    <div v-else class="text-yellow-300">
+                                        No user
+                                    </div>
+
+                                    <div
+                                        v-if="
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_remark
+                                        "
+                                    >
+                                        {{
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_remark
+                                        }}
+                                    </div>
+                                    <div v-else class="text-yellow-300">
+                                        No remark
+                                    </div>
+                                </div>
+                                <div
+                                    class="bg-green-300 p-1 rounded-md w-20"
+                                    v-else-if="
+                                        getMonth(
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_date
+                                        ) === `${selectedYear}-09` &&
+                                        tracking.wip_travel_guide[0]
+                                            .wip_package_done === 1
+                                    "
+                                >
+                                    <div
+                                        v-if="
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_name
+                                        "
+                                    >
+                                        {{
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_name
+                                        }}
+                                    </div>
+                                    <div v-else class="text-yellow-300">
+                                        No package
+                                    </div>
+                                    <div
+                                        v-if="
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_date
+                                        "
+                                    >
+                                        {{
+                                            showToday(
+                                                tracking.wip_travel_guide[0]
+                                                    .wip_package_date
+                                            )
+                                        }}
+                                    </div>
+                                    <div v-else class="text-yellow-300">
+                                        No date
+                                    </div>
+                                    <div
+                                        v-if="
+                                            tracking.wip_travel_guide[0]
+                                                .package_user_name
+                                        "
+                                    >
+                                        {{
+                                            tracking.wip_travel_guide[0]
+                                                .package_user_name
+                                        }}
+                                    </div>
+                                    <div v-else class="text-yellow-300">
+                                        No user
+                                    </div>
+
+                                    <div
+                                        v-if="
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_remark
+                                        "
+                                    >
+                                        {{
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_remark
+                                        }}
+                                    </div>
+                                    <div v-else class="text-yellow-300">
+                                        No remark
+                                    </div>
+                                </div>
+                                <div
+                                    v-else
+                                    class="bg-red-300 p-1 rounded-md text-red-300"
+                                >
+                                    None
+                                </div>
+                            </td>
+                            <td class="text-xs text-center" v-else>
+                                <div
+                                    class="bg-red-300 p-1 rounded-md text-red-300"
+                                >
+                                    None
+                                </div>
+                            </td>
+                            <td
+                                class="text-xs text-center"
+                                v-if="tracking.wip_travel_guide[0]"
+                            >
+                                <div
+                                    class="bg-yellow-300 p-1 rounded-md w-20"
+                                    v-if="
+                                        getMonth(
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_date
+                                        ) === `${selectedYear}-10` &&
+                                        tracking.wip_travel_guide[0]
+                                            .wip_package_done === 2
+                                    "
+                                >
+                                    <div
+                                        v-if="
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_name
+                                        "
+                                    >
+                                        {{
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_name
+                                        }}
+                                    </div>
+                                    <div v-else class="text-yellow-300">
+                                        No package
+                                    </div>
+                                    <div
+                                        v-if="
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_date
+                                        "
+                                    >
+                                        {{
+                                            showToday(
+                                                tracking.wip_travel_guide[0]
+                                                    .wip_package_date
+                                            )
+                                        }}
+                                    </div>
+                                    <div v-else class="text-yellow-300">
+                                        No date
+                                    </div>
+                                    <div
+                                        v-if="
+                                            tracking.wip_travel_guide[0]
+                                                .package_user_name
+                                        "
+                                    >
+                                        {{
+                                            tracking.wip_travel_guide[0]
+                                                .package_user_name
+                                        }}
+                                    </div>
+                                    <div v-else class="text-yellow-300">
+                                        No user
+                                    </div>
+
+                                    <div
+                                        v-if="
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_remark
+                                        "
+                                    >
+                                        {{
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_remark
+                                        }}
+                                    </div>
+                                    <div v-else class="text-yellow-300">
+                                        No remark
+                                    </div>
+                                </div>
+                                <div
+                                    class="bg-green-300 p-1 rounded-md w-20"
+                                    v-else-if="
+                                        getMonth(
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_date
+                                        ) === `${selectedYear}-10` &&
+                                        tracking.wip_travel_guide[0]
+                                            .wip_package_done === 1
+                                    "
+                                >
+                                    <div
+                                        v-if="
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_name
+                                        "
+                                    >
+                                        {{
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_name
+                                        }}
+                                    </div>
+                                    <div v-else class="text-yellow-300">
+                                        No package
+                                    </div>
+                                    <div
+                                        v-if="
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_date
+                                        "
+                                    >
+                                        {{
+                                            showToday(
+                                                tracking.wip_travel_guide[0]
+                                                    .wip_package_date
+                                            )
+                                        }}
+                                    </div>
+                                    <div v-else class="text-yellow-300">
+                                        No date
+                                    </div>
+                                    <div
+                                        v-if="
+                                            tracking.wip_travel_guide[0]
+                                                .package_user_name
+                                        "
+                                    >
+                                        {{
+                                            tracking.wip_travel_guide[0]
+                                                .package_user_name
+                                        }}
+                                    </div>
+                                    <div v-else class="text-yellow-300">
+                                        No user
+                                    </div>
+
+                                    <div
+                                        v-if="
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_remark
+                                        "
+                                    >
+                                        {{
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_remark
+                                        }}
+                                    </div>
+                                    <div v-else class="text-yellow-300">
+                                        No remark
+                                    </div>
+                                </div>
+                                <div
+                                    v-else
+                                    class="bg-red-300 p-1 rounded-md text-red-300"
+                                >
+                                    None
+                                </div>
+                            </td>
+                            <td class="text-xs text-center" v-else>
+                                <div
+                                    class="bg-red-300 p-1 rounded-md text-red-300"
+                                >
+                                    None
+                                </div>
+                            </td>
+                            <td
+                                class="text-xs text-center"
+                                v-if="tracking.wip_travel_guide[0]"
+                            >
+                                <div
+                                    class="bg-yellow-300 p-1 rounded-md w-20"
+                                    v-if="
+                                        getMonth(
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_date
+                                        ) === `${selectedYear}-11` &&
+                                        tracking.wip_travel_guide[0]
+                                            .wip_package_done === 2
+                                    "
+                                >
+                                    <div
+                                        v-if="
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_name
+                                        "
+                                    >
+                                        {{
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_name
+                                        }}
+                                    </div>
+                                    <div v-else class="text-yellow-300">
+                                        No package
+                                    </div>
+                                    <div
+                                        v-if="
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_date
+                                        "
+                                    >
+                                        {{
+                                            showToday(
+                                                tracking.wip_travel_guide[0]
+                                                    .wip_package_date
+                                            )
+                                        }}
+                                    </div>
+                                    <div v-else class="text-yellow-300">
+                                        No date
+                                    </div>
+                                    <div
+                                        v-if="
+                                            tracking.wip_travel_guide[0]
+                                                .package_user_name
+                                        "
+                                    >
+                                        {{
+                                            tracking.wip_travel_guide[0]
+                                                .package_user_name
+                                        }}
+                                    </div>
+                                    <div v-else class="text-yellow-300">
+                                        No user
+                                    </div>
+
+                                    <div
+                                        v-if="
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_remark
+                                        "
+                                    >
+                                        {{
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_remark
+                                        }}
+                                    </div>
+                                    <div v-else class="text-yellow-300">
+                                        No remark
+                                    </div>
+                                </div>
+                                <div
+                                    class="bg-green-300 p-1 rounded-md w-20"
+                                    v-else-if="
+                                        getMonth(
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_date
+                                        ) === `${selectedYear}-11` &&
+                                        tracking.wip_travel_guide[0]
+                                            .wip_package_done === 1
+                                    "
+                                >
+                                    <div
+                                        v-if="
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_name
+                                        "
+                                    >
+                                        {{
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_name
+                                        }}
+                                    </div>
+                                    <div v-else class="text-yellow-300">
+                                        No package
+                                    </div>
+                                    <div
+                                        v-if="
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_date
+                                        "
+                                    >
+                                        {{
+                                            showToday(
+                                                tracking.wip_travel_guide[0]
+                                                    .wip_package_date
+                                            )
+                                        }}
+                                    </div>
+                                    <div v-else class="text-yellow-300">
+                                        No date
+                                    </div>
+                                    <div
+                                        v-if="
+                                            tracking.wip_travel_guide[0]
+                                                .package_user_name
+                                        "
+                                    >
+                                        {{
+                                            tracking.wip_travel_guide[0]
+                                                .package_user_name
+                                        }}
+                                    </div>
+                                    <div v-else class="text-yellow-300">
+                                        No user
+                                    </div>
+
+                                    <div
+                                        v-if="
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_remark
+                                        "
+                                    >
+                                        {{
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_remark
+                                        }}
+                                    </div>
+                                    <div v-else class="text-yellow-300">
+                                        No remark
+                                    </div>
+                                </div>
+                                <div
+                                    v-else
+                                    class="bg-red-300 p-1 rounded-md text-red-300"
+                                >
+                                    None
+                                </div>
+                            </td>
+                            <td class="text-xs text-center" v-else>
+                                <div
+                                    class="bg-red-300 p-1 rounded-md text-red-300"
+                                >
+                                    None
+                                </div>
+                            </td>
+                            <td
+                                class="text-xs text-center"
+                                v-if="tracking.wip_travel_guide[0]"
+                            >
+                                <div
+                                    class="bg-yellow-300 p-1 rounded-md w-20"
+                                    v-if="
+                                        getMonth(
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_date
+                                        ) === `${selectedYear}-12` &&
+                                        tracking.wip_travel_guide[0]
+                                            .wip_package_done === 2
+                                    "
+                                >
+                                    <div
+                                        v-if="
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_name
+                                        "
+                                    >
+                                        {{
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_name
+                                        }}
+                                    </div>
+                                    <div v-else class="text-yellow-300">
+                                        No package
+                                    </div>
+                                    <div
+                                        v-if="
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_date
+                                        "
+                                    >
+                                        {{
+                                            showToday(
+                                                tracking.wip_travel_guide[0]
+                                                    .wip_package_date
+                                            )
+                                        }}
+                                    </div>
+                                    <div v-else class="text-yellow-300">
+                                        No date
+                                    </div>
+                                    <div
+                                        v-if="
+                                            tracking.wip_travel_guide[0]
+                                                .package_user_name
+                                        "
+                                    >
+                                        {{
+                                            tracking.wip_travel_guide[0]
+                                                .package_user_name
+                                        }}
+                                    </div>
+                                    <div v-else class="text-yellow-300">
+                                        No user
+                                    </div>
+
+                                    <div
+                                        v-if="
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_remark
+                                        "
+                                    >
+                                        {{
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_remark
+                                        }}
+                                    </div>
+                                    <div v-else class="text-yellow-300">
+                                        No remark
+                                    </div>
+                                </div>
+                                <div
+                                    class="bg-green-300 p-1 rounded-md w-20"
+                                    v-else-if="
+                                        getMonth(
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_date
+                                        ) === `${selectedYear}-12` &&
+                                        tracking.wip_travel_guide[0]
+                                            .wip_package_done === 1
+                                    "
+                                >
+                                    <div
+                                        v-if="
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_name
+                                        "
+                                    >
+                                        {{
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_name
+                                        }}
+                                    </div>
+                                    <div v-else class="text-yellow-300">
+                                        No package
+                                    </div>
+                                    <div
+                                        v-if="
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_date
+                                        "
+                                    >
+                                        {{
+                                            showToday(
+                                                tracking.wip_travel_guide[0]
+                                                    .wip_package_date
+                                            )
+                                        }}
+                                    </div>
+                                    <div v-else class="text-yellow-300">
+                                        No date
+                                    </div>
+                                    <div
+                                        v-if="
+                                            tracking.wip_travel_guide[0]
+                                                .package_user_name
+                                        "
+                                    >
+                                        {{
+                                            tracking.wip_travel_guide[0]
+                                                .package_user_name
+                                        }}
+                                    </div>
+                                    <div v-else class="text-yellow-300">
+                                        No user
+                                    </div>
+
+                                    <div
+                                        v-if="
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_remark
+                                        "
+                                    >
+                                        {{
+                                            tracking.wip_travel_guide[0]
+                                                .wip_package_remark
+                                        }}
+                                    </div>
+                                    <div v-else class="text-yellow-300">
+                                        No remark
+                                    </div>
+                                </div>
+                                <div
+                                    v-else
+                                    class="bg-red-300 p-1 rounded-md text-red-300"
+                                >
+                                    None
+                                </div>
+                            </td>
+                            <td class="text-xs text-center" v-else>
+                                <div
+                                    class="bg-red-300 p-1 rounded-md text-red-300"
+                                >
+                                    None
+                                </div>
+                            </td>
+
+                            <td class="text-xs text-center">
+                                {{ tracking.tguide_remark }}
+                            </td>
                             <!-- :to="{ name: 'tracking_general_edit', params: { id: tracking.id },}" -->
                             <td class="text-xs text-center">
                                 <router-link
-                                    to=""
+                                    :to="{
+                                        name: 'tracking_travel_guide_edit',
+                                        params: { id: tracking.id },
+                                    }"
                                     class="mr-2 mb-2 inline-flex items-center px-2 py-1 bg-yellow-400 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
                                 >
                                     <PencilSquareIcon class="h-3 w-3"
@@ -1197,6 +4114,7 @@
                 </table>
             </div>
         </div>
+        <!-- </div> -->
     </div>
 </template>
 
@@ -1236,13 +4154,17 @@ export default {
     },
 
     mounted() {
-        this.getTrackingGenerals();
+        this.currentDate = this.getCurrentDate();
+        this.selectedDate = this.currentDate;
+
+        this.selectedYear = this.getSelectedYear(this.selectedDate);
+        this.getTrackingTravelGuides();
         this.getUsers();
         this.getCategories();
     },
     data() {
         return {
-            tracking_generals: [],
+            tracking_travel_guides: [],
             paginate: 100,
 
             search: "",
@@ -1252,39 +4174,43 @@ export default {
             sort_field: "created_at",
             // general_remark_visibility: false,
             // general_remark: null,
-            view_type: "master",
+            view_type: "wip",
             selectedUser: "",
             selectedCategory: "",
             selectedResult: "",
             users: [],
             categories: [],
+            currentDate: "",
+
+            selectedDate: "",
+            selectedYear: "",
         };
     },
     watch: {
         paginate: function (value) {
-            this.getTrackingGenerals();
+            this.getTrackingTravelGuides();
         },
         search: function (value) {
-            this.getTrackingGenerals();
+            this.getTrackingTravelGuides();
         },
 
         view_type: function (value) {
-            this.getTrackingGenerals();
+            this.getTrackingTravelGuides();
         },
 
         selectedUser: function (value) {
-            this.tracking_generals = [];
-            this.getTrackingGenerals();
+            this.tracking_travel_guides = [];
+            this.getTrackingTravelGuides();
         },
 
         selectedCategory: function (value) {
-            this.tracking_generals = [];
-            this.getTrackingGenerals();
+            this.tracking_travel_guides = [];
+            this.getTrackingTravelGuides();
         },
 
         selectedResult: function (value) {
-            this.tracking_generals = [];
-            this.getTrackingGenerals();
+            this.tracking_travel_guides = [];
+            this.getTrackingTravelGuides();
         },
     },
 
@@ -1294,14 +4220,14 @@ export default {
         //     this.general_remark_visibility = !this.general_remark_visibility;
         // },
 
-        getTrackingGenerals(page = 1) {
+        getTrackingTravelGuides(page = 1) {
             if (typeof page === "undefined") {
                 page = 1;
             }
             this.buffering = true;
             axios
                 .get(
-                    "/api/trackings/general/index?" +
+                    "/api/trackings/travel_guide/index?" +
                         "q=" +
                         this.search +
                         "&paginate=" +
@@ -1315,15 +4241,16 @@ export default {
                         "&view_type=" +
                         this.view_type +
                         "&selectedUser=" +
-                        this.selectedUser +
-                        "&selectedCategory=" +
-                        this.selectedCategory +
-                        "&selectedResult=" +
-                        this.selectedResult
+                        this.selectedUser
+                    // +
+                    // "&selectedCategory=" +
+                    // this.selectedCategory +
+                    // "&selectedResult=" +
+                    // this.selectedResult
                 )
                 .then((res) => {
                     this.buffering = false;
-                    this.tracking_generals = res.data;
+                    this.tracking_travel_guides = res.data;
                 })
                 .catch((error) => {
                     console.log(error);
@@ -1359,7 +4286,7 @@ export default {
             } else {
                 this.sort_field = field;
             }
-            this.getTrackingGenerals();
+            this.getTrackingTravelGuides();
         },
 
         deleteMasterGeneral(id) {
@@ -1367,7 +4294,7 @@ export default {
                 return;
             }
             axios.delete("/api/trackings/general/delete/" + id);
-            this.getTrackingGenerals();
+            this.getTrackingTravelGuides();
         },
 
         deleteWIPGeneral(id) {
@@ -1375,20 +4302,28 @@ export default {
                 return;
             }
             axios.delete("/api/trackings/wip/general/delete/" + id);
-            this.getTrackingGenerals();
-        },
-
-        calculateDuration(start_date, end_date) {
-            const start = new Date(start_date);
-            const end = new Date(end_date);
-
-            return moment(end - start).format("D");
+            this.getTrackingTravelGuides();
         },
 
         showToday(date) {
             let new_date = new Date(date);
             let day = moment(new_date).format("DD-MM-YY");
             return day;
+        },
+
+        getMonth(date) {
+            let day = moment(date).format("YYYY-MM");
+            return day;
+        },
+
+        getSelectedYear(date) {
+            this.selectedYear = moment(date).format("YYYY");
+            return this.selectedYear;
+        },
+
+        getCurrentDate() {
+            this.currentDate = moment().format("YYYY-MM-DD");
+            return this.currentDate;
         },
 
         exportMasterGeneralExcel(type, fn, dl) {

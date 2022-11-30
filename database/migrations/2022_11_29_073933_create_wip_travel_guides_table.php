@@ -21,16 +21,16 @@ class CreateWipTravelGuidesTable extends Migration
                 ->on('tracking_travel_guides')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
-            
-            $table->date('wip_assignment_date')->nullable();
-            $table->integer('wip_assignment_done')->nullable();
-            $table->unsignedBigInteger('wip_assignment_user_id')->nullable()->constrained();
-            $table->foreign('wip_assignment_user_id')
+            $table->string('wip_package_name')->nullable();
+            $table->date('wip_package_date')->nullable();
+            $table->integer('wip_package_done')->nullable();
+            $table->unsignedBigInteger('wip_package_user_id')->nullable()->constrained();
+            $table->foreign('wip_package_user_id')
                 ->references('id')
                 ->on('users')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');  
-            $table->string('wip_assignment_remark')->nullable();
+            $table->string('wip_package_remark')->nullable();
             $table->timestamps();
         });
     }

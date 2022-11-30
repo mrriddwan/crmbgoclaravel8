@@ -27,7 +27,9 @@ use App\Http\Controllers\Api\ToDo\TaskController;
 use App\Http\Controllers\Api\ToDo\ToDoController;
 use App\Http\Controllers\Api\ToDo\ToDoSourceController;
 use App\Http\Controllers\Api\Tracking\TrackingGeneralController;
+use App\Http\Controllers\Api\Tracking\TrackingTGuideController;
 use App\Http\Controllers\Api\Tracking\WIPGeneralController;
+use App\Http\Controllers\Api\Tracking\WIPTGuideController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -285,6 +287,7 @@ Route::delete('/tempboards/delete/{tempboard}', [TempboardController::class, 'de
 Route::post('/billboards/tenure/store', [BillboardTenureController::class, 'store'])->name('tenure:store');
 Route::delete('/billboards/tenure/delete/{tenure}', [BillboardTenureController::class, 'delete'])->name('tenure:delete');
 
+/*Tracking & WIP Generals API*/
 Route::get('/trackings/general/index', [TrackingGeneralController::class, 'index'])->name('tracking_general:index');
 Route::post('/trackings/general/store', [TrackingGeneralController::class, 'store'])->name('tracking_general:store');
 Route::get('/trackings/general/show/{general}', [TrackingGeneralController::class, 'show'])->name('tracking_general:show');
@@ -294,3 +297,14 @@ Route::delete('/trackings/general/delete/{tracking_general}', [TrackingGeneralCo
 Route::get('/trackings/wip/general/show/{wip_general}', [WIPGeneralController::class, 'show'])->name('wip_general:show');
 Route::put('/trackings/wip/general/update/{wip_general}', [WIPGeneralController::class, 'update'])->name('tracking_general:update');
 Route::delete('/trackings/wip/general/delete/{wip_general}', [WIPGeneralController::class, 'delete'])->name('tracking_general:delete');
+
+/*Tracking / WIP Travel Guides API*/
+Route::get('/trackings/travel_guide/index', [TrackingTGuideController::class, 'index'])->name('tracking_travel_guide:index');
+Route::post('/trackings/travel_guide/store', [TrackingTGuideController::class, 'store'])->name('tracking_travel_guide:store');
+Route::get('/trackings/travel_guide/show/{travel_guide}', [TrackingTGuideController::class, 'show'])->name('tracking_travel_guide:show');
+Route::put('/trackings/travel_guide/update/{travel_guide}', [TrackingTGuideController::class, 'update'])->name('tracking_travel_guide:update');
+Route::delete('/trackings/travel_guide/delete/{travel_guide}', [TrackingTGuideController::class, 'delete'])->name('tracking_travel_guide:delete');
+
+Route::get('/trackings/wip/travel_guide/show/{wip_travel_guide}', [WIPTGuideController::class, 'show'])->name('wip_travel_guide:show');
+Route::put('/trackings/wip/travel_guide/update/{wip_travel_guide}', [WIPTGuideController::class, 'update'])->name('wip_travel_guide:update');
+Route::delete('/trackings/wip/travel_guide/delete/{wip_travel_guide}', [WIPTGuideController::class, 'delete'])->name('wip_travel_guide:delete');

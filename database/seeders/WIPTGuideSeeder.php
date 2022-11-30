@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Tracking\WipGeneral;
 use App\Models\Tracking\WipTravelGuide;
 use Illuminate\Database\Seeder;
 
@@ -14,7 +15,7 @@ class WIPTGuideSeeder extends Seeder
      */
     public function run()
     {
-        WipTravelGuide::factory(100)->create();
+        WipTravelGuide::factory(300)->create();
     }
     
 }

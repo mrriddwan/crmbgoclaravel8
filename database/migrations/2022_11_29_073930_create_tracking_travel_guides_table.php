@@ -27,6 +27,27 @@ class CreateTrackingTravelGuidesTable extends Migration
                 ->on('contacts')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
+
+            $table->date('art_reminder_date')->nullable();
+            $table->string('art_reminder_remark')->nullable();
+            $table->integer('art_reminder_done')->nullable();
+            $table->unsignedBigInteger('art_reminder_user_id')->nullable()->constrained();
+            $table->foreign('art_reminder_user_id')
+                ->references('id')
+                ->on('users')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
+            
+            $table->date('art_record_date')->nullable();
+            $table->string('art_record_remark')->nullable();
+            $table->integer('art_record_done')->nullable();
+            $table->unsignedBigInteger('art_record_user_id')->nullable()->constrained();
+            $table->foreign('art_record_user_id')
+                ->references('id')
+                ->on('users')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
+            
             $table->string('edition')->nullable();
             $table->string('tguide_size')->nullable();
             $table->string('tguide_remark')->nullable();
