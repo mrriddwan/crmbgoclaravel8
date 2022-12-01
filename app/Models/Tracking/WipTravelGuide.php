@@ -11,6 +11,7 @@ class WipTravelGuide extends Model
 
     protected $fillable = [
         'tracking_tguide_id',
+        'wip_package_name',
         'wip_package_date',
         'wip_package_done',
         'wip_package_user_id',

@@ -298,13 +298,12 @@ Route::get('/trackings/wip/general/show/{wip_general}', [WIPGeneralController::c
 Route::put('/trackings/wip/general/update/{wip_general}', [WIPGeneralController::class, 'update'])->name('tracking_general:update');
 Route::delete('/trackings/wip/general/delete/{wip_general}', [WIPGeneralController::class, 'delete'])->name('tracking_general:delete');
 
-/*Tracking / WIP Travel Guides API*/
+/*Tracking & WIP Travel Guides API*/
 Route::get('/trackings/travel_guide/index', [TrackingTGuideController::class, 'index'])->name('tracking_travel_guide:index');
 Route::post('/trackings/travel_guide/store', [TrackingTGuideController::class, 'store'])->name('tracking_travel_guide:store');
 Route::get('/trackings/travel_guide/show/{travel_guide}', [TrackingTGuideController::class, 'show'])->name('tracking_travel_guide:show');
 Route::put('/trackings/travel_guide/update/{travel_guide}', [TrackingTGuideController::class, 'update'])->name('tracking_travel_guide:update');
 Route::delete('/trackings/travel_guide/delete/{travel_guide}', [TrackingTGuideController::class, 'delete'])->name('tracking_travel_guide:delete');
 
-Route::get('/trackings/wip/travel_guide/show/{wip_travel_guide}', [WIPTGuideController::class, 'show'])->name('wip_travel_guide:show');
-Route::put('/trackings/wip/travel_guide/update/{wip_travel_guide}', [WIPTGuideController::class, 'update'])->name('wip_travel_guide:update');
+Route::post('/trackings/wip/travel_guide/store', [WIPTGuideController::class, 'wip_tg_store'])->name('wip_travel_guide:wip_tg_store');
 Route::delete('/trackings/wip/travel_guide/delete/{wip_travel_guide}', [WIPTGuideController::class, 'delete'])->name('wip_travel_guide:delete');

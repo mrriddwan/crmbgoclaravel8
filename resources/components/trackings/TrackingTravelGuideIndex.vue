@@ -4091,7 +4091,7 @@
                             <td class="text-xs text-center">
                                 {{ tracking.tguide_remark }}
                             </td>
-                            <!-- :to="{ name: 'tracking_general_edit', params: { id: tracking.id },}" -->
+
                             <td class="text-xs text-center">
                                 <router-link
                                     :to="{

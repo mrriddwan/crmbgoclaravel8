@@ -16,16 +16,16 @@
         </div>
         <div class="flex w-full row">
             <div class="col-lg-20">
-                <!-- @submit.prevent="createTrackingGeneral" -->
-                <form class="rounded px-8 pt-1 pb-8 mb-4">
+                <!-- @submit.prevent="createTrackingTravelGuide" -->
+                <div class="rounded px-8 pt-1 pb-8 mb-4">
                     <div
                         class="text-center text-white bg-slate-600 px-2 py-1 rounded-md"
                     >
-                        <h1
-                            class="px-8 bg-black-50 uppercase w-max font-mono font-extrabold"
+                        <h2
+                            class="px-3 bg-black-50 uppercase w-full font-mono font-extrabold"
                         >
                             Create Tracking (Travel Guide) - Master Record
-                        </h1>
+                        </h2>
                     </div>
 
                     <div class="form-group grid grid-cols-2">
@@ -89,16 +89,16 @@
                                     maxlength="800"
                                     type="text"
                                     class="form-control block px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-                                    v-model="form.general_type"
-                                    placeholder="eg: 30' x 40'"
+                                    v-model="form.edition1"
+                                    placeholder="eg: KLTG"
                                 />
                                 <p class="mx-5">-</p>
                                 <input
                                     maxlength="800"
                                     type="text"
                                     class="form-control block px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-                                    v-model="form.general_type"
-                                    placeholder="eg: 30' x 40'"
+                                    v-model="form.edition2"
+                                    placeholder="eg: 40"
                                 />
                             </div>
                         </div>
@@ -123,8 +123,8 @@
                                     maxlength="800"
                                     type="text"
                                     class="form-control block px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-                                    v-model="form.general_type"
-                                    placeholder="eg: 30' x 40'"
+                                    v-model="form.tguide_size"
+                                    placeholder="eg: FP"
                                 />
                             </div>
                         </div>
@@ -142,43 +142,27 @@
                         >
                             Exceeded limit
                         </div> -->
-                        <input
+                        <textarea
+                            v-model="form.tguide_remark"
+                            id="message"
                             maxlength="800"
-                            type="text"
-                            class="form-control block w-96 h-20 px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-                            v-model="form.general_remark"
+                            rows="3"
                             placeholder="eg: Artwork by Bluedale"
-                        />
+                            class="block p-2.5 w-full text-xs rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
+                        ></textarea>
                     </div>
-
                     <div
                         class="text-center border-2 px-1 py-1 border-slate-300 my-2"
                         id="form-wrapper"
                     >
                         <div class="form-assignment">
-                            <label class="font-bold">Assignment</label>
-                            <div class="grid grid-cols-7">
-                                <div class="grid grid-cols-1 my-2 col-span-3">
-                                    <label class="font-bold">Package</label>
-                                    <!-- <input
-                                    maxlength="800"
-                                    type="text"
-                                    class="form-control block w-96 h-24 px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-                                    v-model="wip.general_remark"
-                                    placeholder="eg: Artwork by Bluedale"
-                                /> -->
-                                    <input
-                                        maxlength="800"
-                                        type="text"
-                                        class="form-control block px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-                                        v-model="form.general_remark"
-                                        placeholder="eg: Artwork by Bluedale"
-                                    />
-                                </div>
+                            <label class="font-bold">Art Reminder</label>
+                            <div class="grid grid-cols-5">
                                 <div class="mx-1 grid grid-cols-1">
                                     <label class="font-bold">Date</label>
                                     <div class="w-full">
                                         <VueDatePicker
+                                            v-model="form.art_reminder_date"
                                             showNowButton
                                             nowButtonLabel="Today"
                                             :enableTimePicker="false"
@@ -191,6 +175,7 @@
                                     <select
                                         class="block w-full text-center h-max rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                                         @change="getUsers"
+                                        v-model="form.art_reminder_user_id"
                                     >
                                         <option value="">Select user</option>
                                         <option
@@ -202,7 +187,7 @@
                                         </option>
                                     </select>
                                 </div>
-                                <div class="grid grid-cols-1 my-2 col-span-2">
+                                <div class="grid grid-cols-1 my-2 col-span-3">
                                     <label class="font-bold">Note</label>
                                     <!-- <input
                                     maxlength="800"
@@ -212,30 +197,177 @@
                                     placeholder="eg: Artwork by Bluedale"
                                 /> -->
                                     <textarea
+                                        v-model="form.art_reminder_remark"
                                         id="message"
                                         maxlength="800"
                                         rows="1"
                                         placeholder="eg: Artwork by Bluedale"
-                                        class="block p-2.5 w-full text-sm rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
+                                        class="block p-2.5 w-full text-xs rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
                                     ></textarea>
                                 </div>
                             </div>
-                            <button
-                                @click="duplicateForm"
-                                class="text-center text-sm border-2 border-slate-500"
-                            >
-                                + task
-                            </button>
+                        </div>
+
+                        <div class="form-assignment">
+                            <label class="font-bold">Art Record</label>
+                            <div class="grid grid-cols-5">
+                                <div class="mx-1 grid grid-cols-1">
+                                    <label class="font-bold">Date</label>
+                                    <div class="w-full">
+                                        <VueDatePicker
+                                            v-model="form.art_record_date"
+                                            showNowButton
+                                            nowButtonLabel="Today"
+                                            :enableTimePicker="false"
+                                            placeholder="Select date"
+                                        />
+                                    </div>
+                                </div>
+                                <div class="mx-1 grid grid-cols-1">
+                                    <label class="font-bold">User</label>
+                                    <select
+                                        class="block w-full text-center h-max rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                        @change="getUsers"
+                                        v-model="form.art_record_user_id"
+                                    >
+                                        <option value="">Select user</option>
+                                        <option
+                                            v-for="user in users"
+                                            :key="user.id"
+                                            :value="user.id"
+                                        >
+                                            {{ user.name }}
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="grid grid-cols-1 my-2 col-span-3">
+                                    <label class="font-bold">Note</label>
+                                    <!-- <input
+                                    maxlength="800"
+                                    type="text"
+                                    class="form-control block w-96 h-24 px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                                    v-model="wip.general_remark"
+                                    placeholder="eg: Artwork by Bluedale"
+                                /> -->
+                                    <textarea
+                                        v-model="form.art_record_remark"
+                                        id="message"
+                                        maxlength="800"
+                                        rows="1"
+                                        placeholder="eg: Artwork by Client"
+                                        class="block p-2.5 w-full text-xs rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
+                                    ></textarea>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
-                    <!-- <button
-                        type="submit"
-                        class="inline-flex mt-2 items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
+                    <div
+                        class="text-center border-2 px-1 py-1 border-slate-300 my-2"
+                        id="form-wrapper"
+                        v-for="(new_package, index) in wip_travel_guide"
                     >
-                        Create
-                    </button> -->
-                </form>
+                        <div class="form-assignment">
+                            <label class="font-bold"
+                                >Package {{ index + 1 }}</label
+                            >
+                            <div class="grid grid-cols-3">
+                                <div class="grid grid-cols-1 my-2 col-span-3">
+                                    <label class="font-bold">Name</label>
+                                    <!-- <input
+                                    maxlength="800"
+                                    type="text"
+                                    class="form-control block w-96 h-24 px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                                    v-model="wip.general_remark"
+                                    placeholder="eg: Artwork by Bluedale"
+                                /> -->
+                                    <textarea
+                                        v-model="new_package.wip_package_name"
+                                        id="message"
+                                        maxlength="800"
+                                        rows="1"
+                                        placeholder="eg: Pub  & E book / 20K FB Sponsored Ad"
+                                        class="block p-2.5 w-full text-xs rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
+                                    ></textarea>
+                                </div>
+                                <div class="mx-1 grid grid-cols-1">
+                                    <label class="font-bold">Date</label>
+                                    <div class="w-full">
+                                        <VueDatePicker
+                                            v-model="
+                                                new_package.wip_package_date
+                                            "
+                                            showNowButton
+                                            nowButtonLabel="Today"
+                                            :enableTimePicker="false"
+                                            placeholder="Select date"
+                                        />
+                                    </div>
+                                </div>
+                                <div class="mx-1 grid grid-cols-1">
+                                    <label class="font-bold">User</label>
+                                    <select
+                                        class="block w-full text-center h-max rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                        @change="getUsers"
+                                        v-model="
+                                            new_package.wip_package_user_id
+                                        "
+                                    >
+                                        <option value="">Select user</option>
+                                        <option
+                                            v-for="user in users"
+                                            :key="user.id"
+                                            :value="user.id"
+                                        >
+                                            {{ user.name }}
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="grid grid-cols-1 my-2 col-span-1">
+                                    <label class="font-bold">Note</label>
+                                    <!-- <input
+                                    maxlength="800"
+                                    type="text"
+                                    class="form-control block w-96 h-24 px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                                    v-model="wip.general_remark"
+                                    placeholder="eg: Artwork by Bluedale"
+                                /> -->
+                                    <textarea
+                                        v-model="new_package.wip_package_remark"
+                                        id="message"
+                                        maxlength="800"
+                                        rows="1"
+                                        placeholder="eg: Priority client"
+                                        class="block p-2.5 w-full text-xs rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
+                                    ></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <button
+                            @click="addForm"
+                            class="mx-2 text-center text-sm border-2 border-slate-300 p-2 rounded-lg bg-green-400"
+                        >
+                            +
+                        </button>
+                        <button
+                            v-if="wip_travel_guide.length > 1"
+                            @click="removeForm"
+                            class="mx-2 text-center text-sm border-2 border-slate-300 p-2 rounded-lg bg-red-400"
+                        >
+                            -
+                        </button>
+                    </div>
+                    <div>
+                        <button
+                            @click="createTrackingTravelGuide"
+                            class="inline-flex mt-2 items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
+                        >
+                            Create
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -246,32 +378,39 @@ import GoBack from "../utils/GoBack.vue";
 import axios from "axios";
 import moment from "moment";
 
-const div = document.getElementById("form-wrapper");
-
 export default {
     data() {
         return {
             form: {
                 user_id: "",
                 company_id: "",
-                contact_category_id: "",
-                category_description: "",
-                general_type: "",
-                general_amount: "",
-                art_format: "",
-                art_frequency: "",
-                general_reach: "",
-                general_tenure: "",
-                general_startdate: "",
-                general_enddate: "",
-                general_remark: "",
+                edition1: "",
+                edition2: "",
+                tguide_size: "",
+                tguide_remark: "",
+                art_reminder_date: "",
+                art_reminder_remark: "",
+                art_reminder_user_id: "",
+                art_reminder_done: "",
+                art_record_date: "",
+                art_record_remark: "",
+                art_record_user_id: "",
+                art_record_done: "",
+                //wip travel guide data
             },
-
+            wip_travel_guide: [
+                {
+                    tracking_tguide_id: "",
+                    wip_package_name: "",
+                    wip_package_date: "",
+                    wip_package_done: "",
+                    wip_package_user_id: "",
+                    wip_package_remark: "",
+                },
+            ],
             moment: moment,
             users: [],
-            categories: [],
             contacts: [],
-            tenure_length: "month",
             errors: "",
         };
     },
@@ -322,62 +461,117 @@ export default {
                 });
         },
 
-        async createTrackingGeneral() {
-            let tenure = Number;
-
-            if (this.tenure_length === "month") {
-                tenure = this.form.general_tenure * 30;
-            } else if (this.tenure_length === "year") {
-                tenure = this.form.general_tenure * 365;
-            } else {
-                tenure = this.form.general_tenure;
-            }
+        async createTrackingTravelGuide() {
             if (window.confirm("Confirm create tracking ?")) {
                 try {
                     await axios
-                        .post("/api/trackings/general/store", {
+                        .post("/api/trackings/travel_guide/store", {
                             user_id: this.form.user_id,
                             company_id: this.form.company_id,
-                            contact_category_id: this.form.contact_category_id,
-                            category_description:
-                                this.form.category_description,
-                            general_type: this.form.general_type,
-                            general_amount: this.form.general_amount,
-                            art_format: this.form.art_format,
-                            art_frequency: this.form.art_frequency,
-                            general_reach: this.form.general_reach,
-                            general_tenure: tenure,
-                            general_startdate: this.moment(
-                                this.form.general_startdate
-                            ).format("YYYY-MM-DD"),
-                            general_enddate: this.moment(
-                                this.form.general_enddate
-                            ).format("YYYY-MM-DD"),
-                            general_remark: this.form.general_remark
-                                ? this.form.general_remark
+                            edition:
+                                this.form.edition1 + "-" + this.form.edition2,
+                            tguide_size: this.form.tguide_size,
+                            tguide_remark: this.form.tguide_remark
+                                ? this.form.tguide_remark
                                 : "No remark",
+
+                            art_reminder_date: this.form.art_reminder_date
+                                ? this.moment(
+                                      this.form.art_reminder_date
+                                  ).format("YYYY-MM-DD")
+                                : null,
+                            art_reminder_remark: this.form.art_reminder_remark
+                                ? this.form.art_reminder_remark
+                                : "No remark",
+                            art_reminder_user_id: this.form.art_reminder_user_id
+                                ? this.form.art_reminder_user_id
+                                : null,
+                            art_reminder_done: 2,
+
+                            art_record_date: this.form.art_record_date
+                                ? this.moment(this.form.art_record_date).format(
+                                      "YYYY-MM-DD"
+                                  )
+                                : null,
+                            art_record_remark: this.form.art_record_remark
+                                ? this.form.art_record_remark
+                                : "No remark",
+                            art_record_user_id: this.form.art_record_user_id
+                                ? this.form.art_record_user_id
+                                : null,
+                            art_record_done: 2,
                         })
                         .then((res) => {
-                            this.$router.push({ name: "tracking_general" });
+                            const tracking_tguide = res.data.data;
+                            console.log(tracking_tguide.id);
+                            for (
+                                let i = 0;
+                                i < this.wip_travel_guide.length;
+                                i++
+                            ) {
+                                axios.post(
+                                    "/api/trackings/wip/travel_guide/store",
+                                    {
+                                        tracking_tguide_id: tracking_tguide.id,
+                                        wip_package_name:
+                                            this.wip_travel_guide[i]
+                                                .wip_package_name,
+                                        wip_package_date: this.wip_travel_guide[
+                                            i
+                                        ].wip_package_date
+                                            ? this.moment(
+                                                  this.wip_travel_guide[i]
+                                                      .wip_package_date
+                                              ).format("YYYY-MM-DD")
+                                            : null,
+                                        wip_package_done: 2,
+                                        wip_package_user_id: this
+                                            .wip_travel_guide[i]
+                                            .wip_package_user_id
+                                            ? this.wip_travel_guide[i]
+                                                  .wip_package_user_id
+                                            : null,
+                                        wip_package_remark: this
+                                            .wip_travel_guide[i]
+                                            .wip_package_remark
+                                            ? this.wip_travel_guide[i]
+                                                  .wip_package_remark
+                                            : null,
+                                    }
+                                );
+                            }
+                        })
+                        .then((res) => {
+                            alert("Tracking and package (wip) created");
+                            this.$router.push({
+                                name: "tracking_travel_guide",
+                            });
                         });
                 } catch (e) {
                     {
                         if (e.response.status === 422) {
                             this.errors = e.response.data.errors;
                         } else {
-                            return "no error response";
+                            console.log("no error response");
                         }
                     }
                 }
             }
         },
 
-        duplicateForm() {
+        addForm() {
+            this.wip_travel_guide.push({
+                tracking_tguide_id: "",
+                wip_package_name: "",
+                wip_package_date: "",
+                wip_package_done: "",
+                wip_package_user_id: "",
+                wip_package_remark: "",
+            });
+        },
 
-            let forms = div.getElementsByClassName("form-assignment");
-            let firstForm = forms[0];
-            let formClone = firstForm.cloneNode(true);
-            div.appendChild(formClone);
+        removeForm(index) {
+            this.wip_travel_guide.splice(-1);
         },
     },
 

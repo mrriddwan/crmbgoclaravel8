@@ -45,8 +45,8 @@ class DatabaseSeeder extends Seeder
             BillboardTenureSeeder::class,
             TrackingGeneralSeeder::class,
             WIPGeneralSeeder::class,
-            TrackingTGuideSeeder::class,
-            WIPTGuideSeeder::class,
+            // TrackingTGuideSeeder::class,
+            // WIPTGuideSeeder::class,
         ]);
     }
 }
