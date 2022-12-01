@@ -306,4 +306,5 @@ Route::put('/trackings/travel_guide/update/{travel_guide}', [TrackingTGuideContr
 Route::delete('/trackings/travel_guide/delete/{travel_guide}', [TrackingTGuideController::class, 'delete'])->name('tracking_travel_guide:delete');
 
 Route::post('/trackings/wip/travel_guide/store', [WIPTGuideController::class, 'wip_tg_store'])->name('wip_travel_guide:wip_tg_store');
+Route::put('/trackings/wip/travel_guide/update/{wip_travel_guide}', [WIPTGuideController::class, 'wip_tg_update'])->name('wip_travel_guide:wip_tg_update');
 Route::delete('/trackings/wip/travel_guide/delete/{wip_travel_guide}', [WIPTGuideController::class, 'delete'])->name('wip_travel_guide:delete');
