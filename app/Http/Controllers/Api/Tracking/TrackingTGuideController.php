@@ -43,8 +43,12 @@ class TrackingTGuideController extends Controller
                                 'wip_package_name',
                                 'wip_package_date',
                                 'wip_package_done',
+                                'wip_package_user_id',
+                                'users.name as package_user_name',
                             ]
-                        );
+                        )
+                        ->leftJoin('users', 'wip_travel_guides.wip_package_user_id', '=', 'users.id')
+                        ;
                     },
                 ])
                 ->when($selectedUser, function ($query) use ($selectedUser) {
@@ -93,7 +97,9 @@ class TrackingTGuideController extends Controller
                                     'wip_package_remark',
                                     'users.name as package_user_name',
                                 ]
-                            )->join('users', 'wip_travel_guides.wip_package_user_id', '=', 'users.id');
+                            )
+                            ->leftJoin('users', 'wip_travel_guides.wip_package_user_id', '=', 'users.id')
+                            ;
                         },
                     ])
                     ->when($selectedUser, function ($query) use ($selectedUser) {
@@ -144,7 +150,9 @@ class TrackingTGuideController extends Controller
                             'wip_package_remark',
                             'users.name as package_user_name',
                         ]
-                    )->join('users', 'wip_travel_guides.wip_package_user_id', '=', 'users.id')->orderBy('wip_package_date');
+                    )
+                    ->leftJoin('users', 'wip_travel_guides.wip_package_user_id', '=', 'users.id')
+                    ->orderBy('wip_package_date');
                 },
             ])
             ->where('tracking_travel_guides.id', '=', $id)

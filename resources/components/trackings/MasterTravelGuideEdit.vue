@@ -17,7 +17,7 @@
         <div class="flex w-full row">
             <div class="col-lg-20">
                 <!-- @submit.prevent="updateTrackingTravelGuide" -->
-                <form class="rounded px-8 pt-1 pb-8 mb-4">
+                <div class="rounded px-8 pt-1 pb-8 mb-4">
                     <div
                         class="text-center text-white bg-slate-600 px-2 py-1 rounded-md"
                     >
@@ -491,13 +491,13 @@
                     </div>
                     <div>
                         <button
-                            @click="updateTrackingTravelGuide"
+                            @click="updateTrackingTravelGuide()"
                             class="inline-flex mt-2 items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
                         >
-                            Create
+                            Update
                         </button>
                     </div>
-                </form>
+                </div>
             </div>
         </div>
     </div>
@@ -594,11 +594,13 @@ export default {
                 });
         },
 
-        async updateTrackingTravelGuide() {
-            if (window.confirm("Confirm create tracking ?")) {
+        async updateTrackingTravelGuide(wip_tguide_id) {
+            if (window.confirm("Confirm update tracking ?")) {
                 try {
-                    await axios
-                        .put("/api/trackings/travel_guide/update", {
+                    await axios.put(
+                        "/api/trackings/travel_guide/update/" +
+                            this.$route.params.id,
+                        {
                             user_id: this.tguide.user_id,
                             company_id: this.tguide.company_id,
                             edition: this.tguide.edition,
@@ -633,56 +635,85 @@ export default {
                                 ? this.tguide.art_record_user_id
                                 : null,
                             art_record_done: this.tguide.art_record_done,
-                        })
-                        //this no need chanin link
-                        .then((res) => {
-                            const tracking_tguide = res.data.data;
-                            // console.log(tracking_tguide.id);
-                            for (
-                                let i = 0;
-                                i < this.wip_travel_guide.length;
-                                i++
-                            ) {
-                                axios.put(
-                                    "/api/trackings/wip/travel_guide/update",
-                                    {
-                                        tracking_tguide_id: tracking_tguide.id,
-                                        wip_package_name:
-                                            this.wip_travel_guide[i]
-                                                .wip_package_name,
-                                        wip_package_date: this.wip_travel_guide[
-                                            i
-                                        ].wip_package_date
-                                            ? this.moment(
-                                                  this.wip_travel_guide[i]
-                                                      .wip_package_date
-                                              ).format("YYYY-MM-DD")
-                                            : null,
-                                        wip_package_done:
-                                            this.wip_travel_guide[i]
-                                                .wip_package_done,
-                                        wip_package_user_id: this
-                                            .wip_travel_guide[i]
-                                            .wip_package_user_id
-                                            ? this.wip_travel_guide[i]
-                                                  .wip_package_user_id
-                                            : null,
-                                        wip_package_remark: this
-                                            .wip_travel_guide[i]
-                                            .wip_package_remark
-                                            ? this.wip_travel_guide[i]
-                                                  .wip_package_remark
-                                            : null,
-                                    }
-                                );
-                            }
-                        })
-                        .then((res) => {
-                            alert("Tracking and package (wip) updated");
-                            // this.$router.push({
-                            //     name: "tracking_travel_guide",
-                            // });
+                        }
+                    );
+
+                    for (let i = 0; i < this.wip_travel_guide.length; i++) {
+                        //if the wip_travel_guide[i].id exists, the data updates,
+                        //how: check for the tracking_tguide_id
+                        //if it is absent, creates new
+
+                        if (this.wip_travel_guide[i].tracking_tguide_id) {
+                            await axios.put(
+                                "/api/trackings/wip/travel_guide/update/" +
+                                    this.wip_travel_guide[i].id,
+                                {
+                                    wip_package_name:
+                                        this.wip_travel_guide[i]
+                                            .wip_package_name,
+                                    wip_package_date: this.wip_travel_guide[i]
+                                        .wip_package_date
+                                        ? this.moment(
+                                              this.wip_travel_guide[i]
+                                                  .wip_package_date
+                                          ).format("YYYY-MM-DD")
+                                        : null,
+                                    wip_package_done:
+                                        this.wip_travel_guide[i]
+                                            .wip_package_done,
+                                    wip_package_user_id: this.wip_travel_guide[
+                                        i
+                                    ].wip_package_user_id
+                                        ? this.wip_travel_guide[i]
+                                              .wip_package_user_id
+                                        : null,
+                                    wip_package_remark: this.wip_travel_guide[i]
+                                        .wip_package_remark
+                                        ? this.wip_travel_guide[i]
+                                              .wip_package_remark
+                                        : null,
+                                }
+                            );
+                        } else {
+                            await axios.post(
+                                "/api/trackings/wip/travel_guide/store",
+                                {
+                                    tracking_tguide_id: this.$route.params.id,
+                                    wip_package_name:
+                                        this.wip_travel_guide[i]
+                                            .wip_package_name,
+                                    wip_package_date: this.wip_travel_guide[i]
+                                        .wip_package_date
+                                        ? this.moment(
+                                              this.wip_travel_guide[i]
+                                                  .wip_package_date
+                                          ).format("YYYY-MM-DD")
+                                        : null,
+                                    wip_package_done:
+                                        this.wip_travel_guide[i]
+                                            .wip_package_done,
+                                    wip_package_user_id: this.wip_travel_guide[
+                                        i
+                                    ].wip_package_user_id
+                                        ? this.wip_travel_guide[i]
+                                              .wip_package_user_id
+                                        : null,
+                                    wip_package_remark: this.wip_travel_guide[i]
+                                        .wip_package_remark
+                                        ? this.wip_travel_guide[i]
+                                              .wip_package_remark
+                                        : null,
+                                }
+                            );
+                        }
+                    }
+
+                    then((res) => {
+                        alert("Tracking and package (wip) updated");
+                        this.$router.push({
+                            name: "tracking_travel_guide",
                         });
+                    });
                 } catch (e) {
                     {
                         if (e.response.status === 422) {
@@ -709,7 +740,7 @@ export default {
                 tracking_tguide_id: "",
                 wip_package_name: "",
                 wip_package_date: "",
-                wip_package_done: "",
+                wip_package_done: 2,
                 wip_package_user_id: "",
                 wip_package_remark: "",
             });
