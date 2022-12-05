@@ -1,5 +1,5 @@
 <x-guest-layout>
-    <x-auth-card class="bg-[url('/public/images/1.jpg')]">
+    <x-auth-card>
         <x-slot name="logo">
             <a href="/">
                 {{-- <x-application-logo class="w-20 h-20 fill-current text-gray-500" /> --}}
@@ -11,6 +11,8 @@
 
         <!-- Validation Errors -->
         <x-auth-validation-errors class="mb-4" :errors="$errors" />
+
+        {{-- <img src="../../../public/images/1.jpg" class="h-20 w-20"/> --}}
 
         <form method="POST" action="{{ route('login') }}">
             @csrf

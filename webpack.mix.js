@@ -17,3 +17,16 @@ mix.js("resources/js/app.js", "public/js")
         require("tailwindcss"),
         require("autoprefixer"),
     ]);
+
+// mix.options({
+//     // extractVueStyles: false,
+//     processCssUrls: true,
+//     // terser: {},
+//     // purifyCss: false,
+//     // //purifyCss: {},
+//     // postCss: [require('autoprefixer')],
+//     // clearConsole: false,
+//     // cssNano: {
+//     //     // discardComments: {removeAll: true},
+//     // }
+// });
