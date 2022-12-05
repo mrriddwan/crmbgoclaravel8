@@ -14,7 +14,7 @@
         <div class="grid grid-cols-2 gap-2">
             <div class="text-center">
                 <h3
-                    class="items-center text-center text-white font-extrabold font-mono text-4xl uppercase bg-slate-600 px-2 py-2 rounded-md"
+                    class="items-center text-center text-white font-extrabold font-mono text-4xl uppercase bg-blue-900 px-2 py-2 rounded-md"
                 >
                     Billboard
                 </h3>
@@ -158,7 +158,7 @@
             </div>
             <div class="text-center">
                 <h3
-                    class="items-center text-center text-white font-extrabold font-mono text-4xl uppercase bg-slate-600 px-2 py-2 rounded-md"
+                    class="items-center text-center text-white font-extrabold font-mono text-4xl uppercase bg-blue-900 px-2 py-2 rounded-md"
                 >
                     Create Tenure
                 </h3>
@@ -283,7 +283,7 @@
             <GoBack class="" />
         </div>
         <h5
-            class="items-center text-center text-white font-extrabold font-mono text-sm uppercase bg-slate-600 px-5 py-2 rounded-md"
+            class="items-center text-center text-white font-extrabold font-mono text-sm uppercase bg-blue-900 px-5 py-2 rounded-md"
         >
             <!-- Tenure (2022) change to selected year -->
             Tenure

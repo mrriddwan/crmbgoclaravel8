@@ -5,16 +5,16 @@
         </div>
 
         <div
-            class="items-center text-center text-white bg-slate-600 px-2 py-1 rounded-md"
+            class="items-center text-center text-white bg-blue-900 px-2 py-1 rounded-md"
         >
             <h1 class="px-10 py-1 bg-black-50 font-extrabold font-mono">
                 Edit To Do
             </h1>
         </div>
 
-        <div class="row mt-3">
-            <div class="col-md-6">
-                <form @submit.prevent="editToDo">
+        <div class="row mt-3 px-24">
+            <div class="col-md-12">
+                <form @submit.prevent="editToDo" class="w-full">
                     <div>
                         <label
                             for="large-toggle"
@@ -81,7 +81,7 @@
                         <label>Contact Status</label>
                         <select
                             class="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                            v-model="todo.status_id"
+                            v-model="todo.contact_status_id"
                             @change="getStatus"
                         >
                             <option disabled value="">Please select one</option>
@@ -99,7 +99,7 @@
                         <label>Contact Type</label>
                         <select
                             class="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                            v-model="todo.type_id"
+                            v-model="todo.contact_type_id"
                             @change="getType"
                         >
                             <option disabled value="">Please select one</option>
@@ -155,7 +155,10 @@
 
                     <div class="form-group">
                         <label>Remark</label>
-                        <div v-if="todo.todo_remark.length >= 800" class="text-red-600 inline text-xs uppercase">
+                        <div
+                            v-if="todo.todo_remark.length >= 800"
+                            class="text-red-600 inline text-xs uppercase"
+                        >
                             Exceeded limit
                         </div>
                         <textarea
@@ -193,8 +196,8 @@ export default {
                 user_id: "",
                 todo_date: "",
                 todo_deadline: "",
-                status_id: "",
-                type_id: "",
+                contact_status_id: "",
+                contact_type_id: "",
                 contact_id: "",
                 task_id: "",
                 todo_remark: "",

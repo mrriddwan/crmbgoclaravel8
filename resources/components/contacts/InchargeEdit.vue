@@ -10,7 +10,7 @@
         >
             <div class="w-full">
                 <h1
-                    class="items-center text-center text-white font-extrabold font-mono bg-slate-600 px-2 py-2 rounded-md"
+                    class="items-center text-center text-white font-extrabold font-mono bg-blue-900 px-2 py-2 rounded-md"
                 >
                     Edit PIC
                 </h1>

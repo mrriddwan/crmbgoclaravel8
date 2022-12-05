@@ -1,7 +1,7 @@
 <template>
     <div class="container">
         <h1
-            class="items-center text-center text-5 xl text-white font-extrabold bg-slate-600 rounded-md"
+            class="items-center text-center text-5 xl text-white font-extrabold bg-blue-900 rounded-md"
         >
             To Do List
         </h1>

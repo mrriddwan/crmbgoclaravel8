@@ -2,7 +2,7 @@
     <div class="container">
         <!-- <div class="max-w-full"> -->
         <h1
-            class="items-center text-center text-5xl text-white font-extrabold bg-slate-400 px-2 rounded-md"
+            class="items-center text-center text-5xl text-white font-extrabold bg-blue-900 px-2 rounded-md"
         >
             Tracking - Travel Guide
         </h1>
@@ -32,7 +32,7 @@
                 >
                     <button
                         class="bg-green-500 px-2 py-2 rounded-lg text-xs"
-                        @click="exportMasterGeneralExcel('xls')"
+                        @click="exportMasterTravelGuidelExcel('xls')"
                     >
                         <ArrowTopRightOnSquareIcon
                             class="h-5 w-5 mr-1 inline-block"
@@ -49,7 +49,7 @@
                 >
                     <button
                         class="bg-green-500 px-2 py-2 rounded-lg text-xs"
-                        @click="exportWIPGeneralExcel('xls')"
+                        @click="exportWIPTravelGuideExcel('xls')"
                     >
                         <ArrowTopRightOnSquareIcon
                             class="h-5 w-5 mr-1 inline-block"
@@ -117,7 +117,7 @@
             >
                 <table
                     class="table table-hover w-full mt-0"
-                    ref="general_master_table"
+                    ref="tguide_master_table"
                 >
                     <thead class="bg-slate-500 border-b sticky top-0">
                         <tr>
@@ -228,7 +228,7 @@
                                         /></span>
                                     </a>
                                 </div>
-                                <div class="text-sm text-center h-6">
+                                <div class="text-xs text-center h-6">
                                     <select
                                         v-model="selectedUser"
                                         class="form-control form-control-sm text-xs"
@@ -580,8 +580,22 @@
                             <td class="text-xs text-center">
                                 {{ tracking.user_name }}
                             </td>
-                            <td class="text-xs text-center">
-                                {{ tracking.company_name }}
+                            <td
+                                v-if="
+                                    check_id(tracking.user_id) ||
+                                    is('supervisor | admin | super-admin')
+                                "
+                                class="items-center text-xs text-center h-6 w-24"
+                            >
+                                <router-link
+                                    :to="`/contact/${tracking.company_id}/info`"
+                                    custom
+                                    v-slot="{ navigate, href }"
+                                >
+                                    <a :href="href" @click.stop="navigate">{{
+                                        tracking.company_name
+                                    }}</a>
+                                </router-link>
                             </td>
                             <td class="text-xs text-center">
                                 {{ tracking.edition }}
@@ -1518,7 +1532,7 @@
                                 /></router-link>
                                 <button
                                     class="mr-2 mb-2 inline-flex items-center px-2 py-1 bg-red-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
-                                    @click=""
+                                    @click="deleteTrackingTravelGuide(tracking.id)"
                                 >
                                     <TrashIcon class="h-3 w-3" />
                                 </button>
@@ -1533,7 +1547,7 @@
             >
                 <table
                     class="table table-hover w-full mt-0"
-                    ref="general_wip_table"
+                    ref="tguide_wip_table"
                 >
                     <thead class="bg-slate-500 border-b sticky top-0">
                         <tr>
@@ -1646,7 +1660,7 @@
                                         /></span>
                                     </a>
                                 </div>
-                                <div class="text-sm text-center h-6">
+                                <div class="text-xs text-center h-6">
                                     <select
                                         v-model="selectedUser"
                                         class="form-control form-control-sm text-xs"
@@ -2090,8 +2104,22 @@
                             <td class="text-xs text-center">
                                 {{ tracking.user_name }}
                             </td>
-                            <td class="text-xs text-center">
-                                {{ tracking.company_name }}
+                            <td
+                                v-if="
+                                    check_id(tracking.user_id) ||
+                                    is('supervisor | admin | super-admin')
+                                "
+                                class="items-center text-xs text-center h-6 w-24"
+                            >
+                                <router-link
+                                    :to="`/contact/${tracking.company_id}/info`"
+                                    custom
+                                    v-slot="{ navigate, href }"
+                                >
+                                    <a :href="href" @click.stop="navigate">{{
+                                        tracking.company_name
+                                    }}</a>
+                                </router-link>
                             </td>
                             <td class="text-xs text-center">
                                 {{ tracking.edition }}
@@ -2104,7 +2132,7 @@
                                 v-if="
                                     !tracking.art_reminder_date &&
                                     !tracking.art_reminder_user_id &&
-                                    !art_reminder_remark
+                                    !tracking.art_reminder_remark
                                 "
                             >
                                 <div
@@ -2118,7 +2146,10 @@
                                 class="text-xs text-center"
                             >
                                 <div class="bg-yellow-300 p-1 rounded-md w-20">
-                                    <div v-if="!tracking.art_reminder_date">
+                                    <div
+                                        v-if="!tracking.art_reminder_date"
+                                        class="text-amber-600"
+                                    >
                                         No date
                                     </div>
                                     <div v-else="tracking.art_reminder_date">
@@ -2128,13 +2159,19 @@
                                             )
                                         }}
                                     </div>
-                                    <div v-if="!tracking.art_reminder_user">
+                                    <div
+                                        v-if="!tracking.art_reminder_user"
+                                        class="text-amber-600"
+                                    >
                                         No user
                                     </div>
                                     <div v-else="tracking.art_reminder_user">
                                         {{ tracking.art_reminder_user.name }}
                                     </div>
-                                    <div v-if="!tracking.art_reminder_remark">
+                                    <div
+                                        v-if="!tracking.art_reminder_remark"
+                                        class="text-amber-600"
+                                    >
                                         No remark
                                     </div>
                                     <div v-else="tracking.art_reminder_remark">
@@ -2147,7 +2184,10 @@
                                 class="text-xs text-center"
                             >
                                 <div class="bg-green-300 p-1 rounded-md w-20">
-                                    <div v-if="!tracking.art_reminder_date">
+                                    <div
+                                        v-if="!tracking.art_reminder_date"
+                                        class="text-amber-600"
+                                    >
                                         No date
                                     </div>
                                     <div v-else="tracking.art_reminder_date">
@@ -2157,13 +2197,19 @@
                                             )
                                         }}
                                     </div>
-                                    <div v-if="!tracking.art_reminder_user">
+                                    <div
+                                        v-if="!tracking.art_reminder_user"
+                                        class="text-amber-600"
+                                    >
                                         No user
                                     </div>
                                     <div v-else="tracking.art_reminder_user">
                                         {{ tracking.art_reminder_user.name }}
                                     </div>
-                                    <div v-if="!tracking.art_reminder_remark">
+                                    <div
+                                        v-if="!tracking.art_reminder_remark"
+                                        class="text-amber-600"
+                                    >
                                         No remark
                                     </div>
                                     <div v-else="tracking.art_reminder_remark">
@@ -2175,8 +2221,8 @@
                                 class="text-xs text-center"
                                 v-if="
                                     !tracking.art_record_date &&
-                                    !tracking.art_reminder_user &&
-                                    !art_record_remark
+                                    !tracking.art_record_user &&
+                                    !tracking.art_record_remark
                                 "
                             >
                                 <div
@@ -2190,7 +2236,10 @@
                                 class="text-xs text-center"
                             >
                                 <div class="bg-yellow-300 p-1 rounded-md w-20">
-                                    <div v-if="!tracking.art_record_date">
+                                    <div
+                                        v-if="!tracking.art_record_date"
+                                        class="text-amber-600"
+                                    >
                                         No date
                                     </div>
                                     <div v-else="tracking.art_record_date">
@@ -2198,13 +2247,19 @@
                                             showToday(tracking.art_record_date)
                                         }}
                                     </div>
-                                    <div v-if="!tracking.art_record_user">
+                                    <div
+                                        v-if="!tracking.art_record_user"
+                                        class="text-amber-600"
+                                    >
                                         No user
                                     </div>
                                     <div v-else="tracking.art_record_user">
                                         {{ tracking.art_record_user.name }}
                                     </div>
-                                    <div v-if="!tracking.art_record_remark">
+                                    <div
+                                        v-if="!tracking.art_record_remark"
+                                        class="text-amber-600"
+                                    >
                                         No remark
                                     </div>
                                     <div v-else="tracking.art_record_remark">
@@ -2217,7 +2272,10 @@
                                 class="text-xs text-center"
                             >
                                 <div class="bg-green-300 p-1 rounded-md w-20">
-                                    <div v-if="!tracking.art_record_date">
+                                    <div
+                                        v-if="!tracking.art_record_date"
+                                        class="text-amber-600"
+                                    >
                                         No date
                                     </div>
                                     <div v-else="tracking.art_record_date">
@@ -2225,13 +2283,19 @@
                                             showToday(tracking.art_record_date)
                                         }}
                                     </div>
-                                    <div v-if="!tracking.art_record_user">
+                                    <div
+                                        v-if="!tracking.art_record_user"
+                                        class="text-amber-600"
+                                    >
                                         No user
                                     </div>
                                     <div v-else="tracking.art_record_user">
                                         {{ tracking.art_record_user.name }}
                                     </div>
-                                    <div v-if="!tracking.art_record_remark">
+                                    <div
+                                        v-if="!tracking.art_record_remark"
+                                        class="text-amber-600"
+                                    >
                                         No remark
                                     </div>
                                     <div v-else="tracking.art_record_remark">
@@ -2239,76 +2303,6 @@
                                     </div>
                                 </div>
                             </td>
-                            <!-- <td
-                                class="text-xs text-center"
-                                v-if="
-                                    tracking.wip_travel_guide.length !== 0 &&
-                                    checkMonth(
-                                        tracking.wip_travel_guide,
-                                        `${selectedYear}-02`
-                                    )
-                                "
-                            >
-                                <div
-                                    v-for="tguide_package in tracking.wip_travel_guide"
-                                    :key="tguide_package.id"
-                                    class="mb-1"
-                                >
-                                    <div
-                                        class="bg-yellow-300 p-1 rounded-md w-20"
-                                        v-if="
-                                            getMonth(
-                                                tguide_package.wip_package_date
-                                            ) === `${selectedYear}-02` &&
-                                            tguide_package.wip_package_done ===
-                                                2
-                                        "
-                                    >
-                                        <div
-                                            v-if="
-                                                tguide_package.wip_package_name
-                                            "
-                                        >
-                                            {{
-                                                tguide_package.wip_package_name
-                                            }}
-                                        </div>
-                                        <div v-else class="text-yellow-300">
-                                            No package
-                                        </div>
-                                    </div>
-                                    <div
-                                        class="bg-green-300 p-1 rounded-md w-20"
-                                        v-else-if="
-                                            getMonth(
-                                                tguide_package.wip_package_date
-                                            ) === `${selectedYear}-02` &&
-                                            tguide_package.wip_package_done ===
-                                                1
-                                        "
-                                    >
-                                        <div
-                                            v-if="
-                                                tguide_package.wip_package_name
-                                            "
-                                        >
-                                            {{
-                                                tguide_package.wip_package_name
-                                            }}
-                                        </div>
-                                        <div v-else class="text-yellow-300">
-                                            No package
-                                        </div>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="text-xs text-center" v-else>
-                                <div
-                                    class="bg-red-300 p-1 rounded-md text-red-300"
-                                >
-                                    None
-                                </div>
-                            </td> -->
                             <td
                                 class="text-xs text-center"
                                 v-if="
@@ -2330,7 +2324,8 @@
                                             getMonth(
                                                 tguide_package.wip_package_date
                                             ) === `${selectedYear}-01` &&
-                                            tguide_package.wip_package_done === 2
+                                            tguide_package.wip_package_done ===
+                                                2
                                         "
                                     >
                                         <div
@@ -2391,7 +2386,8 @@
                                             getMonth(
                                                 tguide_package.wip_package_date
                                             ) === `${selectedYear}-01` &&
-                                            tguide_package.wip_package_done === 1
+                                            tguide_package.wip_package_done ===
+                                                1
                                         "
                                     >
                                         <div
@@ -2483,7 +2479,8 @@
                                             getMonth(
                                                 tguide_package.wip_package_date
                                             ) === `${selectedYear}-02` &&
-                                            tguide_package.wip_package_done === 2
+                                            tguide_package.wip_package_done ===
+                                                2
                                         "
                                     >
                                         <div
@@ -2544,7 +2541,8 @@
                                             getMonth(
                                                 tguide_package.wip_package_date
                                             ) === `${selectedYear}-02` &&
-                                            tguide_package.wip_package_done === 1
+                                            tguide_package.wip_package_done ===
+                                                1
                                         "
                                     >
                                         <div
@@ -2636,7 +2634,8 @@
                                             getMonth(
                                                 tguide_package.wip_package_date
                                             ) === `${selectedYear}-03` &&
-                                            tguide_package.wip_package_done === 2
+                                            tguide_package.wip_package_done ===
+                                                2
                                         "
                                     >
                                         <div
@@ -2697,7 +2696,8 @@
                                             getMonth(
                                                 tguide_package.wip_package_date
                                             ) === `${selectedYear}-03` &&
-                                            tguide_package.wip_package_done === 1
+                                            tguide_package.wip_package_done ===
+                                                1
                                         "
                                     >
                                         <div
@@ -2789,7 +2789,8 @@
                                             getMonth(
                                                 tguide_package.wip_package_date
                                             ) === `${selectedYear}-04` &&
-                                            tguide_package.wip_package_done === 2
+                                            tguide_package.wip_package_done ===
+                                                2
                                         "
                                     >
                                         <div
@@ -2850,7 +2851,8 @@
                                             getMonth(
                                                 tguide_package.wip_package_date
                                             ) === `${selectedYear}-04` &&
-                                            tguide_package.wip_package_done === 1
+                                            tguide_package.wip_package_done ===
+                                                1
                                         "
                                     >
                                         <div
@@ -2942,7 +2944,8 @@
                                             getMonth(
                                                 tguide_package.wip_package_date
                                             ) === `${selectedYear}-05` &&
-                                            tguide_package.wip_package_done === 2
+                                            tguide_package.wip_package_done ===
+                                                2
                                         "
                                     >
                                         <div
@@ -3003,7 +3006,8 @@
                                             getMonth(
                                                 tguide_package.wip_package_date
                                             ) === `${selectedYear}-05` &&
-                                            tguide_package.wip_package_done === 1
+                                            tguide_package.wip_package_done ===
+                                                1
                                         "
                                     >
                                         <div
@@ -3095,7 +3099,8 @@
                                             getMonth(
                                                 tguide_package.wip_package_date
                                             ) === `${selectedYear}-06` &&
-                                            tguide_package.wip_package_done === 2
+                                            tguide_package.wip_package_done ===
+                                                2
                                         "
                                     >
                                         <div
@@ -3156,7 +3161,8 @@
                                             getMonth(
                                                 tguide_package.wip_package_date
                                             ) === `${selectedYear}-06` &&
-                                            tguide_package.wip_package_done === 1
+                                            tguide_package.wip_package_done ===
+                                                1
                                         "
                                     >
                                         <div
@@ -3248,7 +3254,8 @@
                                             getMonth(
                                                 tguide_package.wip_package_date
                                             ) === `${selectedYear}-07` &&
-                                            tguide_package.wip_package_done === 2
+                                            tguide_package.wip_package_done ===
+                                                2
                                         "
                                     >
                                         <div
@@ -3309,7 +3316,8 @@
                                             getMonth(
                                                 tguide_package.wip_package_date
                                             ) === `${selectedYear}-07` &&
-                                            tguide_package.wip_package_done === 1
+                                            tguide_package.wip_package_done ===
+                                                1
                                         "
                                     >
                                         <div
@@ -3401,7 +3409,8 @@
                                             getMonth(
                                                 tguide_package.wip_package_date
                                             ) === `${selectedYear}-08` &&
-                                            tguide_package.wip_package_done === 2
+                                            tguide_package.wip_package_done ===
+                                                2
                                         "
                                     >
                                         <div
@@ -3461,8 +3470,9 @@
                                         v-else-if="
                                             getMonth(
                                                 tguide_package.wip_package_date
-                                            ) ===`${selectedYear}-08` &&
-                                            tguide_package.wip_package_done === 1
+                                            ) === `${selectedYear}-08` &&
+                                            tguide_package.wip_package_done ===
+                                                1
                                         "
                                     >
                                         <div
@@ -3554,7 +3564,8 @@
                                             getMonth(
                                                 tguide_package.wip_package_date
                                             ) === `${selectedYear}-09` &&
-                                            tguide_package.wip_package_done === 2
+                                            tguide_package.wip_package_done ===
+                                                2
                                         "
                                     >
                                         <div
@@ -3615,7 +3626,8 @@
                                             getMonth(
                                                 tguide_package.wip_package_date
                                             ) === `${selectedYear}-09` &&
-                                            tguide_package.wip_package_done === 1
+                                            tguide_package.wip_package_done ===
+                                                1
                                         "
                                     >
                                         <div
@@ -3707,7 +3719,8 @@
                                             getMonth(
                                                 tguide_package.wip_package_date
                                             ) === `${selectedYear}-10` &&
-                                            tguide_package.wip_package_done === 2
+                                            tguide_package.wip_package_done ===
+                                                2
                                         "
                                     >
                                         <div
@@ -3768,7 +3781,8 @@
                                             getMonth(
                                                 tguide_package.wip_package_date
                                             ) === `${selectedYear}-10` &&
-                                            tguide_package.wip_package_done === 1
+                                            tguide_package.wip_package_done ===
+                                                1
                                         "
                                     >
                                         <div
@@ -3860,7 +3874,8 @@
                                             getMonth(
                                                 tguide_package.wip_package_date
                                             ) === `${selectedYear}-11` &&
-                                            tguide_package.wip_package_done === 2
+                                            tguide_package.wip_package_done ===
+                                                2
                                         "
                                     >
                                         <div
@@ -3921,7 +3936,8 @@
                                             getMonth(
                                                 tguide_package.wip_package_date
                                             ) === `${selectedYear}-11` &&
-                                            tguide_package.wip_package_done === 1
+                                            tguide_package.wip_package_done ===
+                                                1
                                         "
                                     >
                                         <div
@@ -4013,7 +4029,8 @@
                                             getMonth(
                                                 tguide_package.wip_package_date
                                             ) === `${selectedYear}-12` &&
-                                            tguide_package.wip_package_done === 2
+                                            tguide_package.wip_package_done ===
+                                                2
                                         "
                                     >
                                         <div
@@ -4074,7 +4091,8 @@
                                             getMonth(
                                                 tguide_package.wip_package_date
                                             ) === `${selectedYear}-12` &&
-                                            tguide_package.wip_package_done === 1
+                                            tguide_package.wip_package_done ===
+                                                1
                                         "
                                     >
                                         <div
@@ -4144,7 +4162,7 @@
                                     None
                                 </div>
                             </td>
-                            
+
                             <td class="text-xs text-center">
                                 {{ tracking.tguide_remark }}
                             </td>
@@ -4159,12 +4177,6 @@
                                 >
                                     <PencilSquareIcon class="h-3 w-3"
                                 /></router-link>
-                                <button
-                                    class="mr-2 mb-2 inline-flex items-center px-2 py-1 bg-red-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
-                                    @click=""
-                                >
-                                    <TrashIcon class="h-3 w-3" />
-                                </button>
                             </td>
                         </tr>
                     </tbody>
@@ -4231,6 +4243,9 @@ export default {
     },
 
     mounted() {
+        this.selectedUser = document
+            .querySelector('meta[name="user-id"]')
+            .getAttribute("content");
         this.currentDate = this.getCurrentDate();
         this.selectedDate = this.currentDate;
 
@@ -4420,9 +4435,20 @@ export default {
             // console.log(count > 0 ? true : false)
         },
 
-        exportMasterGeneralExcel(type, fn, dl) {
-            var elt = this.$refs.general_master_table;
-            var wb = XLSX.utils.table_to_book(elt, { sheet: "Master General" });
+        deleteTrackingTravelGuide(tracking_id) {
+            if (!window.confirm("This will remove the tracking and its WIP(s). Continue?")) {
+                return;
+            }
+            axios.delete(
+                "/api/trackings/travel_guide/delete/" + tracking_id
+            );
+            alert('Tracking and its WIP(s) deleted.')
+            this.getTrackingTravelGuides();
+        },
+
+        exportMasterTravelGuidelExcel(type, fn, dl) {
+            var elt = this.$refs.tguide_master_table;
+            var wb = XLSX.utils.table_to_book(elt, { sheet: "Master Travel Guide" });
 
             return dl
                 ? XLSX.write(wb, {
@@ -4432,13 +4458,13 @@ export default {
                   })
                 : XLSX.writeFile(
                       wb,
-                      fn || "MasterGeneralExport." + (type || "xlsx")
+                      fn || "Master Travel Guide." + (type || "xlsx")
                   );
         },
 
-        exportWIPGeneralExcel(type, fn, dl) {
-            var elt = this.$refs.general_wip_table;
-            var wb = XLSX.utils.table_to_book(elt, { sheet: "WIP General" });
+        exportWIPTravelGuideExcel(type, fn, dl) {
+            var elt = this.$refs.tguide_wip_table;
+            var wb = XLSX.utils.table_to_book(elt, { sheet: "WIP Travel Guide" });
 
             return dl
                 ? XLSX.write(wb, {
@@ -4448,8 +4474,43 @@ export default {
                   })
                 : XLSX.writeFile(
                       wb,
-                      fn || "WIPGeneralExport." + (type || "xlsx")
+                      fn || "WIP Travel Guide." + (type || "xlsx")
                   );
+        },
+
+        check_id(contact_user_id) {
+            let id = contact_user_id;
+            // console.log(id)
+            let user_id = parseInt(
+                document
+                    .querySelector('meta[name="user-id"]')
+                    .getAttribute("content")
+            );
+            // console.log(user_id)
+            if (id === user_id) {
+                return true;
+            } else {
+                return false;
+            }
+        },
+
+        async check_if_subordinate(contact_user_id) {
+            let result = await axios
+                .post("/api/users/check_subordinate", {
+                    contact_user_id: contact_user_id,
+                })
+                .then((response) => {
+                    return response.data.data;
+                });
+            console.log("result: ", result);
+
+            if (result.id === 1) {
+                // console.log("this is under the user")
+                return "true";
+            } else {
+                // console.log("this is not under the user")
+                return "false";
+            }
         },
     },
 };

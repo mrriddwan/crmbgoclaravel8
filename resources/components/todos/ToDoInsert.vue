@@ -1,7 +1,7 @@
 <template>
     <div class="container w-max-10 align-center mx-auto h-max px-2 py-2">
         <div
-            class="items-center text-center text-white bg-slate-600 px-2 py-1 rounded-md"
+            class="items-center text-center text-white bg-blue-900 px-2 py-1 rounded-md"
         >
             <h3
                 class="px-2 py-1 bg-black-50 uppercase font-extrabold font-mono"

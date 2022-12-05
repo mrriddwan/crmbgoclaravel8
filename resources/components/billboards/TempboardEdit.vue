@@ -15,7 +15,7 @@
             </div>
         </div>
         <h1
-            class="items-center text-center text-white font-extrabold font-mono text-4xl uppercase bg-slate-600 px-2 py-2 rounded-md"
+            class="items-center text-center text-white font-extrabold font-mono text-4xl uppercase bg-blue-900 px-2 py-2 rounded-md"
         >
             Create Tempboard
         </h1>

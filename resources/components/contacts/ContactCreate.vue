@@ -22,7 +22,7 @@
                     </div>
 
                     <div
-                        class="text-center text-white bg-slate-600 px-2 py-1 rounded-md"
+                        class="text-center text-white bg-blue-900 px-2 py-1 rounded-md"
                     >
                         <h1
                             class="px-8 bg-black-50 uppercase w-max font-mono font-extrabold"

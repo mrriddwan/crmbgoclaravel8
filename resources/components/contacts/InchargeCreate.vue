@@ -16,7 +16,7 @@
             </div>
         </div>
         <h5
-            class="items-center text-center text-white font-extrabold font-mono uppercase text-4xl bg-slate-600 px-1 py-1 rounded-md"
+            class="items-center text-center text-white font-extrabold font-mono uppercase text-4xl bg-blue-900 px-1 py-1 rounded-md"
         >
             <strong> Create PIC </strong>
         </h5>
@@ -103,7 +103,7 @@
         <div class="my-2">
             <span v-if="info.incharge.length !== 0">
                 <h5
-                    class="items-center text-center text-white font-extrabold font-mono text-sm uppercase bg-slate-600 px-5 py-2 rounded-md"
+                    class="items-center text-center text-white font-extrabold font-mono text-sm uppercase bg-blue-900 px-5 py-2 rounded-md"
                 >
                     PIC
                 </h5>
@@ -195,7 +195,7 @@
 
             <span v-else>
                 <h5
-                    class="items-center text-center text-white font-extrabold font-mono text-sm uppercase bg-slate-600 px-5 py-2 rounded-md"
+                    class="items-center text-center text-white font-extrabold font-mono text-sm uppercase bg-blue-900 px-5 py-2 rounded-md"
                 >
                     PIC
                 </h5>

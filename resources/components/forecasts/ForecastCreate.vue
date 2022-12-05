@@ -16,7 +16,7 @@
             </div>
         </div>
         <h1
-            class="items-center text-center text-white font-extrabold font-mono text-4xl uppercase bg-slate-600 px-2 py-2 rounded-md"
+            class="items-center text-center text-white font-extrabold font-mono text-4xl uppercase bg-blue-900 px-2 py-2 rounded-md"
         >
             Create Forecast
         </h1>
@@ -166,7 +166,7 @@
         <div class="m-4">
             <span v-if="info.forecast.length !== 0">
                 <h5
-                    class="items-center text-center text-white font-extrabold font-mono text-sm uppercase bg-slate-600 px-5 py-2 rounded-md"
+                    class="items-center text-center text-white font-extrabold font-mono text-sm uppercase bg-blue-900 px-5 py-2 rounded-md"
                 >
                     Forecast
                 </h5>
@@ -258,7 +258,7 @@
 
             <span v-else>
                 <h5
-                    class="items-center text-center text-white font-extrabold font-mono text-sm uppercase bg-slate-600 px-5 py-2 rounded-md"
+                    class="items-center text-center text-white font-extrabold font-mono text-sm uppercase bg-blue-900 px-5 py-2 rounded-md"
                 >
                     Forecast
                 </h5>

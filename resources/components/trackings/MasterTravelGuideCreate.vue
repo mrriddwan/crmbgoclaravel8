@@ -1,7 +1,7 @@
 <template>
     <div class="container w-max mx-auto h-max px-3 py-3">
-        <div v-if="errors">
-            <div v-for="(v, k) in errors" :key="k">
+        <div v-if="tracking_errors">
+            <div v-for="(v, k) in tracking_errors" :key="k">
                 <p
                     v-for="error in v"
                     :key="error"
@@ -14,12 +14,18 @@
         <div class="">
             <GoBack />
         </div>
-        <div class="flex w-full row">
+        <div class="flex w-full row" id="top-wrapper">
             <div class="col-lg-20">
                 <!-- @submit.prevent="createTrackingTravelGuide" -->
-                <div class="rounded px-8 pt-1 pb-8 mb-4">
+                <div
+                    :class="
+                        !master_done
+                            ? 'rounded px-8 pt-1 pb-8 mb-4'
+                            : 'rounded px-8 pt-1 pb-8 mb-4 opacity-50'
+                    "
+                >
                     <div
-                        class="text-center text-white bg-slate-600 px-2 py-1 rounded-md"
+                        class="text-center text-white bg-blue-900 px-2 py-1 rounded-md"
                     >
                         <h2
                             class="px-3 bg-black-50 uppercase w-full font-mono font-extrabold"
@@ -34,6 +40,7 @@
                             <p class="inline text-red-600 text-lg">*</p></label
                         >
                         <select
+                            id="user_id"
                             class="block mt-1 w-full text-center rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                             v-model="form.user_id"
                             @change="getUsers"
@@ -48,12 +55,13 @@
                             </option>
                         </select>
                     </div>
-                    <div class="form-group grid grid-cols-2">
+                    <div class="group grid grid-cols-2">
                         <label class="font-bold"
                             >Company
                             <p class="inline text-red-600 text-lg">*</p></label
                         >
                         <select
+                            id="company_id"
                             class="text-center overflow-y block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                             v-model="form.company_id"
                             @change="getContacts"
@@ -86,14 +94,16 @@
                         <div>
                             <div class="form-group flex">
                                 <input
+                                    id="edition1"
                                     maxlength="800"
                                     type="text"
-                                    class="form-control block px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                                    class="uppercase form-control block px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                                     v-model="form.edition1"
                                     placeholder="eg: KLTG"
                                 />
                                 <p class="mx-5">-</p>
                                 <input
+                                    id="edition2"
                                     maxlength="800"
                                     type="text"
                                     class="form-control block px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
@@ -120,6 +130,7 @@
                         <div>
                             <div class="form-group">
                                 <input
+                                    id="tguide_size"
                                     maxlength="800"
                                     type="text"
                                     class="form-control block px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
@@ -131,10 +142,7 @@
                     </div>
 
                     <div class="form-group mt-2">
-                        <label class="font-bold"
-                            >Remark
-                            <p class="inline text-red-600 text-lg">*</p></label
-                        >
+                        <label class="font-bold">Remark </label>
 
                         <!-- <div
                             v-if="form.remark.length >= 800"
@@ -143,8 +151,8 @@
                             Exceeded limit
                         </div> -->
                         <textarea
+                            id="tguide_remark"
                             v-model="form.tguide_remark"
-                            id="message"
                             maxlength="800"
                             rows="3"
                             placeholder="eg: Artwork by Bluedale"
@@ -162,6 +170,7 @@
                                     <label class="font-bold">Date</label>
                                     <div class="w-full">
                                         <VueDatePicker
+                                            id="art_reminder_date"
                                             v-model="form.art_reminder_date"
                                             showNowButton
                                             nowButtonLabel="Today"
@@ -173,6 +182,7 @@
                                 <div class="mx-1 grid grid-cols-1">
                                     <label class="font-bold">User</label>
                                     <select
+                                        id="art_reminder_user_id"
                                         class="block w-full text-center h-max rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                                         @change="getUsers"
                                         v-model="form.art_reminder_user_id"
@@ -197,8 +207,8 @@
                                     placeholder="eg: Artwork by Bluedale"
                                 /> -->
                                     <textarea
+                                        id="art_reminder_remark"
                                         v-model="form.art_reminder_remark"
-                                        id="message"
                                         maxlength="800"
                                         rows="1"
                                         placeholder="eg: Artwork by Bluedale"
@@ -215,6 +225,7 @@
                                     <label class="font-bold">Date</label>
                                     <div class="w-full">
                                         <VueDatePicker
+                                            id="art_record_date"
                                             v-model="form.art_record_date"
                                             showNowButton
                                             nowButtonLabel="Today"
@@ -226,6 +237,7 @@
                                 <div class="mx-1 grid grid-cols-1">
                                     <label class="font-bold">User</label>
                                     <select
+                                        id="art_record_user_id"
                                         class="block w-full text-center h-max rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                                         @change="getUsers"
                                         v-model="form.art_record_user_id"
@@ -251,7 +263,7 @@
                                 /> -->
                                     <textarea
                                         v-model="form.art_record_remark"
-                                        id="message"
+                                        id="art_record_remark"
                                         maxlength="800"
                                         rows="1"
                                         placeholder="eg: Artwork by Client"
@@ -261,7 +273,34 @@
                             </div>
                         </div>
                     </div>
-
+                    <div class="text-center">
+                        <button
+                            v-if="!master_done"
+                            @click="createTrackingTravelGuide"
+                            class="inline-flex mt-2 items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
+                        >
+                            Create
+                        </button>
+                    </div>
+                </div>
+                <div v-if="package_errors">
+                    <div v-for="(v, k) in package_errors" :key="k">
+                        <p
+                            v-for="error in v"
+                            :key="error"
+                            class="text-xs bg-red-500 text-white rounded font-bold mb-1 shadow-lg py-2 px-4 pr-0 w-max"
+                        >
+                            {{ error }}
+                        </p>
+                    </div>
+                </div>
+                <div
+                    :class="
+                        !master_done
+                            ? 'bg-slate-300 text-center opacity-50'
+                            : 'text-center opacity-100'
+                    "
+                >
                     <div
                         class="text-center border-2 px-1 py-1 border-slate-300 my-2"
                         id="form-wrapper"
@@ -273,7 +312,12 @@
                             >
                             <div class="grid grid-cols-3">
                                 <div class="grid grid-cols-1 my-2 col-span-3">
-                                    <label class="font-bold">Name</label>
+                                    <label class="font-bold"
+                                        >Name
+                                        <p class="inline text-red-600 text-lg">
+                                            *
+                                        </p></label
+                                    >
                                     <!-- <input
                                     maxlength="800"
                                     type="text"
@@ -283,7 +327,7 @@
                                 /> -->
                                     <textarea
                                         v-model="new_package.wip_package_name"
-                                        id="message"
+                                        id="wip_package_name"
                                         maxlength="800"
                                         rows="1"
                                         placeholder="eg: Pub  & E book / 20K FB Sponsored Ad"
@@ -291,9 +335,15 @@
                                     ></textarea>
                                 </div>
                                 <div class="mx-1 grid grid-cols-1">
-                                    <label class="font-bold">Date</label>
+                                    <label class="font-bold"
+                                        >Date
+                                        <p class="inline text-red-600 text-lg">
+                                            *
+                                        </p></label
+                                    >
                                     <div class="w-full">
                                         <VueDatePicker
+                                            id="wip_package_date"
                                             v-model="
                                                 new_package.wip_package_date
                                             "
@@ -307,6 +357,7 @@
                                 <div class="mx-1 grid grid-cols-1">
                                     <label class="font-bold">User</label>
                                     <select
+                                        id="wip_package_user_id"
                                         class="block w-full text-center h-max rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                                         @change="getUsers"
                                         v-model="
@@ -333,8 +384,8 @@
                                     placeholder="eg: Artwork by Bluedale"
                                 /> -->
                                     <textarea
+                                        id="wip_package_remark"
                                         v-model="new_package.wip_package_remark"
-                                        id="message"
                                         maxlength="800"
                                         rows="1"
                                         placeholder="eg: Priority client"
@@ -344,29 +395,29 @@
                             </div>
                         </div>
                     </div>
-                    <div class="text-center">
-                        <button
-                            @click="addForm"
-                            class="mx-2 text-center text-sm border-2 border-slate-300 p-2 rounded-lg bg-green-400"
-                        >
-                            +
-                        </button>
-                        <button
-                            v-if="wip_travel_guide.length > 1"
-                            @click="removeForm"
-                            class="mx-2 text-center text-sm border-2 border-slate-300 p-2 rounded-lg bg-red-400"
-                        >
-                            -
-                        </button>
+                    <div class="flex justify-center">
+                        <div class="text-center items-center text-sm">
+                            <PlusCircleIcon
+                                @click="addForm"
+                                class="text-center items-center h-10 w-10 text-green-400"
+                            />
+                        </div>
+                        <div class="text-center items-center text-sm">
+                            <MinusCircleIcon
+                                v-if="wip_travel_guide.length > 1"
+                                @click="removeForm"
+                                class="text-center items-center h-10 w-10 text-red-400"
+                            />
+                        </div>
                     </div>
-                    <div>
-                        <button
-                            @click="createTrackingTravelGuide"
-                            class="inline-flex mt-2 items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
-                        >
-                            Create
-                        </button>
-                    </div>
+
+                    <button
+                        v-if="master_done"
+                        @click="createPackageTravelGuide"
+                        class="inline-flex mt-2 items-center px-4 py-2 bg-green-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
+                    >
+                        Add
+                    </button>
                 </div>
             </div>
         </div>
@@ -377,8 +428,11 @@
 import GoBack from "../utils/GoBack.vue";
 import axios from "axios";
 import moment from "moment";
+import { PlusCircleIcon, MinusCircleIcon } from "@heroicons/vue/24/solid";
 
 export default {
+    components: { GoBack, PlusCircleIcon, MinusCircleIcon },
+
     data() {
         return {
             form: {
@@ -411,8 +465,10 @@ export default {
             moment: moment,
             users: [],
             contacts: [],
-            errors: "",
+            tracking_errors: "",
+            package_errors: "",
             created_tracking: "",
+            master_done: false,
         };
     },
 
@@ -420,6 +476,11 @@ export default {
         this.form.user_id = document
             .querySelector('meta[name="user-id"]')
             .getAttribute("content");
+        //package form disabled
+        document.getElementById("wip_package_name").disabled = true;
+        document.getElementById("wip_package_user_id").disabled = true;
+        document.getElementById("wip_package_date").disabled = true;
+        document.getElementById("wip_package_remark").disabled = true;
     },
 
     created() {
@@ -470,7 +531,11 @@ export default {
                             user_id: this.form.user_id,
                             company_id: this.form.company_id,
                             edition:
-                                this.form.edition1 + "-" + this.form.edition2,
+                                !this.form.edition1 || !this.form.edition2
+                                    ? null
+                                    : this.form.edition1 +
+                                      "-" +
+                                      this.form.edition2,
                             tguide_size: this.form.tguide_size,
                             tguide_remark: this.form.tguide_remark
                                 ? this.form.tguide_remark
@@ -504,9 +569,60 @@ export default {
                         })
                         .then((res) => {
                             this.created_tracking = res.data.data;
-                            // console.log(tracking_tguide.id);
+                            this.master_done = true;
+                            //forms for tracking are disabled
                         });
+                    document.getElementById("user_id").disabled = true;
+                    document.getElementById("company_id").disabled = true;
+                    document.getElementById("edition1").disabled = true;
+                    document.getElementById("edition2").disabled = true;
+                    document.getElementById("tguide_size").disabled = true;
+                    document.getElementById("tguide_remark").disabled = true;
+                    document.getElementById(
+                        "art_reminder_date"
+                    ).disabled = true;
+                    document.getElementById(
+                        "art_reminder_user_id"
+                    ).disabled = true;
+                    document.getElementById(
+                        "art_reminder_remark"
+                    ).disabled = true;
+                    document.getElementById("art_record_date").disabled = true;
+                    document.getElementById(
+                        "art_record_user_id"
+                    ).disabled = true;
+                    document.getElementById(
+                        "art_record_remark"
+                    ).disabled = true;
+                    // //the forms are enabled for the package
+                    document.getElementById(
+                        "wip_package_name"
+                    ).disabled = false;
+                    document.getElementById(
+                        "wip_package_user_id"
+                    ).disabled = false;
+                    document.getElementById(
+                        "wip_package_date"
+                    ).disabled = false;
+                    document.getElementById(
+                        "wip_package_remark"
+                    ).disabled = false;
+                } catch (e) {
+                    {
+                        console.log("error", e);
+                        if (e.response.status === 422) {
+                            this.tracking_errors = e.response.data.errors;
+                        } else {
+                            console.log("no error response");
+                        }
+                    }
+                }
+            }
+        },
 
+        async createPackageTravelGuide() {
+            if (window.confirm("Confirm create package(s) ?")) {
+                try {
                     for (let i = 0; i < this.wip_travel_guide.length; i++) {
                         await axios
                             .post("/api/trackings/wip/travel_guide/store", {
@@ -534,15 +650,15 @@ export default {
                             })
                             .then((res) => {
                                 alert("Tracking and package (wip) created");
-                                // this.$router.push({
-                                //     name: "tracking_travel_guide",
-                                // });
+                                this.$router.push({
+                                    name: "tracking_travel_guide",
+                                });
                             });
                     }
                 } catch (e) {
                     {
                         if (e.response.status === 422) {
-                            this.errors = e.response.data.errors;
+                            this.package_errors = e.response.data.errors;
                         } else {
                             console.log("no error response");
                         }
@@ -566,7 +682,5 @@ export default {
             this.wip_travel_guide.splice(-1);
         },
     },
-
-    components: { GoBack },
 };
 </script>

@@ -1,10 +1,10 @@
 <template>
     <div class="container">
         <div
-            class="bg-slate-600 px-2 py-1 rounded-md flex w-full justify-center items-center row"
+            class="px-2 py-1 rounded-md flex w-full justify-center items-center row"
         >
             <h1
-                class="text-center text-white px-8 uppercase w-max font-mono font-extrabold"
+                class="text-center text-white px-8 uppercase w-max font-mono font-extrabold bg-blue-900"
             >
                 User Management
             </h1>

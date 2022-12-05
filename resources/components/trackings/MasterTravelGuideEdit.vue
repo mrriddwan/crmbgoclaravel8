@@ -19,7 +19,7 @@
                 <!-- @submit.prevent="updateTrackingTravelGuide" -->
                 <div class="rounded px-8 pt-1 pb-8 mb-4">
                     <div
-                        class="text-center text-white bg-slate-600 px-2 py-1 rounded-md"
+                        class="text-center text-white bg-blue-900 px-2 py-1 rounded-md"
                     >
                         <h1
                             class="px-8 bg-black-50 uppercase w-max font-mono font-extrabold"
@@ -285,10 +285,10 @@
                         class="text-center border-2 px-1 py-1 border-slate-300 my-2"
                         id="form-wrapper"
                         v-if="wip_travel_guide"
-                        v-for="tguide_package in wip_travel_guide"
+                        v-for="(tguide_package,index) in wip_travel_guide"
                     >
                         <div class="form-assignment">
-                            <label class="font-bold">Package</label>
+                            <label class="font-bold">Package {{ index + 1 }}</label>
                             <div class="grid grid-cols-3">
                                 <div class="mx-1 grid grid-cols-1">
                                     <label class="font-bold">Progress</label>
@@ -376,6 +376,13 @@
                                     ></textarea>
                                 </div>
                             </div>
+                            <button
+                                v-if="tguide_package.tracking_tguide_id"
+                                class="mr-2 mb-2 items-center px-2 py-1 bg-red-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
+                                @click="deletePackage(tguide_package.id)"
+                            >
+                                <TrashIcon class="h-3 w-3" />
+                            </button>
                         </div>
                     </div>
                     <div
@@ -474,20 +481,20 @@
                             </div>
                         </div>
                     </div>
-                    <div class="text-center">
-                        <span
-                            @click="addForm"
-                            class="text-center text-sm border-2 border-slate-300 p-2 rounded-lg bg-green-400"
-                        >
-                            +
-                        </span>
-                        <span
-                            v-if="check_total > total_object"
-                            @click="removeForm"
-                            class="mx-2 text-center text-sm border-2 border-slate-300 p-2 rounded-lg bg-red-400"
-                        >
-                            -
-                        </span>
+                    <div class="flex justify-center">
+                        <div class="text-center items-center text-sm">
+                            <PlusCircleIcon
+                                @click="addForm"
+                                class="text-center items-center h-10 w-10 text-green-400"
+                            />
+                        </div>
+                        <div class="text-center items-center text-sm">
+                            <MinusCircleIcon
+                                v-if="check_total > total_object"
+                                @click="removeForm"
+                                class="text-center items-center h-10 w-10 text-red-400"
+                            />
+                        </div>
                     </div>
                     <div>
                         <button
@@ -507,8 +514,15 @@
 import GoBack from "../utils/GoBack.vue";
 import axios from "axios";
 import moment from "moment";
+import {
+    TrashIcon,
+    PlusCircleIcon,
+    MinusCircleIcon,
+} from "@heroicons/vue/24/solid";
 
 export default {
+    components: { GoBack, TrashIcon, PlusCircleIcon, MinusCircleIcon },
+
     data() {
         return {
             tguide: {
@@ -594,7 +608,7 @@ export default {
                 });
         },
 
-        async updateTrackingTravelGuide(wip_tguide_id) {
+        async updateTrackingTravelGuide() {
             if (window.confirm("Confirm update tracking ?")) {
                 try {
                     await axios.put(
@@ -735,6 +749,16 @@ export default {
             }
         },
 
+        deletePackage(package_id) {
+            if (!window.confirm("Confirm delete package from tracking?")) {
+                return;
+            }
+            axios.delete(
+                "/api/trackings/wip/travel_guide/delete/" + package_id
+            );
+            this.getTrackingTravelGuide()
+        },
+
         addForm() {
             this.wip_travel_guide.push({
                 tracking_tguide_id: "",
@@ -754,7 +778,5 @@ export default {
             // console.log('check_total after minus: ',this.check_total)
         },
     },
-
-    components: { GoBack },
 };
 </script>

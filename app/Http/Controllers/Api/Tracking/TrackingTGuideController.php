@@ -170,7 +170,7 @@ class TrackingTGuideController extends Controller
             'company_id' => ['required', 'int'],
             'edition' => ['required', 'string'],
             'tguide_size' => ['required', 'string'],
-            'tguide_remark' => ['required', 'string'],
+            // 'tguide_remark' => ['required', 'string'],
             // 'art_reminder_date' => ['required'],
             // 'art_reminder_remark' => ['required', 'string'],
             // 'art_reminder_user_id' => ['required', 'int'],
@@ -178,13 +178,11 @@ class TrackingTGuideController extends Controller
             // 'art_record_remark' => ['required', 'string',],
             // 'art_record_user_id' => ['required', 'int'],
         ], [
-   
-   
             'user_id.required' => 'Please select a user',
             'company_id.required' => 'Please select a company',
             'edition.required' => 'The edition is required',
             'tguide_size.required' => 'The size is required.',
-            'tguide_remark.required' => 'The travel guide tracking remark is required',
+            // 'tguide_remark.required' => 'The travel guide tracking remark is required',
             // 'general_startdate.required' => 'The start date is required',
             // 'general_enddate.required' => 'The end task is required.',
             // 'general_amount.required' => 'The amount is required.',
@@ -203,11 +201,11 @@ class TrackingTGuideController extends Controller
             'tguide_size' => $request->tguide_size,
             'tguide_remark' => $request->tguide_remark,
             'art_reminder_date' => $request->art_reminder_date ? Carbon::parse($request->art_reminder_date)->toDate() : null,
-            'art_reminder_remark' => $request->art_reminder_remark ? $request->art_reminder_remark : null,
+            'art_reminder_remark' => $request->art_reminder_remark ? $request->art_reminder_remark : 'No remark',
             'art_reminder_done' => 2,
             'art_reminder_user_id' => $request->art_reminder_user_id ? $request->art_reminder_user_id : null,
             'art_record_date' => $request->art_record_date ? Carbon::parse($request->art_record_date)->toDate() : null,
-            'art_record_remark' => $request->art_record_remark ? $request->art_record_remark : null,
+            'art_record_remark' => $request->art_record_remark ? $request->art_record_remark : 'No remark',
             'art_record_done' => 2,
             'art_record_user_id' => $request->art_record_user_id ? $request->art_record_user_id : null,
         ]);
@@ -275,5 +273,11 @@ class TrackingTGuideController extends Controller
             'status' => true,
             'message' => 'Successfully update tracking for travel guide',
         ]);
+    }
+
+    public function delete(TrackingTravelGuide $travel_guide)
+    {
+        $travel_guide->delete();
+        return response()->json('travel_guide deleted.');
     }
 }

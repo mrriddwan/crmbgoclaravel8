@@ -33,7 +33,7 @@
 </head>
 
 <body class="font-sans antialiased">
-    <div class="min-h-screen bg-gray-300 max-w" id="app">
+    <div class="min-h-screen bg-blue-900 max-w" id="app">
         @include('layouts.navigation')
 
         <!-- Page Heading -->

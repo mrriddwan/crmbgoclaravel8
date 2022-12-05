@@ -78,4 +78,10 @@ class WIPTGuideController extends Controller
             'message' => 'Successfully update package (wip) for travel guide',
         ]);
     }
+
+    public function delete(WipTravelGuide $wip_travel_guide)
+    {
+        $wip_travel_guide->delete();
+        return response()->json('wip_travel_guide deleted.');
+    }
 }

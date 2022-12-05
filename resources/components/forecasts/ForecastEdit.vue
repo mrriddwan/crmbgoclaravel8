@@ -12,7 +12,7 @@
             </div>
         </div>
         <h1
-            class="items-center text-center text-white font-extrabold font-mono text-5xl uppercase bg-slate-600 px-5 py-2 rounded-md"
+            class="items-center text-center text-white font-extrabold font-mono text-5xl uppercase bg-blue-900 px-5 py-2 rounded-md"
         >
             Edit Forecast
         </h1>
@@ -69,7 +69,7 @@
                             >
                             <div>
                                 <span
-                                    class="bg-slate-600 px-2 py-1 inline-block rounded-md text-white"
+                                    class="bg-blue-900 px-2 py-1 inline-block rounded-md text-white"
                                     >RM</span
                                 >
                                 <input

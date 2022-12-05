@@ -5,7 +5,7 @@
         </div>
 
         <div
-            class="items-center text-center text-white bg-slate-600 px-2 py-2 rounded-md"
+            class="items-center text-center text-white bg-blue-900 px-2 py-2 rounded-md"
         >
             <h1
                 class="font-extrabold uppercase px-2 py-1 bg-black-50 font-mono"

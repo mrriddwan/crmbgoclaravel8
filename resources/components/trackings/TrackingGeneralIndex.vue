@@ -1,7 +1,7 @@
 <template>
     <div class="container">
         <h1
-            class="items-center text-center text-5xl text-white font-extrabold bg-slate-400 px-2 rounded-md"
+            class="items-center text-center text-5xl text-white font-extrabold bg-blue-900 px-2 rounded-md"
         >
             Tracking - General
         </h1>
@@ -56,22 +56,22 @@
                     </button>
                 </div>
             </div>
-            <div class="py-2 flex">
-                View:
+        </div>
+
+        <div class="grid grid-cols-5 gap-3">
+            <div class="grid grid-cols-2 items-center text-right">
+                <label for="paginate" class="mr-2">Per page</label>
+                <input v-model.lazy="paginate" class="form-control w-max" />
+            </div>
+            <div class="grid grid-cols-2 items-center text-right">
+                <label for="selectedYear" class="mr-2">View</label>
                 <select v-model="view_type" class="form-control mx-2">
                     <option value="">Select one</option>
                     <option value="master">Master</option>
                     <option value="wip">WIP</option>
                 </select>
             </div>
-        </div>
-
-        <div class="grid grid-cols-3 gap-20">
-            <div class="grid grid-cols-2 items-center align-middle w-max">
-                <label for="paginate" class="px-2 inline-block">Per page</label>
-                <input v-model.lazy="paginate" class="form-control" />
-            </div>
-            <div class="py-2 mx-8">
+            <div class="py-2 mx-8 col-span-2">
                 <input
                     v-model.lazy="search"
                     type="search"
@@ -842,8 +842,12 @@
                         </tr>
                     </thead>
                     <tbody class="mt-2">
-                        <tr v-show="buffering" >
-                            <td class="text-center text-sm font-bold" colspan="30">
+                        <tr v-show="buffering">
+                            <td
+                                v-if="!tracking_generals"
+                                class="text-center text-sm font-bold"
+                                colspan="30"
+                            >
                                 Loading . .
                             </td>
                         </tr>
@@ -858,8 +862,22 @@
                             <td class="text-xs text-center">
                                 {{ tracking.user_name }}
                             </td>
-                            <td class="text-xs text-center">
-                                {{ tracking.company_name }}
+                            <td
+                                v-if="
+                                    check_id(tracking.user_id) ||
+                                    is('supervisor | admin | super-admin')
+                                "
+                                class="items-center text-xs text-center h-6 w-24"
+                            >
+                                <router-link
+                                    :to="`/contact/${tracking.company_id}/info`"
+                                    custom
+                                    v-slot="{ navigate, href }"
+                                >
+                                    <a :href="href" @click.stop="navigate">{{
+                                        tracking.company_name
+                                    }}</a>
+                                </router-link>
                             </td>
                             <td class="text-xs text-center">
                                 {{ tracking.category_name }}
@@ -1933,8 +1951,11 @@
                         </tr>
                     </thead>
                     <tbody class="mt-2">
-                        <tr v-show="buffering" >
-                            <td class="text-center text-sm font-bold" colspan="30">
+                        <tr v-show="buffering">
+                            <td
+                                class="text-center text-sm font-bold"
+                                colspan="30"
+                            >
                                 Loading . .
                             </td>
                         </tr>
@@ -1949,8 +1970,22 @@
                             <td class="text-xs text-center">
                                 {{ tracking.user_name }}
                             </td>
-                            <td class="text-xs text-center">
-                                {{ tracking.company_name }}
+                            <td
+                                v-if="
+                                    check_id(tracking.user_id) ||
+                                    is('supervisor | admin | super-admin')
+                                "
+                                class="items-center text-xs text-center h-6 w-24"
+                            >
+                                <router-link
+                                    :to="`/contact/${tracking.company_id}/info`"
+                                    custom
+                                    v-slot="{ navigate, href }"
+                                >
+                                    <a :href="href" @click.stop="navigate">{{
+                                        tracking.company_name
+                                    }}</a>
+                                </router-link>
                             </td>
                             <td class="text-xs text-center">
                                 {{ tracking.category_name }}
@@ -2610,6 +2645,9 @@ export default {
     },
 
     mounted() {
+        this.selectedUser = document
+            .querySelector('meta[name="user-id"]')
+            .getAttribute("content");
         this.getTrackingGenerals();
         this.getUsers();
         this.getCategories();
@@ -2620,7 +2658,7 @@ export default {
             paginate: 100,
 
             search: "",
-            
+
             sort_direction: "desc",
             sort_field: "created_at",
             buffering: false,
@@ -2795,6 +2833,41 @@ export default {
                       wb,
                       fn || "WIPGeneralExport." + (type || "xlsx")
                   );
+        },
+
+        check_id(contact_user_id) {
+            let id = contact_user_id;
+            // console.log(id)
+            let user_id = parseInt(
+                document
+                    .querySelector('meta[name="user-id"]')
+                    .getAttribute("content")
+            );
+            // console.log(user_id)
+            if (id === user_id) {
+                return true;
+            } else {
+                return false;
+            }
+        },
+
+        async check_if_subordinate(contact_user_id) {
+            let result = await axios
+                .post("/api/users/check_subordinate", {
+                    contact_user_id: contact_user_id,
+                })
+                .then((response) => {
+                    return response.data.data;
+                });
+            console.log("result: ", result);
+
+            if (result.id === 1) {
+                // console.log("this is under the user")
+                return "true";
+            } else {
+                // console.log("this is not under the user")
+                return "false";
+            }
         },
     },
 };

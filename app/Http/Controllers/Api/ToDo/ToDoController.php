@@ -327,7 +327,7 @@ class ToDoController extends Controller
             return ToDoResource::collection($todo);
         }
     }
-    
+
 
     public function daterange()
     {
@@ -479,7 +479,7 @@ class ToDoController extends Controller
             return ToDoResource::collection($todo);
         }
     }
-    
+
 
     public function store(ToDoInternalRequest $request)
     {
@@ -553,8 +553,28 @@ class ToDoController extends Controller
     }
     public function show($id)
     {
-        $todo = ToDo::find($id);
-        return response()->json(['data' => $todo]);
+        // $todo = ToDo::find($id);
+        // return response()->json(['data' => $todo]);
+
+        // ['contact' => function($q){
+        //     $q->select();
+        // }]
+        $todo = ToDo::select(
+            'to_dos.*',
+            'contact_statuses.id as contact_status_id',
+            'contact_types.id as contact_type_id',
+        )
+            ->join('contacts', 'to_dos.contact_id', '=', 'contacts.id')
+            ->join('contact_statuses', 'contacts.status_id', '=', 'contact_statuses.id')
+            ->join('contact_types', 'contacts.type_id', '=', 'contact_types.id')
+            // ->with(['contact' => function ($q) {
+            //     $q->select('id', 'status_id', 'type_id');
+            // }])
+            ->where('to_dos.id', '=', $id)
+            ->get()
+            ;
+
+        return response()->json(['data' => $todo[0]]);
     }
 
     public function new(ToDo $todo)

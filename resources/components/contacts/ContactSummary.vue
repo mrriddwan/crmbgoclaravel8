@@ -1,7 +1,7 @@
 <template>
-    <div class="w-max">
+    <div class="container">
         <h1
-            class="items-center text-center text-4xl text-white font-extrabold font-mono uppercase bg-slate-400 px-2 rounded-md"
+            class="items-center text-center text-4xl text-white font-extrabold font-mono uppercase bg-blue-900 px-2 rounded-md"
         >
             Contact Summary
         </h1>

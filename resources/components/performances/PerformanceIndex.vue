@@ -112,7 +112,7 @@
         id="example"
         ref="performance_table"
     >
-        <thead v-if="viewType !== 'year'" class="bg-slate-600">
+        <thead v-if="viewType !== 'year'" class="bg-blue-900">
             <tr>
                 <th v-if="viewType === 'week'" class="text-sm text-center text-amber-400">Date - Day</th>
                 <th v-if="viewType === 'month'" class="text-sm text-center text-amber-400">Week</th>
@@ -127,7 +127,7 @@
                 </th>
             </tr>
         </thead>
-        <thead v-else class="bg-slate-600">
+        <thead v-else class="bg-blue-900">
             <tr>
                 <th class="text-sm text-center text-amber-400">Month</th>
                 <th class="text-sm text-center text-amber-400">Week</th>
