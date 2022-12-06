@@ -1498,11 +1498,86 @@ select {
   --tw-bg-opacity: 1;
   background-color: rgb(165 180 252 / var(--tw-bg-opacity));
 }
-.bg-\[url\(\'\/public\/images\/1\.jpg\'\)\] {
-  background-image: url('/public/images/1.jpg');
+.bg-\[url\(\'\/storage\/images\/1\.jpg\'\)\] {
+  background-image: url('/storage/images/1.jpg');
+}
+.bg-\[url\(\'\/storage\/images\/bluedale_background\.jpg\'\)\] {
+  background-image: url('/storage/images/bluedale_background.jpg');
+}
+.bg-\[url\(\'\/storage\/images\/bluedale_bg\.jpg\'\)\] {
+  background-image: url('/storage/images/bluedale_bg.jpg');
+}
+.bg-cover {
+  background-size: cover;
+}
+.bg-contain {
+  background-size: contain;
+}
+.bg-auto {
+  background-size: auto;
+}
+.bg-\[length\:200px_100px\] {
+  background-size: 200px 100px;
+}
+.bg-\[length\:1280px_1024px\] {
+  background-size: 1280px 1024px;
+}
+.bg-\[length\:300px_600px\] {
+  background-size: 300px 600px;
+}
+.bg-\[length\:600px_1000px\] {
+  background-size: 600px 1000px;
+}
+.bg-\[length\:600px_800px\] {
+  background-size: 600px 800px;
+}
+.bg-\[length\:1000px_1000px\] {
+  background-size: 1000px 1000px;
+}
+.bg-\[length\:1200px_1000px\] {
+  background-size: 1200px 1000px;
+}
+.bg-\[length\:1400px_1000px\] {
+  background-size: 1400px 1000px;
+}
+.bg-\[length\:1500px_1000px\] {
+  background-size: 1500px 1000px;
+}
+.bg-\[length\:1550px_1000px\] {
+  background-size: 1550px 1000px;
+}
+.bg-\[length\:1600px_1000px\] {
+  background-size: 1600px 1000px;
+}
+.bg-\[length\:1500px_800px\] {
+  background-size: 1500px 800px;
+}
+.bg-\[length\:1500px_700px\] {
+  background-size: 1500px 700px;
+}
+.bg-\[length\:1500px_750px\] {
+  background-size: 1500px 750px;
+}
+.bg-\[length\:1500px_720px\] {
+  background-size: 1500px 720px;
+}
+.bg-\[length\:1520px_720px\] {
+  background-size: 1520px 720px;
+}
+.bg-\[length\:1530px_720px\] {
+  background-size: 1530px 720px;
+}
+.bg-\[length\:1540px_720px\] {
+  background-size: 1540px 720px;
 }
 .bg-clip-padding {
   background-clip: padding-box;
+}
+.bg-center {
+  background-position: center;
+}
+.bg-no-repeat {
+  background-repeat: no-repeat;
 }
 .fill-current {
   fill: currentColor;

@@ -18,14 +18,11 @@
                 >
             </div>
 
-            <div
-                class="py-2 px-2"
-                v-if="can('export project') || is('admin | super-admin')"
-            >
+            <div class="py-2 px-2">
                 <div
                     class="inline-block"
                     v-if="
-                        (can('export general master') ||
+                        (can('export travel guide master') ||
                             is('admin | super-admin')) &&
                         view_type === 'master'
                     "
@@ -42,7 +39,7 @@
                 <div
                     class="inline-block"
                     v-if="
-                        (can('export general wip') ||
+                        (can('export travel guide wip') ||
                             is('admin | super-admin')) &&
                         view_type === 'wip'
                     "
@@ -55,6 +52,30 @@
                             class="h-5 w-5 mr-1 inline-block"
                         />Export WIP
                     </button>
+                </div>
+            </div>
+
+            <div class="py-2 px-2">
+                <div
+                    class="px-2"
+                    v-if="
+                        (can('export travel guide master') ||
+                            is('admin | super-admin')) &&
+                        view_type === 'master'
+                    "
+                >
+                    <download-excel
+                        :data="tracking_travel_guides.data"
+                        :fields="tguide_fields"
+                        worksheet="Travel Guide Summary"
+                        name="Travel Guide  Summary.xls"
+                        class="btn btn-success btn-sm"
+                    >
+                        <ArrowTopRightOnSquareIcon
+                            class="h-5 w-5 mr-1 inline-block"
+                        />
+                        Export
+                    </download-excel>
                 </div>
             </div>
         </div>
@@ -1532,7 +1553,9 @@
                                 /></router-link>
                                 <button
                                     class="mr-2 mb-2 inline-flex items-center px-2 py-1 bg-red-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
-                                    @click="deleteTrackingTravelGuide(tracking.id)"
+                                    @click="
+                                        deleteTrackingTravelGuide(tracking.id)
+                                    "
                                 >
                                     <TrashIcon class="h-3 w-3" />
                                 </button>
@@ -4436,19 +4459,23 @@ export default {
         },
 
         deleteTrackingTravelGuide(tracking_id) {
-            if (!window.confirm("This will remove the tracking and its WIP(s). Continue?")) {
+            if (
+                !window.confirm(
+                    "This will remove the tracking and its WIP(s). Continue?"
+                )
+            ) {
                 return;
             }
-            axios.delete(
-                "/api/trackings/travel_guide/delete/" + tracking_id
-            );
-            alert('Tracking and its WIP(s) deleted.')
+            axios.delete("/api/trackings/travel_guide/delete/" + tracking_id);
+            alert("Tracking and its WIP(s) deleted.");
             this.getTrackingTravelGuides();
         },
 
         exportMasterTravelGuidelExcel(type, fn, dl) {
             var elt = this.$refs.tguide_master_table;
-            var wb = XLSX.utils.table_to_book(elt, { sheet: "Master Travel Guide" });
+            var wb = XLSX.utils.table_to_book(elt, {
+                sheet: "Master Travel Guide",
+            });
 
             return dl
                 ? XLSX.write(wb, {
@@ -4464,7 +4491,9 @@ export default {
 
         exportWIPTravelGuideExcel(type, fn, dl) {
             var elt = this.$refs.tguide_wip_table;
-            var wb = XLSX.utils.table_to_book(elt, { sheet: "WIP Travel Guide" });
+            var wb = XLSX.utils.table_to_book(elt, {
+                sheet: "WIP Travel Guide",
+            });
 
             return dl
                 ? XLSX.write(wb, {

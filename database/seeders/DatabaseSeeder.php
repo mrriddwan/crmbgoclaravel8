@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
             UserCategorySeeder::class,
             TaskSeeder::class,
             ActionSeeder::class,
+            BluedaleDivisionSeeder::class,
             UserCategoryBenchmarkSeeder::class,
             UserSeeder::class,
             SupervisorSeeder::class,

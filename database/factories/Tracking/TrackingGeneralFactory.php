@@ -29,6 +29,7 @@ class TrackingGeneralFactory extends Factory
             'progress' => 'Pending',
             'general_startdate' => $general_startdate,
             'general_enddate' => $general_enddate,
+            'division_id' => random_int(1, 4),
             'user_id' => random_int(1, 10),
             'company_id' => random_int(1, 10),
             'contact_category_id' => random_int(1, 5),

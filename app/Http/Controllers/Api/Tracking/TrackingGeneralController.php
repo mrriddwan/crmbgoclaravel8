@@ -26,31 +26,34 @@ class TrackingGeneralController extends Controller
         $selectedUser = request('selectedUser');
         $selectedCategory = request('selectedCategory');
         $selectedResult = request('selectedResult');
+        $selectedDivision = request('selectedDivision');
         $view_type = request('view_type');
 
 
         $id = Auth::id();
 
-        if (
-            (DB::table('model_has_roles')
-                ->where('model_id', '=', $id)
-                ->where('role_id', '=', 2)
-                ->exists()) ||
-            (DB::table('model_has_roles')
-                ->where('model_id', '=', $id)
-                ->where('role_id', '=', 1)
-                ->exists())
-        ) {
+        // if (
+        //     (DB::table('model_has_roles')
+        //         ->where('model_id', '=', $id)
+        //         ->where('role_id', '=', 2)
+        //         ->exists()) ||
+        //     (DB::table('model_has_roles')
+        //         ->where('model_id', '=', $id)
+        //         ->where('role_id', '=', 1)
+        //         ->exists())
+        // ) {
         if ($view_type === 'master') {
             $general = TrackingGeneral::select([
                 'tracking_generals.*',
                 'contact_categories.name as category_name',
                 'users.name as user_name',
                 'contacts.name as company_name',
+                'bluedale_divisions.name as division_name',
             ])
                 ->join('contacts', 'tracking_generals.company_id', '=', 'contacts.id')
                 ->join('contact_categories', 'tracking_generals.contact_category_id', '=', 'contact_categories.id')
                 ->join('users', 'tracking_generals.user_id', '=', 'users.id')
+                ->join('bluedale_divisions', 'tracking_generals.division_id', '=', 'bluedale_divisions.id')
                 ->when($selectedCategory, function ($query) use ($selectedCategory) {
                     $query->where('tracking_generals.contact_category_id', $selectedCategory);
                 })
@@ -59,6 +62,9 @@ class TrackingGeneralController extends Controller
                 })
                 ->when($selectedResult, function ($query) use ($selectedResult) {
                     $query->where('tracking_generals.progress', $selectedResult);
+                })
+                ->when($selectedDivision, function ($query) use ($selectedDivision) {
+                    $query->where('tracking_generals.division_id', $selectedDivision);
                 })
                 ->orderBy($sort_field, $sort_direction)
                 ->search(trim($search_term))
@@ -128,6 +134,7 @@ class TrackingGeneralController extends Controller
                     'contacts.name as company_name',
                     'users.name as user_name',
                     'contact_categories.name as category_name',
+                    'bluedale_divisions.name as division_name',
                     'tracking_generals.id as general_id',
                     'tracking_generals.company_id',
                     'tracking_generals.user_id',
@@ -140,12 +147,14 @@ class TrackingGeneralController extends Controller
                     'tracking_generals.general_enddate as general_enddate',
                     'tracking_generals.progress as general_progress',
                     'tracking_generals.general_remark as general_remark',
+
                     
                 ])
                 ->join('tracking_generals', 'wip_generals.tracking_general_id', '=', 'tracking_generals.id')
                 ->join('contacts', 'tracking_generals.company_id', '=', 'contacts.id')
                 ->join('users', 'tracking_generals.user_id', '=', 'users.id')
                 ->join('contact_categories', 'tracking_generals.contact_category_id', '=', 'contact_categories.id')
+                ->join('bluedale_divisions', 'tracking_generals.division_id', '=', 'bluedale_divisions.id')
                 ->when($selectedCategory, function ($query) use ($selectedCategory) {
                     $query->where('tracking_generals.contact_category_id', $selectedCategory);
                 })
@@ -162,142 +171,142 @@ class TrackingGeneralController extends Controller
             return WIPGeneralResource::collection($wip_general);
         }
 
-        } else {
-            $sv_sb = "";
-            $final = [$id];
+        // } else {
+        //     $sv_sb = "";
+        //     $final = [$id];
 
-            if (SvSbPivot::where('supervisor_id', '=', $id)->exists()) {
-                $sv_sb = SvSbPivot::select('subordinate_id')
-                    ->where('supervisor_id', '=', $id)
-                    ->pluck('subordinate_id');
-            } else {
-                $sv_sb = ["null"];
-            }
-            array_push($final, ...$sv_sb);
-            // ->whereIn('to_dos.user_id', $final) // for view under supervisor and the subordinates
+        //     if (SvSbPivot::where('supervisor_id', '=', $id)->exists()) {
+        //         $sv_sb = SvSbPivot::select('subordinate_id')
+        //             ->where('supervisor_id', '=', $id)
+        //             ->pluck('subordinate_id');
+        //     } else {
+        //         $sv_sb = ["null"];
+        //     }
+        //     array_push($final, ...$sv_sb);
+        //     // ->whereIn('to_dos.user_id', $final) // for view under supervisor and the subordinates
 
-            if ($view_type === 'master') {
-                $general = TrackingGeneral::select([
-                    'tracking_generals.*',
-                    'contact_categories.name as category_name',
-                    'users.name as user_name',
-                    'contacts.name as company_name',
-                ])
-                    ->whereIn('tracking_generals.user_id', $final) 
-                    ->join('contacts', 'tracking_generals.company_id', '=', 'contacts.id')
-                    ->join('contact_categories', 'tracking_generals.contact_category_id', '=', 'contact_categories.id')
-                    ->join('users', 'tracking_generals.user_id', '=', 'users.id')
-                    ->when($selectedCategory, function ($query) use ($selectedCategory) {
-                        $query->where('tracking_generals.contact_category_id', $selectedCategory);
-                    })
-                    ->when($selectedUser, function ($query) use ($selectedUser) {
-                        $query->where('tracking_generals.user_id', $selectedUser);
-                    })
-                    ->when($selectedResult, function ($query) use ($selectedResult) {
-                        $query->where('tracking_generals.progress', $selectedResult);
-                    })
-                    ->orderBy($sort_field, $sort_direction)
-                    ->search(trim($search_term))
-                    ->paginate($paginate);
+        //     if ($view_type === 'master') {
+        //         $general = TrackingGeneral::select([
+        //             'tracking_generals.*',
+        //             'contact_categories.name as category_name',
+        //             'users.name as user_name',
+        //             'contacts.name as company_name',
+        //         ])
+        //             ->whereIn('tracking_generals.user_id', $final) 
+        //             ->join('contacts', 'tracking_generals.company_id', '=', 'contacts.id')
+        //             ->join('contact_categories', 'tracking_generals.contact_category_id', '=', 'contact_categories.id')
+        //             ->join('users', 'tracking_generals.user_id', '=', 'users.id')
+        //             ->when($selectedCategory, function ($query) use ($selectedCategory) {
+        //                 $query->where('tracking_generals.contact_category_id', $selectedCategory);
+        //             })
+        //             ->when($selectedUser, function ($query) use ($selectedUser) {
+        //                 $query->where('tracking_generals.user_id', $selectedUser);
+        //             })
+        //             ->when($selectedResult, function ($query) use ($selectedResult) {
+        //                 $query->where('tracking_generals.progress', $selectedResult);
+        //             })
+        //             ->orderBy($sort_field, $sort_direction)
+        //             ->search(trim($search_term))
+        //             ->paginate($paginate);
     
-                return TrackingGeneralResource::collection($general);
-            } else {
-                $wip_general = WipGeneral::with([
-                    'art_chase_user' => function ($q) {
-                        $q->select([
-                            'id',
-                            'name',
-                        ]);
-                    },
-                    'art_received_user' => function ($q) {
-                        $q->select([
-                            'id',
-                            'name',
-                        ]);
-                    },
-                    'art_todo_user' => function ($q) {
-                        $q->select([
-                            'id',
-                            'name',
-                        ]);
-                    },
-                    'cns_sent_user' => function ($q) {
-                        $q->select([
-                            'id',
-                            'name',
-                        ]);
-                    },
-                    'cns_record_user' => function ($q) {
-                        $q->select([
-                            'id',
-                            'name',
-                        ]);
-                    },
-                    'schedule_user' => function ($q) {
-                        $q->select([
-                            'id',
-                            'name',
-                        ]);
-                    },
-                    'actual_live_user' => function ($q) {
-                        $q->select([
-                            'id',
-                            'name',
-                        ]);
-                    },
-                    'client_posting_user' => function ($q) {
-                        $q->select([
-                            'id',
-                            'name',
-                        ]);
-                    },
-                    'report_user' => function ($q) {
-                        $q->select([
-                            'id',
-                            'name',
-                        ]);
-                    },
-                ])
-                    ->select([
-                        'wip_generals.*',
-                        'contacts.name as company_name',
-                        'users.name as user_name',
-                        'contact_categories.name as category_name',
-                        'tracking_generals.id as general_id',
-                        'tracking_generals.company_id',
-                        'tracking_generals.user_id',
-                        'tracking_generals.contact_category_id',
-                        'tracking_generals.category_description as general_category_description',
-                        'tracking_generals.general_amount as general_amount',
-                        'tracking_generals.art_frequency as general_art_freq',
-                        'tracking_generals.general_type as general_type',
-                        'tracking_generals.general_startdate as general_startdate',
-                        'tracking_generals.general_enddate as general_enddate',
-                        'tracking_generals.progress as general_progress',
-                        'tracking_generals.general_remark as general_remark',
+        //         return TrackingGeneralResource::collection($general);
+        //     } else {
+        //         $wip_general = WipGeneral::with([
+        //             'art_chase_user' => function ($q) {
+        //                 $q->select([
+        //                     'id',
+        //                     'name',
+        //                 ]);
+        //             },
+        //             'art_received_user' => function ($q) {
+        //                 $q->select([
+        //                     'id',
+        //                     'name',
+        //                 ]);
+        //             },
+        //             'art_todo_user' => function ($q) {
+        //                 $q->select([
+        //                     'id',
+        //                     'name',
+        //                 ]);
+        //             },
+        //             'cns_sent_user' => function ($q) {
+        //                 $q->select([
+        //                     'id',
+        //                     'name',
+        //                 ]);
+        //             },
+        //             'cns_record_user' => function ($q) {
+        //                 $q->select([
+        //                     'id',
+        //                     'name',
+        //                 ]);
+        //             },
+        //             'schedule_user' => function ($q) {
+        //                 $q->select([
+        //                     'id',
+        //                     'name',
+        //                 ]);
+        //             },
+        //             'actual_live_user' => function ($q) {
+        //                 $q->select([
+        //                     'id',
+        //                     'name',
+        //                 ]);
+        //             },
+        //             'client_posting_user' => function ($q) {
+        //                 $q->select([
+        //                     'id',
+        //                     'name',
+        //                 ]);
+        //             },
+        //             'report_user' => function ($q) {
+        //                 $q->select([
+        //                     'id',
+        //                     'name',
+        //                 ]);
+        //             },
+        //         ])
+        //             ->select([
+        //                 'wip_generals.*',
+        //                 'contacts.name as company_name',
+        //                 'users.name as user_name',
+        //                 'contact_categories.name as category_name',
+        //                 'tracking_generals.id as general_id',
+        //                 'tracking_generals.company_id',
+        //                 'tracking_generals.user_id',
+        //                 'tracking_generals.contact_category_id',
+        //                 'tracking_generals.category_description as general_category_description',
+        //                 'tracking_generals.general_amount as general_amount',
+        //                 'tracking_generals.art_frequency as general_art_freq',
+        //                 'tracking_generals.general_type as general_type',
+        //                 'tracking_generals.general_startdate as general_startdate',
+        //                 'tracking_generals.general_enddate as general_enddate',
+        //                 'tracking_generals.progress as general_progress',
+        //                 'tracking_generals.general_remark as general_remark',
                         
-                    ])
-                    ->whereIn('tracking_generals.user_id', $final) 
-                    ->join('tracking_generals', 'wip_generals.tracking_general_id', '=', 'tracking_generals.id')
-                    ->join('contacts', 'tracking_generals.company_id', '=', 'contacts.id')
-                    ->join('users', 'tracking_generals.user_id', '=', 'users.id')
-                    ->join('contact_categories', 'tracking_generals.contact_category_id', '=', 'contact_categories.id')
-                    ->when($selectedCategory, function ($query) use ($selectedCategory) {
-                        $query->where('tracking_generals.contact_category_id', $selectedCategory);
-                    })
-                    ->when($selectedUser, function ($query) use ($selectedUser) {
-                        $query->where('tracking_generals.user_id', $selectedUser);
-                    })
-                    ->when($selectedResult, function ($query) use ($selectedResult) {
-                        $query->where('wip_generals.wip_progress', $selectedResult);
-                    })
-                    ->orderBy($sort_field, $sort_direction)
-                    ->search(trim($search_term))
-                    ->paginate($paginate);
+        //             ])
+        //             ->whereIn('tracking_generals.user_id', $final) 
+        //             ->join('tracking_generals', 'wip_generals.tracking_general_id', '=', 'tracking_generals.id')
+        //             ->join('contacts', 'tracking_generals.company_id', '=', 'contacts.id')
+        //             ->join('users', 'tracking_generals.user_id', '=', 'users.id')
+        //             ->join('contact_categories', 'tracking_generals.contact_category_id', '=', 'contact_categories.id')
+        //             ->when($selectedCategory, function ($query) use ($selectedCategory) {
+        //                 $query->where('tracking_generals.contact_category_id', $selectedCategory);
+        //             })
+        //             ->when($selectedUser, function ($query) use ($selectedUser) {
+        //                 $query->where('tracking_generals.user_id', $selectedUser);
+        //             })
+        //             ->when($selectedResult, function ($query) use ($selectedResult) {
+        //                 $query->where('wip_generals.wip_progress', $selectedResult);
+        //             })
+        //             ->orderBy($sort_field, $sort_direction)
+        //             ->search(trim($search_term))
+        //             ->paginate($paginate);
     
-                return WIPGeneralResource::collection($wip_general);
-            }
-        }
+        //         return WIPGeneralResource::collection($wip_general);
+        //     }
+        // }
     }
 
     public function store(Request $request)

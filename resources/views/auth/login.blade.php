@@ -1,3 +1,7 @@
+@section('title')
+CRM-BGOC
+@endsection
+
 <x-guest-layout>
     <x-auth-card>
         <x-slot name="logo">
@@ -11,8 +15,6 @@
 
         <!-- Validation Errors -->
         <x-auth-validation-errors class="mb-4" :errors="$errors" />
-
-        {{-- <img src="../../../public/images/1.jpg" class="h-20 w-20"/> --}}
 
         <form method="POST" action="{{ route('login') }}">
             @csrf

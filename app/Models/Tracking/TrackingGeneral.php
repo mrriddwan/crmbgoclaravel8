@@ -50,6 +50,11 @@ class TrackingGeneral extends Model
         return $this->belongsTo(ContactCategory::class, 'contact_category_id');
     }
 
+    public function division()
+    {
+        return $this->belongsTo(BluedaleDivision::class, 'division_id');
+    }
+
     public function scopeSearch($query, $term)
     {
         $term = "%$term%";
@@ -74,6 +79,9 @@ class TrackingGeneral extends Model
                 })
                 ->orWhereHas('category', function ($query) use ($term) {
                     $query->where('contact_categories.name', 'like', $term);
+                })
+                ->orWhereHas('division', function ($query) use ($term) {
+                    $query->where('bluedale_divisions.name', 'like', $term);
                 })
                 // ->orWhereHas('wip', function ($query) use ($term) {
                 //     $query->where('contact_types.name', 'like', $term);

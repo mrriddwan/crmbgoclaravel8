@@ -1,4 +1,6 @@
-<div class="min-h-screen flex flex-col sm:justify-center items-center bg-blue-900 sm:pt-0">
+{{-- <div class="min-h-screen flex flex-col sm:justify-center items-center bg-[length:1540px_720px] bg-[url('/storage/images/1.jpg')] sm:pt-0"> --}}
+<div
+    class="min-h-screen flex flex-col sm:justify-center items-center bg-cover bg-center bg-[url('/storage/images/bluedale_bg.jpg')] sm:pt-0">
     <div>
         {{ $logo }}
     </div>

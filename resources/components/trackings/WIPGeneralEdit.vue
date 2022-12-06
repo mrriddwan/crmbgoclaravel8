@@ -24,7 +24,7 @@
                         class="text-center text-white bg-blue-900 px-2 py-1 rounded-md"
                     >
                         <h1
-                            class="px-8 bg-black-50 uppercase w-max font-mono font-extrabold"
+                            class="px-8 bg-black-50 uppercase w-full font-mono font-extrabold"
                         >
                             Edit Tracking (General) - WIP
                         </h1>
@@ -36,7 +36,7 @@
                             <p class="inline text-red-600 text-lg">*</p></label
                         >
                         <select
-                            class="block mt-1 w-full text-center rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                            class="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                             v-model="wip.tracking_general.user_id"
                             @change="getUsers"
                         >
@@ -56,7 +56,7 @@
                             <p class="inline text-red-600 text-lg">*</p></label
                         >
                         <select
-                            class="text-center overflow-y block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                            class="overflow-y block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                             v-model="wip.tracking_general.company_id"
                             @change="getContacts"
                         >
@@ -78,7 +78,7 @@
                             <p class="inline text-red-600 text-lg">*</p></label
                         >
                         <select
-                            class="block mt-1 text-center w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                            class="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                             v-model="wip.tracking_general.contact_category_id"
                             @change="getCategory"
                         >
@@ -179,7 +179,7 @@
                             <p class="inline text-red-600 text-lg">*</p></label
                         >
                         <select
-                            class="block mt-1 text-center w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                            class="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                             v-model="wip.wip_progress"
                         >
                             <option value="Pending">Pending</option>
@@ -247,6 +247,71 @@
                                     v-model="wip.art_chase_remark"
                                     placeholder="eg: Artwork by Bluedale"
                                     class="block w-full text-sm rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
+                                ></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div
+                        class="text-center border-2 px-1 py-1 border-slate-300 my-2"
+                    >
+                        <label class="font-bold">Artwork Received </label>
+                        <div class="grid grid-cols-6">
+                            <div class="mx-1 grid grid-cols-1">
+                                <label class="font-bold">Progress</label>
+                                <select
+                                    class="block h-max w-full text-center rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                    v-model="wip.art_received_done"
+                                >
+                                    <option value="2">Pending</option>
+                                    <option value="1">Completed</option>
+                                </select>
+                            </div>
+                            <div class="mx-1 grid grid-cols-1">
+                                <label class="font-bold">Date</label>
+                                <div class="w-full">
+                                    <VueDatePicker
+                                        v-model="wip.art_received_date"
+                                        showNowButton
+                                        nowButtonLabel="Today"
+                                        :enableTimePicker="false"
+                                        placeholder="Select date"
+                                    />
+                                </div>
+                            </div>
+                            <div class="mx-1 grid grid-cols-1">
+                                <label class="font-bold">User</label>
+                                <select
+                                    class="block w-full text-center h-max rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                    v-model="wip.art_received_user_id"
+                                    @change="getUsers"
+                                >
+                                    <option value="">Select user</option>
+                                    <option
+                                        v-for="user in users"
+                                        :key="user.id"
+                                        :value="user.id"
+                                    >
+                                        {{ user.name }}
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="grid grid-cols-1 my-2 col-span-3">
+                                <label class="font-bold">Note</label>
+                                <!-- <input
+                                    maxlength="800"
+                                    type="text"
+                                    class="form-control block w-96 h-24 px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                                    v-model="wip.general_remark"
+                                    placeholder="eg: Artwork by Bluedale"
+                                /> -->
+                                <textarea
+                                    id="message"
+                                    maxlength="800"
+                                    rows="1"
+                                    v-model="wip.art_received_remark"
+                                    placeholder="eg: Artwork by Client"
+                                    class="block p-2.5 w-full text-sm rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
                                 ></textarea>
                             </div>
                         </div>

@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\UserCategoryController;
 use App\Http\Controllers\Api\Billboard\BillboardController;
 use App\Http\Controllers\Api\Billboard\BillboardTenureController;
 use App\Http\Controllers\Api\Billboard\TempboardController;
+use App\Http\Controllers\Api\Tracking\BluedaleDivisionController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\Contact\ContactCategoryController;
 use App\Http\Controllers\Api\Contact\ContactController;
@@ -293,6 +294,7 @@ Route::post('/trackings/general/store', [TrackingGeneralController::class, 'stor
 Route::get('/trackings/general/show/{general}', [TrackingGeneralController::class, 'show'])->name('tracking_general:show');
 Route::put('/trackings/general/update/{general}', [TrackingGeneralController::class, 'update'])->name('tracking_general:update');
 Route::delete('/trackings/general/delete/{tracking_general}', [TrackingGeneralController::class, 'delete'])->name('tracking_general:delete');
+Route::get('/trackings/division/index', [BluedaleDivisionController::class, 'index'])->name('tracking_general:index');
 
 Route::get('/trackings/wip/general/show/{wip_general}', [WIPGeneralController::class, 'show'])->name('wip_general:show');
 Route::put('/trackings/wip/general/update/{wip_general}', [WIPGeneralController::class, 'update'])->name('tracking_general:update');

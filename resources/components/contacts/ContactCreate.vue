@@ -12,7 +12,6 @@
             </div>
         </div>
         <div class="flex w-full row">
-            <!-- <img src="../../../public/images/1.jpg" class="h-20 w-20"/> -->
             <div class="col-lg-20">
                 <form
                     @submit.prevent="createContact"

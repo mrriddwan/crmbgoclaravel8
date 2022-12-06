@@ -20,6 +20,13 @@ class CreateTrackingGeneralsTable extends Migration
             $table->date('general_startdate')->nullable();
             $table->date('general_enddate')->nullable();
 
+            $table->unsignedBigInteger('division_id')->nullable()->constrained();
+            $table->foreign('division_id')
+                ->references('id')
+                ->on('bluedale_divisions')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
+
             $table->unsignedBigInteger('user_id')->nullable()->constrained();
             $table->foreign('user_id')
                 ->references('id')

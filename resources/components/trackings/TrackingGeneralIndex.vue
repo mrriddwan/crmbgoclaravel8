@@ -19,7 +19,6 @@
 
             <div
                 class="py-2 px-2"
-                v-if="can('export project') || is('admin | super-admin')"
             >
                 <div
                     class="inline-block"
@@ -55,6 +54,23 @@
                         />Export WIP
                     </button>
                 </div>
+            </div>
+
+            <div class="py-2 px-2">
+                <div class="px-2" v-if="(can('export general master') || is('admin | super-admin')) && view_type === 'master'">
+                        <download-excel
+                            :data="tracking_generals.data"
+                            :fields="general_master_fields"
+                            worksheet="Travel Guide Summary"
+                            name="Travel Guide  Summary.xls"
+                            class="btn btn-success btn-sm"
+                        >
+                            <ArrowTopRightOnSquareIcon
+                                class="h-5 w-5 mr-1 inline-block"
+                            />
+                            Export
+                        </download-excel>
+                    </div>
             </div>
         </div>
 
@@ -182,6 +198,66 @@
                                     </a>
                                 </div>
                             </th>
+                            <th class="py-3 w-max">
+                                <div class="text-sm text-center h-6">
+                                    <a
+                                        href="#"
+                                        @click.prevent="
+                                            change_sort('division_name')
+                                        "
+                                        class="text-white inline-flex"
+                                    >
+                                        BGOC
+                                        <span
+                                            v-if="
+                                                (!(sort_direction == 'asc') ||
+                                                    !(
+                                                        sort_direction == 'desc'
+                                                    )) &&
+                                                !(sort_field == 'division_name')
+                                            "
+                                            class="inline-block"
+                                            ><ArrowsUpDownIcon class="h-4 w-4"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'desc' &&
+                                                sort_field == 'division_name'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowUpIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'asc' &&
+                                                sort_field == 'division_name'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowDownIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
+                                    </a>
+                                </div>
+                                <div class="text-sm text-center h-6">
+                                    <select
+                                        v-model="selectedDivision"
+                                        class="form-control form-control-sm text-xs"
+                                    >
+                                        <option class="text-xs" value="">
+                                            All
+                                        </option>
+                                        <option
+                                            class="text-xs"
+                                            v-for="division in divisions.data"
+                                            :key="division.id"
+                                            :value="division.id"
+                                        >
+                                            {{ division.name }}
+                                        </option>
+                                    </select>
+                                </div>
+                            </th>
                             <th class="py-3">
                                 <div class="text-sm text-center h-6">
                                     <a
@@ -285,6 +361,58 @@
                                     </a>
                                 </div>
                                 <div class="text-sm text-center h-6"></div>
+                            </th>
+
+                            <th
+                                class="py-3"
+                                v-if="
+                                    can('view tracking general amount') ||
+                                    is('admin | super-admin')
+                                "
+                            >
+                                <div class="text-sm text-center h-12">
+                                    <a
+                                        href="#"
+                                        @click.prevent="
+                                            change_sort('general_amount')
+                                        "
+                                        class="text-white inline-flex"
+                                    >
+                                        Amount
+                                        <span
+                                            v-if="
+                                                (!(sort_direction == 'asc') ||
+                                                    !(
+                                                        sort_direction == 'desc'
+                                                    )) &&
+                                                !(
+                                                    sort_field ==
+                                                    'general_amount'
+                                                )
+                                            "
+                                            class="inline-block"
+                                            ><ArrowsUpDownIcon class="h-4 w-4"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'desc' &&
+                                                sort_field == 'general_amount'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowUpIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'asc' &&
+                                                sort_field == 'general_amount'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowDownIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
+                                    </a>
+                                </div>
                             </th>
 
                             <th class="py-3">
@@ -441,57 +569,7 @@
                                     </a>
                                 </div>
                             </th>
-                            <th
-                                class="py-3"
-                                v-if="
-                                    can('view tracking general amount') ||
-                                    is('admin | super-admin')
-                                "
-                            >
-                                <div class="text-sm text-center h-12">
-                                    <a
-                                        href="#"
-                                        @click.prevent="
-                                            change_sort('general_amount')
-                                        "
-                                        class="text-white inline-flex"
-                                    >
-                                        Amount
-                                        <span
-                                            v-if="
-                                                (!(sort_direction == 'asc') ||
-                                                    !(
-                                                        sort_direction == 'desc'
-                                                    )) &&
-                                                !(
-                                                    sort_field ==
-                                                    'general_amount'
-                                                )
-                                            "
-                                            class="inline-block"
-                                            ><ArrowsUpDownIcon class="h-4 w-4"
-                                        /></span>
-                                        <span
-                                            v-if="
-                                                sort_direction == 'desc' &&
-                                                sort_field == 'general_amount'
-                                            "
-                                            class="inline-block"
-                                            ><ArrowUpIcon
-                                                class="h-4 w-4 text-amber-400 font-extrabold"
-                                        /></span>
-                                        <span
-                                            v-if="
-                                                sort_direction == 'asc' &&
-                                                sort_field == 'general_amount'
-                                            "
-                                            class="inline-block"
-                                            ><ArrowDownIcon
-                                                class="h-4 w-4 text-amber-400 font-extrabold"
-                                        /></span>
-                                    </a>
-                                </div>
-                            </th>
+                            
                             <th class="py-3">
                                 <div class="text-sm text-center h-12">
                                     <a
@@ -844,7 +922,6 @@
                     <tbody class="mt-2">
                         <tr v-show="buffering">
                             <td
-                                v-if="!tracking_generals"
                                 class="text-center text-sm font-bold"
                                 colspan="30"
                             >
@@ -858,6 +935,9 @@
                             <td class="text-xs text-center">{{ index + 1 }}</td>
                             <td class="text-xs text-center">
                                 {{ showToday(tracking.created_at) }}
+                            </td>
+                            <td class="text-xs text-center">
+                                {{ tracking.division_name }}
                             </td>
                             <td class="text-xs text-center">
                                 {{ tracking.user_name }}
@@ -879,15 +959,6 @@
                                     }}</a>
                                 </router-link>
                             </td>
-                            <td class="text-xs text-center">
-                                {{ tracking.category_name }}
-                            </td>
-                            <td class="text-xs text-center">
-                                {{ tracking.category_description }}
-                            </td>
-                            <td class="text-xs text-center">
-                                {{ tracking.general_type }}
-                            </td>
                             <td
                                 class="text-xs text-center"
                                 v-if="
@@ -903,6 +974,16 @@
                                 }}
                             </td>
                             <td class="text-xs text-center">
+                                {{ tracking.category_name }}
+                            </td>
+                            <td class="text-xs text-center">
+                                {{ tracking.category_description }}
+                            </td>
+                            <td class="text-xs text-center">
+                                {{ tracking.general_type }}
+                            </td>
+                            
+                            <td class="text-xs text-center">
                                 {{ tracking.art_format }}
                             </td>
                             <td class="text-xs text-center">
@@ -916,7 +997,7 @@
                                 }}
                             </td>
                             <td class="text-xs text-center">
-                                {{ tracking.general_tenure }}
+                                {{ (tracking.general_tenure / 30) }} month(s)
                             </td>
                             <td class="text-xs text-center">
                                 {{ showToday(tracking.general_startdate) }}
@@ -2651,6 +2732,7 @@ export default {
         this.getTrackingGenerals();
         this.getUsers();
         this.getCategories();
+        this.getDivisions();
     },
     data() {
         return {
@@ -2668,8 +2750,33 @@ export default {
             selectedUser: "",
             selectedCategory: "",
             selectedResult: "",
+            selectedDivision: "",
             users: [],
             categories: [],
+            divisions: [],
+
+            general_master_fields: {
+                Date: "created_at",
+                User: "user_name",
+                Company: "company_name",
+                BGOC: "division_name",
+                Amount: "general_amount",
+                Product: "category_name",
+                "Product Description": "category_description",
+                Type: "general_type",
+                "Artwork Format": "art_format",
+                "Artwork Frequency": "art_format",
+                "REACH": "general_reach",
+                "Tenure": {
+                    callback: (value) => {
+                            return `${(value / 30)}`;
+                    },
+                },
+                "Start Date": "general_startdate",
+                "End Date": "general_enddate",
+                Remark: "general_remark",
+                Status: "progress",
+            },
         };
     },
     watch: {
@@ -2695,6 +2802,11 @@ export default {
         },
 
         selectedResult: function (value) {
+            this.tracking_generals = [];
+            this.getTrackingGenerals();
+        },
+
+        selectedDivision: function (value) {
             this.tracking_generals = [];
             this.getTrackingGenerals();
         },
@@ -2731,7 +2843,9 @@ export default {
                         "&selectedCategory=" +
                         this.selectedCategory +
                         "&selectedResult=" +
-                        this.selectedResult
+                        this.selectedResult+
+                        "&selectedDivision=" +
+                        this.selectedDivision
                 )
                 .then((res) => {
                     this.buffering = false;
@@ -2747,6 +2861,17 @@ export default {
                 .get("/api/users/users_list")
                 .then((res) => {
                     this.users = res.data;
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        },
+
+        async getDivisions() {
+            await axios
+                .get("/api/trackings/division/index")
+                .then((res) => {
+                    this.divisions = res.data;
                 })
                 .catch((error) => {
                     console.log(error);
