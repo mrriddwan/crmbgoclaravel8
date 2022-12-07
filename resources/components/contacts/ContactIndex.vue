@@ -667,7 +667,7 @@
                                     </router-link>
                                 </div>
 
-                                <div class="mt-10">
+                                <div class="mt-5">
                                     <router-link
                                         :to="`/forecast/${contact.id}/create`"
                                         class="ml-1px-2 py-1 items-center border text-xs text-right rounded-lg w-max text-lime-600"

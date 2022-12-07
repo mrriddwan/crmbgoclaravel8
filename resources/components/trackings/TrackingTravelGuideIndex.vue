@@ -134,15 +134,15 @@
             </div>
             <div
                 v-if="view_type === 'master'"
-                class="table-wrp block max-h-screen overflow-y-auto overflow-x-auto"
+                class="table-wrp block max-h-screen overflow-y-auto overflow-x-auto border-separate"
             >
                 <table
-                    class="table table-hover w-full mt-0"
+                    class="table table-hover w-full mt-0 table-separate"
                     ref="tguide_master_table"
                 >
                     <thead class="bg-slate-500 border-b sticky top-0">
                         <tr>
-                            <th class="py-3">
+                            <th class="border py-3">
                                 <div class="text-sm text-center h-12">
                                     <a
                                         href="#"
@@ -166,7 +166,7 @@
                                     >
                                 </div>
                             </th>
-                            <th class="py-3 w-max">
+                            <th class="border py-3 w-max">
                                 <div class="text-sm text-center h-12">
                                     <a
                                         href="#"
@@ -208,7 +208,7 @@
                                     </a>
                                 </div>
                             </th>
-                            <th class="py-3">
+                            <th class="border py-3">
                                 <div class="text-sm text-center h-6">
                                     <a
                                         href="#"
@@ -269,7 +269,7 @@
                                 </div>
                             </th>
 
-                            <th class="py-3">
+                            <th class="border py-3">
                                 <div class="text-sm text-center h-6 w-full">
                                     <a
                                         href="#"
@@ -313,7 +313,7 @@
                                 <div class="text-sm text-center h-6"></div>
                             </th>
 
-                            <th class="py-3">
+                            <th class="border py-3">
                                 <div class="text-sm text-center h-6">
                                     <a
                                         href="#"
@@ -359,7 +359,7 @@
                                 ></div>
                             </th>
 
-                            <th class="py-3">
+                            <th class="border py-3">
                                 <div class="text-sm text-center h-12">
                                     <a
                                         href="#"
@@ -407,7 +407,7 @@
                                 </div>
                             </th>
 
-                            <th class="py-3">
+                            <th class="border py-3">
                                 <div class="text-sm text-center h-12">
                                     <a
                                         href="#"
@@ -420,7 +420,7 @@
                                     </a>
                                 </div>
                             </th>
-                            <th class="py-3">
+                            <th class="border py-3">
                                 <div class="text-sm text-center h-12">
                                     <a
                                         href="#"
@@ -433,7 +433,7 @@
                                     </a>
                                 </div>
                             </th>
-                            <th class="py-3">
+                            <th class="border py-3">
                                 <div class="text-sm text-center h-12">
                                     <a
                                         href="#"
@@ -446,7 +446,7 @@
                                     </a>
                                 </div>
                             </th>
-                            <th class="py-3">
+                            <th class="border py-3">
                                 <div class="text-sm text-center h-12">
                                     <a
                                         href="#"
@@ -459,7 +459,7 @@
                                     </a>
                                 </div>
                             </th>
-                            <th class="py-3">
+                            <th class="border py-3">
                                 <div class="text-sm text-center h-12">
                                     <a
                                         href="#"
@@ -472,7 +472,7 @@
                                     </a>
                                 </div>
                             </th>
-                            <th class="py-3">
+                            <th class="border py-3">
                                 <div class="text-sm text-center h-12">
                                     <a
                                         href="#"
@@ -485,7 +485,7 @@
                                     </a>
                                 </div>
                             </th>
-                            <th class="py-3">
+                            <th class="border py-3">
                                 <div class="text-sm text-center h-12">
                                     <a
                                         href="#"
@@ -498,7 +498,7 @@
                                     </a>
                                 </div>
                             </th>
-                            <th class="py-3">
+                            <th class="border py-3">
                                 <div class="text-sm text-center h-12">
                                     <a
                                         href="#"
@@ -511,7 +511,7 @@
                                     </a>
                                 </div>
                             </th>
-                            <th class="py-3">
+                            <th class="border py-3">
                                 <div class="text-sm text-center h-12">
                                     <a
                                         href="#"
@@ -524,7 +524,7 @@
                                     </a>
                                 </div>
                             </th>
-                            <th class="py-3">
+                            <th class="border py-3">
                                 <div class="text-sm text-center h-12">
                                     <a
                                         href="#"
@@ -537,7 +537,7 @@
                                     </a>
                                 </div>
                             </th>
-                            <th class="py-3">
+                            <th class="border py-3">
                                 <div class="text-sm text-center h-12">
                                     <a
                                         href="#"
@@ -550,7 +550,7 @@
                                     </a>
                                 </div>
                             </th>
-                            <th class="py-3">
+                            <th class="border py-3">
                                 <div class="text-sm text-center h-12">
                                     <a
                                         href="#"
@@ -564,7 +564,7 @@
                                 </div>
                             </th>
 
-                            <th class="py-3">
+                            <th class="border py-3">
                                 <div class="text-sm text-center h-12">
                                     <a
                                         href="#"
@@ -576,7 +576,7 @@
                                 </div>
                             </th>
 
-                            <th class="py-3">
+                            <th class="border py-3">
                                 <div
                                     class="text-sm text-center h-12 text-white"
                                 >
@@ -592,13 +592,13 @@
                             ) in tracking_travel_guides.data"
                             :key="tracking.id"
                         >
-                            <td class="text-xs text-center">
+                            <td class="border text-xs text-center">
                                 {{ index + 1 }}
                             </td>
-                            <td class="text-xs text-center">
+                            <td class="border text-xs text-center">
                                 {{ showToday(tracking.created_at) }}
                             </td>
-                            <td class="text-xs text-center">
+                            <td class="border text-xs text-center">
                                 {{ tracking.user_name }}
                             </td>
                             <td
@@ -618,14 +618,14 @@
                                     }}</a>
                                 </router-link>
                             </td>
-                            <td class="text-xs text-center">
+                            <td class="border text-xs text-center">
                                 {{ tracking.edition }}
                             </td>
-                            <td class="text-xs text-center">
+                            <td class="border text-xs text-center">
                                 {{ tracking.tguide_size }}
                             </td>
                             <td
-                                class="text-xs text-center"
+                                class="border text-xs text-center"
                                 v-if="
                                     tracking.wip_travel_guide.length !== 0 &&
                                     checkMonth(
@@ -658,9 +658,10 @@
                                                 tguide_package.wip_package_name
                                             }}
                                         </div>
-                                        <div v-else class="text-yellow-300">
-                                            No package
-                                        </div>
+                                        <div
+                                            v-else
+                                            class="text-yellow-300"
+                                        ></div>
                                     </div>
                                     <div
                                         class="bg-green-300 p-1 rounded-md w-20"
@@ -681,27 +682,16 @@
                                                 tguide_package.wip_package_name
                                             }}
                                         </div>
-                                        <div v-else class="text-yellow-300">
-                                            No package
-                                        </div>
+                                        <div
+                                            v-else
+                                            class="text-yellow-300"
+                                        ></div>
                                     </div>
-                                    <!-- <div
-                                        v-else
-                                        class="bg-red-300 p-1 rounded-md text-red-300"
-                                    >
-                                        None
-                                    </div> -->
                                 </div>
                             </td>
-                            <td class="text-xs text-center" v-else>
-                                <div
-                                    class="bg-red-300 p-1 rounded-md text-red-300"
-                                >
-                                    None
-                                </div>
-                            </td>
+                            <td class="border text-xs text-center" v-else></td>
                             <td
-                                class="text-xs text-center"
+                                class="border text-xs text-center"
                                 v-if="
                                     tracking.wip_travel_guide.length !== 0 &&
                                     checkMonth(
@@ -734,9 +724,10 @@
                                                 tguide_package.wip_package_name
                                             }}
                                         </div>
-                                        <div v-else class="text-yellow-300">
-                                            No package
-                                        </div>
+                                        <div
+                                            v-else
+                                            class="text-yellow-300"
+                                        ></div>
                                     </div>
                                     <div
                                         class="bg-green-300 p-1 rounded-md w-20"
@@ -757,27 +748,16 @@
                                                 tguide_package.wip_package_name
                                             }}
                                         </div>
-                                        <div v-else class="text-yellow-300">
-                                            No package
-                                        </div>
+                                        <div
+                                            v-else
+                                            class="text-yellow-300"
+                                        ></div>
                                     </div>
-                                    <!-- <div
-                                        v-else
-                                        class="bg-red-300 p-1 rounded-md text-red-300"
-                                    >
-                                        None
-                                    </div> -->
                                 </div>
                             </td>
-                            <td class="text-xs text-center" v-else>
-                                <div
-                                    class="bg-red-300 p-1 rounded-md text-red-300"
-                                >
-                                    None
-                                </div>
-                            </td>
+                            <td class="border text-xs text-center" v-else></td>
                             <td
-                                class="text-xs text-center"
+                                class="border text-xs text-center"
                                 v-if="
                                     tracking.wip_travel_guide.length !== 0 &&
                                     checkMonth(
@@ -810,9 +790,10 @@
                                                 tguide_package.wip_package_name
                                             }}
                                         </div>
-                                        <div v-else class="text-yellow-300">
-                                            No package
-                                        </div>
+                                        <div
+                                            v-else
+                                            class="text-yellow-300"
+                                        ></div>
                                     </div>
                                     <div
                                         class="bg-green-300 p-1 rounded-md w-20"
@@ -833,27 +814,16 @@
                                                 tguide_package.wip_package_name
                                             }}
                                         </div>
-                                        <div v-else class="text-yellow-300">
-                                            No package
-                                        </div>
+                                        <div
+                                            v-else
+                                            class="text-yellow-300"
+                                        ></div>
                                     </div>
-                                    <!-- <div
-                                        v-else
-                                        class="bg-red-300 p-1 rounded-md text-red-300"
-                                    >
-                                        None
-                                    </div> -->
                                 </div>
                             </td>
-                            <td class="text-xs text-center" v-else>
-                                <div
-                                    class="bg-red-300 p-1 rounded-md text-red-300"
-                                >
-                                    None
-                                </div>
-                            </td>
+                            <td class="border text-xs text-center" v-else></td>
                             <td
-                                class="text-xs text-center"
+                                class="border text-xs text-center"
                                 v-if="
                                     tracking.wip_travel_guide.length !== 0 &&
                                     checkMonth(
@@ -886,9 +856,10 @@
                                                 tguide_package.wip_package_name
                                             }}
                                         </div>
-                                        <div v-else class="text-yellow-300">
-                                            No package
-                                        </div>
+                                        <div
+                                            v-else
+                                            class="text-yellow-300"
+                                        ></div>
                                     </div>
                                     <div
                                         class="bg-green-300 p-1 rounded-md w-20"
@@ -909,27 +880,16 @@
                                                 tguide_package.wip_package_name
                                             }}
                                         </div>
-                                        <div v-else class="text-yellow-300">
-                                            No package
-                                        </div>
+                                        <div
+                                            v-else
+                                            class="text-yellow-300"
+                                        ></div>
                                     </div>
-                                    <!-- <div
-                                        v-else
-                                        class="bg-red-300 p-1 rounded-md text-red-300"
-                                    >
-                                        None
-                                    </div> -->
                                 </div>
                             </td>
-                            <td class="text-xs text-center" v-else>
-                                <div
-                                    class="bg-red-300 p-1 rounded-md text-red-300"
-                                >
-                                    None
-                                </div>
-                            </td>
+                            <td class="border text-xs text-center" v-else></td>
                             <td
-                                class="text-xs text-center"
+                                class="border text-xs text-center"
                                 v-if="
                                     tracking.wip_travel_guide.length !== 0 &&
                                     checkMonth(
@@ -962,9 +922,10 @@
                                                 tguide_package.wip_package_name
                                             }}
                                         </div>
-                                        <div v-else class="text-yellow-300">
-                                            No package
-                                        </div>
+                                        <div
+                                            v-else
+                                            class="text-yellow-300"
+                                        ></div>
                                     </div>
                                     <div
                                         class="bg-green-300 p-1 rounded-md w-20"
@@ -985,27 +946,16 @@
                                                 tguide_package.wip_package_name
                                             }}
                                         </div>
-                                        <div v-else class="text-yellow-300">
-                                            No package
-                                        </div>
+                                        <div
+                                            v-else
+                                            class="text-yellow-300"
+                                        ></div>
                                     </div>
-                                    <!-- <div
-                                        v-else
-                                        class="bg-red-300 p-1 rounded-md text-red-300"
-                                    >
-                                        None
-                                    </div> -->
                                 </div>
                             </td>
-                            <td class="text-xs text-center" v-else>
-                                <div
-                                    class="bg-red-300 p-1 rounded-md text-red-300"
-                                >
-                                    None
-                                </div>
-                            </td>
+                            <td class="border text-xs text-center" v-else></td>
                             <td
-                                class="text-xs text-center"
+                                class="border text-xs text-center"
                                 v-if="
                                     tracking.wip_travel_guide.length !== 0 &&
                                     checkMonth(
@@ -1038,9 +988,10 @@
                                                 tguide_package.wip_package_name
                                             }}
                                         </div>
-                                        <div v-else class="text-yellow-300">
-                                            No package
-                                        </div>
+                                        <div
+                                            v-else
+                                            class="text-yellow-300"
+                                        ></div>
                                     </div>
                                     <div
                                         class="bg-green-300 p-1 rounded-md w-20"
@@ -1061,27 +1012,16 @@
                                                 tguide_package.wip_package_name
                                             }}
                                         </div>
-                                        <div v-else class="text-yellow-300">
-                                            No package
-                                        </div>
+                                        <div
+                                            v-else
+                                            class="text-yellow-300"
+                                        ></div>
                                     </div>
-                                    <!-- <div
-                                        v-else
-                                        class="bg-red-300 p-1 rounded-md text-red-300"
-                                    >
-                                        None
-                                    </div> -->
                                 </div>
                             </td>
-                            <td class="text-xs text-center" v-else>
-                                <div
-                                    class="bg-red-300 p-1 rounded-md text-red-300"
-                                >
-                                    None
-                                </div>
-                            </td>
+                            <td class="border text-xs text-center" v-else></td>
                             <td
-                                class="text-xs text-center"
+                                class="border text-xs text-center"
                                 v-if="
                                     tracking.wip_travel_guide.length !== 0 &&
                                     checkMonth(
@@ -1114,9 +1054,10 @@
                                                 tguide_package.wip_package_name
                                             }}
                                         </div>
-                                        <div v-else class="text-yellow-300">
-                                            No package
-                                        </div>
+                                        <div
+                                            v-else
+                                            class="text-yellow-300"
+                                        ></div>
                                     </div>
                                     <div
                                         class="bg-green-300 p-1 rounded-md w-20"
@@ -1137,27 +1078,16 @@
                                                 tguide_package.wip_package_name
                                             }}
                                         </div>
-                                        <div v-else class="text-yellow-300">
-                                            No package
-                                        </div>
+                                        <div
+                                            v-else
+                                            class="text-yellow-300"
+                                        ></div>
                                     </div>
-                                    <!-- <div
-                                        v-else
-                                        class="bg-red-300 p-1 rounded-md text-red-300"
-                                    >
-                                        None
-                                    </div> -->
                                 </div>
                             </td>
-                            <td class="text-xs text-center" v-else>
-                                <div
-                                    class="bg-red-300 p-1 rounded-md text-red-300"
-                                >
-                                    None
-                                </div>
-                            </td>
+                            <td class="border text-xs text-center" v-else></td>
                             <td
-                                class="text-xs text-center"
+                                class="border text-xs text-center"
                                 v-if="
                                     tracking.wip_travel_guide.length !== 0 &&
                                     checkMonth(
@@ -1190,9 +1120,10 @@
                                                 tguide_package.wip_package_name
                                             }}
                                         </div>
-                                        <div v-else class="text-yellow-300">
-                                            No package
-                                        </div>
+                                        <div
+                                            v-else
+                                            class="text-yellow-300"
+                                        ></div>
                                     </div>
                                     <div
                                         class="bg-green-300 p-1 rounded-md w-20"
@@ -1213,27 +1144,16 @@
                                                 tguide_package.wip_package_name
                                             }}
                                         </div>
-                                        <div v-else class="text-yellow-300">
-                                            No package
-                                        </div>
+                                        <div
+                                            v-else
+                                            class="text-yellow-300"
+                                        ></div>
                                     </div>
-                                    <!-- <div
-                                        v-else
-                                        class="bg-red-300 p-1 rounded-md text-red-300"
-                                    >
-                                        None
-                                    </div> -->
                                 </div>
                             </td>
-                            <td class="text-xs text-center" v-else>
-                                <div
-                                    class="bg-red-300 p-1 rounded-md text-red-300"
-                                >
-                                    None
-                                </div>
-                            </td>
+                            <td class="border text-xs text-center" v-else></td>
                             <td
-                                class="text-xs text-center"
+                                class="border text-xs text-center"
                                 v-if="
                                     tracking.wip_travel_guide.length !== 0 &&
                                     checkMonth(
@@ -1266,9 +1186,10 @@
                                                 tguide_package.wip_package_name
                                             }}
                                         </div>
-                                        <div v-else class="text-yellow-300">
-                                            No package
-                                        </div>
+                                        <div
+                                            v-else
+                                            class="text-yellow-300"
+                                        ></div>
                                     </div>
                                     <div
                                         class="bg-green-300 p-1 rounded-md w-20"
@@ -1289,27 +1210,16 @@
                                                 tguide_package.wip_package_name
                                             }}
                                         </div>
-                                        <div v-else class="text-yellow-300">
-                                            No package
-                                        </div>
+                                        <div
+                                            v-else
+                                            class="text-yellow-300"
+                                        ></div>
                                     </div>
-                                    <!-- <div
-                                        v-else
-                                        class="bg-red-300 p-1 rounded-md text-red-300"
-                                    >
-                                        None
-                                    </div> -->
                                 </div>
                             </td>
-                            <td class="text-xs text-center" v-else>
-                                <div
-                                    class="bg-red-300 p-1 rounded-md text-red-300"
-                                >
-                                    None
-                                </div>
-                            </td>
+                            <td class="border text-xs text-center" v-else></td>
                             <td
-                                class="text-xs text-center"
+                                class="border text-xs text-center"
                                 v-if="
                                     tracking.wip_travel_guide.length !== 0 &&
                                     checkMonth(
@@ -1342,9 +1252,10 @@
                                                 tguide_package.wip_package_name
                                             }}
                                         </div>
-                                        <div v-else class="text-yellow-300">
-                                            No package
-                                        </div>
+                                        <div
+                                            v-else
+                                            class="text-yellow-300"
+                                        ></div>
                                     </div>
                                     <div
                                         class="bg-green-300 p-1 rounded-md w-20"
@@ -1365,27 +1276,16 @@
                                                 tguide_package.wip_package_name
                                             }}
                                         </div>
-                                        <div v-else class="text-yellow-300">
-                                            No package
-                                        </div>
+                                        <div
+                                            v-else
+                                            class="text-yellow-300"
+                                        ></div>
                                     </div>
-                                    <!-- <div
-                                        v-else
-                                        class="bg-red-300 p-1 rounded-md text-red-300"
-                                    >
-                                        None
-                                    </div> -->
                                 </div>
                             </td>
-                            <td class="text-xs text-center" v-else>
-                                <div
-                                    class="bg-red-300 p-1 rounded-md text-red-300"
-                                >
-                                    None
-                                </div>
-                            </td>
+                            <td class="border text-xs text-center" v-else></td>
                             <td
-                                class="text-xs text-center"
+                                class="border text-xs text-center"
                                 v-if="
                                     tracking.wip_travel_guide.length !== 0 &&
                                     checkMonth(
@@ -1418,9 +1318,10 @@
                                                 tguide_package.wip_package_name
                                             }}
                                         </div>
-                                        <div v-else class="text-yellow-300">
-                                            No package
-                                        </div>
+                                        <div
+                                            v-else
+                                            class="text-yellow-300"
+                                        ></div>
                                     </div>
                                     <div
                                         class="bg-green-300 p-1 rounded-md w-20"
@@ -1441,27 +1342,16 @@
                                                 tguide_package.wip_package_name
                                             }}
                                         </div>
-                                        <div v-else class="text-yellow-300">
-                                            No package
-                                        </div>
+                                        <div
+                                            v-else
+                                            class="text-yellow-300"
+                                        ></div>
                                     </div>
-                                    <!-- <div
-                                        v-else
-                                        class="bg-red-300 p-1 rounded-md text-red-300"
-                                    >
-                                        None
-                                    </div> -->
                                 </div>
                             </td>
-                            <td class="text-xs text-center" v-else>
-                                <div
-                                    class="bg-red-300 p-1 rounded-md text-red-300"
-                                >
-                                    None
-                                </div>
-                            </td>
+                            <td class="border text-xs text-center" v-else></td>
                             <td
-                                class="text-xs text-center"
+                                class="border text-xs text-center"
                                 v-if="
                                     tracking.wip_travel_guide.length !== 0 &&
                                     checkMonth(
@@ -1494,9 +1384,10 @@
                                                 tguide_package.wip_package_name
                                             }}
                                         </div>
-                                        <div v-else class="text-yellow-300">
-                                            No package
-                                        </div>
+                                        <div
+                                            v-else
+                                            class="text-yellow-300"
+                                        ></div>
                                     </div>
                                     <div
                                         class="bg-green-300 p-1 rounded-md w-20"
@@ -1517,31 +1408,20 @@
                                                 tguide_package.wip_package_name
                                             }}
                                         </div>
-                                        <div v-else class="text-yellow-300">
-                                            No package
-                                        </div>
+                                        <div
+                                            v-else
+                                            class="text-yellow-300"
+                                        ></div>
                                     </div>
-                                    <!-- <div
-                                        v-else
-                                        class="bg-red-300 p-1 rounded-md text-red-300"
-                                    >
-                                        None
-                                    </div> -->
                                 </div>
                             </td>
-                            <td class="text-xs text-center" v-else>
-                                <div
-                                    class="bg-red-300 p-1 rounded-md text-red-300"
-                                >
-                                    None
-                                </div>
-                            </td>
+                            <td class="border text-xs text-center" v-else></td>
 
-                            <td class="text-xs text-center">
+                            <td class="border text-xs text-center">
                                 {{ tracking.tguide_remark }}
                             </td>
                             <!-- :to="{ name: 'tracking_general_edit', params: { id: tracking.id },}" -->
-                            <td class="text-xs text-center">
+                            <td class="border text-xs text-center">
                                 <router-link
                                     :to="{
                                         name: 'tracking_travel_guide_edit',
@@ -1566,15 +1446,15 @@
             </div>
             <div
                 v-if="view_type === 'wip'"
-                class="table-wrp block max-h-screen overflow-y-auto overflow-x-auto"
+                class="table-wrp block max-h-screen overflow-y-auto overflow-x-auto table-border"
             >
                 <table
-                    class="table table-hover w-full mt-0"
+                    class="table table-hover w-full mt-0 table-separate"
                     ref="tguide_wip_table"
                 >
                     <thead class="bg-slate-500 border-b sticky top-0">
                         <tr>
-                            <th class="py-3">
+                            <th class="border py-3">
                                 <div class="text-sm text-center h-6">
                                     <a
                                         href="#"
@@ -1599,7 +1479,7 @@
                                 </div>
                                 <div class="text-sm text-center h-6"></div>
                             </th>
-                            <th class="py-3">
+                            <th class="border py-3">
                                 <div class="text-sm text-center h-6">
                                     <a
                                         href="#"
@@ -1642,7 +1522,7 @@
                                 </div>
                                 <div class="text-sm text-center h-6"></div>
                             </th>
-                            <th class="py-3">
+                            <th class="border py-3">
                                 <div class="text-sm text-center h-6">
                                     <a
                                         href="#"
@@ -1703,7 +1583,7 @@
                                 </div>
                             </th>
 
-                            <th class="py-3">
+                            <th class="border py-3">
                                 <div class="text-sm text-center h-6 w-full">
                                     <a
                                         href="#"
@@ -1747,7 +1627,7 @@
                                 <div class="text-sm text-center h-6"></div>
                             </th>
 
-                            <th class="py-3">
+                            <th class="border py-3">
                                 <div class="text-sm text-center h-6">
                                     <a
                                         href="#"
@@ -1793,7 +1673,7 @@
                                 ></div>
                             </th>
 
-                            <th class="py-3">
+                            <th class="border py-3">
                                 <div class="text-sm text-center h-6">
                                     <a
                                         href="#"
@@ -1844,7 +1724,7 @@
                                 <div class="text-sm text-center h-6"></div>
                             </th>
 
-                            <th class="py-3">
+                            <th class="border py-3">
                                 <div class="text-sm text-center h-6">
                                     <a
                                         href="#"
@@ -1853,7 +1733,7 @@
                                         "
                                         class="text-white inline-flex"
                                     >
-                                        Art Reminder
+                                        A/W Reminder
                                         <span
                                             v-if="
                                                 (!(sort_direction == 'asc') ||
@@ -1887,7 +1767,7 @@
                                 </div>
                                 <div class="text-sm text-center h-6"></div>
                             </th>
-                            <th class="py-3">
+                            <th class="border py-3">
                                 <div class="text-sm text-center h-6">
                                     <a
                                         href="#"
@@ -1896,7 +1776,7 @@
                                         "
                                         class="text-white inline-flex"
                                     >
-                                        Art Record
+                                        A/W Received
                                         <span
                                             v-if="
                                                 (!(sort_direction == 'asc') ||
@@ -1933,7 +1813,7 @@
                                 </div>
                                 <div class="text-sm text-center h-6"></div>
                             </th>
-                            <th class="py-3">
+                            <th class="border py-3">
                                 <div class="text-sm text-center h-12">
                                     <a
                                         href="#"
@@ -1946,7 +1826,7 @@
                                     </a>
                                 </div>
                             </th>
-                            <th class="py-3">
+                            <th class="border py-3">
                                 <div class="text-sm text-center h-12">
                                     <a
                                         href="#"
@@ -1959,7 +1839,7 @@
                                     </a>
                                 </div>
                             </th>
-                            <th class="py-3">
+                            <th class="border py-3">
                                 <div class="text-sm text-center h-12">
                                     <a
                                         href="#"
@@ -1972,7 +1852,7 @@
                                     </a>
                                 </div>
                             </th>
-                            <th class="py-3">
+                            <th class="border py-3">
                                 <div class="text-sm text-center h-12">
                                     <a
                                         href="#"
@@ -1985,7 +1865,7 @@
                                     </a>
                                 </div>
                             </th>
-                            <th class="py-3">
+                            <th class="border py-3">
                                 <div class="text-sm text-center h-12">
                                     <a
                                         href="#"
@@ -1998,7 +1878,7 @@
                                     </a>
                                 </div>
                             </th>
-                            <th class="py-3">
+                            <th class="border py-3">
                                 <div class="text-sm text-center h-12">
                                     <a
                                         href="#"
@@ -2011,7 +1891,7 @@
                                     </a>
                                 </div>
                             </th>
-                            <th class="py-3">
+                            <th class="border py-3">
                                 <div class="text-sm text-center h-12">
                                     <a
                                         href="#"
@@ -2024,7 +1904,7 @@
                                     </a>
                                 </div>
                             </th>
-                            <th class="py-3">
+                            <th class="border py-3">
                                 <div class="text-sm text-center h-12">
                                     <a
                                         href="#"
@@ -2037,7 +1917,7 @@
                                     </a>
                                 </div>
                             </th>
-                            <th class="py-3">
+                            <th class="border py-3">
                                 <div class="text-sm text-center h-12">
                                     <a
                                         href="#"
@@ -2050,7 +1930,7 @@
                                     </a>
                                 </div>
                             </th>
-                            <th class="py-3">
+                            <th class="border py-3">
                                 <div class="text-sm text-center h-12">
                                     <a
                                         href="#"
@@ -2063,7 +1943,7 @@
                                     </a>
                                 </div>
                             </th>
-                            <th class="py-3">
+                            <th class="border py-3">
                                 <div class="text-sm text-center h-12">
                                     <a
                                         href="#"
@@ -2076,7 +1956,7 @@
                                     </a>
                                 </div>
                             </th>
-                            <th class="py-3">
+                            <th class="border py-3">
                                 <div class="text-sm text-center h-12">
                                     <a
                                         href="#"
@@ -2090,7 +1970,7 @@
                                 </div>
                             </th>
 
-                            <th class="py-3">
+                            <th class="border py-3">
                                 <div class="text-sm text-center h-12">
                                     <a
                                         href="#"
@@ -2102,7 +1982,7 @@
                                 </div>
                             </th>
 
-                            <th class="py-3">
+                            <th class="border py-3">
                                 <div
                                     class="text-sm text-center h-12 text-white"
                                 >
@@ -2118,13 +1998,13 @@
                             ) in tracking_travel_guides.data"
                             :key="tracking.id"
                         >
-                            <td class="text-xs text-center">
+                            <td class="border text-xs text-center">
                                 {{ index + 1 }}
                             </td>
-                            <td class="text-xs text-center">
+                            <td class="border text-xs text-center">
                                 {{ showToday(tracking.created_at) }}
                             </td>
-                            <td class="text-xs text-center">
+                            <td class="border text-xs text-center">
                                 {{ tracking.user_name }}
                             </td>
                             <td
@@ -2144,14 +2024,14 @@
                                     }}</a>
                                 </router-link>
                             </td>
-                            <td class="text-xs text-center">
+                            <td class="border text-xs text-center">
                                 {{ tracking.edition }}
                             </td>
-                            <td class="text-xs text-center">
+                            <td class="border text-xs text-center">
                                 {{ tracking.tguide_size }}
                             </td>
                             <td
-                                class="text-xs text-center"
+                                class="border text-xs text-center"
                                 v-if="
                                     !tracking.art_reminder_date &&
                                     !tracking.art_reminder_user_id &&
@@ -2166,15 +2046,13 @@
                             </td>
                             <td
                                 v-else-if="tracking.art_reminder_done === 2"
-                                class="text-xs text-center"
+                                class="border text-xs text-center"
                             >
                                 <div class="bg-yellow-300 p-1 rounded-md w-20">
                                     <div
                                         v-if="!tracking.art_reminder_date"
                                         class="text-amber-600"
-                                    >
-                                        No date
-                                    </div>
+                                    ></div>
                                     <div v-else="tracking.art_reminder_date">
                                         {{
                                             showToday(
@@ -2185,18 +2063,14 @@
                                     <div
                                         v-if="!tracking.art_reminder_user"
                                         class="text-amber-600"
-                                    >
-                                        No user
-                                    </div>
+                                    ></div>
                                     <div v-else="tracking.art_reminder_user">
                                         {{ tracking.art_reminder_user.name }}
                                     </div>
                                     <div
                                         v-if="!tracking.art_reminder_remark"
                                         class="text-amber-600"
-                                    >
-                                        No remark
-                                    </div>
+                                    ></div>
                                     <div v-else="tracking.art_reminder_remark">
                                         {{ tracking.art_reminder_remark }}
                                     </div>
@@ -2204,15 +2078,13 @@
                             </td>
                             <td
                                 v-else-if="tracking.art_reminder_done === 1"
-                                class="text-xs text-center"
+                                class="border text-xs text-center"
                             >
                                 <div class="bg-green-300 p-1 rounded-md w-20">
                                     <div
                                         v-if="!tracking.art_reminder_date"
                                         class="text-amber-600"
-                                    >
-                                        No date
-                                    </div>
+                                    ></div>
                                     <div v-else="tracking.art_reminder_date">
                                         {{
                                             showToday(
@@ -2223,25 +2095,21 @@
                                     <div
                                         v-if="!tracking.art_reminder_user"
                                         class="text-amber-600"
-                                    >
-                                        No user
-                                    </div>
+                                    ></div>
                                     <div v-else="tracking.art_reminder_user">
                                         {{ tracking.art_reminder_user.name }}
                                     </div>
                                     <div
                                         v-if="!tracking.art_reminder_remark"
                                         class="text-amber-600"
-                                    >
-                                        No remark
-                                    </div>
+                                    ></div>
                                     <div v-else="tracking.art_reminder_remark">
                                         {{ tracking.art_reminder_remark }}
                                     </div>
                                 </div>
                             </td>
                             <td
-                                class="text-xs text-center"
+                                class="border text-xs text-center"
                                 v-if="
                                     !tracking.art_record_date &&
                                     !tracking.art_record_user &&
@@ -2256,15 +2124,13 @@
                             </td>
                             <td
                                 v-else-if="tracking.art_record_done === 2"
-                                class="text-xs text-center"
+                                class="border text-xs text-center"
                             >
                                 <div class="bg-yellow-300 p-1 rounded-md w-20">
                                     <div
                                         v-if="!tracking.art_record_date"
                                         class="text-amber-600"
-                                    >
-                                        No date
-                                    </div>
+                                    ></div>
                                     <div v-else="tracking.art_record_date">
                                         {{
                                             showToday(tracking.art_record_date)
@@ -2273,18 +2139,14 @@
                                     <div
                                         v-if="!tracking.art_record_user"
                                         class="text-amber-600"
-                                    >
-                                        No user
-                                    </div>
+                                    ></div>
                                     <div v-else="tracking.art_record_user">
                                         {{ tracking.art_record_user.name }}
                                     </div>
                                     <div
                                         v-if="!tracking.art_record_remark"
                                         class="text-amber-600"
-                                    >
-                                        No remark
-                                    </div>
+                                    ></div>
                                     <div v-else="tracking.art_record_remark">
                                         {{ tracking.art_record_remark }}
                                     </div>
@@ -2292,15 +2154,13 @@
                             </td>
                             <td
                                 v-else-if="tracking.art_record_done === 1"
-                                class="text-xs text-center"
+                                class="border text-xs text-center"
                             >
                                 <div class="bg-green-300 p-1 rounded-md w-20">
                                     <div
                                         v-if="!tracking.art_record_date"
                                         class="text-amber-600"
-                                    >
-                                        No date
-                                    </div>
+                                    ></div>
                                     <div v-else="tracking.art_record_date">
                                         {{
                                             showToday(tracking.art_record_date)
@@ -2309,25 +2169,21 @@
                                     <div
                                         v-if="!tracking.art_record_user"
                                         class="text-amber-600"
-                                    >
-                                        No user
-                                    </div>
+                                    ></div>
                                     <div v-else="tracking.art_record_user">
                                         {{ tracking.art_record_user.name }}
                                     </div>
                                     <div
                                         v-if="!tracking.art_record_remark"
                                         class="text-amber-600"
-                                    >
-                                        No remark
-                                    </div>
+                                    ></div>
                                     <div v-else="tracking.art_record_remark">
                                         {{ tracking.art_record_remark }}
                                     </div>
                                 </div>
                             </td>
                             <td
-                                class="text-xs text-center"
+                                class="border text-xs text-center"
                                 v-if="
                                     tracking.wip_travel_guide.length !== 0 &&
                                     checkMonth(
@@ -2360,9 +2216,10 @@
                                                 tguide_package.wip_package_name
                                             }}
                                         </div>
-                                        <div v-else class="text-amber-600">
-                                            No package
-                                        </div>
+                                        <div
+                                            v-else
+                                            class="text-amber-600"
+                                        ></div>
                                         <div
                                             v-if="
                                                 tguide_package.wip_package_date
@@ -2374,9 +2231,10 @@
                                                 )
                                             }}
                                         </div>
-                                        <div v-else class="text-amber-600">
-                                            No date
-                                        </div>
+                                        <div
+                                            v-else
+                                            class="text-amber-600"
+                                        ></div>
                                         <div
                                             v-if="
                                                 tguide_package.package_user_name
@@ -2386,9 +2244,10 @@
                                                 tguide_package.package_user_name
                                             }}
                                         </div>
-                                        <div v-else class="text-amber-600">
-                                            No user
-                                        </div>
+                                        <div
+                                            v-else
+                                            class="text-amber-600"
+                                        ></div>
 
                                         <div
                                             v-if="
@@ -2399,9 +2258,10 @@
                                                 tguide_package.wip_package_remark
                                             }}
                                         </div>
-                                        <div v-else class="text-amber-600">
-                                            No remark
-                                        </div>
+                                        <div
+                                            v-else
+                                            class="text-amber-600"
+                                        ></div>
                                     </div>
                                     <div
                                         class="bg-green-300 p-1 rounded-md w-20"
@@ -2422,9 +2282,10 @@
                                                 tguide_package.wip_package_name
                                             }}
                                         </div>
-                                        <div v-else class="text-amber-600">
-                                            No package
-                                        </div>
+                                        <div
+                                            v-else
+                                            class="text-amber-600"
+                                        ></div>
                                         <div
                                             v-if="
                                                 tguide_package.wip_package_date
@@ -2436,9 +2297,10 @@
                                                 )
                                             }}
                                         </div>
-                                        <div v-else class="text-amber-600">
-                                            No date
-                                        </div>
+                                        <div
+                                            v-else
+                                            class="text-amber-600"
+                                        ></div>
                                         <div
                                             v-if="
                                                 tguide_package.package_user_name
@@ -2448,9 +2310,10 @@
                                                 tguide_package.package_user_name
                                             }}
                                         </div>
-                                        <div v-else class="text-amber-600">
-                                            No user
-                                        </div>
+                                        <div
+                                            v-else
+                                            class="text-amber-600"
+                                        ></div>
 
                                         <div
                                             v-if="
@@ -2461,28 +2324,17 @@
                                                 tguide_package.wip_package_remark
                                             }}
                                         </div>
-                                        <div v-else class="text-amber-600">
-                                            No remark
-                                        </div>
+                                        <div
+                                            v-else
+                                            class="text-amber-600"
+                                        ></div>
                                     </div>
-                                    <!-- <div
-                                        v-else
-                                        class="bg-red-300 p-1 rounded-md text-red-300"
-                                    >
-                                        None
-                                    </div> -->
                                 </div>
                             </td>
-                            <td class="text-xs text-center" v-else>
-                                <div
-                                    class="bg-red-300 p-1 rounded-md text-red-300"
-                                >
-                                    None
-                                </div>
-                            </td>
+                            <td class="border text-xs text-center" v-else></td>
 
                             <td
-                                class="text-xs text-center"
+                                class="border text-xs text-center"
                                 v-if="
                                     tracking.wip_travel_guide.length !== 0 &&
                                     checkMonth(
@@ -2515,9 +2367,10 @@
                                                 tguide_package.wip_package_name
                                             }}
                                         </div>
-                                        <div v-else class="text-amber-600">
-                                            No package
-                                        </div>
+                                        <div
+                                            v-else
+                                            class="text-amber-600"
+                                        ></div>
                                         <div
                                             v-if="
                                                 tguide_package.wip_package_date
@@ -2529,9 +2382,10 @@
                                                 )
                                             }}
                                         </div>
-                                        <div v-else class="text-amber-600">
-                                            No date
-                                        </div>
+                                        <div
+                                            v-else
+                                            class="text-amber-600"
+                                        ></div>
                                         <div
                                             v-if="
                                                 tguide_package.package_user_name
@@ -2541,9 +2395,10 @@
                                                 tguide_package.package_user_name
                                             }}
                                         </div>
-                                        <div v-else class="text-amber-600">
-                                            No user
-                                        </div>
+                                        <div
+                                            v-else
+                                            class="text-amber-600"
+                                        ></div>
 
                                         <div
                                             v-if="
@@ -2554,9 +2409,10 @@
                                                 tguide_package.wip_package_remark
                                             }}
                                         </div>
-                                        <div v-else class="text-amber-600">
-                                            No remark
-                                        </div>
+                                        <div
+                                            v-else
+                                            class="text-amber-600"
+                                        ></div>
                                     </div>
                                     <div
                                         class="bg-green-300 p-1 rounded-md w-20"
@@ -2577,9 +2433,10 @@
                                                 tguide_package.wip_package_name
                                             }}
                                         </div>
-                                        <div v-else class="text-amber-600">
-                                            No package
-                                        </div>
+                                        <div
+                                            v-else
+                                            class="text-amber-600"
+                                        ></div>
                                         <div
                                             v-if="
                                                 tguide_package.wip_package_date
@@ -2591,9 +2448,10 @@
                                                 )
                                             }}
                                         </div>
-                                        <div v-else class="text-amber-600">
-                                            No date
-                                        </div>
+                                        <div
+                                            v-else
+                                            class="text-amber-600"
+                                        ></div>
                                         <div
                                             v-if="
                                                 tguide_package.package_user_name
@@ -2603,9 +2461,10 @@
                                                 tguide_package.package_user_name
                                             }}
                                         </div>
-                                        <div v-else class="text-amber-600">
-                                            No user
-                                        </div>
+                                        <div
+                                            v-else
+                                            class="text-amber-600"
+                                        ></div>
 
                                         <div
                                             v-if="
@@ -2616,28 +2475,17 @@
                                                 tguide_package.wip_package_remark
                                             }}
                                         </div>
-                                        <div v-else class="text-amber-600">
-                                            No remark
-                                        </div>
+                                        <div
+                                            v-else
+                                            class="text-amber-600"
+                                        ></div>
                                     </div>
-                                    <!-- <div
-                                        v-else
-                                        class="bg-red-300 p-1 rounded-md text-red-300"
-                                    >
-                                        None
-                                    </div> -->
                                 </div>
                             </td>
-                            <td class="text-xs text-center" v-else>
-                                <div
-                                    class="bg-red-300 p-1 rounded-md text-red-300"
-                                >
-                                    None
-                                </div>
-                            </td>
+                            <td class="border text-xs text-center" v-else></td>
 
                             <td
-                                class="text-xs text-center"
+                                class="border text-xs text-center"
                                 v-if="
                                     tracking.wip_travel_guide.length !== 0 &&
                                     checkMonth(
@@ -2670,9 +2518,10 @@
                                                 tguide_package.wip_package_name
                                             }}
                                         </div>
-                                        <div v-else class="text-amber-600">
-                                            No package
-                                        </div>
+                                        <div
+                                            v-else
+                                            class="text-amber-600"
+                                        ></div>
                                         <div
                                             v-if="
                                                 tguide_package.wip_package_date
@@ -2684,9 +2533,10 @@
                                                 )
                                             }}
                                         </div>
-                                        <div v-else class="text-amber-600">
-                                            No date
-                                        </div>
+                                        <div
+                                            v-else
+                                            class="text-amber-600"
+                                        ></div>
                                         <div
                                             v-if="
                                                 tguide_package.package_user_name
@@ -2696,9 +2546,10 @@
                                                 tguide_package.package_user_name
                                             }}
                                         </div>
-                                        <div v-else class="text-amber-600">
-                                            No user
-                                        </div>
+                                        <div
+                                            v-else
+                                            class="text-amber-600"
+                                        ></div>
 
                                         <div
                                             v-if="
@@ -2709,9 +2560,10 @@
                                                 tguide_package.wip_package_remark
                                             }}
                                         </div>
-                                        <div v-else class="text-amber-600">
-                                            No remark
-                                        </div>
+                                        <div
+                                            v-else
+                                            class="text-amber-600"
+                                        ></div>
                                     </div>
                                     <div
                                         class="bg-green-300 p-1 rounded-md w-20"
@@ -2732,9 +2584,10 @@
                                                 tguide_package.wip_package_name
                                             }}
                                         </div>
-                                        <div v-else class="text-amber-600">
-                                            No package
-                                        </div>
+                                        <div
+                                            v-else
+                                            class="text-amber-600"
+                                        ></div>
                                         <div
                                             v-if="
                                                 tguide_package.wip_package_date
@@ -2746,9 +2599,10 @@
                                                 )
                                             }}
                                         </div>
-                                        <div v-else class="text-amber-600">
-                                            No date
-                                        </div>
+                                        <div
+                                            v-else
+                                            class="text-amber-600"
+                                        ></div>
                                         <div
                                             v-if="
                                                 tguide_package.package_user_name
@@ -2758,9 +2612,10 @@
                                                 tguide_package.package_user_name
                                             }}
                                         </div>
-                                        <div v-else class="text-amber-600">
-                                            No user
-                                        </div>
+                                        <div
+                                            v-else
+                                            class="text-amber-600"
+                                        ></div>
 
                                         <div
                                             v-if="
@@ -2771,28 +2626,17 @@
                                                 tguide_package.wip_package_remark
                                             }}
                                         </div>
-                                        <div v-else class="text-amber-600">
-                                            No remark
-                                        </div>
+                                        <div
+                                            v-else
+                                            class="text-amber-600"
+                                        ></div>
                                     </div>
-                                    <!-- <div
-                                        v-else
-                                        class="bg-red-300 p-1 rounded-md text-red-300"
-                                    >
-                                        None
-                                    </div> -->
                                 </div>
                             </td>
-                            <td class="text-xs text-center" v-else>
-                                <div
-                                    class="bg-red-300 p-1 rounded-md text-red-300"
-                                >
-                                    None
-                                </div>
-                            </td>
+                            <td class="border text-xs text-center" v-else></td>
 
                             <td
-                                class="text-xs text-center"
+                                class="border text-xs text-center"
                                 v-if="
                                     tracking.wip_travel_guide.length !== 0 &&
                                     checkMonth(
@@ -2825,9 +2669,10 @@
                                                 tguide_package.wip_package_name
                                             }}
                                         </div>
-                                        <div v-else class="text-amber-600">
-                                            No package
-                                        </div>
+                                        <div
+                                            v-else
+                                            class="text-amber-600"
+                                        ></div>
                                         <div
                                             v-if="
                                                 tguide_package.wip_package_date
@@ -2839,9 +2684,10 @@
                                                 )
                                             }}
                                         </div>
-                                        <div v-else class="text-amber-600">
-                                            No date
-                                        </div>
+                                        <div
+                                            v-else
+                                            class="text-amber-600"
+                                        ></div>
                                         <div
                                             v-if="
                                                 tguide_package.package_user_name
@@ -2851,9 +2697,10 @@
                                                 tguide_package.package_user_name
                                             }}
                                         </div>
-                                        <div v-else class="text-amber-600">
-                                            No user
-                                        </div>
+                                        <div
+                                            v-else
+                                            class="text-amber-600"
+                                        ></div>
 
                                         <div
                                             v-if="
@@ -2864,9 +2711,10 @@
                                                 tguide_package.wip_package_remark
                                             }}
                                         </div>
-                                        <div v-else class="text-amber-600">
-                                            No remark
-                                        </div>
+                                        <div
+                                            v-else
+                                            class="text-amber-600"
+                                        ></div>
                                     </div>
                                     <div
                                         class="bg-green-300 p-1 rounded-md w-20"
@@ -2887,9 +2735,10 @@
                                                 tguide_package.wip_package_name
                                             }}
                                         </div>
-                                        <div v-else class="text-amber-600">
-                                            No package
-                                        </div>
+                                        <div
+                                            v-else
+                                            class="text-amber-600"
+                                        ></div>
                                         <div
                                             v-if="
                                                 tguide_package.wip_package_date
@@ -2901,9 +2750,10 @@
                                                 )
                                             }}
                                         </div>
-                                        <div v-else class="text-amber-600">
-                                            No date
-                                        </div>
+                                        <div
+                                            v-else
+                                            class="text-amber-600"
+                                        ></div>
                                         <div
                                             v-if="
                                                 tguide_package.package_user_name
@@ -2913,9 +2763,10 @@
                                                 tguide_package.package_user_name
                                             }}
                                         </div>
-                                        <div v-else class="text-amber-600">
-                                            No user
-                                        </div>
+                                        <div
+                                            v-else
+                                            class="text-amber-600"
+                                        ></div>
 
                                         <div
                                             v-if="
@@ -2926,28 +2777,17 @@
                                                 tguide_package.wip_package_remark
                                             }}
                                         </div>
-                                        <div v-else class="text-amber-600">
-                                            No remark
-                                        </div>
+                                        <div
+                                            v-else
+                                            class="text-amber-600"
+                                        ></div>
                                     </div>
-                                    <!-- <div
-                                        v-else
-                                        class="bg-red-300 p-1 rounded-md text-red-300"
-                                    >
-                                        None
-                                    </div> -->
                                 </div>
                             </td>
-                            <td class="text-xs text-center" v-else>
-                                <div
-                                    class="bg-red-300 p-1 rounded-md text-red-300"
-                                >
-                                    None
-                                </div>
-                            </td>
+                            <td class="border text-xs text-center" v-else></td>
 
                             <td
-                                class="text-xs text-center"
+                                class="border text-xs text-center"
                                 v-if="
                                     tracking.wip_travel_guide.length !== 0 &&
                                     checkMonth(
@@ -2980,9 +2820,10 @@
                                                 tguide_package.wip_package_name
                                             }}
                                         </div>
-                                        <div v-else class="text-amber-600">
-                                            No package
-                                        </div>
+                                        <div
+                                            v-else
+                                            class="text-amber-600"
+                                        ></div>
                                         <div
                                             v-if="
                                                 tguide_package.wip_package_date
@@ -2994,9 +2835,10 @@
                                                 )
                                             }}
                                         </div>
-                                        <div v-else class="text-amber-600">
-                                            No date
-                                        </div>
+                                        <div
+                                            v-else
+                                            class="text-amber-600"
+                                        ></div>
                                         <div
                                             v-if="
                                                 tguide_package.package_user_name
@@ -3006,9 +2848,10 @@
                                                 tguide_package.package_user_name
                                             }}
                                         </div>
-                                        <div v-else class="text-amber-600">
-                                            No user
-                                        </div>
+                                        <div
+                                            v-else
+                                            class="text-amber-600"
+                                        ></div>
 
                                         <div
                                             v-if="
@@ -3019,9 +2862,10 @@
                                                 tguide_package.wip_package_remark
                                             }}
                                         </div>
-                                        <div v-else class="text-amber-600">
-                                            No remark
-                                        </div>
+                                        <div
+                                            v-else
+                                            class="text-amber-600"
+                                        ></div>
                                     </div>
                                     <div
                                         class="bg-green-300 p-1 rounded-md w-20"
@@ -3042,9 +2886,10 @@
                                                 tguide_package.wip_package_name
                                             }}
                                         </div>
-                                        <div v-else class="text-amber-600">
-                                            No package
-                                        </div>
+                                        <div
+                                            v-else
+                                            class="text-amber-600"
+                                        ></div>
                                         <div
                                             v-if="
                                                 tguide_package.wip_package_date
@@ -3056,9 +2901,10 @@
                                                 )
                                             }}
                                         </div>
-                                        <div v-else class="text-amber-600">
-                                            No date
-                                        </div>
+                                        <div
+                                            v-else
+                                            class="text-amber-600"
+                                        ></div>
                                         <div
                                             v-if="
                                                 tguide_package.package_user_name
@@ -3068,9 +2914,10 @@
                                                 tguide_package.package_user_name
                                             }}
                                         </div>
-                                        <div v-else class="text-amber-600">
-                                            No user
-                                        </div>
+                                        <div
+                                            v-else
+                                            class="text-amber-600"
+                                        ></div>
 
                                         <div
                                             v-if="
@@ -3081,28 +2928,17 @@
                                                 tguide_package.wip_package_remark
                                             }}
                                         </div>
-                                        <div v-else class="text-amber-600">
-                                            No remark
-                                        </div>
+                                        <div
+                                            v-else
+                                            class="text-amber-600"
+                                        ></div>
                                     </div>
-                                    <!-- <div
-                                        v-else
-                                        class="bg-red-300 p-1 rounded-md text-red-300"
-                                    >
-                                        None
-                                    </div> -->
                                 </div>
                             </td>
-                            <td class="text-xs text-center" v-else>
-                                <div
-                                    class="bg-red-300 p-1 rounded-md text-red-300"
-                                >
-                                    None
-                                </div>
-                            </td>
+                            <td class="border text-xs text-center" v-else></td>
 
                             <td
-                                class="text-xs text-center"
+                                class="border text-xs text-center"
                                 v-if="
                                     tracking.wip_travel_guide.length !== 0 &&
                                     checkMonth(
@@ -3135,9 +2971,10 @@
                                                 tguide_package.wip_package_name
                                             }}
                                         </div>
-                                        <div v-else class="text-amber-600">
-                                            No package
-                                        </div>
+                                        <div
+                                            v-else
+                                            class="text-amber-600"
+                                        ></div>
                                         <div
                                             v-if="
                                                 tguide_package.wip_package_date
@@ -3149,9 +2986,10 @@
                                                 )
                                             }}
                                         </div>
-                                        <div v-else class="text-amber-600">
-                                            No date
-                                        </div>
+                                        <div
+                                            v-else
+                                            class="text-amber-600"
+                                        ></div>
                                         <div
                                             v-if="
                                                 tguide_package.package_user_name
@@ -3161,9 +2999,10 @@
                                                 tguide_package.package_user_name
                                             }}
                                         </div>
-                                        <div v-else class="text-amber-600">
-                                            No user
-                                        </div>
+                                        <div
+                                            v-else
+                                            class="text-amber-600"
+                                        ></div>
 
                                         <div
                                             v-if="
@@ -3174,9 +3013,10 @@
                                                 tguide_package.wip_package_remark
                                             }}
                                         </div>
-                                        <div v-else class="text-amber-600">
-                                            No remark
-                                        </div>
+                                        <div
+                                            v-else
+                                            class="text-amber-600"
+                                        ></div>
                                     </div>
                                     <div
                                         class="bg-green-300 p-1 rounded-md w-20"
@@ -3197,9 +3037,10 @@
                                                 tguide_package.wip_package_name
                                             }}
                                         </div>
-                                        <div v-else class="text-amber-600">
-                                            No package
-                                        </div>
+                                        <div
+                                            v-else
+                                            class="text-amber-600"
+                                        ></div>
                                         <div
                                             v-if="
                                                 tguide_package.wip_package_date
@@ -3211,9 +3052,10 @@
                                                 )
                                             }}
                                         </div>
-                                        <div v-else class="text-amber-600">
-                                            No date
-                                        </div>
+                                        <div
+                                            v-else
+                                            class="text-amber-600"
+                                        ></div>
                                         <div
                                             v-if="
                                                 tguide_package.package_user_name
@@ -3223,9 +3065,10 @@
                                                 tguide_package.package_user_name
                                             }}
                                         </div>
-                                        <div v-else class="text-amber-600">
-                                            No user
-                                        </div>
+                                        <div
+                                            v-else
+                                            class="text-amber-600"
+                                        ></div>
 
                                         <div
                                             v-if="
@@ -3236,28 +3079,17 @@
                                                 tguide_package.wip_package_remark
                                             }}
                                         </div>
-                                        <div v-else class="text-amber-600">
-                                            No remark
-                                        </div>
+                                        <div
+                                            v-else
+                                            class="text-amber-600"
+                                        ></div>
                                     </div>
-                                    <!-- <div
-                                        v-else
-                                        class="bg-red-300 p-1 rounded-md text-red-300"
-                                    >
-                                        None
-                                    </div> -->
                                 </div>
                             </td>
-                            <td class="text-xs text-center" v-else>
-                                <div
-                                    class="bg-red-300 p-1 rounded-md text-red-300"
-                                >
-                                    None
-                                </div>
-                            </td>
+                            <td class="border text-xs text-center" v-else></td>
 
                             <td
-                                class="text-xs text-center"
+                                class="border text-xs text-center"
                                 v-if="
                                     tracking.wip_travel_guide.length !== 0 &&
                                     checkMonth(
@@ -3290,9 +3122,10 @@
                                                 tguide_package.wip_package_name
                                             }}
                                         </div>
-                                        <div v-else class="text-amber-600">
-                                            No package
-                                        </div>
+                                        <div
+                                            v-else
+                                            class="text-amber-600"
+                                        ></div>
                                         <div
                                             v-if="
                                                 tguide_package.wip_package_date
@@ -3304,9 +3137,10 @@
                                                 )
                                             }}
                                         </div>
-                                        <div v-else class="text-amber-600">
-                                            No date
-                                        </div>
+                                        <div
+                                            v-else
+                                            class="text-amber-600"
+                                        ></div>
                                         <div
                                             v-if="
                                                 tguide_package.package_user_name
@@ -3316,9 +3150,10 @@
                                                 tguide_package.package_user_name
                                             }}
                                         </div>
-                                        <div v-else class="text-amber-600">
-                                            No user
-                                        </div>
+                                        <div
+                                            v-else
+                                            class="text-amber-600"
+                                        ></div>
 
                                         <div
                                             v-if="
@@ -3329,9 +3164,10 @@
                                                 tguide_package.wip_package_remark
                                             }}
                                         </div>
-                                        <div v-else class="text-amber-600">
-                                            No remark
-                                        </div>
+                                        <div
+                                            v-else
+                                            class="text-amber-600"
+                                        ></div>
                                     </div>
                                     <div
                                         class="bg-green-300 p-1 rounded-md w-20"
@@ -3352,9 +3188,10 @@
                                                 tguide_package.wip_package_name
                                             }}
                                         </div>
-                                        <div v-else class="text-amber-600">
-                                            No package
-                                        </div>
+                                        <div
+                                            v-else
+                                            class="text-amber-600"
+                                        ></div>
                                         <div
                                             v-if="
                                                 tguide_package.wip_package_date
@@ -3366,9 +3203,10 @@
                                                 )
                                             }}
                                         </div>
-                                        <div v-else class="text-amber-600">
-                                            No date
-                                        </div>
+                                        <div
+                                            v-else
+                                            class="text-amber-600"
+                                        ></div>
                                         <div
                                             v-if="
                                                 tguide_package.package_user_name
@@ -3378,9 +3216,10 @@
                                                 tguide_package.package_user_name
                                             }}
                                         </div>
-                                        <div v-else class="text-amber-600">
-                                            No user
-                                        </div>
+                                        <div
+                                            v-else
+                                            class="text-amber-600"
+                                        ></div>
 
                                         <div
                                             v-if="
@@ -3391,28 +3230,17 @@
                                                 tguide_package.wip_package_remark
                                             }}
                                         </div>
-                                        <div v-else class="text-amber-600">
-                                            No remark
-                                        </div>
+                                        <div
+                                            v-else
+                                            class="text-amber-600"
+                                        ></div>
                                     </div>
-                                    <!-- <div
-                                        v-else
-                                        class="bg-red-300 p-1 rounded-md text-red-300"
-                                    >
-                                        None
-                                    </div> -->
                                 </div>
                             </td>
-                            <td class="text-xs text-center" v-else>
-                                <div
-                                    class="bg-red-300 p-1 rounded-md text-red-300"
-                                >
-                                    None
-                                </div>
-                            </td>
+                            <td class="border text-xs text-center" v-else></td>
 
                             <td
-                                class="text-xs text-center"
+                                class="border text-xs text-center"
                                 v-if="
                                     tracking.wip_travel_guide.length !== 0 &&
                                     checkMonth(
@@ -3445,9 +3273,10 @@
                                                 tguide_package.wip_package_name
                                             }}
                                         </div>
-                                        <div v-else class="text-amber-600">
-                                            No package
-                                        </div>
+                                        <div
+                                            v-else
+                                            class="text-amber-600"
+                                        ></div>
                                         <div
                                             v-if="
                                                 tguide_package.wip_package_date
@@ -3459,9 +3288,10 @@
                                                 )
                                             }}
                                         </div>
-                                        <div v-else class="text-amber-600">
-                                            No date
-                                        </div>
+                                        <div
+                                            v-else
+                                            class="text-amber-600"
+                                        ></div>
                                         <div
                                             v-if="
                                                 tguide_package.package_user_name
@@ -3471,9 +3301,10 @@
                                                 tguide_package.package_user_name
                                             }}
                                         </div>
-                                        <div v-else class="text-amber-600">
-                                            No user
-                                        </div>
+                                        <div
+                                            v-else
+                                            class="text-amber-600"
+                                        ></div>
 
                                         <div
                                             v-if="
@@ -3484,9 +3315,10 @@
                                                 tguide_package.wip_package_remark
                                             }}
                                         </div>
-                                        <div v-else class="text-amber-600">
-                                            No remark
-                                        </div>
+                                        <div
+                                            v-else
+                                            class="text-amber-600"
+                                        ></div>
                                     </div>
                                     <div
                                         class="bg-green-300 p-1 rounded-md w-20"
@@ -3507,9 +3339,10 @@
                                                 tguide_package.wip_package_name
                                             }}
                                         </div>
-                                        <div v-else class="text-amber-600">
-                                            No package
-                                        </div>
+                                        <div
+                                            v-else
+                                            class="text-amber-600"
+                                        ></div>
                                         <div
                                             v-if="
                                                 tguide_package.wip_package_date
@@ -3521,9 +3354,10 @@
                                                 )
                                             }}
                                         </div>
-                                        <div v-else class="text-amber-600">
-                                            No date
-                                        </div>
+                                        <div
+                                            v-else
+                                            class="text-amber-600"
+                                        ></div>
                                         <div
                                             v-if="
                                                 tguide_package.package_user_name
@@ -3533,9 +3367,10 @@
                                                 tguide_package.package_user_name
                                             }}
                                         </div>
-                                        <div v-else class="text-amber-600">
-                                            No user
-                                        </div>
+                                        <div
+                                            v-else
+                                            class="text-amber-600"
+                                        ></div>
 
                                         <div
                                             v-if="
@@ -3546,28 +3381,17 @@
                                                 tguide_package.wip_package_remark
                                             }}
                                         </div>
-                                        <div v-else class="text-amber-600">
-                                            No remark
-                                        </div>
+                                        <div
+                                            v-else
+                                            class="text-amber-600"
+                                        ></div>
                                     </div>
-                                    <!-- <div
-                                        v-else
-                                        class="bg-red-300 p-1 rounded-md text-red-300"
-                                    >
-                                        None
-                                    </div> -->
                                 </div>
                             </td>
-                            <td class="text-xs text-center" v-else>
-                                <div
-                                    class="bg-red-300 p-1 rounded-md text-red-300"
-                                >
-                                    None
-                                </div>
-                            </td>
+                            <td class="border text-xs text-center" v-else></td>
 
                             <td
-                                class="text-xs text-center"
+                                class="border text-xs text-center"
                                 v-if="
                                     tracking.wip_travel_guide.length !== 0 &&
                                     checkMonth(
@@ -3600,9 +3424,10 @@
                                                 tguide_package.wip_package_name
                                             }}
                                         </div>
-                                        <div v-else class="text-amber-600">
-                                            No package
-                                        </div>
+                                        <div
+                                            v-else
+                                            class="text-amber-600"
+                                        ></div>
                                         <div
                                             v-if="
                                                 tguide_package.wip_package_date
@@ -3614,9 +3439,10 @@
                                                 )
                                             }}
                                         </div>
-                                        <div v-else class="text-amber-600">
-                                            No date
-                                        </div>
+                                        <div
+                                            v-else
+                                            class="text-amber-600"
+                                        ></div>
                                         <div
                                             v-if="
                                                 tguide_package.package_user_name
@@ -3626,9 +3452,10 @@
                                                 tguide_package.package_user_name
                                             }}
                                         </div>
-                                        <div v-else class="text-amber-600">
-                                            No user
-                                        </div>
+                                        <div
+                                            v-else
+                                            class="text-amber-600"
+                                        ></div>
 
                                         <div
                                             v-if="
@@ -3639,9 +3466,10 @@
                                                 tguide_package.wip_package_remark
                                             }}
                                         </div>
-                                        <div v-else class="text-amber-600">
-                                            No remark
-                                        </div>
+                                        <div
+                                            v-else
+                                            class="text-amber-600"
+                                        ></div>
                                     </div>
                                     <div
                                         class="bg-green-300 p-1 rounded-md w-20"
@@ -3662,9 +3490,10 @@
                                                 tguide_package.wip_package_name
                                             }}
                                         </div>
-                                        <div v-else class="text-amber-600">
-                                            No package
-                                        </div>
+                                        <div
+                                            v-else
+                                            class="text-amber-600"
+                                        ></div>
                                         <div
                                             v-if="
                                                 tguide_package.wip_package_date
@@ -3676,9 +3505,10 @@
                                                 )
                                             }}
                                         </div>
-                                        <div v-else class="text-amber-600">
-                                            No date
-                                        </div>
+                                        <div
+                                            v-else
+                                            class="text-amber-600"
+                                        ></div>
                                         <div
                                             v-if="
                                                 tguide_package.package_user_name
@@ -3688,9 +3518,10 @@
                                                 tguide_package.package_user_name
                                             }}
                                         </div>
-                                        <div v-else class="text-amber-600">
-                                            No user
-                                        </div>
+                                        <div
+                                            v-else
+                                            class="text-amber-600"
+                                        ></div>
 
                                         <div
                                             v-if="
@@ -3701,28 +3532,17 @@
                                                 tguide_package.wip_package_remark
                                             }}
                                         </div>
-                                        <div v-else class="text-amber-600">
-                                            No remark
-                                        </div>
+                                        <div
+                                            v-else
+                                            class="text-amber-600"
+                                        ></div>
                                     </div>
-                                    <!-- <div
-                                        v-else
-                                        class="bg-red-300 p-1 rounded-md text-red-300"
-                                    >
-                                        None
-                                    </div> -->
                                 </div>
                             </td>
-                            <td class="text-xs text-center" v-else>
-                                <div
-                                    class="bg-red-300 p-1 rounded-md text-red-300"
-                                >
-                                    None
-                                </div>
-                            </td>
+                            <td class="border text-xs text-center" v-else></td>
 
                             <td
-                                class="text-xs text-center"
+                                class="border text-xs text-center"
                                 v-if="
                                     tracking.wip_travel_guide.length !== 0 &&
                                     checkMonth(
@@ -3755,9 +3575,10 @@
                                                 tguide_package.wip_package_name
                                             }}
                                         </div>
-                                        <div v-else class="text-amber-600">
-                                            No package
-                                        </div>
+                                        <div
+                                            v-else
+                                            class="text-amber-600"
+                                        ></div>
                                         <div
                                             v-if="
                                                 tguide_package.wip_package_date
@@ -3769,9 +3590,10 @@
                                                 )
                                             }}
                                         </div>
-                                        <div v-else class="text-amber-600">
-                                            No date
-                                        </div>
+                                        <div
+                                            v-else
+                                            class="text-amber-600"
+                                        ></div>
                                         <div
                                             v-if="
                                                 tguide_package.package_user_name
@@ -3781,9 +3603,10 @@
                                                 tguide_package.package_user_name
                                             }}
                                         </div>
-                                        <div v-else class="text-amber-600">
-                                            No user
-                                        </div>
+                                        <div
+                                            v-else
+                                            class="text-amber-600"
+                                        ></div>
 
                                         <div
                                             v-if="
@@ -3794,9 +3617,10 @@
                                                 tguide_package.wip_package_remark
                                             }}
                                         </div>
-                                        <div v-else class="text-amber-600">
-                                            No remark
-                                        </div>
+                                        <div
+                                            v-else
+                                            class="text-amber-600"
+                                        ></div>
                                     </div>
                                     <div
                                         class="bg-green-300 p-1 rounded-md w-20"
@@ -3817,9 +3641,10 @@
                                                 tguide_package.wip_package_name
                                             }}
                                         </div>
-                                        <div v-else class="text-amber-600">
-                                            No package
-                                        </div>
+                                        <div
+                                            v-else
+                                            class="text-amber-600"
+                                        ></div>
                                         <div
                                             v-if="
                                                 tguide_package.wip_package_date
@@ -3831,9 +3656,10 @@
                                                 )
                                             }}
                                         </div>
-                                        <div v-else class="text-amber-600">
-                                            No date
-                                        </div>
+                                        <div
+                                            v-else
+                                            class="text-amber-600"
+                                        ></div>
                                         <div
                                             v-if="
                                                 tguide_package.package_user_name
@@ -3843,9 +3669,10 @@
                                                 tguide_package.package_user_name
                                             }}
                                         </div>
-                                        <div v-else class="text-amber-600">
-                                            No user
-                                        </div>
+                                        <div
+                                            v-else
+                                            class="text-amber-600"
+                                        ></div>
 
                                         <div
                                             v-if="
@@ -3856,28 +3683,17 @@
                                                 tguide_package.wip_package_remark
                                             }}
                                         </div>
-                                        <div v-else class="text-amber-600">
-                                            No remark
-                                        </div>
+                                        <div
+                                            v-else
+                                            class="text-amber-600"
+                                        ></div>
                                     </div>
-                                    <!-- <div
-                                        v-else
-                                        class="bg-red-300 p-1 rounded-md text-red-300"
-                                    >
-                                        None
-                                    </div> -->
                                 </div>
                             </td>
-                            <td class="text-xs text-center" v-else>
-                                <div
-                                    class="bg-red-300 p-1 rounded-md text-red-300"
-                                >
-                                    None
-                                </div>
-                            </td>
+                            <td class="border text-xs text-center" v-else></td>
 
                             <td
-                                class="text-xs text-center"
+                                class="border text-xs text-center"
                                 v-if="
                                     tracking.wip_travel_guide.length !== 0 &&
                                     checkMonth(
@@ -3910,9 +3726,10 @@
                                                 tguide_package.wip_package_name
                                             }}
                                         </div>
-                                        <div v-else class="text-amber-600">
-                                            No package
-                                        </div>
+                                        <div
+                                            v-else
+                                            class="text-amber-600"
+                                        ></div>
                                         <div
                                             v-if="
                                                 tguide_package.wip_package_date
@@ -3924,9 +3741,10 @@
                                                 )
                                             }}
                                         </div>
-                                        <div v-else class="text-amber-600">
-                                            No date
-                                        </div>
+                                        <div
+                                            v-else
+                                            class="text-amber-600"
+                                        ></div>
                                         <div
                                             v-if="
                                                 tguide_package.package_user_name
@@ -3936,9 +3754,10 @@
                                                 tguide_package.package_user_name
                                             }}
                                         </div>
-                                        <div v-else class="text-amber-600">
-                                            No user
-                                        </div>
+                                        <div
+                                            v-else
+                                            class="text-amber-600"
+                                        ></div>
 
                                         <div
                                             v-if="
@@ -3949,9 +3768,10 @@
                                                 tguide_package.wip_package_remark
                                             }}
                                         </div>
-                                        <div v-else class="text-amber-600">
-                                            No remark
-                                        </div>
+                                        <div
+                                            v-else
+                                            class="text-amber-600"
+                                        ></div>
                                     </div>
                                     <div
                                         class="bg-green-300 p-1 rounded-md w-20"
@@ -3972,9 +3792,10 @@
                                                 tguide_package.wip_package_name
                                             }}
                                         </div>
-                                        <div v-else class="text-amber-600">
-                                            No package
-                                        </div>
+                                        <div
+                                            v-else
+                                            class="text-amber-600"
+                                        ></div>
                                         <div
                                             v-if="
                                                 tguide_package.wip_package_date
@@ -3986,9 +3807,10 @@
                                                 )
                                             }}
                                         </div>
-                                        <div v-else class="text-amber-600">
-                                            No date
-                                        </div>
+                                        <div
+                                            v-else
+                                            class="text-amber-600"
+                                        ></div>
                                         <div
                                             v-if="
                                                 tguide_package.package_user_name
@@ -3998,9 +3820,10 @@
                                                 tguide_package.package_user_name
                                             }}
                                         </div>
-                                        <div v-else class="text-amber-600">
-                                            No user
-                                        </div>
+                                        <div
+                                            v-else
+                                            class="text-amber-600"
+                                        ></div>
 
                                         <div
                                             v-if="
@@ -4011,28 +3834,17 @@
                                                 tguide_package.wip_package_remark
                                             }}
                                         </div>
-                                        <div v-else class="text-amber-600">
-                                            No remark
-                                        </div>
+                                        <div
+                                            v-else
+                                            class="text-amber-600"
+                                        ></div>
                                     </div>
-                                    <!-- <div
-                                        v-else
-                                        class="bg-red-300 p-1 rounded-md text-red-300"
-                                    >
-                                        None
-                                    </div> -->
                                 </div>
                             </td>
-                            <td class="text-xs text-center" v-else>
-                                <div
-                                    class="bg-red-300 p-1 rounded-md text-red-300"
-                                >
-                                    None
-                                </div>
-                            </td>
+                            <td class="border text-xs text-center" v-else></td>
 
                             <td
-                                class="text-xs text-center"
+                                class="border text-xs text-center"
                                 v-if="
                                     tracking.wip_travel_guide.length !== 0 &&
                                     checkMonth(
@@ -4065,9 +3877,10 @@
                                                 tguide_package.wip_package_name
                                             }}
                                         </div>
-                                        <div v-else class="text-amber-600">
-                                            No package
-                                        </div>
+                                        <div
+                                            v-else
+                                            class="text-amber-600"
+                                        ></div>
                                         <div
                                             v-if="
                                                 tguide_package.wip_package_date
@@ -4079,9 +3892,10 @@
                                                 )
                                             }}
                                         </div>
-                                        <div v-else class="text-amber-600">
-                                            No date
-                                        </div>
+                                        <div
+                                            v-else
+                                            class="text-amber-600"
+                                        ></div>
                                         <div
                                             v-if="
                                                 tguide_package.package_user_name
@@ -4091,9 +3905,10 @@
                                                 tguide_package.package_user_name
                                             }}
                                         </div>
-                                        <div v-else class="text-amber-600">
-                                            No user
-                                        </div>
+                                        <div
+                                            v-else
+                                            class="text-amber-600"
+                                        ></div>
 
                                         <div
                                             v-if="
@@ -4104,9 +3919,10 @@
                                                 tguide_package.wip_package_remark
                                             }}
                                         </div>
-                                        <div v-else class="text-amber-600">
-                                            No remark
-                                        </div>
+                                        <div
+                                            v-else
+                                            class="text-amber-600"
+                                        ></div>
                                     </div>
                                     <div
                                         class="bg-green-300 p-1 rounded-md w-20"
@@ -4127,9 +3943,10 @@
                                                 tguide_package.wip_package_name
                                             }}
                                         </div>
-                                        <div v-else class="text-amber-600">
-                                            No package
-                                        </div>
+                                        <div
+                                            v-else
+                                            class="text-amber-600"
+                                        ></div>
                                         <div
                                             v-if="
                                                 tguide_package.wip_package_date
@@ -4141,9 +3958,10 @@
                                                 )
                                             }}
                                         </div>
-                                        <div v-else class="text-amber-600">
-                                            No date
-                                        </div>
+                                        <div
+                                            v-else
+                                            class="text-amber-600"
+                                        ></div>
                                         <div
                                             v-if="
                                                 tguide_package.package_user_name
@@ -4153,9 +3971,10 @@
                                                 tguide_package.package_user_name
                                             }}
                                         </div>
-                                        <div v-else class="text-amber-600">
-                                            No user
-                                        </div>
+                                        <div
+                                            v-else
+                                            class="text-amber-600"
+                                        ></div>
 
                                         <div
                                             v-if="
@@ -4166,31 +3985,20 @@
                                                 tguide_package.wip_package_remark
                                             }}
                                         </div>
-                                        <div v-else class="text-amber-600">
-                                            No remark
-                                        </div>
+                                        <div
+                                            v-else
+                                            class="text-amber-600"
+                                        ></div>
                                     </div>
-                                    <!-- <div
-                                        v-else
-                                        class="bg-red-300 p-1 rounded-md text-red-300"
-                                    >
-                                        None
-                                    </div> -->
                                 </div>
                             </td>
-                            <td class="text-xs text-center" v-else>
-                                <div
-                                    class="bg-red-300 p-1 rounded-md text-red-300"
-                                >
-                                    None
-                                </div>
-                            </td>
+                            <td class="border text-xs text-center" v-else></td>
 
-                            <td class="text-xs text-center">
+                            <td class="border text-xs text-center">
                                 {{ tracking.tguide_remark }}
                             </td>
 
-                            <td class="text-xs text-center">
+                            <td class="border text-xs text-center">
                                 <router-link
                                     :to="{
                                         name: 'tracking_travel_guide_edit',

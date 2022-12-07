@@ -34,137 +34,146 @@
                         </h2>
                     </div>
 
-                    <div class="form-group grid grid-cols-2">
-                        <label class="font-bold"
-                            >User
-                            <p class="inline text-red-600 text-lg">*</p></label
-                        >
-                        <select
-                            id="user_id"
-                            class="block mt-1 w-full text-center rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                            v-model="form.user_id"
-                            @change="getUsers"
-                        >
-                            <option value="">Select user</option>
-                            <option
-                                v-for="user in users"
-                                :key="user.id"
-                                :value="user.id"
-                            >
-                                {{ user.name }}
-                            </option>
-                        </select>
-                    </div>
-                    <div class="group grid grid-cols-2">
-                        <label class="font-bold"
-                            >Company
-                            <p class="inline text-red-600 text-lg">*</p></label
-                        >
-                        <select
-                            id="company_id"
-                            class="text-center overflow-y block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                            v-model="form.company_id"
-                            @change="getContacts"
-                        >
-                            <option value="">Select company</option>
-                            <option
-                                class=""
-                                v-for="contact in contacts"
-                                :key="contact.id"
-                                :value="contact.id"
-                            >
-                                {{ contact.name }}
-                            </option>
-                        </select>
-                    </div>
-
-                    <div class="mt-2 grid grid-cols-2">
-                        <div>
-                            <div>
-                                <label class="font-bold">Edition</label>
-                                <p class="inline text-red-600 text-lg">*</p>
-                                <!-- <div
-                            v-if="form.remark.length >= 800"
-                            class="text-red-600 inline text-xs uppercase"
-                        >
-                            Exceeded limit
-                        </div> -->
-                            </div>
-                        </div>
-                        <div>
-                            <div class="form-group flex">
-                                <input
-                                    id="edition1"
-                                    maxlength="800"
-                                    type="text"
-                                    class="uppercase form-control block px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-                                    v-model="form.edition1"
-                                    placeholder="eg: KLTG"
-                                />
-                                <p class="mx-5">-</p>
-                                <input
-                                    id="edition2"
-                                    maxlength="800"
-                                    type="text"
-                                    class="form-control block px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-                                    v-model="form.edition2"
-                                    placeholder="eg: 40"
-                                />
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="mt-2 grid grid-cols-2">
-                        <div>
-                            <div>
-                                <label class="font-bold">Size</label>
-                                <p class="inline text-red-600 text-lg">*</p>
-                                <!-- <div
-                            v-if="form.remark.length >= 800"
-                            class="text-red-600 inline text-xs uppercase"
-                        >
-                            Exceeded limit
-                        </div> -->
-                            </div>
-                        </div>
-                        <div>
-                            <div class="form-group">
-                                <input
-                                    id="tguide_size"
-                                    maxlength="800"
-                                    type="text"
-                                    class="form-control block px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-                                    v-model="form.tguide_size"
-                                    placeholder="eg: FP"
-                                />
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group mt-2">
-                        <label class="font-bold">Remark </label>
-
-                        <!-- <div
-                            v-if="form.remark.length >= 800"
-                            class="text-red-600 inline text-xs uppercase"
-                        >
-                            Exceeded limit
-                        </div> -->
-                        <textarea
-                            id="tguide_remark"
-                            v-model="form.tguide_remark"
-                            maxlength="800"
-                            rows="3"
-                            placeholder="eg: Artwork by Bluedale"
-                            class="block p-2.5 w-full text-xs rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
-                        ></textarea>
-                    </div>
                     <div
-                        class="text-center border-2 px-1 py-1 border-slate-300 my-2"
+                        class="bg-cyan-100 px-2 py-2 border-gray-300 my-3 rounded-md"
+                    >
+                        <div class="form-group grid grid-cols-2">
+                            <label class="font-bold"
+                                >User
+                                <p class="inline text-red-600 text-lg">
+                                    *
+                                </p></label
+                            >
+                            <select
+                                id="user_id"
+                                class="block mt-1 w-full text-center rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                v-model="form.user_id"
+                                @change="getUsers"
+                            >
+                                <option value="">Select user</option>
+                                <option
+                                    v-for="user in users"
+                                    :key="user.id"
+                                    :value="user.id"
+                                >
+                                    {{ user.name }}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="group grid grid-cols-2">
+                            <label class="font-bold"
+                                >Company
+                                <p class="inline text-red-600 text-lg">
+                                    *
+                                </p></label
+                            >
+                            <select
+                                id="company_id"
+                                class="text-center overflow-y block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                v-model="form.company_id"
+                                @change="getContacts"
+                            >
+                                <option value="">Select company</option>
+                                <option
+                                    class=""
+                                    v-for="contact in contacts"
+                                    :key="contact.id"
+                                    :value="contact.id"
+                                >
+                                    {{ contact.name }}
+                                </option>
+                            </select>
+                        </div>
+
+                        <div class="mt-2 grid grid-cols-2">
+                            <div>
+                                <div>
+                                    <label class="font-bold">Edition</label>
+                                    <p class="inline text-red-600 text-lg">*</p>
+                                    <!-- <div
+                            v-if="form.remark.length >= 800"
+                            class="text-red-600 inline text-xs uppercase"
+                        >
+                            Exceeded limit
+                        </div> -->
+                                </div>
+                            </div>
+                            <div>
+                                <div class="form-group flex">
+                                    <input
+                                        id="edition1"
+                                        maxlength="800"
+                                        type="text"
+                                        class="uppercase form-control block px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                                        v-model="form.edition1"
+                                        placeholder="eg: KLTG"
+                                    />
+                                    <p class="mx-5">-</p>
+                                    <input
+                                        id="edition2"
+                                        maxlength="800"
+                                        type="text"
+                                        class="form-control block px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                                        v-model="form.edition2"
+                                        placeholder="eg: 40"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-2 grid grid-cols-2">
+                            <div>
+                                <div>
+                                    <label class="font-bold">Size</label>
+                                    <p class="inline text-red-600 text-lg">*</p>
+                                    <!-- <div
+                            v-if="form.remark.length >= 800"
+                            class="text-red-600 inline text-xs uppercase"
+                        >
+                            Exceeded limit
+                        </div> -->
+                                </div>
+                            </div>
+                            <div>
+                                <div class="form-group">
+                                    <input
+                                        id="tguide_size"
+                                        maxlength="800"
+                                        type="text"
+                                        class="form-control block px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                                        v-model="form.tguide_size"
+                                        placeholder="eg: FP"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group mt-2">
+                            <label class="font-bold">Remark </label>
+
+                            <!-- <div
+                            v-if="form.remark.length >= 800"
+                            class="text-red-600 inline text-xs uppercase"
+                        >
+                            Exceeded limit
+                        </div> -->
+                            <textarea
+                                id="tguide_remark"
+                                v-model="form.tguide_remark"
+                                maxlength="800"
+                                rows="3"
+                                placeholder="eg: Artwork by Bluedale"
+                                class="block p-2.5 w-full text-xs rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
+                            ></textarea>
+                        </div>
+                    </div>
+
+                    <div
+                        class="text-center bg-emerald-100 px-2 py-2 border-gray-300 my-3 rounded-md"
                         id="form-wrapper"
                     >
                         <div class="form-assignment">
-                            <label class="font-bold">Art Reminder</label>
+                            <label class="font-bold">Artwork Reminder</label>
                             <div class="grid grid-cols-5">
                                 <div class="mx-1 grid grid-cols-1">
                                     <label class="font-bold">Date</label>
@@ -219,7 +228,7 @@
                         </div>
 
                         <div class="form-assignment">
-                            <label class="font-bold">Art Record</label>
+                            <label class="font-bold">Artwork Received</label>
                             <div class="grid grid-cols-5">
                                 <div class="mx-1 grid grid-cols-1">
                                     <label class="font-bold">Date</label>
@@ -624,8 +633,9 @@ export default {
             if (window.confirm("Confirm create package(s) ?")) {
                 try {
                     for (let i = 0; i < this.wip_travel_guide.length; i++) {
-                        await axios
-                            .post("/api/trackings/wip/travel_guide/store", {
+                        await axios.post(
+                            "/api/trackings/wip/travel_guide/store",
+                            {
                                 tracking_tguide_id: this.created_tracking.id,
                                 wip_package_name:
                                     this.wip_travel_guide[i].wip_package_name,
@@ -647,14 +657,16 @@ export default {
                                     ? this.wip_travel_guide[i]
                                           .wip_package_remark
                                     : null,
-                            })
-                            .then((res) => {
-                                alert("Tracking and package (wip) created");
-                                this.$router.push({
-                                    name: "tracking_travel_guide",
-                                });
-                            });
+                            }
+                        );
+                        // .then((res) => {
+
+                        // });
                     }
+                    alert("Tracking and package (wip) created");
+                    this.$router.push({
+                        name: "tracking_travel_guide",
+                    });
                 } catch (e) {
                     {
                         if (e.response.status === 422) {
