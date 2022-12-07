@@ -164,6 +164,9 @@ class TrackingGeneralController extends Controller
                 ->when($selectedResult, function ($query) use ($selectedResult) {
                     $query->where('wip_generals.wip_progress', $selectedResult);
                 })
+                ->when($selectedDivision, function ($query) use ($selectedDivision) {
+                    $query->where('tracking_generals.division_id', $selectedDivision);
+                })
                 ->orderBy($sort_field, $sort_direction)
                 ->search(trim($search_term))
                 ->paginate($paginate);
@@ -319,6 +322,7 @@ class TrackingGeneralController extends Controller
             'company_id' => ['required', 'int'],
             'contact_category_id' => ['required', 'int'],
             'category_description' => ['required', 'string'],
+            'division_id' => ['required', 'int'],
             'art_frequency' => ['required', 'int'],
             'general_amount' => ['required', 'int'],
             'general_type' => ['required', 'string'],
@@ -333,6 +337,7 @@ class TrackingGeneralController extends Controller
             'user_id.required' => 'Please select a user',
             'company_id.required' => 'Please select a company',
             'contact_category_id.required' => 'Please select a category',
+            'division_id.required' => 'The BGOC division is required.',
             'category_description.required' => 'The category description is required.',
             'art_frequency.required' => 'The art frequency is required',
             'general_amount.required' => 'The amount is required.',
@@ -351,6 +356,7 @@ class TrackingGeneralController extends Controller
             'user_id' => $request->user_id,
             'company_id' => $request->company_id,
             'contact_category_id' => $request->contact_category_id,
+            'division_id' => $request->division_id,
             'category_description' => $request->category_description,
             'art_frequency' => $request->art_frequency,
             'general_amount' => $request->general_amount,
@@ -393,6 +399,7 @@ class TrackingGeneralController extends Controller
             'company_id' => ['required', 'int'],
             'contact_category_id' => ['required', 'int'],
             'category_description' => ['required', 'string'],
+            'division_id' => ['required', 'int'],
             'art_frequency' => ['required', 'int'],
             'general_amount' => ['required', 'int'],
             'general_type' => ['required', 'string'],
@@ -407,6 +414,7 @@ class TrackingGeneralController extends Controller
             'company_id.required' => 'Please select a company',
             'contact_category_id.required' => 'Please select a category',
             'category_description.required' => 'The category description is required.',
+            'division_id.required' => 'The BGOC division is required.',
             'art_frequency.required' => 'The art frequency is required',
             'general_amount.required' => 'The amount is required.',
             'general_type.required' => 'The job type is required.',
@@ -425,6 +433,7 @@ class TrackingGeneralController extends Controller
             'company_id' => $request->company_id,
             'contact_category_id' => $request->contact_category_id,
             'category_description' => $request->category_description,
+            'division_id' => $request->division_id,
             'art_frequency' => $request->art_frequency,
             'general_amount' => $request->general_amount,
             'general_type' => $request->general_type,

@@ -20,34 +20,30 @@
         >
             <strong> Create PIC </strong>
         </h5>
-        <div class="text-left mx-auto">
+        <div class="">
             <p class="m-1 font-extrabold text-xl text-center uppercase">
                 {{ info.name }}
             </p>
 
-            <div class="mx-auto">
+            <div class="">
                 <form
                     @submit.prevent="createPIC"
                     ref="inchargeForm"
-                    class="inline-block align-middle"
+                    class="align-middle mx-auto"
                 >
                     <div class="grid grid-cols-2 items-center">
                         <div class="grid grid-cols-2 w-auto items-center">
-                            <div>
-                                <label class="ml-7"
-                                    >Name
-                                    <p class="inline text-red-600 text-lg">
-                                        *
-                                    </p></label
-                                >
-                            </div>
-                            <div>
-                                <input
-                                    type="text"
-                                    class="items-left rounded-md border-gray-500 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                                    v-model="form.name"
-                                />
-                            </div>
+                            <label class="ml-7"
+                                >Name
+                                <p class="inline text-red-600 text-lg">
+                                    *
+                                </p></label
+                            >
+                            <input
+                                type="text"
+                                class="items-left mt-1 rounded-md border-gray-500 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                v-model="form.name"
+                            />
                         </div>
                         <div class="grid grid-cols-2 w-auto items-center">
                             <label class="ml-7"

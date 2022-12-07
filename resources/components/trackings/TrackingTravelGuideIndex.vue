@@ -2,7 +2,7 @@
     <div class="container">
         <!-- <div class="max-w-full"> -->
         <h1
-            class="items-center text-center text-5xl text-white font-extrabold bg-blue-900 px-2 rounded-md"
+            class="items-center text-center text-5xl text-white font-extrabold bg-orange-500 px-2 rounded-md"
         >
             Tracking - Travel Guide
         </h1>

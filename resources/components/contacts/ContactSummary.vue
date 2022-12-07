@@ -92,6 +92,9 @@
                     <thead class="bg-slate-500 border-b sticky top-0">
                         <tr class="w-full">
                             <th class="w-10">
+                                <div class="text-xs text-center h-12 text-white">No.</div>
+                            </th>
+                            <th class="w-10">
                                 <div class="text-xs text-center h-6">
                                     <a
                                         href="#"
@@ -471,8 +474,11 @@
                         </tr>
                     </thead>
                     <tbody class="mt-2">
-                        <tr v-show="buffering" >
-                            <td class="text-center text-sm font-bold" colspan="18">
+                        <tr v-show="buffering">
+                            <td
+                                class="text-center text-sm font-bold"
+                                colspan="18"
+                            >
                                 Loading . .
                             </td>
                         </tr>
@@ -480,20 +486,23 @@
                             v-for="(contact, index) in contacts.data"
                             :key="contact.id"
                         >
-                            <td class="text-xs break-normal">
+                            <td class="text-xs break-normal text-center">
+                                {{ index + 1 }}
+                            </td>
+                            <td class="text-xs break-normal text-center">
                                 {{ contact.user_name }}
                             </td>
-                            <td class="text-xs break-normal">
+                            <td class="text-xs break-normal text-center">
                                 {{ contact.status_name }}
                             </td>
                             <td class="text-xs">{{ contact.type_name }}</td>
-                            <td class="text-xs break-normal">
+                            <td class="text-xs break-normal text-center">
                                 {{ contact.category_name }}
                             </td>
-                            <td class="text-xs break-normal">
+                            <td class="text-xs break-normal text-center">
                                 {{ contact.industry_name }}
                             </td>
-                            <td class="text-xs break-normal">
+                            <td class="text-xs break-normal text-center">
                                 <router-link
                                     :to="`/contact/${contact.id}/info`"
                                     custom
@@ -508,14 +517,14 @@
                                 v-if="contact.summary_todo['Jan2022']"
                                 class="text-xs"
                             >
-                                <span
+                                <div
                                     v-for="(summary_info, index) in contact
                                         .summary_todo[
                                         `Jan` + this.selectedYear
                                     ]"
                                     :key="summary_info.id"
                                 >
-                                    <span
+                                    <div
                                         v-if="
                                             index === 0 &&
                                             !summary_info['action']
@@ -524,8 +533,8 @@
                                     >
                                         {{
                                             showToday(summary_info["todo_date"])
-                                        }} </span
-                                    ><span
+                                        }} </div
+                                    ><div
                                         v-if="
                                             index === 0 &&
                                             summary_info['action']
@@ -535,8 +544,8 @@
                                         {{
                                             showToday(summary_info["todo_date"])
                                         }}
-                                    </span>
-                                </span>
+                                    </div>
+                                </div>
                             </td>
                             <td v-else></td>
 
@@ -544,14 +553,14 @@
                                 v-if="contact.summary_todo['Feb2022']"
                                 class="text-xs"
                             >
-                                <span
+                                <div
                                     v-for="(summary_info, index) in contact
                                         .summary_todo[
                                         `Feb` + this.selectedYear
                                     ]"
                                     :key="summary_info.id"
                                 >
-                                    <span
+                                    <div
                                         v-if="
                                             index === 0 &&
                                             !summary_info['action']
@@ -561,8 +570,8 @@
                                         {{
                                             showToday(summary_info["todo_date"])
                                         }}
-                                        <br /> </span
-                                    ><span
+                                        <br /> </div
+                                    ><div
                                         v-if="
                                             index === 0 &&
                                             summary_info['action']
@@ -572,8 +581,8 @@
                                         {{
                                             showToday(summary_info["todo_date"])
                                         }}
-                                    </span>
-                                </span>
+                                    </div>
+                                </div>
                             </td>
                             <td v-else></td>
 
@@ -581,14 +590,14 @@
                                 v-if="contact.summary_todo['Mar2022']"
                                 class="text-xs"
                             >
-                                <span
+                                <div
                                     v-for="(summary_info, index) in contact
                                         .summary_todo[
                                         `Mar` + this.selectedYear
                                     ]"
                                     :key="summary_info.id"
                                 >
-                                    <span
+                                    <div
                                         v-if="
                                             index === 0 &&
                                             !summary_info['action']
@@ -598,8 +607,8 @@
                                         {{
                                             showToday(summary_info["todo_date"])
                                         }}
-                                        <br /> </span
-                                    ><span
+                                        <br /> </div
+                                    ><div
                                         v-if="
                                             index === 0 &&
                                             summary_info['action']
@@ -609,8 +618,8 @@
                                         {{
                                             showToday(summary_info["todo_date"])
                                         }}
-                                    </span>
-                                </span>
+                                    </div>
+                                </div>
                             </td>
                             <td v-else></td>
 
@@ -618,14 +627,14 @@
                                 v-if="contact.summary_todo['Apr2022']"
                                 class="text-xs"
                             >
-                                <span
+                                <div
                                     v-for="(summary_info, index) in contact
                                         .summary_todo[
                                         `Apr` + this.selectedYear
                                     ]"
                                     :key="summary_info.id"
                                 >
-                                    <span
+                                    <div
                                         v-if="
                                             index === 0 &&
                                             !summary_info['action']
@@ -635,8 +644,8 @@
                                         {{
                                             showToday(summary_info["todo_date"])
                                         }}
-                                        <br /> </span
-                                    ><span
+                                        <br /> </div
+                                    ><div
                                         v-if="
                                             index === 0 &&
                                             summary_info['action']
@@ -646,8 +655,8 @@
                                         {{
                                             showToday(summary_info["todo_date"])
                                         }}
-                                    </span>
-                                </span>
+                                    </div>
+                                </div>
                             </td>
                             <td v-else></td>
 
@@ -655,14 +664,14 @@
                                 v-if="contact.summary_todo['May2022']"
                                 class="text-xs"
                             >
-                                <span
+                                <div
                                     v-for="(summary_info, index) in contact
                                         .summary_todo[
                                         `May` + this.selectedYear
                                     ]"
                                     :key="summary_info.id"
                                 >
-                                    <span
+                                    <div
                                         v-if="
                                             index === 0 &&
                                             !summary_info['action']
@@ -672,8 +681,8 @@
                                         {{
                                             showToday(summary_info["todo_date"])
                                         }}
-                                        <br /> </span
-                                    ><span
+                                        <br /> </div
+                                    ><div
                                         v-if="
                                             index === 0 &&
                                             summary_info['action']
@@ -683,8 +692,8 @@
                                         {{
                                             showToday(summary_info["todo_date"])
                                         }}
-                                    </span>
-                                </span>
+                                    </div>
+                                </div>
                             </td>
                             <td v-else></td>
 
@@ -692,14 +701,14 @@
                                 v-if="contact.summary_todo['Jun2022']"
                                 class="text-xs"
                             >
-                                <span
+                                <div
                                     v-for="(summary_info, index) in contact
                                         .summary_todo[
                                         `Jun` + this.selectedYear
                                     ]"
                                     :key="summary_info.id"
                                 >
-                                    <span
+                                    <div
                                         v-if="
                                             index === 0 &&
                                             !summary_info['action']
@@ -709,8 +718,8 @@
                                         {{
                                             showToday(summary_info["todo_date"])
                                         }}
-                                        <br /> </span
-                                    ><span
+                                        <br /> </div
+                                    ><div
                                         v-if="
                                             index === 0 &&
                                             summary_info['action']
@@ -720,8 +729,8 @@
                                         {{
                                             showToday(summary_info["todo_date"])
                                         }}
-                                    </span>
-                                </span>
+                                    </div>
+                                </div>
                             </td>
                             <td v-else></td>
 
@@ -729,14 +738,14 @@
                                 v-if="contact.summary_todo['Jul2022']"
                                 class="text-xs"
                             >
-                                <span
+                                <div
                                     v-for="(summary_info, index) in contact
                                         .summary_todo[
                                         `Jul` + this.selectedYear
                                     ]"
                                     :key="summary_info.id"
                                 >
-                                    <span
+                                    <div
                                         v-if="
                                             index === 0 &&
                                             !summary_info['action']
@@ -746,8 +755,8 @@
                                         {{
                                             showToday(summary_info["todo_date"])
                                         }}
-                                        <br /> </span
-                                    ><span
+                                        <br /> </div
+                                    ><div
                                         v-if="
                                             index === 0 &&
                                             summary_info['action']
@@ -757,8 +766,8 @@
                                         {{
                                             showToday(summary_info["todo_date"])
                                         }}
-                                    </span>
-                                </span>
+                                    </div>
+                                </div>
                             </td>
                             <td v-else></td>
 
@@ -766,14 +775,14 @@
                                 v-if="contact.summary_todo['Aug2022']"
                                 class="text-xs"
                             >
-                                <span
+                                <div
                                     v-for="(summary_info, index) in contact
                                         .summary_todo[
                                         `Aug` + this.selectedYear
                                     ]"
                                     :key="summary_info.id"
                                 >
-                                    <span
+                                    <div
                                         v-if="
                                             index === 0 &&
                                             !summary_info['action']
@@ -782,8 +791,8 @@
                                     >
                                         {{
                                             showToday(summary_info["todo_date"])
-                                        }} </span
-                                    ><span
+                                        }} </div
+                                    ><div
                                         v-if="
                                             index === 0 &&
                                             summary_info['action']
@@ -793,8 +802,8 @@
                                         {{
                                             showToday(summary_info["todo_date"])
                                         }}
-                                    </span>
-                                </span>
+                                    </div>
+                                </div>
                             </td>
                             <td v-else></td>
 
@@ -802,14 +811,14 @@
                                 v-if="contact.summary_todo['Sep2022']"
                                 class="text-xs"
                             >
-                                <span
+                                <div
                                     v-for="(summary_info, index) in contact
                                         .summary_todo[
                                         `Sep` + this.selectedYear
                                     ]"
                                     :key="summary_info.id"
                                 >
-                                    <span
+                                    <div
                                         v-if="
                                             index === 0 &&
                                             !summary_info['action']
@@ -818,8 +827,8 @@
                                     >
                                         {{
                                             showToday(summary_info["todo_date"])
-                                        }} </span
-                                    ><span
+                                        }} </div
+                                    ><div
                                         v-if="
                                             index === 0 &&
                                             summary_info['action']
@@ -829,8 +838,8 @@
                                         {{
                                             showToday(summary_info["todo_date"])
                                         }}
-                                    </span>
-                                </span>
+                                    </div>
+                                </div>
                             </td>
                             <td v-else></td>
 
@@ -838,14 +847,14 @@
                                 v-if="contact.summary_todo['Oct2022']"
                                 class="text-xs"
                             >
-                                <span
+                                <div
                                     v-for="(summary_info, index) in contact
                                         .summary_todo[
                                         `Oct` + this.selectedYear
                                     ]"
                                     :key="summary_info.id"
                                 >
-                                    <span
+                                    <div
                                         v-if="
                                             index === 0 &&
                                             !summary_info['action']
@@ -854,8 +863,8 @@
                                     >
                                         {{
                                             showToday(summary_info["todo_date"])
-                                        }} </span
-                                    ><span
+                                        }} </div
+                                    ><div
                                         v-if="
                                             index === 0 &&
                                             summary_info['action']
@@ -865,8 +874,8 @@
                                         {{
                                             showToday(summary_info["todo_date"])
                                         }}
-                                    </span>
-                                </span>
+                                    </div>
+                                </div>
                             </td>
                             <td v-else></td>
 
@@ -874,14 +883,14 @@
                                 v-if="contact.summary_todo['Nov2022']"
                                 class="text-xs"
                             >
-                                <span
+                                <div
                                     v-for="(summary_info, index) in contact
                                         .summary_todo[
                                         `Nov` + this.selectedYear
                                     ]"
                                     :key="summary_info.id"
                                 >
-                                    <span
+                                    <div
                                         v-if="
                                             index === 0 &&
                                             !summary_info['action']
@@ -890,8 +899,8 @@
                                     >
                                         {{
                                             showToday(summary_info["todo_date"])
-                                        }} </span
-                                    ><span
+                                        }} </div
+                                    ><div
                                         v-if="
                                             index === 0 &&
                                             summary_info['action']
@@ -901,8 +910,8 @@
                                         {{
                                             showToday(summary_info["todo_date"])
                                         }}
-                                    </span>
-                                </span>
+                                    </div>
+                                </div>
                             </td>
                             <td v-else></td>
 
@@ -910,14 +919,14 @@
                                 v-if="contact.summary_todo['Dec2022']"
                                 class="text-xs"
                             >
-                                <span
+                                <div
                                     v-for="(summary_info, index) in contact
                                         .summary_todo[
                                         `Dec` + this.selectedYear
                                     ]"
                                     :key="summary_info.id"
                                 >
-                                    <span
+                                    <div
                                         v-if="
                                             index === 0 &&
                                             !summary_info['action']
@@ -927,8 +936,8 @@
                                         {{
                                             showToday(summary_info["todo_date"])
                                         }}
-                                    </span>
-                                    <span
+                                    </div>
+                                    <div
                                         v-if="
                                             index === 0 &&
                                             summary_info['action']
@@ -938,8 +947,8 @@
                                         {{
                                             showToday(summary_info["todo_date"])
                                         }}
-                                    </span>
-                                </span>
+                                    </div>
+                                </div>
                             </td>
                             <td v-else></td>
                         </tr>
@@ -1036,21 +1045,21 @@ export default {
                                 "action"
                             ]
                         ) {
+                            return `${
+                                value.summary_todo[
+                                    `Jan` + this.selectedYear
+                                ][0]["todo_date"]
+                            }`;
+                        } else {
                             return (
-                                
+                                `(( ` +
                                 `${
                                     value.summary_todo[
                                         `Jan` + this.selectedYear
                                     ][0]["todo_date"]
-                                }`
-                                
+                                }` +
+                                ` ))`
                             );
-                        } else {
-                            return `(( ` +  `${
-                                value.summary_todo[
-                                    `Jan` + this.selectedYear
-                                ][0]["todo_date"]
-                            }` + ` ))`;
                         }
                     },
                 },
@@ -1063,21 +1072,21 @@ export default {
                                 "action"
                             ]
                         ) {
-                            return (
-                                
-                                ` ${
-                                    value.summary_todo[
-                                        `Feb` + this.selectedYear
-                                    ][0]["todo_date"]
-                                }`
-                                
-                            );
-                        } else {
-                            return `(( ` +  `${
+                            return ` ${
                                 value.summary_todo[
                                     `Feb` + this.selectedYear
                                 ][0]["todo_date"]
-                            }` + ` ))`;
+                            }`;
+                        } else {
+                            return (
+                                `(( ` +
+                                `${
+                                    value.summary_todo[
+                                        `Feb` + this.selectedYear
+                                    ][0]["todo_date"]
+                                }` +
+                                ` ))`
+                            );
                         }
                     },
                 },
@@ -1090,21 +1099,21 @@ export default {
                                 "action"
                             ]
                         ) {
-                            return (
-                                
-                                ` ${
-                                    value.summary_todo[
-                                        `Mar` + this.selectedYear
-                                    ][0]["todo_date"]
-                                }`
-                                
-                            );
-                        } else {
-                            return `(( ` +  `${
+                            return ` ${
                                 value.summary_todo[
                                     `Mar` + this.selectedYear
                                 ][0]["todo_date"]
-                            }` + ` ))`;
+                            }`;
+                        } else {
+                            return (
+                                `(( ` +
+                                `${
+                                    value.summary_todo[
+                                        `Mar` + this.selectedYear
+                                    ][0]["todo_date"]
+                                }` +
+                                ` ))`
+                            );
                         }
                     },
                 },
@@ -1117,21 +1126,21 @@ export default {
                                 "action"
                             ]
                         ) {
-                            return (
-                                
-                                ` ${
-                                    value.summary_todo[
-                                        `Apr` + this.selectedYear
-                                    ][0]["todo_date"]
-                                }`
-                                
-                            );
-                        } else {
-                            return `(( ` +  `${
+                            return ` ${
                                 value.summary_todo[
                                     `Apr` + this.selectedYear
                                 ][0]["todo_date"]
-                            }` + ` ))`;
+                            }`;
+                        } else {
+                            return (
+                                `(( ` +
+                                `${
+                                    value.summary_todo[
+                                        `Apr` + this.selectedYear
+                                    ][0]["todo_date"]
+                                }` +
+                                ` ))`
+                            );
                         }
                     },
                 },
@@ -1144,21 +1153,21 @@ export default {
                                 "action"
                             ]
                         ) {
-                            return (
-                                
-                                ` ${
-                                    value.summary_todo[
-                                        `May` + this.selectedYear
-                                    ][0]["todo_date"]
-                                }`
-                                
-                            );
-                        } else {
-                            return `(( ` +  `${
+                            return ` ${
                                 value.summary_todo[
                                     `May` + this.selectedYear
                                 ][0]["todo_date"]
-                            }` + ` ))`;
+                            }`;
+                        } else {
+                            return (
+                                `(( ` +
+                                `${
+                                    value.summary_todo[
+                                        `May` + this.selectedYear
+                                    ][0]["todo_date"]
+                                }` +
+                                ` ))`
+                            );
                         }
                     },
                 },
@@ -1171,21 +1180,21 @@ export default {
                                 "action"
                             ]
                         ) {
-                            return (
-                                
-                                ` ${
-                                    value.summary_todo[
-                                        `Jun` + this.selectedYear
-                                    ][0]["todo_date"]
-                                }`
-                                
-                            );
-                        } else {
-                            return `(( ` +  `${
+                            return ` ${
                                 value.summary_todo[
                                     `Jun` + this.selectedYear
                                 ][0]["todo_date"]
-                            }` + ` ))`;
+                            }`;
+                        } else {
+                            return (
+                                `(( ` +
+                                `${
+                                    value.summary_todo[
+                                        `Jun` + this.selectedYear
+                                    ][0]["todo_date"]
+                                }` +
+                                ` ))`
+                            );
                         }
                     },
                 },
@@ -1198,21 +1207,21 @@ export default {
                                 "action"
                             ]
                         ) {
-                            return (
-                                
-                                ` ${
-                                    value.summary_todo[
-                                        `Jul` + this.selectedYear
-                                    ][0]["todo_date"]
-                                }`
-                                
-                            );
-                        } else {
-                            return `(( ` +  `${
+                            return ` ${
                                 value.summary_todo[
                                     `Jul` + this.selectedYear
                                 ][0]["todo_date"]
-                            }` + ` ))`;
+                            }`;
+                        } else {
+                            return (
+                                `(( ` +
+                                `${
+                                    value.summary_todo[
+                                        `Jul` + this.selectedYear
+                                    ][0]["todo_date"]
+                                }` +
+                                ` ))`
+                            );
                         }
                     },
                 },
@@ -1225,21 +1234,21 @@ export default {
                                 "action"
                             ]
                         ) {
-                            return (
-                                
-                                ` ${
-                                    value.summary_todo[
-                                        `Aug` + this.selectedYear
-                                    ][0]["todo_date"]
-                                }`
-                                
-                            );
-                        } else {
-                            return `(( ` +  `${
+                            return ` ${
                                 value.summary_todo[
                                     `Aug` + this.selectedYear
                                 ][0]["todo_date"]
-                            }` + ` ))`;
+                            }`;
+                        } else {
+                            return (
+                                `(( ` +
+                                `${
+                                    value.summary_todo[
+                                        `Aug` + this.selectedYear
+                                    ][0]["todo_date"]
+                                }` +
+                                ` ))`
+                            );
                         }
                     },
                 },
@@ -1252,21 +1261,21 @@ export default {
                                 "action"
                             ]
                         ) {
-                            return (
-                                
-                                ` ${
-                                    value.summary_todo[
-                                        `Sep` + this.selectedYear
-                                    ][0]["todo_date"]
-                                }`
-                                
-                            );
-                        } else {
-                            return `(( ` +  `${
+                            return ` ${
                                 value.summary_todo[
                                     `Sep` + this.selectedYear
                                 ][0]["todo_date"]
-                            }` + ` ))`
+                            }`;
+                        } else {
+                            return (
+                                `(( ` +
+                                `${
+                                    value.summary_todo[
+                                        `Sep` + this.selectedYear
+                                    ][0]["todo_date"]
+                                }` +
+                                ` ))`
+                            );
                         }
                     },
                 },
@@ -1279,20 +1288,21 @@ export default {
                                 "action"
                             ]
                         ) {
-                            return (
-                                
-                                ` ${
-                                    value.summary_todo[
-                                        `Oct` + this.selectedYear
-                                    ][0]["todo_date"]
-                                }`
-                            );
-                        } else {
-                            return `(( ` +  `${
+                            return ` ${
                                 value.summary_todo[
                                     `Oct` + this.selectedYear
                                 ][0]["todo_date"]
-                            }` + ` ))`
+                            }`;
+                        } else {
+                            return (
+                                `(( ` +
+                                `${
+                                    value.summary_todo[
+                                        `Oct` + this.selectedYear
+                                    ][0]["todo_date"]
+                                }` +
+                                ` ))`
+                            );
                         }
                     },
                 },
@@ -1305,21 +1315,21 @@ export default {
                                 "action"
                             ]
                         ) {
-                            return (
-                                
-                                ` ${
-                                    value.summary_todo[
-                                        `Nov` + this.selectedYear
-                                    ][0]["todo_date"]
-                                }`
-                                
-                            );
-                        } else {
-                            return `(( ` +  `${
+                            return ` ${
                                 value.summary_todo[
                                     `Nov` + this.selectedYear
                                 ][0]["todo_date"]
-                            }` + ` ))`
+                            }`;
+                        } else {
+                            return (
+                                `(( ` +
+                                `${
+                                    value.summary_todo[
+                                        `Nov` + this.selectedYear
+                                    ][0]["todo_date"]
+                                }` +
+                                ` ))`
+                            );
                         }
                     },
                 },
@@ -1332,20 +1342,21 @@ export default {
                                 "action"
                             ]
                         ) {
-                            return (
-                                
-                                ` ${
-                                    value.summary_todo[
-                                        `Dec` + this.selectedYear
-                                    ][0]["todo_date"]
-                                }`
-                            );
-                        } else {
-                            return `(( ` +  `${
+                            return ` ${
                                 value.summary_todo[
                                     `Dec` + this.selectedYear
                                 ][0]["todo_date"]
-                            }` + ` ))`
+                            }`;
+                        } else {
+                            return (
+                                `(( ` +
+                                `${
+                                    value.summary_todo[
+                                        `Dec` + this.selectedYear
+                                    ][0]["todo_date"]
+                                }` +
+                                ` ))`
+                            );
                         }
                     },
                 },

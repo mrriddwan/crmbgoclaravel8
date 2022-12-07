@@ -12,7 +12,7 @@
             </div>
         </div>
         <h1
-            class="items-center text-center text-white font-extrabold font-mono text-5xl uppercase bg-blue-900 px-5 py-2 rounded-md"
+            class="items-center text-center text-white font-extrabold font-mono text-5xl uppercase bg-yellow-400 px-5 py-2 rounded-md"
         >
             Edit Forecast
         </h1>
@@ -33,6 +33,33 @@
                     class="inline-block align-middle"
                 >
                     <div class="grid grid-cols-1 items-center text-center">
+                        <div
+                            class="grid grid-cols-2 w-auto items-center py-2 px-2"
+                        >
+                            <div class="">
+                                <label class="ml-7"
+                                    >User
+                                    <p class="inline text-red-600 text-lg">
+                                        *
+                                    </p></label
+                                >
+                            </div>
+                            <div class="">
+                                <select
+                                    v-model="forecast.user_id"
+                                    class="form-control"
+                                >
+                                    <option value="">Please select user</option>
+                                    <option
+                                        v-for="user in users"
+                                        :key="user.id"
+                                        :value="user.id"
+                                    >
+                                        {{ user.name }}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
                         <div class="grid grid-cols-2 w-auto items-center py-2">
                             <div class="">
                                 <label class="ml-7"
@@ -112,13 +139,13 @@
                                 </p></label
                             >
                             <div class="w-max">
-                            <VueDatePicker
-                                v-model="forecast.forecast_date"
-                                showNowButton
-                                nowButtonLabel="Today"
-                                :enableTimePicker="false"
-                            />
-                        </div>
+                                <VueDatePicker
+                                    v-model="forecast.forecast_date"
+                                    showNowButton
+                                    nowButtonLabel="Today"
+                                    :enableTimePicker="false"
+                                />
+                            </div>
                         </div>
                     </div>
                     <div class="text-center col-span-2">
@@ -161,13 +188,14 @@ export default {
             forecast: {
                 contact_id: "",
                 product_id: "",
+                user_id: "",
                 amount: "",
                 forecast_type_id: "",
                 forecast_date: "",
                 contact: {
-                    id:"",
+                    id: "",
                     name: "",
-                }
+                },
             },
             errors: "",
             products: [],
@@ -177,6 +205,7 @@ export default {
     },
 
     mounted() {
+        this.getUsers();
         this.showForecast();
         this.getProducts();
         this.getForecastTypes();
@@ -193,22 +222,41 @@ export default {
                 });
         },
 
-        editForecast() {
-            console.log(this.forecast.contact.name);
-            console.log(this.forecast.amount);
-            axios
-                .put("/api/forecasts/update/" + this.$route.params.id, {
-                    forecast_date: this.moment(this.forecast.forecast_date).format("YYYY-MM-DD"),
-                    amount: this.forecast.amount,
-                    contact_id: this.forecast.contact.id,
-                    user_id: 2, //replace with current user id later
-                    product_id: this.forecast.product_id,
-                    forecast_type_id: this.forecast.forecast_type_id,
-                })
-                .then((res) => {
-                    this.$router.push({
-                        name: "forecast_index",
+        async editForecast() {
+            try {
+                await axios
+                    .put("/api/forecasts/update/" + this.$route.params.id, {
+                        forecast_date: this.moment(
+                            this.forecast.forecast_date
+                        ).format("YYYY-MM-DD"),
+                        amount: this.forecast.amount,
+                        contact_id: this.forecast.contact.id,
+                        user_id: this.forecast.user_id,
+                        product_id: this.forecast.product_id,
+                        forecast_type_id: this.forecast.forecast_type_id,
+                    })
+                    .then((res) => {
+                        this.$router.push({
+                            name: "forecast_index",
+                        });
                     });
+            } catch (e) {
+                {
+                    if (e.response.status === 422) {
+                        this.errors = e.response.data.errors;
+                    }
+                }
+            }
+        },
+
+        async getUsers() {
+            await axios
+                .get("/api/users/users_list")
+                .then((res) => {
+                    this.users = res.data.data;
+                })
+                .catch((error) => {
+                    console.log(error);
                 });
         },
 

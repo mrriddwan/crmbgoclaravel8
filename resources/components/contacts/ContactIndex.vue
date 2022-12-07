@@ -612,8 +612,11 @@
                         </tr>
                     </thead>
                     <tbody class="mt-2">
-                        <tr v-show="buffering" >
-                            <td class="text-center text-sm font-bold" colspan="11">
+                        <tr v-show="buffering">
+                            <td
+                                class="text-center text-sm font-bold"
+                                colspan="11"
+                            >
                                 Loading . .
                             </td>
                         </tr>
@@ -641,7 +644,7 @@
                             </td>
                             <td class="text-xs">{{ contact.user.name }}</td>
                             <td class="text-xs">{{ contact.status.name }}</td>
-                            <td class="text-xs">{{ contact.type.name }} </td>
+                            <td class="text-xs">{{ contact.type.name }}</td>
                             <td class="text-xs">{{ contact.industry.name }}</td>
                             <td
                                 v-if="
@@ -650,15 +653,30 @@
                                 "
                                 class="items-center text-xs text-center h-6 w-24"
                             >
-                                <router-link
-                                    :to="`/contact/${contact.id}/info`"
-                                    custom
-                                    v-slot="{ navigate, href }"
-                                >
-                                    <a :href="href" @click.stop="navigate">{{
-                                        contact.name
-                                    }}</a>
-                                </router-link>
+                                <div>
+                                    <router-link
+                                        :to="`/contact/${contact.id}/info`"
+                                        custom
+                                        v-slot="{ navigate, href }"
+                                    >
+                                        <a
+                                            :href="href"
+                                            @click.stop="navigate"
+                                            >{{ contact.name }}</a
+                                        >
+                                    </router-link>
+                                </div>
+
+                                <div class="mt-10">
+                                    <router-link
+                                        :to="`/forecast/${contact.id}/create`"
+                                        class="ml-1px-2 py-1 items-center border text-xs text-right rounded-lg w-max text-lime-600"
+                                    >
+                                        <PlusIcon class="h-3 w-3 inline" />
+                                        <DocumentChartBarIcon
+                                            class="h-4 w-4 inline"
+                                    /></router-link>
+                                </div>
                             </td>
                             <td
                                 v-else
@@ -741,7 +759,7 @@
                                     </div>
                                 </div>
                             </td>
-                            <td class="text-xs" v-else> </td>
+                            <td class="text-xs" v-else></td>
                         </tr>
                     </tbody>
                 </table>
@@ -773,6 +791,7 @@ import {
     ArrowDownIcon,
     QuestionMarkCircleIcon,
     ArrowDownOnSquareIcon,
+    DocumentChartBarIcon,
 } from "@heroicons/vue/24/solid";
 import { json } from "body-parser";
 
@@ -789,6 +808,7 @@ export default {
         ArrowDownIcon,
         QuestionMarkCircleIcon,
         ArrowDownOnSquareIcon,
+        DocumentChartBarIcon,
         ContactRemarkModalVue,
     },
 
@@ -866,7 +886,6 @@ export default {
             this.contacts = [];
             this.getContacts();
         },
-        
 
         selectPage: function (value) {
             this.checked = [];
@@ -914,16 +933,16 @@ export default {
                 })
                 .then((response) => {
                     return response.data.data;
-                })
-                console.log("result: ", result);
-            
-                if(result.id === 1){
-                    // console.log("this is under the user")
-                    return "true";
-                } else {
-                    // console.log("this is not under the user")
-                    return "false";
-                }
+                });
+            console.log("result: ", result);
+
+            if (result.id === 1) {
+                // console.log("this is under the user")
+                return "true";
+            } else {
+                // console.log("this is not under the user")
+                return "false";
+            }
         },
 
         async getContacts(page = 1) {

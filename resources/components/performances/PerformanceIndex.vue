@@ -1,6 +1,6 @@
 <template>
     <h1
-        class="items-center text-center text-6xl text-white font-extrabold bg-blue-900 rounded-md"
+        class="items-center text-center text-6xl text-white font-extrabold bg-orange-500 rounded-md"
     >
         Performance
     </h1>

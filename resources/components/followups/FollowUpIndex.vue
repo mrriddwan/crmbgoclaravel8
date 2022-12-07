@@ -1,7 +1,7 @@
 <template>
     <div class="container w-max">
         <h1
-            class="items-center text-center text-5xl text-white font-extrabold bg-blue-900 px-2 rounded-md font-mono"
+            class="items-center text-center text-5xl text-white font-extrabold bg-green-500 px-2 rounded-md font-mono"
         >
             Follow Up List
         </h1>

@@ -18,6 +18,7 @@ class TrackingGeneral extends Model
         'general_enddate',
         'user_id',
         'company_id',
+        'division_id',
         'contact_category_id',
         'category_description',
         'art_frequency',

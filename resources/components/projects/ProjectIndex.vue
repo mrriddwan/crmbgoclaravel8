@@ -1,7 +1,7 @@
 <template>
     <div class="container">
         <h1
-            class="items-center text-center text-6xl text-white font-extrabold bg-blue-900 px-2 rounded-md"
+            class="items-center text-center text-6xl text-white font-extrabold bg-orange-500 px-2 rounded-md"
         >
             Project List
         </h1>
@@ -547,7 +547,14 @@ export default {
                 },
                 "Start Date": "project_startdate",
                 "End Date": "project_enddate",
-                // Duration: "user_name",
+                "Duration(days)": {
+                    callback: (value) => {
+                        return `${this.calculateDuration(
+                                        value.project_startdate,
+                                        value.project_enddate
+                                    )}`;
+                    },
+                },
                 Company: {
                     callback: (value) => {
                         return `${value.contact.name}`;

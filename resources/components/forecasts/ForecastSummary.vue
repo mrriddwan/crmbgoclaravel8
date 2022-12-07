@@ -1,7 +1,7 @@
 <template>
     <div class="container">
         <h1
-            class="items-center text-center text-5xl text-white font-extrabold bg-blue-900 px-2 rounded-md"
+            class="items-center text-center text-5xl text-white font-extrabold bg-yellow-400 px-2 rounded-md"
         >
             Forecast Summary
         </h1>
@@ -672,13 +672,15 @@ export default {
 
     mounted() {
         this.getUsers();
-        this.selectedUser = document.querySelector('meta[name="user-id"]').getAttribute('content');
+        this.selectedUser = document
+            .querySelector('meta[name="user-id"]')
+            .getAttribute("content");
         this.getSelectedYear(this.getCurrentDate());
         // this.getForecasts();
         this.getStatus();
         this.getContactTypes();
         this.getForecastTypes();
-        
+
         this.getProducts();
     },
     data() {
@@ -710,13 +712,28 @@ export default {
             currentDate: "",
 
             forecast_fields: {
-                ID: "id",
+                // ID: "id",
+                Date: {
+                    callback: (value) => {
+                        return `${this.showToday(value.created_at)}`;
+                    },
+                },
                 User: "user_name",
                 "Contact Status": "contact_status",
                 "Contact Type": "contact_type",
                 Company: "contact",
-                "Forecast Type": "forecast_type",
                 "Forecast Product": "forecast_product",
+                "Forecast Type": "forecast_type",
+                Result: {
+                    callback: (value) => {
+                        if (!value.forecast_result) {
+                            return "No result ";
+                        } else {
+                            return `${value.forecast_result}`;
+                        }
+                    },
+                },
+                Amount: "amount",
                 Jan: {
                     callback: (value) => {
                         if (

@@ -891,6 +891,15 @@ select {
 .ml-7 {
   margin-left: 1.75rem;
 }
+.mb-10 {
+  margin-bottom: 2.5rem;
+}
+.mb-5 {
+  margin-bottom: 1.25rem;
+}
+.mt-10 {
+  margin-top: 2.5rem;
+}
 .block {
   display: block;
 }
@@ -1041,6 +1050,17 @@ select {
 }
 .w-72 {
   width: 18rem;
+}
+.w-32 {
+  width: 8rem;
+}
+.w-12 {
+  width: 3rem;
+}
+.w-fit {
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
 }
 .max-w-7xl {
   max-width: 80rem;
@@ -1498,74 +1518,22 @@ select {
   --tw-bg-opacity: 1;
   background-color: rgb(165 180 252 / var(--tw-bg-opacity));
 }
-.bg-\[url\(\'\/storage\/images\/1\.jpg\'\)\] {
-  background-image: url('/storage/images/1.jpg');
+.bg-yellow-900 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(113 63 18 / var(--tw-bg-opacity));
 }
-.bg-\[url\(\'\/storage\/images\/bluedale_background\.jpg\'\)\] {
-  background-image: url('/storage/images/bluedale_background.jpg');
+.bg-orange-500 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(249 115 22 / var(--tw-bg-opacity));
 }
 .bg-\[url\(\'\/storage\/images\/bluedale_bg\.jpg\'\)\] {
   background-image: url('/storage/images/bluedale_bg.jpg');
 }
+.bg-\[url\(\'\/storage\/images\/1\.jpg\'\)\] {
+  background-image: url('/storage/images/1.jpg');
+}
 .bg-cover {
   background-size: cover;
-}
-.bg-contain {
-  background-size: contain;
-}
-.bg-auto {
-  background-size: auto;
-}
-.bg-\[length\:200px_100px\] {
-  background-size: 200px 100px;
-}
-.bg-\[length\:1280px_1024px\] {
-  background-size: 1280px 1024px;
-}
-.bg-\[length\:300px_600px\] {
-  background-size: 300px 600px;
-}
-.bg-\[length\:600px_1000px\] {
-  background-size: 600px 1000px;
-}
-.bg-\[length\:600px_800px\] {
-  background-size: 600px 800px;
-}
-.bg-\[length\:1000px_1000px\] {
-  background-size: 1000px 1000px;
-}
-.bg-\[length\:1200px_1000px\] {
-  background-size: 1200px 1000px;
-}
-.bg-\[length\:1400px_1000px\] {
-  background-size: 1400px 1000px;
-}
-.bg-\[length\:1500px_1000px\] {
-  background-size: 1500px 1000px;
-}
-.bg-\[length\:1550px_1000px\] {
-  background-size: 1550px 1000px;
-}
-.bg-\[length\:1600px_1000px\] {
-  background-size: 1600px 1000px;
-}
-.bg-\[length\:1500px_800px\] {
-  background-size: 1500px 800px;
-}
-.bg-\[length\:1500px_700px\] {
-  background-size: 1500px 700px;
-}
-.bg-\[length\:1500px_750px\] {
-  background-size: 1500px 750px;
-}
-.bg-\[length\:1500px_720px\] {
-  background-size: 1500px 720px;
-}
-.bg-\[length\:1520px_720px\] {
-  background-size: 1520px 720px;
-}
-.bg-\[length\:1530px_720px\] {
-  background-size: 1530px 720px;
 }
 .bg-\[length\:1540px_720px\] {
   background-size: 1540px 720px;
@@ -1575,9 +1543,6 @@ select {
 }
 .bg-center {
   background-position: center;
-}
-.bg-no-repeat {
-  background-repeat: no-repeat;
 }
 .fill-current {
   fill: currentColor;
@@ -1950,6 +1915,12 @@ select {
 }
 .opacity-50 {
   opacity: 0.5;
+}
+.opacity-80 {
+  opacity: 0.8;
+}
+.opacity-90 {
+  opacity: 0.9;
 }
 .shadow-sm {
   --tw-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);

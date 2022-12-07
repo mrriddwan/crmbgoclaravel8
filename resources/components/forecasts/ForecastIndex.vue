@@ -1,7 +1,7 @@
 <template>
     <div class="container">
         <h1
-            class="items-center text-center text-5xl text-white font-extrabold bg-blue-900 px-2 rounded-md"
+            class="items-center text-center text-5xl text-white font-extrabold bg-yellow-400 px-2 rounded-md"
         >
             Forecast List
         </h1>
@@ -16,7 +16,7 @@
             >
                 <router-link
                     to="/forecast/summary"
-                    class="inline-block items-center px-2 py-1 bg-purple-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
+                    class="inline-block items-center px-2 py-1 bg-yellow-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
                     >Forecast Summary</router-link
                 >
             </div>

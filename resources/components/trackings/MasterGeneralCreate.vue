@@ -92,10 +92,28 @@
                             </option>
                         </select>
                     </div>
+                    <div class="form-group grid grid-cols-2">
+                        <label class="font-bold"
+                            >BGOC
+                            <p class="inline text-red-600 text-lg">*</p></label
+                        >
+                        <select
+                            class="block mt-1 text-center w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                            v-model="form.division_id"
+                            @change="getDivisions"
+                        >
+                            <option value="">Select division</option>
+                            <option
+                                v-for="division in divisions"
+                                :key="division.id"
+                                :value="division.id"
+                            >
+                                {{ division.name }}
+                            </option>
+                        </select>
+                    </div>
 
                     <div class="form-group my-2">
-                        <div></div>
-                        <div></div>
                         <label class="font-bold">Product Description</label>
                         <p class="inline text-red-600 text-lg">*</p>
                         <!-- <div
@@ -355,6 +373,7 @@ export default {
                 company_id: "",
                 contact_category_id: "",
                 category_description: "",
+                division_id: "",
                 general_type: "",
                 general_amount: "",
                 art_format: "",
@@ -370,6 +389,7 @@ export default {
             users: [],
             categories: [],
             contacts: [],
+            divisions: [],
             tenure_length: "month",
             errors: "",
         };
@@ -385,6 +405,7 @@ export default {
         this.getUsers();
         this.getCategory();
         this.getContacts();
+        this.getDivisions();
     },
 
     methods: {
@@ -421,6 +442,17 @@ export default {
                 });
         },
 
+        async getDivisions() {
+            await axios
+                .get("/api/trackings/division/index")
+                .then((res) => {
+                    this.divisions = res.data.data;
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        },
+
         async createTrackingGeneral() {
             let tenure = Number;
 
@@ -441,6 +473,7 @@ export default {
                             category_description:
                                 this.form.category_description,
                             general_type: this.form.general_type,
+                            division_id: this.form.division_id,
                             general_amount: this.form.general_amount,
                             art_format: this.form.art_format,
                             art_frequency: this.form.art_frequency,

@@ -1,7 +1,7 @@
 <template>
     <div class="container">
         <h1
-            class="items-center text-center text-5xl text-white font-extrabold bg-blue-900 px-2 rounded-md"
+            class="items-center text-center text-5xl text-white font-extrabold bg-orange-500 px-2 rounded-md"
         >
             Tracking - General
         </h1>
@@ -17,60 +17,49 @@
                 >
             </div>
 
-            <div
-                class="py-2 px-2"
-            >
+            <div class="py-2 px-2">
                 <div
-                    class="inline-block"
+                    class="px-2"
                     v-if="
                         (can('export general master') ||
                             is('admin | super-admin')) &&
                         view_type === 'master'
                     "
                 >
-                    <button
-                        class="bg-green-500 px-2 py-2 rounded-lg text-xs"
-                        @click="exportMasterGeneralExcel('xls')"
+                    <download-excel
+                        :data="tracking_generals.data"
+                        :fields="general_master_fields"
+                        worksheet="General Master Summary"
+                        name="General Master Summary.xls"
+                        class="btn btn-success btn-sm text-xs"
                     >
                         <ArrowTopRightOnSquareIcon
                             class="h-5 w-5 mr-1 inline-block"
-                        />Export Master
-                    </button>
+                        />
+                        Export master
+                    </download-excel>
                 </div>
                 <div
-                    class="inline-block"
+                    class="px-2"
                     v-if="
                         (can('export general wip') ||
                             is('admin | super-admin')) &&
                         view_type === 'wip'
                     "
                 >
-                    <button
-                        class="bg-green-500 px-2 py-2 rounded-lg text-xs"
-                        @click="exportWIPGeneralExcel('xls')"
+                    <download-excel
+                        :data="tracking_generals.data"
+                        :fields="general_wip_fields"
+                        worksheet="General WIP Summary"
+                        name="General WIP Summary.xls"
+                        class="btn btn-success btn-sm text-xs"
                     >
                         <ArrowTopRightOnSquareIcon
                             class="h-5 w-5 mr-1 inline-block"
-                        />Export WIP
-                    </button>
+                        />
+                        Export WIP
+                    </download-excel>
                 </div>
-            </div>
-
-            <div class="py-2 px-2">
-                <div class="px-2" v-if="(can('export general master') || is('admin | super-admin')) && view_type === 'master'">
-                        <download-excel
-                            :data="tracking_generals.data"
-                            :fields="general_master_fields"
-                            worksheet="Travel Guide Summary"
-                            name="Travel Guide  Summary.xls"
-                            class="btn btn-success btn-sm"
-                        >
-                            <ArrowTopRightOnSquareIcon
-                                class="h-5 w-5 mr-1 inline-block"
-                            />
-                            Export
-                        </download-excel>
-                    </div>
             </div>
         </div>
 
@@ -156,8 +145,8 @@
                                     >
                                 </div>
                             </th>
-                            <th class="py-3 w-max">
-                                <div class="text-sm text-center h-12">
+                            <th class="py-3">
+                                <div class="text-sm text-center h-12 w-14">
                                     <a
                                         href="#"
                                         @click.prevent="
@@ -569,7 +558,7 @@
                                     </a>
                                 </div>
                             </th>
-                            
+
                             <th class="py-3">
                                 <div class="text-sm text-center h-12">
                                     <a
@@ -982,7 +971,7 @@
                             <td class="text-xs text-center">
                                 {{ tracking.general_type }}
                             </td>
-                            
+
                             <td class="text-xs text-center">
                                 {{ tracking.art_format }}
                             </td>
@@ -997,7 +986,12 @@
                                 }}
                             </td>
                             <td class="text-xs text-center">
-                                {{ (tracking.general_tenure / 30) }} month(s)
+                                    {{
+                                        Math.round(
+                                            (tracking.general_tenure / 30) * 10
+                                        ) / 10
+                                    }} <br>
+                                    month(s)
                             </td>
                             <td class="text-xs text-center">
                                 {{ showToday(tracking.general_startdate) }}
@@ -1109,6 +1103,66 @@
                                     </a>
                                 </div>
                                 <div class="text-sm text-center h-6"></div>
+                            </th>
+                            <th class="py-3 w-max">
+                                <div class="text-sm text-center h-6">
+                                    <a
+                                        href="#"
+                                        @click.prevent="
+                                            change_sort('division_name')
+                                        "
+                                        class="text-white inline-flex"
+                                    >
+                                        BGOC
+                                        <span
+                                            v-if="
+                                                (!(sort_direction == 'asc') ||
+                                                    !(
+                                                        sort_direction == 'desc'
+                                                    )) &&
+                                                !(sort_field == 'division_name')
+                                            "
+                                            class="inline-block"
+                                            ><ArrowsUpDownIcon class="h-4 w-4"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'desc' &&
+                                                sort_field == 'division_name'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowUpIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'asc' &&
+                                                sort_field == 'division_name'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowDownIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
+                                    </a>
+                                </div>
+                                <div class="text-sm text-center h-6">
+                                    <select
+                                        v-model="selectedDivision"
+                                        class="form-control form-control-sm text-xs"
+                                    >
+                                        <option class="text-xs" value="">
+                                            All
+                                        </option>
+                                        <option
+                                            class="text-xs"
+                                            v-for="division in divisions.data"
+                                            :key="division.id"
+                                            :value="division.id"
+                                        >
+                                            {{ division.name }}
+                                        </option>
+                                    </select>
+                                </div>
                             </th>
                             <th class="py-3">
                                 <div class="text-sm text-center h-6">
@@ -2049,6 +2103,9 @@
                                 {{ showToday(tracking.created_at) }}
                             </td>
                             <td class="text-xs text-center">
+                                {{ tracking.division_name }}
+                            </td>
+                            <td class="text-xs text-center">
                                 {{ tracking.user_name }}
                             </td>
                             <td
@@ -2766,16 +2823,199 @@ export default {
                 Type: "general_type",
                 "Artwork Format": "art_format",
                 "Artwork Frequency": "art_format",
-                "REACH": "general_reach",
-                "Tenure": {
+                REACH: "general_reach",
+                "Tenure (month)": {
                     callback: (value) => {
-                            return `${(value / 30)}`;
+                        return `${
+                            Math.round((value.general_tenure / 30) * 10) / 10
+                        }`;
                     },
                 },
                 "Start Date": "general_startdate",
                 "End Date": "general_enddate",
                 Remark: "general_remark",
                 Status: "progress",
+                Jan: {
+                    callback: (value) => {
+                        return this.getMonth(value.created_at) ===
+                            `${this.getYear(value.created_at)}-01`
+                            ? value.general_amount
+                            : "";
+                    },
+                },
+                Feb: {
+                    callback: (value) => {
+                        return this.getMonth(value.created_at) ===
+                            `${this.getYear(value.created_at)}-02`
+                            ? value.general_amount
+                            : "";
+                    },
+                },
+                Mac: {
+                    callback: (value) => {
+                        return this.getMonth(value.created_at) ===
+                            `${this.getYear(value.created_at)}-03`
+                            ? value.general_amount
+                            : "";
+                    },
+                },
+                Apr: {
+                    callback: (value) => {
+                        return this.getMonth(value.created_at) ===
+                            `${this.getYear(value.created_at)}-04`
+                            ? value.general_amount
+                            : "";
+                    },
+                },
+                May: {
+                    callback: (value) => {
+                        return this.getMonth(value.created_at) ===
+                            `${this.getYear(value.created_at)}-05`
+                            ? value.general_amount
+                            : "";
+                    },
+                },
+                Jun: {
+                    callback: (value) => {
+                        return this.getMonth(value.created_at) ===
+                            `${this.getYear(value.created_at)}-06`
+                            ? value.general_amount
+                            : "";
+                    },
+                },
+                Jul: {
+                    callback: (value) => {
+                        return this.getMonth(value.created_at) ===
+                            `${this.getYear(value.created_at)}-07`
+                            ? value.general_amount
+                            : "";
+                    },
+                },
+                Aug: {
+                    callback: (value) => {
+                        return this.getMonth(value.created_at) ===
+                            `${this.getYear(value.created_at)}-08`
+                            ? value.general_amount
+                            : "";
+                    },
+                },
+                Sep: {
+                    callback: (value) => {
+                        return this.getMonth(value.created_at) ===
+                            `${this.getYear(value.created_at)}-09`
+                            ? value.general_amount
+                            : "";
+                    },
+                },
+                Oct: {
+                    callback: (value) => {
+                        return this.getMonth(value.created_at) ===
+                            `${this.getYear(value.created_at)}-10`
+                            ? value.general_amount
+                            : "";
+                    },
+                },
+                Nov: {
+                    callback: (value) => {
+                        return this.getMonth(value.created_at) ===
+                            `${this.getYear(value.created_at)}-11`
+                            ? value.general_amount
+                            : "";
+                    },
+                },
+                Dec: {
+                    callback: (value) => {
+                        return this.getMonth(value.created_at) ===
+                            `${this.getYear(value.created_at)}-12`
+                            ? value.general_amount
+                            : "";
+                    },
+                },
+            },
+
+            general_wip_fields: {
+                Date: {
+                    callback: (value) => {
+                        return `${this.showToday(value.created_at)}`;
+                    },
+                },
+                User: "user_name",
+                Company: "company_name",
+                Product: "category_name",
+                "Product Description": "general_category_description",
+                Type: "general_type",
+                Frequency: {
+                    callback: (value) => {
+                        return `${value.frequency_no} of ${value.general_art_freq}`;
+                    },
+                },
+                "Start Date": "general_startdate",
+                "End Date": "general_enddate",
+                "Artwork Chase": {
+                    callback: (value) => {
+                        return value.art_chase_done === 1
+                            ? `(${this.getDayMonth(value.art_chase_date)})`
+                            : `${this.getDayMonth(value.art_chase_date)}`;
+                    },
+                },
+                "Artwork Received": {
+                    callback: (value) => {
+                        return value.art_received_done === 1
+                            ? `(${this.getDayMonth(value.art_received_date)})`
+                            : `${this.getDayMonth(value.art_received_date)}`;
+                    },
+                },
+                "Artwork To Do": {
+                    callback: (value) => {
+                        return value.art_todo_done === 1
+                            ? `(${this.getDayMonth(value.art_todo_date)})`
+                            : `${this.getDayMonth(value.art_todo_date)}`;
+                    },
+                },
+                "C&S Sent": {
+                    callback: (value) => {
+                        return value.cns_sent_done === 1
+                            ? `(${this.getDayMonth(value.cns_sent_date)})`
+                            : `${this.getDayMonth(value.cns_sent_date)}`;
+                    },
+                },
+                "C&S Record": {
+                    callback: (value) => {
+                        return value.cns_record_done === 1
+                            ? `(${this.getDayMonth(value.cns_record_date)})`
+                            : `${this.getDayMonth(value.cns_record_date)}`;
+                    },
+                },
+                "Schedule Date": {
+                    callback: (value) => {
+                        return value.schedule_done === 1
+                            ? `(${this.getDayMonth(value.schedule_date)})`
+                            : `${this.getDayMonth(value.schedule_date)}`;
+                    },
+                },
+                Report: {
+                    callback: (value) => {
+                        return value.report_done === 1
+                            ? `(${this.getDayMonth(value.report_date)})`
+                            : `${this.getDayMonth(value.report_date)}`;
+                    },
+                },
+                "Client Posting": {
+                    callback: (value) => {
+                        return value.client_posting_done === 1
+                            ? `(${this.getDayMonth(value.client_posting_date)})`
+                            : `${this.getDayMonth(value.client_posting_date)}`;
+                    },
+                },
+                "Live Date": {
+                    callback: (value) => {
+                        return value.actual_live_done === 1
+                            ? `(${this.getDayMonth(value.actual_live_date)})`
+                            : `${this.getDayMonth(value.actual_live_date)}`;
+                    },
+                },
+                Remark: "wip_remark",
+                Status: "wip_progress",
             },
         };
     },
@@ -2843,7 +3083,7 @@ export default {
                         "&selectedCategory=" +
                         this.selectedCategory +
                         "&selectedResult=" +
-                        this.selectedResult+
+                        this.selectedResult +
                         "&selectedDivision=" +
                         this.selectedDivision
                 )
@@ -2926,6 +3166,21 @@ export default {
             let new_date = new Date(date);
             let day = moment(new_date).format("DD-MM-YY");
             return day;
+        },
+
+        getDayMonth(date) {
+            let day_month = moment(date).format("DD-MM");
+            return day_month;
+        },
+
+        getMonth(date) {
+            let month = moment(date).format("YYYY-MM");
+            return month;
+        },
+
+        getYear(date) {
+            let year = moment(date).format("YYYY");
+            return year;
         },
 
         exportMasterGeneralExcel(type, fn, dl) {

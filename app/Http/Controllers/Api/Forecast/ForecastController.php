@@ -160,14 +160,33 @@ class ForecastController extends Controller
         return response()->json(["data" => $forecast]);
     }
 
-    public function update(ForecastRequest $request, Forecast $forecast)
+    public function update(Request $request, Forecast $forecast)
     {
+
+        $request->validate([
+            'forecast_date' => ['required'],
+            'amount' => ['required', 'int'],
+            'user_id' => ['required', 'int'],
+            'forecast_type_id' => ['required', 'int'],
+            'contact_id' => ['required', 'int'],
+            'product_id' => ['required', 'int'],
+
+        ], [
+            'forecast_date.required' => 'The forecast date is required',
+            'amount.required' => 'The amount is required.',
+            'user_id.required' => 'Please select a user',
+            'forecast_type_id.required' => 'Please select a type',
+            'contact_id.required' => 'Please select a company',
+            'product_id.required' => 'Please select a product',
+ 
+        ]);
+
         $forecast->update([
 
             'forecast_date' => $request->forecast_date,
             'forecast_updatedate' => now(),
             'amount' => $request->amount,
-            'user_id' => Auth::id(),
+            'user_id' => $request->user_id,
             'forecast_type_id' => $request->forecast_type_id,
             'contact_id' => $request->contact_id,
             'product_id' => $request->product_id,
@@ -266,6 +285,7 @@ class ForecastController extends Controller
                 ->exists())
         ) {
             $forecast = Forecast::select(
+                'forecasts.created_at',
                 'forecasts.id',
                 'forecasts.contact_id',
                 'forecasts.forecast_date',
@@ -276,14 +296,15 @@ class ForecastController extends Controller
                 'users.name as user_name',
                 'forecast_types.name as forecast_type',
                 'forecast_products.name as forecast_product',
+                'forecast_results.name as forecast_result',
                 DB::raw("DATE_FORMAT(forecasts.forecast_date, '%M-%Y') as month"),
-                // DB::raw("MAX(forecasts.forecast_date, '%M %Y') as last"),
             )
                 ->join('contacts', 'forecasts.contact_id', '=', 'contacts.id')
-                ->join('contact_statuses', 'forecasts.contact_status_id', '=', 'contact_statuses.id')
-                ->join('contact_types', 'forecasts.contact_type_id', '=', 'contact_types.id')
+                ->join('contact_statuses', 'contacts.status_id', '=', 'contact_statuses.id')
+                ->join('contact_types', 'contacts.type_id', '=', 'contact_types.id')
                 ->join('forecast_types', 'forecasts.forecast_type_id', '=', 'forecast_types.id')
                 ->join('forecast_products', 'forecasts.product_id', '=', 'forecast_products.id')
+                ->leftJoin('forecast_results', 'forecasts.result_id', '=', 'forecast_results.id')
                 ->join('users', 'forecasts.user_id', '=', 'users.id')
                 ->when($selectedContactStatus, function ($query) use ($selectedContactStatus) {
                     $query->where('contact_status_id', $selectedContactStatus);
@@ -338,6 +359,7 @@ class ForecastController extends Controller
                 'users.name as user_name',
                 'forecast_types.name as forecast_type',
                 'forecast_products.name as forecast_product',
+                'forecast_results.name as forecast_result',
                 DB::raw("DATE_FORMAT(forecasts.forecast_date, '%M-%Y') as month"),
                 // DB::raw("MAX(forecasts.forecast_date, '%M %Y') as last"),
             )
@@ -348,6 +370,7 @@ class ForecastController extends Controller
                 ->join('forecast_types', 'forecasts.forecast_type_id', '=', 'forecast_types.id')
                 ->join('forecast_products', 'forecasts.product_id', '=', 'forecast_products.id')
                 ->join('users', 'forecasts.user_id', '=', 'users.id')
+                ->leftJoin('forecast_results', 'forecasts.result_id', '=', 'forecast_results.id')
                 ->when($selectedContactStatus, function ($query) use ($selectedContactStatus) {
                     $query->where('contact_status_id', $selectedContactStatus);
                 })
@@ -384,66 +407,4 @@ class ForecastController extends Controller
     }
 
 
-    // public function test()
-    // {
-
-    //     ### DB Raw method from discord ###
-
-    //     ##trial 1
-
-    //     // $contact = Contact::select(
-    //     //     'name',
-    //     //     DB::raw("DATE_FORMAT(created_at, '%M %Y') as months")
-    //     // )
-    //     // ->get()
-    //     // ->groupBy('months');
-
-    //     // return $contact->toArray();
-
-
-    //     //TRIAL 5
-
-    //     $contact = Contact::with(
-    //         [
-    //             'status' => function ($q) {
-    //                 $q->select('id', 'name');
-    //             },
-    //             'category' => function ($q) {
-    //                 $q->select('id', 'name');
-    //             },
-    //             'type' => function ($q) {
-    //                 $q->select('id', 'name');
-    //             },
-    //             'user' => function ($q) {
-    //                 $q->select('id', 'name');
-    //             },
-    //             'summary' => function ($q) {
-    //                 $q->select(['id', 'todo_date', 'contact_id', 'action_id'])
-    //                     ->orderBy('todo_date');
-    //             },
-    //             'summary.action' => function ($q) {
-    //                 $q->select('id', 'name');
-    //             },
-    //         ],
-    //     )
-    //         ->select('id', 'name', 'status_id', 'type_id', 'category_id', 'user_id')
-    //         ->get();
-
-    //     // group smua todo by month
-    //     $contact
-    //         ->transform(function ($company) {
-    //             $company->setRelation(
-    //                 'summary',
-    //                 $company->summary
-    //                     ->groupBy(
-    //                         fn ($summary) => \Carbon\Carbon::create($summary->todo_date)->format('F-Y')
-    //                     )
-
-    //             );
-
-    //             return $company;
-    //         });
-
-    //     return $contact;
-    // }
 }

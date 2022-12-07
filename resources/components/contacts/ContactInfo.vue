@@ -6,7 +6,7 @@
             </div>
 
             <div
-                class="items-center text-center text-white font-extrabold bg-slate-600 px-2 py-1 rounded-md"
+                class="items-center text-center text-white font-extrabold bg-blue-900 px-2 py-1 rounded-md"
             >
                 <h1 class="px-2 bg-black-50 uppercase">Company Information</h1>
             </div>
@@ -81,7 +81,7 @@
             </div>
             <div class="">
                 <h5
-                    class="text-center text-white font-extrabold font-mono text-sm uppercase bg-slate-600 px-5 py-2 rounded-md"
+                    class="text-center text-white font-extrabold font-mono text-sm uppercase bg-blue-900 px-5 py-2 rounded-md"
                 >
                     PIC
                 </h5>
@@ -198,14 +198,14 @@
 
             <div class="">
                 <h5
-                    class="text-center text-white font-extrabold font-mono text-sm uppercase bg-slate-600 px-5 py-2 rounded-md"
+                    class="text-center text-white font-extrabold font-mono text-sm uppercase bg-blue-900 px-5 py-2 rounded-md my-3"
                 >
                     Forecast
                 </h5>
-                <div class="text-right inline-block">
+                <div class="text-right inline-block mb-2">
                     <router-link
                         :to="`/forecast/${info.id}/create`"
-                        class="ml-1 px-2 py-2 items-center border text-xs text-right rounded-lg w-max text-lime-600"
+                        class="ml-1 px-2 py-2 items-center border-2 text-xs text-right rounded-lg w-max text-lime-600 border-slate-300"
                     >
                         <PlusIcon class="h-3 w-3 inline" />
                         <DocumentChartBarIcon class="h-6 w-6 inline" />
@@ -304,7 +304,7 @@
             </div>
 
             <!--<h5
-                            class="items-center m-2 text-center text-white font-extrabold font-mono text-sm uppercase bg-slate-600 px-5 py-2 rounded-md"
+                            class="items-center m-2 text-center text-white font-extrabold font-mono text-sm uppercase bg-blue-900 px-5 py-2 rounded-md"
                         >
                             Forecast
                         </h5>
