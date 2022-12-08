@@ -28,71 +28,78 @@
                         </h1>
                     </div>
 
-                    <div class="form-group grid grid-cols-2">
-                        <label class="font-bold"
-                            >User
-                            <p class="inline text-red-600 text-lg">*</p></label
-                        >
-                        <select
-                            class="block mt-1 w-full text-center rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                            v-model="tguide.user_id"
-                            @change="getUsers"
-                        >
-                            <option value="">Select user</option>
-                            <option
-                                v-for="user in users"
-                                :key="user.id"
-                                :value="user.id"
+                    <div
+                        class="bg-cyan-100 px-2 py-2 border-gray-300 my-3 rounded-md"
+                    >
+                        <div class="form-group grid grid-cols-2">
+                            <label class="font-bold"
+                                >User
+                                <p class="inline text-red-600 text-lg">
+                                    *
+                                </p></label
                             >
-                                {{ user.name }}
-                            </option>
-                        </select>
-                    </div>
-                    <div class="form-group grid grid-cols-2">
-                        <label class="font-bold"
-                            >Company
-                            <p class="inline text-red-600 text-lg">*</p></label
-                        >
-                        <select
-                            class="text-center overflow-y block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                            v-model="tguide.company_id"
-                            @change="getContacts"
-                        >
-                            <option value="">Select company</option>
-                            <option
-                                class=""
-                                v-for="contact in contacts"
-                                :key="contact.id"
-                                :value="contact.id"
+                            <select
+                                class="block mt-1 w-full text-center rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                v-model="tguide.user_id"
+                                @change="getUsers"
                             >
-                                {{ contact.name }}
-                            </option>
-                        </select>
-                    </div>
+                                <option value="">Select user</option>
+                                <option
+                                    v-for="user in users"
+                                    :key="user.id"
+                                    :value="user.id"
+                                >
+                                    {{ user.name }}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="form-group grid grid-cols-2">
+                            <label class="font-bold"
+                                >Company
+                                <p class="inline text-red-600 text-lg">
+                                    *
+                                </p></label
+                            >
+                            <select
+                                class="text-center overflow-y block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                v-model="tguide.company_id"
+                                @change="getContacts"
+                            >
+                                <option value="">Select company</option>
+                                <option
+                                    class=""
+                                    v-for="contact in contacts"
+                                    :key="contact.id"
+                                    :value="contact.id"
+                                >
+                                    {{ contact.name }}
+                                </option>
+                            </select>
+                        </div>
 
-                    <div class="mt-2 grid grid-cols-2">
-                        <div>
+                        <div class="mt-2 grid grid-cols-2">
                             <div>
-                                <label class="font-bold">Edition</label>
-                                <p class="inline text-red-600 text-lg">*</p>
-                                <!-- <div
+                                <div>
+                                    <label class="font-bold">Edition</label>
+                                    <p class="inline text-red-600 text-lg">*</p>
+                                    <!-- <div
                             v-if="form.remark.length >= 800"
                             class="text-red-600 inline text-xs uppercase"
                         >
                             Exceeded limit
                         </div> -->
+                                </div>
                             </div>
-                        </div>
-                        <div>
-                            <div class="form-group flex">
-                                <input
-                                    maxlength="800"
-                                    type="text"
-                                    class="form-control block px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-                                    v-model="tguide.edition"
-                                    placeholder="eg: 30' x 40'"
-                                />
-                                <!-- <p class="mx-5">-</p>
+                            <div>
+                                <div class="form-group flex">
+                                    <input
+                                        maxlength="800"
+                                        type="text"
+                                        class="form-control block px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                                        v-model="tguide.edition"
+                                        placeholder="eg: 30' x 40'"
+                                    />
+                                    <!-- <p class="mx-5">-</p>
                                 <input
                                     maxlength="800"
                                     type="text"
@@ -100,58 +107,62 @@
                                     v-model="tguide.general_type"
                                     placeholder="eg: 30' x 40'"
                                 /> -->
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="mt-2 grid grid-cols-2">
-                        <div>
+                        <div class="mt-2 grid grid-cols-2">
                             <div>
-                                <label class="font-bold">Size</label>
-                                <p class="inline text-red-600 text-lg">*</p>
-                                <!-- <div
+                                <div>
+                                    <label class="font-bold">Size</label>
+                                    <p class="inline text-red-600 text-lg">*</p>
+                                    <!-- <div
                             v-if="form.remark.length >= 800"
                             class="text-red-600 inline text-xs uppercase"
                         >
                             Exceeded limit
                         </div> -->
+                                </div>
+                            </div>
+                            <div>
+                                <div class="form-group">
+                                    <input
+                                        maxlength="800"
+                                        type="text"
+                                        class="form-control block px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                                        v-model="tguide.tguide_size"
+                                        placeholder="eg: 30' x 40'"
+                                    />
+                                </div>
                             </div>
                         </div>
-                        <div>
-                            <div class="form-group">
-                                <input
-                                    maxlength="800"
-                                    type="text"
-                                    class="form-control block px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-                                    v-model="tguide.tguide_size"
-                                    placeholder="eg: 30' x 40'"
-                                />
-                            </div>
-                        </div>
-                    </div>
 
-                    <div class="form-group mt-2">
-                        <label class="font-bold"
-                            >Remark
-                            <p class="inline text-red-600 text-lg">*</p></label
-                        >
+                        <div class="form-group mt-2">
+                            <label class="font-bold"
+                                >Remark
+                                <p class="inline text-red-600 text-lg">
+                                    *
+                                </p></label
+                            >
 
-                        <!-- <div
+                            <!-- <div
                             v-if="form.remark.length >= 800"
                             class="text-red-600 inline text-xs uppercase"
                         >
                             Exceeded limit
                         </div> -->
-                        <input
-                            maxlength="800"
-                            type="text"
-                            class="form-control block w-96 h-20 px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-                            v-model="tguide.tguide_remark"
-                            placeholder="eg: Artwork by Bluedale"
-                        />
+                            <input
+                                maxlength="800"
+                                type="text"
+                                class="form-control block w-96 h-20 px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                                v-model="tguide.tguide_remark"
+                                placeholder="eg: Artwork by Bluedale"
+                            />
+                        </div>
                     </div>
+
                     <div
-                        class="text-center border-2 px-1 py-1 border-slate-300 my-2"
+                        class="text-center bg-emerald-100 px-2 py-2 border-gray-300 my-3 rounded-md"
                         id="form-wrapper"
                     >
                         <div class="form-assignment">
@@ -282,13 +293,15 @@
                     </div>
 
                     <div
-                        class="text-center border-2 px-1 py-1 border-slate-300 my-2"
+                        class="text-center opacity-100 bg-purple-200 px-2 py-2 border-gray-300 my-3 rounded-md"
                         id="form-wrapper"
                         v-if="wip_travel_guide"
-                        v-for="(tguide_package,index) in wip_travel_guide"
+                        v-for="(tguide_package, index) in wip_travel_guide"
                     >
                         <div class="form-assignment">
-                            <label class="font-bold">Package {{ index + 1 }}</label>
+                            <label class="font-bold"
+                                >Package {{ index + 1 }}</label
+                            >
                             <div class="grid grid-cols-3">
                                 <div class="mx-1 grid grid-cols-1">
                                     <label class="font-bold">Progress</label>
@@ -756,7 +769,7 @@ export default {
             axios.delete(
                 "/api/trackings/wip/travel_guide/delete/" + package_id
             );
-            this.getTrackingTravelGuide()
+            this.getTrackingTravelGuide();
         },
 
         addForm() {

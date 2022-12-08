@@ -4109,6 +4109,7 @@ export default {
 
             selectedDate: "",
             selectedYear: "",
+            tguide_fields: {},
         };
     },
     watch: {

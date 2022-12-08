@@ -7,6 +7,7 @@ import Datepicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css'
 import JsonExcel from "vue-json-excel3";
 import laravelPermissionToVuejs from "laravel-permission-to-vuejs";
+// import VuePdfEmbed from 'vue-pdf-embed'
 // window.$ = window.jQuery = require('jquery')
 
 import ContactIndex from "../components/contacts/ContactIndex.vue";
@@ -26,6 +27,7 @@ app.component("Pagination", LaravelVuePagination);
 app.component('VueDatePicker', Datepicker);
 app.component("contact-index", ContactIndex);
 app.component("downloadExcel", JsonExcel);
+// app.component("vue-pdf-embed", VuePdfEmbed);
 
 app.use(laravelPermissionToVuejs)
 app.use(router);

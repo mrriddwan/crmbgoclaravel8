@@ -19,6 +19,7 @@
     <!-- Scripts -->
     <script src="https://unpkg.com/vue@latest"></script>
     <script src="https://unpkg.com/@vuepic/vue-datepicker@latest"></script>
+    <script src="https://unpkg.com/vue-pdf-embed"></script>
     <script type="text/javascript" src="https://unpkg.com/xlsx@0.15.1/dist/xlsx.full.min.js"></script>
     <script type="text/javascript">
         window.Laravel = {
@@ -33,7 +34,7 @@
 </head>
 
 <body class="font-sans antialiased">
-    <div class="min-h-screen bg-blue-900 max-w" id="app">
+    <div class="min-h-screen bg-blue-900" id="app">
         @include('layouts.navigation')
 
         <!-- Page Heading -->

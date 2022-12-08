@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\TestController;
 use App\Http\Controllers\Api\Contact\ContactController;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -28,7 +29,9 @@ require __DIR__ . '/auth.php';
 // });
 
 // Auth::routes();
-
+Route::get('/linkstorage', function () {
+    Artisan::call('storage:link');
+});
 
 Route::get('', function () {
     return view('contact');
@@ -94,6 +97,14 @@ Route::get('/tracking/general/index', function () {
 Route::get('/tracking/travel_guide/index', function () {
     return view('tracking_tg');
 })->middleware(['auth'])->name('tracking-travel_guide');
+
+Route::get('/tutorial/contact', function () {
+    return view('tutorial_contact');
+})->middleware(['auth'])->name('tutorial-contact');
+
+Route::get('/tutorial/todo_followup', function () {
+    return view('tutorial_todo_followup');
+})->middleware(['auth'])->name('tutorial-todo_followup');
 
 Route::get('/admin/data', function () {
     return view('admin_data');

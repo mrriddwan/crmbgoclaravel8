@@ -61,6 +61,10 @@ import TrackingTravelGuideIndex from "../components/trackings/TrackingTravelGuid
 import MasterTravelGuideCreate from "../components/trackings/MasterTravelGuideCreate.vue";
 import MasterTravelGuideEdit from "../components/trackings/MasterTravelGuideEdit.vue";
 
+/**Tracking Travel Guide Imports */
+import TutorialContacts from "../components/tutorials/TutorialContacts.vue";
+import TutorialToDoFollowUps from "../components/tutorials/TutorialToDoFollowUps.vue";
+
 const routes = [
     /*                      
         test Routes                      
@@ -394,6 +398,23 @@ const routes = [
         path: "/tracking/travel_guide/:id/edit",
         name: "tracking_travel_guide_edit",
         component: MasterTravelGuideEdit,
+    },
+
+     /*                                                  
+        System Guide Routes 
+    */
+
+    {
+        //Tutorial Contact
+        path: "/tutorial/contact",
+        name: "tutorial_contact",
+        component: TutorialContacts,
+    },
+    {
+        //Tutorial To Do & Follow Up
+        path: "/tutorial/todo_followup",
+        name: "tutorial_todo_followup",
+        component: TutorialToDoFollowUps,
     },
 ];
 

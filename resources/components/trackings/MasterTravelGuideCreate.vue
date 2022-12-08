@@ -307,7 +307,7 @@
                     :class="
                         !master_done
                             ? 'bg-slate-300 text-center opacity-50'
-                            : 'text-center opacity-100'
+                            : 'text-center opacity-100 bg-purple-200 px-2 py-2 border-gray-300 my-3 rounded-md'
                     "
                 >
                     <div
