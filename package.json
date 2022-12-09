@@ -33,6 +33,7 @@
         "vue-json-excel3": "^0.0.3",
         "vue-loader": "^17.0.0",
         "vue-pdf-embed": "^1.1.5",
-        "vue-router": "^4.0.13"
+        "vue-router": "^4.0.13",
+        "vue-select": "^4.0.0-beta.6"
     }
 }

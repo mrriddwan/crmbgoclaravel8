@@ -70,11 +70,11 @@ class ContactController extends Controller
             'contact_categories.name as category_name',
             'contact_industries.name as industry_name'
         ])
-            ->join('contact_statuses', 'contacts.status_id', '=', 'contact_statuses.id')
-            ->join('contact_types', 'contacts.type_id', '=', 'contact_types.id')
-            ->join('contact_categories', 'contacts.category_id', '=', 'contact_categories.id')
-            ->join('contact_industries', 'contacts.industry_id', '=', 'contact_industries.id')
-            ->join('users', 'contacts.user_id', '=', 'users.id')
+            ->leftJoin('contact_statuses', 'contacts.status_id', '=', 'contact_statuses.id')
+            ->leftJoin('contact_types', 'contacts.type_id', '=', 'contact_types.id')
+            ->leftJoin('contact_categories', 'contacts.category_id', '=', 'contact_categories.id')
+            ->leftJoin('contact_industries', 'contacts.industry_id', '=', 'contact_industries.id')
+            ->leftJoin('users', 'contacts.user_id', '=', 'users.id')
             ->when($selectedUser, function ($query) use ($selectedUser) {
                 $query->where('contacts.user_id', $selectedUser);
             })
@@ -265,11 +265,11 @@ class ContactController extends Controller
                 },
             ],
         )
-            ->join('contact_statuses', 'contacts.status_id', '=', 'contact_statuses.id')
-            ->join('contact_types', 'contacts.type_id', '=', 'contact_types.id')
-            ->join('contact_categories', 'contacts.category_id', '=', 'contact_categories.id')
-            ->join('contact_industries', 'contacts.industry_id', '=', 'contact_industries.id')
-            ->join('users', 'contacts.user_id', '=', 'users.id')
+            ->leftJoin('contact_statuses', 'contacts.status_id', '=', 'contact_statuses.id')
+            ->leftJoin('contact_types', 'contacts.type_id', '=', 'contact_types.id')
+            ->leftJoin('contact_categories', 'contacts.category_id', '=', 'contact_categories.id')
+            ->leftJoin('contact_industries', 'contacts.industry_id', '=', 'contact_industries.id')
+            ->leftJoin('users', 'contacts.user_id', '=', 'users.id')
             ->select([
                 'contacts.id',
                 'contacts.name',

@@ -21,17 +21,20 @@ class ForecastFactory extends Factory
      */
     public function definition()
     {
+        $a = array(1, 2, 3, null);
+        $random_keys=array_rand($a,3);
+
         return [
             'amount' => $this->faker->numberBetween(10000, 50000),
-            'forecast_date' => $this->faker -> dateTimeBetween('-8 months', '+11 months'),
-            // 'result_id' => random_int(1,2),
-            'forecast_updatedate' => $this->faker -> dateTimeBetween('-1 week', '+3 months'),
-            'user_id' => random_int(1,10),
-            'contact_id' => random_int(1,100),
-            'forecast_type_id' => random_int(1,4),
-            'product_id' => random_int(1,5),
-            'contact_status_id' => random_int(1,5),
-            'contact_type_id' => random_int(1,5),
+            'forecast_date' => $this->faker->dateTimeBetween('-8 months', '+11 months'),
+            'result_id' => $a[$random_keys[0]],
+            'forecast_updatedate' => $this->faker->dateTimeBetween('-1 week', '+3 months'),
+            'user_id' => random_int(1, 10),
+            'contact_id' => random_int(1, 100),
+            'forecast_type_id' => random_int(1, 4),
+            'product_id' => random_int(1, 5),
+            'contact_status_id' => random_int(1, 5),
+            'contact_type_id' => random_int(1, 5),
         ];
     }
 }

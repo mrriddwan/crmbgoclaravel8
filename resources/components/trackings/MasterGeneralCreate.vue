@@ -36,7 +36,7 @@
                             <p class="inline text-red-600 text-lg">*</p></label
                         >
                         <select
-                            class="block mt-1 w-full text-center rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                            class="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                             v-model="form.user_id"
                             @change="getUsers"
                         >
@@ -50,26 +50,19 @@
                             </option>
                         </select>
                     </div>
-                    <div class="form-group grid grid-cols-2">
+                    <div class="form-group grid grid-cols-2 my-2">
                         <label class="font-bold"
                             >Company
                             <p class="inline text-red-600 text-lg">*</p></label
                         >
-                        <select
-                            class="text-center overflow-y block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                        <v-select
+                            label="name"
+                            :options="contacts"
+                            class=""
+                            :reduce="(name) => name.id"
                             v-model="form.company_id"
-                            @change="getContacts"
-                        >
-                            <option value="">Select company</option>
-                            <option
-                                class=""
-                                v-for="contact in contacts"
-                                :key="contact.id"
-                                :value="contact.id"
-                            >
-                                {{ contact.name }}
-                            </option>
-                        </select>
+                            placeholder="Select company"
+                        ></v-select>
                     </div>
 
                     <div class="form-group grid grid-cols-2">
@@ -78,7 +71,7 @@
                             <p class="inline text-red-600 text-lg">*</p></label
                         >
                         <select
-                            class="block mt-1 text-center w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                            class="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                             v-model="form.contact_category_id"
                             @change="getCategory"
                         >
@@ -98,7 +91,7 @@
                             <p class="inline text-red-600 text-lg">*</p></label
                         >
                         <select
-                            class="block mt-1 text-center w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                            class="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                             v-model="form.division_id"
                             @change="getDivisions"
                         >

@@ -55,7 +55,7 @@
                 </div>
             </div>
 
-            <div class="py-2 px-2">
+            <!-- <div class="py-2 px-2">
                 <div
                     class="px-2"
                     v-if="
@@ -77,7 +77,7 @@
                         Export
                     </download-excel>
                 </div>
-            </div>
+            </div> -->
         </div>
 
         <div class="grid grid-cols-6 gap-3">
@@ -318,7 +318,7 @@
                                     <a
                                         href="#"
                                         @click.prevent="
-                                            change_sort('category_name')
+                                            change_sort('edition')
                                         "
                                         class="text-white inline-flex"
                                     >
@@ -329,7 +329,7 @@
                                                     !(
                                                         sort_direction == 'desc'
                                                     )) &&
-                                                !(sort_field == 'category_name')
+                                                !(sort_field == 'edition')
                                             "
                                             class="inline-block"
                                             ><ArrowsUpDownIcon class="h-4 w-4"
@@ -337,7 +337,7 @@
                                         <span
                                             v-if="
                                                 sort_direction == 'desc' &&
-                                                sort_field == 'category_name'
+                                                sort_field == 'edition'
                                             "
                                             class="inline-block"
                                             ><ArrowUpIcon
@@ -346,7 +346,7 @@
                                         <span
                                             v-if="
                                                 sort_direction == 'asc' &&
-                                                sort_field == 'category_name'
+                                                sort_field == 'edition'
                                             "
                                             class="inline-block"
                                             ><ArrowDownIcon
@@ -364,7 +364,7 @@
                                     <a
                                         href="#"
                                         @click.prevent="
-                                            change_sort('category_description')
+                                            change_sort('tguide_size')
                                         "
                                         class="text-white inline-flex"
                                     >
@@ -377,7 +377,7 @@
                                                     )) &&
                                                 !(
                                                     sort_field ==
-                                                    'category_description'
+                                                    'tguide_size'
                                                 )
                                             "
                                             class="inline-block"
@@ -387,7 +387,7 @@
                                             v-if="
                                                 sort_direction == 'desc' &&
                                                 sort_field ==
-                                                    'category_description'
+                                                    'tguide_size'
                                             "
                                             class="inline-block"
                                             ><ArrowUpIcon
@@ -397,7 +397,7 @@
                                             v-if="
                                                 sort_direction == 'asc' &&
                                                 sort_field ==
-                                                    'category_description'
+                                                    'tguide_size'
                                             "
                                             class="inline-block"
                                             ><ArrowDownIcon

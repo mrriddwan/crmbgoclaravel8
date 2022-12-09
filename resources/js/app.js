@@ -7,6 +7,7 @@ import Datepicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css'
 import JsonExcel from "vue-json-excel3";
 import laravelPermissionToVuejs from "laravel-permission-to-vuejs";
+import vSelect from "vue-select";
 // import VuePdfEmbed from 'vue-pdf-embed'
 // window.$ = window.jQuery = require('jquery')
 
@@ -16,6 +17,7 @@ import moment from "moment";
 //bootstrap
 import "./bootstrap";
 import "../css///bootstrapGlobal.css";
+import "vue-select/dist/vue-select.css";
 
 window.Alpine = Alpine;
 Alpine.start();
@@ -27,6 +29,7 @@ app.component("Pagination", LaravelVuePagination);
 app.component('VueDatePicker', Datepicker);
 app.component("contact-index", ContactIndex);
 app.component("downloadExcel", JsonExcel);
+app.component("v-select", vSelect);
 // app.component("vue-pdf-embed", VuePdfEmbed);
 
 app.use(laravelPermissionToVuejs)

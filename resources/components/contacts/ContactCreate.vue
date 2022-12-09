@@ -119,22 +119,12 @@
                             <p class="inline text-red-600 text-lg">*</p></label
                         >
                         <div class="h-max-10">
-                            <select
-                                class="bg-slate-200 border-1 overflow-y block mt-1 w-max rounded-md border-gray-400 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                                @change="getContacts"
-                            >
-                                <option value="">
-                                    Check company for duplicate
-                                </option>
-                                <option
-                                    class=""
-                                    v-for="contact in contacts"
-                                    :key="contact.id"
-                                    :value="contact.id"
-                                >
-                                    {{ contact.name }}
-                                </option>
-                            </select>
+                            <v-select
+                            label="name"
+                            :options="contacts"
+                            class=""
+                            placeholder="Search for duplicate"
+                        ></v-select>
                         </div>
                         <input
                             maxlength="100"

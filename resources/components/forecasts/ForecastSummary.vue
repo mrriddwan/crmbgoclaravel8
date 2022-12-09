@@ -8,14 +8,6 @@
 
         <div class="">
             <div class="grid grid-cols-4 items-center">
-                <!-- <div class="grid grid-cols-1 items-left m-2">
-                    <label for="paginate" class="">Per Page</label>
-                    <select v-model="paginate" class="form-control">
-                        <option value="10">10</option>
-                        <option value="50">50</option>
-                        <option value="100">100</option>
-                    </select>
-                </div> -->
                 <div class="grid grid-cols-1 items-left m-2">
                     <label>Year</label>
                     <input
@@ -55,23 +47,13 @@
                         </download-excel>
                     </div>
                 </div>
-
-                <!-- <div class="py-1 inline-block">
-                    <Pagination
-                        :data="forecasts"
-                        @pagination-change-page="getForecasts"
-                        :size="'small'"
-                        :align="'right'"
-                        class="pagination"
-                    />
-                </div> -->
             </div>
 
             <div
                 class="table-wrp block max-h-screen overflow-y-auto overflow-x-auto"
             >
                 <table class="table table-hover table-bordered w-max">
-                    <thead class="bg-slate-400 border-b sticky top-0">
+                    <thead class="bg-slate-500 border-b sticky top-0">
                         <tr>
                             <th class="text-xs">
                                 <div class="text-xs text-center h-6 text-white">
@@ -106,7 +88,7 @@
                                                 sort_field == 'user_name'
                                             "
                                             class="inline-block"
-                                            ><ArrowUpIcon class="h-4 w-4"
+                                            ><ArrowUpIcon class="h-4 w-4 text-amber-400 font-extrabold"
                                         /></span>
                                         <span
                                             v-if="
@@ -114,7 +96,7 @@
                                                 sort_field == 'user_name'
                                             "
                                             class="inline-block"
-                                            ><ArrowDownIcon class="h-4 w-4"
+                                            ><ArrowDownIcon class="h-4 w-4 text-amber-400 font-extrabold"
                                         /></span>
                                     </a>
                                 </div>
@@ -151,7 +133,7 @@
                                         "
                                         class="text-white"
                                     >
-                                        Contact Type
+                                        Contact Status
                                         <span
                                             v-if="
                                                 (!(sort_direction == 'asc') ||
@@ -172,7 +154,7 @@
                                                 sort_field == 'contact_status'
                                             "
                                             class="inline-block"
-                                            ><ArrowUpIcon class="h-4 w-4"
+                                            ><ArrowUpIcon class="h-4 w-4 text-amber-400 font-extrabold"
                                         /></span>
                                         <span
                                             v-if="
@@ -180,7 +162,7 @@
                                                 sort_field == 'contact_status'
                                             "
                                             class="inline-block"
-                                            ><ArrowDownIcon class="h-4 w-4"
+                                            ><ArrowDownIcon class="h-4 w-4 text-amber-400 font-extrabold"
                                         /></span>
                                     </a>
                                 </div>
@@ -227,7 +209,7 @@
                                                 sort_field == 'contact_type'
                                             "
                                             class="inline-block"
-                                            ><ArrowUpIcon class="h-4 w-4"
+                                            ><ArrowUpIcon class="h-4 w-4 text-amber-400 font-extrabold"
                                         /></span>
                                         <span
                                             v-if="
@@ -235,7 +217,7 @@
                                                 sort_field == 'contact_type'
                                             "
                                             class="inline-block"
-                                            ><ArrowDownIcon class="h-4 w-4"
+                                            ><ArrowDownIcon class="h-4 w-4 text-amber-400 font-extrabold"
                                         /></span>
                                     </a>
                                 </div>
@@ -283,7 +265,7 @@
                                                 sort_field == 'contact'
                                             "
                                             class="inline-block"
-                                            ><ArrowUpIcon class="h-4 w-4"
+                                            ><ArrowUpIcon class="h-4 w-4 text-amber-400 font-extrabold"
                                         /></span>
                                         <span
                                             v-if="
@@ -291,7 +273,7 @@
                                                 sort_field == 'contact'
                                             "
                                             class="inline-block"
-                                            ><ArrowDownIcon class="h-4 w-4"
+                                            ><ArrowDownIcon class="h-4 w-4 text-amber-400 font-extrabold"
                                         /></span>
                                     </a>
                                 </div>
@@ -325,7 +307,7 @@
                                                 sort_field == 'forecast_type'
                                             "
                                             class="inline-block"
-                                            ><ArrowUpIcon class="h-4 w-4"
+                                            ><ArrowUpIcon class="h-4 w-4 text-amber-400 font-extrabold"
                                         /></span>
                                         <span
                                             v-if="
@@ -333,7 +315,7 @@
                                                 sort_field == 'forecast_type'
                                             "
                                             class="inline-block"
-                                            ><ArrowDownIcon class="h-4 w-4"
+                                            ><ArrowDownIcon class="h-4 w-4 text-amber-400 font-extrabold"
                                         /></span>
                                     </a>
                                 </div>
@@ -386,7 +368,7 @@
                                                 sort_field == 'forecast_product'
                                             "
                                             class="inline-block"
-                                            ><ArrowUpIcon class="h-4 w-4"
+                                            ><ArrowUpIcon class="h-4 w-4 text-amber-400 font-extrabold"
                                         /></span>
                                         <span
                                             v-if="
@@ -394,7 +376,7 @@
                                                 sort_field == 'forecast_product'
                                             "
                                             class="inline-block"
-                                            ><ArrowDownIcon class="h-4 w-4"
+                                            ><ArrowDownIcon class="h-4 w-4 text-amber-400 font-extrabold"
                                         /></span>
                                     </a>
                                 </div>
@@ -411,6 +393,67 @@
                                                 :value="product.id"
                                             >
                                                 {{ product.name }}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </th>
+                            <th class="py-3">
+                                <div class="text-xs text-center h-max">
+                                    <a
+                                        href="#"
+                                        @click.prevent="
+                                            change_sort('forecast_product')
+                                        "
+                                        class="text-white"
+                                    >
+                                        Result
+                                        <span
+                                            v-if="
+                                                (!(sort_direction == 'asc') ||
+                                                    !(
+                                                        sort_direction == 'desc'
+                                                    )) &&
+                                                !(
+                                                    sort_field ==
+                                                    'forecast_result'
+                                                )
+                                            "
+                                            class="inline-block"
+                                            ><ArrowsUpDownIcon class="h-4 w-4"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'desc' &&
+                                                sort_field == 'forecast_result'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowUpIcon class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'asc' &&
+                                                sort_field == 'forecast_result'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowDownIcon class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
+                                    </a>
+                                </div>
+                                <div class="text-xs text-center h-6">
+                                    <div class="text-xs text-center h-6">
+                                        <select
+                                        v-model="filterResult"
+                                            class="form-control form-control-sm w-max"
+                                        >
+                                            <option value="">All</option>
+                                            <option value="null">No result</option>
+                                            <option
+                                                v-for="result in results.data"
+                                                :key="result.id"
+                                                :value="result.id"
+                                            >
+                                                {{ result.name }}
                                             </option>
                                         </select>
                                     </div>
@@ -486,6 +529,12 @@
                             </td>
                             <td class="text-xs">
                                 {{ forecast.forecast_product }}
+                            </td>
+                            <td class="text-xs" v-if="!forecast.forecast_result">
+                                No result
+                            </td>
+                            <td class="text-xs">
+                                {{ forecast.forecast_result }}
                             </td>
 
                             <td
@@ -680,7 +729,7 @@ export default {
         this.getStatus();
         this.getContactTypes();
         this.getForecastTypes();
-
+        this.getResults();
         this.getProducts();
     },
     data() {
@@ -691,6 +740,7 @@ export default {
             contact_types: [],
             forecast_types: [],
             products: [],
+            results: [],
 
             paginate: 5000,
             moment: moment,
@@ -706,6 +756,7 @@ export default {
             selectedContactStatus: "",
             selectedForecastType: "",
             selectedForecastProduct: "",
+            filterResult: "",
 
             sort_direction: "asc",
             sort_field: "contact",
@@ -904,6 +955,10 @@ export default {
             this.getForecasts();
         },
 
+        filterResult: function (value) {
+            this.getForecasts();
+        },
+
         selectPage: function (value) {
             this.checked = [];
             if (value) {
@@ -945,6 +1000,8 @@ export default {
                         this.selectedForecastType +
                         "&selectedContact=" +
                         this.selectedContact +
+                        "&filterResult=" +
+                        this.filterResult +
                         "&paginate=" +
                         this.paginate +
                         "&page=" +
@@ -978,6 +1035,17 @@ export default {
                 .get("/api/contacts/type/index")
                 .then((res) => {
                     this.contact_types = res.data;
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        },
+
+        async getResults() {
+            await axios
+                .get("/api/forecasts/result/index")
+                .then((res) => {
+                    this.results = res.data;
                 })
                 .catch((error) => {
                     console.log(error);

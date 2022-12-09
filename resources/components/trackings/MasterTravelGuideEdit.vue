@@ -39,7 +39,7 @@
                                 </p></label
                             >
                             <select
-                                class="block mt-1 w-full text-center rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                class="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                                 v-model="tguide.user_id"
                                 @change="getUsers"
                             >
@@ -53,28 +53,22 @@
                                 </option>
                             </select>
                         </div>
-                        <div class="form-group grid grid-cols-2">
+                        <div class="form-group grid grid-cols-2 my-2">
                             <label class="font-bold"
                                 >Company
                                 <p class="inline text-red-600 text-lg">
                                     *
                                 </p></label
                             >
-                            <select
-                                class="text-center overflow-y block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                            <v-select
+                                id="company_id"
+                                label="name"
+                                :options="contacts"
+                                class="select_company"
+                                :reduce="(name) => name.id"
                                 v-model="tguide.company_id"
-                                @change="getContacts"
-                            >
-                                <option value="">Select company</option>
-                                <option
-                                    class=""
-                                    v-for="contact in contacts"
-                                    :key="contact.id"
-                                    :value="contact.id"
-                                >
-                                    {{ contact.name }}
-                                </option>
-                            </select>
+                                placeholder="Select company"
+                            ></v-select>
                         </div>
 
                         <div class="mt-2 grid grid-cols-2">
@@ -331,8 +325,8 @@
                                         id="message"
                                         maxlength="800"
                                         rows="1"
-                                        placeholder="eg: Artwork by Bluedale"
-                                        class="block p-2.5 w-full text-xs rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
+                                        placeholder="eg: Sponsored Ads / Video / Pub E-book"
+                                        class="block p-2.5 w-full text-md rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
                                     ></textarea>
                                 </div>
                                 <div class="mx-1 grid grid-cols-1">
@@ -435,7 +429,7 @@
                                         maxlength="800"
                                         rows="1"
                                         placeholder="eg: Artwork by Bluedale"
-                                        class="block p-2.5 w-full text-xs rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
+                                        class="block p-2.5 w-full text-md rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
                                     ></textarea>
                                 </div>
                                 <div class="mx-1 grid grid-cols-1">
@@ -735,11 +729,9 @@ export default {
                         }
                     }
 
-                    then((res) => {
-                        alert("Tracking and package (wip) updated");
-                        this.$router.push({
-                            name: "tracking_travel_guide",
-                        });
+                    alert("Tracking and package (wip) updated");
+                    this.$router.push({
+                        name: "tracking_travel_guide",
                     });
                 } catch (e) {
                     {
@@ -793,3 +785,9 @@ export default {
     },
 };
 </script>
+<style>
+.select_company {
+    background: #f8fafc;
+    height: max-content;
+}
+</style>

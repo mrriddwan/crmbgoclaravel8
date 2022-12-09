@@ -1,15 +1,15 @@
 <template>
     <div
-        class="container w-max-10 border-4 align-center mx-auto h-max px-5 py-5"
+        class="container w-max-10 align-center mx-auto h-max px-5 py-3"
     >
         <div>
             <GoBack />
         </div>
 
         <div
-            class="items-center text-center text-white font-extrabold bg-blue-900 px-2 py-2 rounded-md"
+            class="items-center text-center text-white font-mono font-extrabold bg-orange-400 px-48 py-2 rounded-md"
         >
-            <h1 class="px-2 py-3 bg-black-50">Edit Project</h1>
+            <h1 class="px-2 py-1 bg-black-50">Edit Project</h1>
         </div>
         <div v-if="errors">
             <div v-for="(v, k) in errors" :key="k">
@@ -42,7 +42,7 @@
                                 showNowButton
                                 nowButtonLabel="Today"
                                 :enableTimePicker="false"
-                                class="text-center w-full inline-block items-left mt-1 mx-2 rounded-md border-gray-500 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                class="text-center w-full inline-block items-left mt-1 rounded-md border-gray-500 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                             />
                         </div>
                     </div>
@@ -58,7 +58,7 @@
                                 showNowButton
                                 nowButtonLabel="Today"
                                 :enableTimePicker="false"
-                                class="text-center w-full inline-block items-left mt-1 mx-2 rounded-md border-gray-500 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                class="text-center w-full inline-block items-left mt-1 rounded-md border-gray-500 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                             />
                         </div>
                         <!-- <input
@@ -87,23 +87,14 @@
                             <p class="inline text-red-600 text-lg">*</p></label
                         >
                         <div class="h-max-10">
-                            <select
-                                class="overflow-y block mt-1 w-max rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                                v-model="project.contact_id"
-                                @change="getContacts"
-                            >
-                                <option disabled value="">
-                                    Please select one
-                                </option>
-                                <option
-                                    class=""
-                                    v-for="contact in contacts"
-                                    :key="contact.id"
-                                    :value="contact.id"
-                                >
-                                    {{ contact.name }}
-                                </option>
-                            </select>
+                            <v-select
+                            label="name"
+                            :options="contacts"
+                            class=""
+                            :reduce="(name) => name.id"
+                            v-model="project.contact_id"
+                            placeholder="Select company"
+                        ></v-select>
                         </div>
                     </div>
 
@@ -118,7 +109,7 @@
                         <textarea
                             maxlength="800"
                             type="text"
-                            class="block mt-1 w-60 w-max-100 rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                            class="block mt-1 w-96 w-max-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                             v-model="project.project_remark"
                         />
                     </div>

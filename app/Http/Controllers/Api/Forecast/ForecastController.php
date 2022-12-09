@@ -271,6 +271,7 @@ class ForecastController extends Controller
         $selectedForecastProduct = request('selectedForecastProduct');
         $selectedUser = request('selectedUser');
         $selectedYear = request('selectedYear');
+        $filterResult = request('filterResult');
 
         $id = Auth::id();
 
@@ -299,13 +300,13 @@ class ForecastController extends Controller
                 'forecast_results.name as forecast_result',
                 DB::raw("DATE_FORMAT(forecasts.forecast_date, '%M-%Y') as month"),
             )
-                ->join('contacts', 'forecasts.contact_id', '=', 'contacts.id')
-                ->join('contact_statuses', 'contacts.status_id', '=', 'contact_statuses.id')
-                ->join('contact_types', 'contacts.type_id', '=', 'contact_types.id')
-                ->join('forecast_types', 'forecasts.forecast_type_id', '=', 'forecast_types.id')
-                ->join('forecast_products', 'forecasts.product_id', '=', 'forecast_products.id')
+                ->leftJoin('contacts', 'forecasts.contact_id', '=', 'contacts.id')
+                ->leftJoin('contact_statuses', 'contacts.status_id', '=', 'contact_statuses.id')
+                ->leftJoin('contact_types', 'contacts.type_id', '=', 'contact_types.id')
+                ->leftJoin('forecast_types', 'forecasts.forecast_type_id', '=', 'forecast_types.id')
+                ->leftJoin('forecast_products', 'forecasts.product_id', '=', 'forecast_products.id')
                 ->leftJoin('forecast_results', 'forecasts.result_id', '=', 'forecast_results.id')
-                ->join('users', 'forecasts.user_id', '=', 'users.id')
+                ->leftJoin('users', 'forecasts.user_id', '=', 'users.id')
                 ->when($selectedContactStatus, function ($query) use ($selectedContactStatus) {
                     $query->where('contact_status_id', $selectedContactStatus);
                 })
@@ -328,6 +329,13 @@ class ForecastController extends Controller
                     $query->whereHas('forecast_summary', function ($q) use ($selectedYear) {
                         $q->whereYear('forecast_date', $selectedYear);
                     });
+                })
+                ->when($filterResult, function ($query) use ($filterResult) {
+                    if ($filterResult === "null") {
+                        $query->whereNull('forecasts.result_id');
+                    } else {
+                        $query->where('forecasts.result_id', $filterResult);
+                    }
                 })
                 ->orderBy($sort_field, $sort_direction)
                 ->search(trim($search_term))
@@ -364,12 +372,12 @@ class ForecastController extends Controller
                 // DB::raw("MAX(forecasts.forecast_date, '%M %Y') as last"),
             )
                 ->whereIn('forecasts.user_id', $final) // for view under supervisor and the subordinates
-                ->join('contacts', 'forecasts.contact_id', '=', 'contacts.id')
-                ->join('contact_statuses', 'forecasts.contact_status_id', '=', 'contact_statuses.id')
-                ->join('contact_types', 'forecasts.contact_type_id', '=', 'contact_types.id')
-                ->join('forecast_types', 'forecasts.forecast_type_id', '=', 'forecast_types.id')
-                ->join('forecast_products', 'forecasts.product_id', '=', 'forecast_products.id')
-                ->join('users', 'forecasts.user_id', '=', 'users.id')
+                ->leftJoin('contacts', 'forecasts.contact_id', '=', 'contacts.id')
+                ->leftJoin('contact_statuses', 'contacts.status_id', '=', 'contact_statuses.id')
+                ->leftJoin('contact_types', 'contacts.type_id', '=', 'contact_types.id')
+                ->leftJoin('forecast_types', 'forecasts.forecast_type_id', '=', 'forecast_types.id')
+                ->leftJoin('forecast_products', 'forecasts.product_id', '=', 'forecast_products.id')
+                ->leftJoin('users', 'forecasts.user_id', '=', 'users.id')
                 ->leftJoin('forecast_results', 'forecasts.result_id', '=', 'forecast_results.id')
                 ->when($selectedContactStatus, function ($query) use ($selectedContactStatus) {
                     $query->where('contact_status_id', $selectedContactStatus);
@@ -393,6 +401,13 @@ class ForecastController extends Controller
                     $query->whereHas('forecast_summary', function ($q) use ($selectedYear) {
                         $q->whereYear('forecast_date', $selectedYear);
                     });
+                })
+                ->when($filterResult, function ($query) use ($filterResult) {
+                    if ($filterResult === "null") {
+                        $query->whereNull('forecasts.result_id');
+                    } else {
+                        $query->where('forecasts.result_id', $filterResult);
+                    }
                 })
                 ->orderBy($sort_field, $sort_direction)
                 ->search(trim($search_term))

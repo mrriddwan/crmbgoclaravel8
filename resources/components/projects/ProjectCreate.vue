@@ -1,15 +1,15 @@
 <template>
     <div
-        class="container w-max-10 border-4 align-center mx-auto h-max px-5 py-5"
+        class="container w-max-10 align-center mx-auto h-max px-5 py-3"
     >
         <div>
             <GoBack />
         </div>
 
         <div
-            class="items-center text-center text-white font-extrabold bg-blue-900 px-2 py-2 rounded-md"
+            class="items-center text-center text-white font-extrabold font-mono bg-orange-500 px-48 py-2 rounded-md"
         >
-            <h1 class="px-2 py-3 bg-black-50">Create Project</h1>
+            <h1 class="px-2 py-1 bg-black-50">Create Project</h1>
         </div>
         <div v-if="errors">
             <div v-for="(v, k) in errors" :key="k">
@@ -24,7 +24,7 @@
         </div>
 
         <div class="row mt-3">
-            <div class="col-md-6">
+            <div class="col-md-6 w-full">
                 <form @submit.prevent="createProject">
                     <div class="form-group">
                         <label
@@ -87,23 +87,14 @@
                             <p class="inline text-red-600 text-lg">*</p></label
                         >
                         <div class="h-max-10">
-                            <select
-                                class="overflow-y block mt-1 w-max rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                            <v-select
+                                label="name"
+                                :options="contacts"
+                                class=""
+                                :reduce="(name) => name.id"
                                 v-model="form.contact_id"
-                                @change="getContacts"
-                            >
-                                <option disabled value="">
-                                    Please select one
-                                </option>
-                                <option
-                                    class=""
-                                    v-for="contact in contacts"
-                                    :key="contact.id"
-                                    :value="contact.id"
-                                >
-                                    {{ contact.name }}
-                                </option>
-                            </select>
+                                placeholder="Select company"
+                            ></v-select>
                         </div>
                     </div>
 
@@ -139,7 +130,7 @@
 import GoBack from "../utils/GoBack.vue";
 import axios from "axios";
 import { VueDatePicker } from "@vuepic/vue-datepicker";
-import moment from 'moment'
+import moment from "moment";
 
 export default {
     components: { GoBack, VueDatePicker },
@@ -155,7 +146,7 @@ export default {
                 user_id: "",
                 contact_id: "",
             },
-            
+
             users: [],
             contacts: [],
             errors: "",

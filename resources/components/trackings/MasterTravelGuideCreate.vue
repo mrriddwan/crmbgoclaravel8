@@ -46,7 +46,7 @@
                             >
                             <select
                                 id="user_id"
-                                class="block mt-1 w-full text-center rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                class="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                                 v-model="form.user_id"
                                 @change="getUsers"
                             >
@@ -60,15 +60,25 @@
                                 </option>
                             </select>
                         </div>
-                        <div class="group grid grid-cols-2">
+                        <div class="group grid grid-cols-2 my-2">
                             <label class="font-bold"
                                 >Company
                                 <p class="inline text-red-600 text-lg">
                                     *
                                 </p></label
                             >
-                            <select
+
+                            <v-select
                                 id="company_id"
+                                label="name"
+                                :options="contacts"
+                                class="select_company"
+                                :reduce="(name) => name.id"
+                                v-model="form.company_id"
+                                placeholder="Select company"
+                            ></v-select>
+                            <!-- <select
+                               
                                 class="text-center overflow-y block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                                 v-model="form.company_id"
                                 @change="getContacts"
@@ -82,7 +92,7 @@
                                 >
                                     {{ contact.name }}
                                 </option>
-                            </select>
+                            </select> -->
                         </div>
 
                         <div class="mt-2 grid grid-cols-2">
@@ -307,15 +317,15 @@
                     :class="
                         !master_done
                             ? 'bg-slate-300 text-center opacity-50'
-                            : 'text-center opacity-100 bg-purple-200 px-2 py-2 border-gray-300 my-3 rounded-md'
+                            : 'text-center opacity-100 bg-purple-200 px-2 py-2 my-10 rounded-md'
                     "
                 >
                     <div
-                        class="text-center border-2 px-1 py-1 border-slate-300 my-2"
+                        class="text-center px-1 py-1 my-10"
                         id="form-wrapper"
                         v-for="(new_package, index) in wip_travel_guide"
                     >
-                        <div class="form-assignment">
+                        <div class="form-assignment my-3">
                             <label class="font-bold"
                                 >Package {{ index + 1 }}</label
                             >
@@ -340,7 +350,7 @@
                                         maxlength="800"
                                         rows="1"
                                         placeholder="eg: Pub  & E book / 20K FB Sponsored Ad"
-                                        class="block p-2.5 w-full text-xs rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
+                                        class="block p-2.5 w-full text-md rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
                                     ></textarea>
                                 </div>
                                 <div class="mx-1 grid grid-cols-1">
@@ -408,26 +418,25 @@
                         <div class="text-center items-center text-sm">
                             <PlusCircleIcon
                                 @click="addForm"
-                                class="text-center items-center h-10 w-10 text-green-400"
+                                class="text-center items-center h-10 w-10 text-green-400 hover:text-green-600"
                             />
                         </div>
                         <div class="text-center items-center text-sm">
                             <MinusCircleIcon
                                 v-if="wip_travel_guide.length > 1"
                                 @click="removeForm"
-                                class="text-center items-center h-10 w-10 text-red-400"
+                                class="text-center items-center h-10 w-10 text-red-400 hover:text-red-600"
                             />
                         </div>
                     </div>
-
-                    <button
-                        v-if="master_done"
-                        @click="createPackageTravelGuide"
-                        class="inline-flex mt-2 items-center px-4 py-2 bg-green-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
-                    >
-                        Add
-                    </button>
                 </div>
+                <button
+                    v-if="master_done"
+                    @click="createPackageTravelGuide"
+                    class="inline-flex mt-2 items-center px-4 py-2 bg-green-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
+                >
+                    Add
+                </button>
             </div>
         </div>
     </div>
@@ -548,7 +557,7 @@ export default {
                             tguide_size: this.form.tguide_size,
                             tguide_remark: this.form.tguide_remark
                                 ? this.form.tguide_remark
-                                : "No remark",
+                                : "",
 
                             art_reminder_date: this.form.art_reminder_date
                                 ? this.moment(
@@ -557,7 +566,7 @@ export default {
                                 : null,
                             art_reminder_remark: this.form.art_reminder_remark
                                 ? this.form.art_reminder_remark
-                                : "No remark",
+                                : "",
                             art_reminder_user_id: this.form.art_reminder_user_id
                                 ? this.form.art_reminder_user_id
                                 : null,
@@ -570,7 +579,7 @@ export default {
                                 : null,
                             art_record_remark: this.form.art_record_remark
                                 ? this.form.art_record_remark
-                                : "No remark",
+                                : "",
                             art_record_user_id: this.form.art_record_user_id
                                 ? this.form.art_record_user_id
                                 : null,
@@ -579,6 +588,7 @@ export default {
                         .then((res) => {
                             this.created_tracking = res.data.data;
                             this.master_done = true;
+                            this.tracking_errors = "";
                             //forms for tracking are disabled
                         });
                     document.getElementById("user_id").disabled = true;
@@ -696,3 +706,9 @@ export default {
     },
 };
 </script>
+<style>
+.select_company {
+    background: #f8fafc;
+    height: max-content;
+}
+</style>
