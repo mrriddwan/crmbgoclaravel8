@@ -28,7 +28,6 @@ class ToDoController extends Controller
 
         $selectedSource = request('selectedSource');
         $selectedStatus = request('selectedStatus');
-        // $selectedContact = request('selectedContact');
         $selectedUser = request('selectedUser');
         $selectedTask = request('selectedTask');
         $selectedType = request('selectedType');
@@ -59,14 +58,12 @@ class ToDoController extends Controller
                 'text_colors.color_code as color_name',
                 'contacts.type_id as contact_type_id',
                 'contacts.status_id as contact_status_id',
-                // 'contacts.name as contact_name',
                 'to_do_sources.name as source_name',
                 'actions.name as action_name',
             ])
                 ->join('contacts', 'to_dos.contact_id', '=', 'contacts.id')
                 ->join('contact_statuses', 'contacts.status_id', '=', 'contact_statuses.id')
                 ->join('contact_types', 'contacts.type_id', '=', 'contact_types.id')
-                // ->join('contact_types', 'to_dos.type_id', '=', 'contact_types.id')
                 ->join('tasks', 'to_dos.task_id', '=', 'tasks.id')
                 ->join('priorities', 'to_dos.priority_id', '=', 'priorities.id')
                 ->join('users', 'to_dos.user_id', '=', 'users.id')
@@ -124,7 +121,6 @@ class ToDoController extends Controller
                 'text_colors.color_code as color_name',
                 'contacts.type_id as contact_type_id',
                 'contacts.status_id as contact_status_id',
-                // 'contacts.name as contact_name',
                 'to_do_sources.name as source_name',
                 'actions.name as action_name',
             ])
@@ -133,7 +129,6 @@ class ToDoController extends Controller
                 ->join('contacts', 'to_dos.contact_id', '=', 'contacts.id')
                 ->join('contact_statuses', 'contacts.status_id', '=', 'contact_statuses.id')
                 ->join('contact_types', 'contacts.type_id', '=', 'contact_types.id')
-                // ->join('contact_types', 'to_dos.type_id', '=', 'contact_types.id')
                 ->join('tasks', 'to_dos.task_id', '=', 'tasks.id')
                 ->join('priorities', 'to_dos.priority_id', '=', 'priorities.id')
                 ->join('users', 'to_dos.user_id', '=', 'users.id')
@@ -219,7 +214,6 @@ class ToDoController extends Controller
                 ->join('contacts', 'to_dos.contact_id', '=', 'contacts.id')
                 ->join('contact_statuses', 'contacts.status_id', '=', 'contact_statuses.id')
                 ->join('contact_types', 'contacts.type_id', '=', 'contact_types.id')
-                // ->join('contact_types', 'to_dos.type_id', '=', 'contact_types.id')
                 ->join('tasks', 'to_dos.task_id', '=', 'tasks.id')
                 ->join('priorities', 'to_dos.priority_id', '=', 'priorities.id')
                 ->join('users', 'to_dos.user_id', '=', 'users.id')
@@ -289,7 +283,6 @@ class ToDoController extends Controller
                 ->join('contacts', 'to_dos.contact_id', '=', 'contacts.id')
                 ->join('contact_statuses', 'contacts.status_id', '=', 'contact_statuses.id')
                 ->join('contact_types', 'contacts.type_id', '=', 'contact_types.id')
-                // ->join('contact_types', 'to_dos.type_id', '=', 'contact_types.id')
                 ->join('tasks', 'to_dos.task_id', '=', 'tasks.id')
                 ->join('priorities', 'to_dos.priority_id', '=', 'priorities.id')
                 ->join('users', 'to_dos.user_id', '=', 'users.id')
@@ -370,14 +363,12 @@ class ToDoController extends Controller
                 'text_colors.color_code as color_name',
                 'contacts.type_id as contact_type_id',
                 'contacts.status_id as contact_status_id',
-                // 'contacts.name as contact_name',
                 'to_do_sources.name as source_name',
                 'actions.name as action_name',
             ])
                 ->join('contacts', 'to_dos.contact_id', '=', 'contacts.id')
                 ->join('contact_statuses', 'contacts.status_id', '=', 'contact_statuses.id')
                 ->join('contact_types', 'contacts.type_id', '=', 'contact_types.id')
-                // ->join('contact_types', 'to_dos.type_id', '=', 'contact_types.id')
                 ->join('tasks', 'to_dos.task_id', '=', 'tasks.id')
                 ->join('priorities', 'to_dos.priority_id', '=', 'priorities.id')
                 ->join('users', 'to_dos.user_id', '=', 'users.id')
@@ -435,7 +426,6 @@ class ToDoController extends Controller
                 'text_colors.color_code as color_name',
                 'contacts.type_id as contact_type_id',
                 'contacts.status_id as contact_status_id',
-                // 'contacts.name as contact_name',
                 'to_do_sources.name as source_name',
                 'actions.name as action_name',
             ])
@@ -444,7 +434,6 @@ class ToDoController extends Controller
                 ->join('contacts', 'to_dos.contact_id', '=', 'contacts.id')
                 ->join('contact_statuses', 'contacts.status_id', '=', 'contact_statuses.id')
                 ->join('contact_types', 'contacts.type_id', '=', 'contact_types.id')
-                // ->join('contact_types', 'to_dos.type_id', '=', 'contact_types.id')
                 ->join('tasks', 'to_dos.task_id', '=', 'tasks.id')
                 ->join('priorities', 'to_dos.priority_id', '=', 'priorities.id')
                 ->join('users', 'to_dos.user_id', '=', 'users.id')

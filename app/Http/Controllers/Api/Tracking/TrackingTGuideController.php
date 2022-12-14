@@ -163,9 +163,7 @@ class TrackingTGuideController extends Controller
 
     public function store(Request $request)
     {
-
         $request->validate([
-
             'user_id' => ['required', 'int'],
             'company_id' => ['required', 'int'],
             'edition' => ['required', 'string'],

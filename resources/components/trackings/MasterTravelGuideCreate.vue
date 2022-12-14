@@ -642,41 +642,46 @@ export default {
         async createPackageTravelGuide() {
             if (window.confirm("Confirm create package(s) ?")) {
                 try {
-                    for (let i = 0; i < this.wip_travel_guide.length; i++) {
-                        await axios.post(
-                            "/api/trackings/wip/travel_guide/store",
-                            {
-                                tracking_tguide_id: this.created_tracking.id,
-                                wip_package_name:
-                                    this.wip_travel_guide[i].wip_package_name,
-                                wip_package_date: this.wip_travel_guide[i]
-                                    .wip_package_date
-                                    ? this.moment(
-                                          this.wip_travel_guide[i]
-                                              .wip_package_date
-                                      ).format("YYYY-MM-DD")
-                                    : null,
-                                wip_package_done: 2,
-                                wip_package_user_id: this.wip_travel_guide[i]
-                                    .wip_package_user_id
-                                    ? this.wip_travel_guide[i]
-                                          .wip_package_user_id
-                                    : null,
-                                wip_package_remark: this.wip_travel_guide[i]
-                                    .wip_package_remark
-                                    ? this.wip_travel_guide[i]
-                                          .wip_package_remark
-                                    : null,
-                            }
-                        );
-                        // .then((res) => {
+                    // for (let i = 0; i < this.wip_travel_guide.length; i++) {
+                    //     await axios.post(
+                    //         "/api/trackings/wip/travel_guide/store",
+                    //         {
+                    //             tracking_tguide_id: this.created_tracking.id,
+                    //             wip_package_name:
+                    //                 this.wip_travel_guide[i].wip_package_name,
+                    //             wip_package_date: this.wip_travel_guide[i]
+                    //                 .wip_package_date
+                    //                 ? this.moment(
+                    //                       this.wip_travel_guide[i]
+                    //                           .wip_package_date
+                    //                   ).format("YYYY-MM-DD")
+                    //                 : null,
+                    //             wip_package_done: 2,
+                    //             wip_package_user_id: this.wip_travel_guide[i]
+                    //                 .wip_package_user_id
+                    //                 ? this.wip_travel_guide[i]
+                    //                       .wip_package_user_id
+                    //                 : null,
+                    //             wip_package_remark: this.wip_travel_guide[i]
+                    //                 .wip_package_remark
+                    //                 ? this.wip_travel_guide[i]
+                    //                       .wip_package_remark
+                    //                 : null,
+                    //         }
+                    //     );
 
-                        // });
-                    }
-                    alert("Tracking and package (wip) created");
-                    this.$router.push({
-                        name: "tracking_travel_guide",
-                    });
+                    await axios
+                        .post("/api/trackings/wip/travel_guide/store", {
+                            wip_travel_guide: this.wip_travel_guide,
+                            tracking_tguide_id: this.created_tracking.id
+                        })
+                        .then((res) => {
+                            alert("Tracking and package (wip) created");
+                            this.$router.push({
+                                name: "tracking_travel_guide",
+                            });
+                        });
+                    // }
                 } catch (e) {
                     {
                         if (e.response.status === 422) {

@@ -55,7 +55,7 @@
                 </div>
             </div>
 
-            <!-- <div class="py-2 px-2">
+            <div class="py-2 px-2">
                 <div
                     class="px-2"
                     v-if="
@@ -66,7 +66,7 @@
                 >
                     <download-excel
                         :data="tracking_travel_guides.data"
-                        :fields="tguide_fields"
+                        :fields="tguide_master_fields"
                         worksheet="Travel Guide Summary"
                         name="Travel Guide  Summary.xls"
                         class="btn btn-success btn-sm"
@@ -74,10 +74,31 @@
                         <ArrowTopRightOnSquareIcon
                             class="h-5 w-5 mr-1 inline-block"
                         />
-                        Export
+                        Export Master Table
                     </download-excel>
                 </div>
-            </div> -->
+                <div
+                    class="px-2"
+                    v-if="
+                        (can('export travel guide master') ||
+                            is('admin | super-admin')) &&
+                        view_type === 'wip'
+                    "
+                >
+                    <download-excel
+                        :data="tracking_travel_guides.data"
+                        :fields="tguide_wip_fields"
+                        worksheet="Travel Guide Summary"
+                        name="Travel Guide  Summary.xls"
+                        class="btn btn-success btn-sm"
+                    >
+                        <ArrowTopRightOnSquareIcon
+                            class="h-5 w-5 mr-1 inline-block"
+                        />
+                        Export WIP Table
+                    </download-excel>
+                </div>
+            </div>
         </div>
 
         <div class="grid grid-cols-6 gap-3">
@@ -317,9 +338,7 @@
                                 <div class="text-sm text-center h-6">
                                     <a
                                         href="#"
-                                        @click.prevent="
-                                            change_sort('edition')
-                                        "
+                                        @click.prevent="change_sort('edition')"
                                         class="text-white inline-flex"
                                     >
                                         Edition
@@ -375,10 +394,7 @@
                                                     !(
                                                         sort_direction == 'desc'
                                                     )) &&
-                                                !(
-                                                    sort_field ==
-                                                    'tguide_size'
-                                                )
+                                                !(sort_field == 'tguide_size')
                                             "
                                             class="inline-block"
                                             ><ArrowsUpDownIcon class="h-4 w-4"
@@ -386,8 +402,7 @@
                                         <span
                                             v-if="
                                                 sort_direction == 'desc' &&
-                                                sort_field ==
-                                                    'tguide_size'
+                                                sort_field == 'tguide_size'
                                             "
                                             class="inline-block"
                                             ><ArrowUpIcon
@@ -396,8 +411,7 @@
                                         <span
                                             v-if="
                                                 sort_direction == 'asc' &&
-                                                sort_field ==
-                                                    'tguide_size'
+                                                sort_field == 'tguide_size'
                                             "
                                             class="inline-block"
                                             ><ArrowDownIcon
@@ -4109,7 +4123,431 @@ export default {
 
             selectedDate: "",
             selectedYear: "",
-            tguide_fields: {},
+            tguide_master_fields: {
+                Date: {
+                    callback: (value) => {
+                        return `${this.showToday(value.created_at)}`;
+                    },
+                },
+                User: "user_name",
+                Company: "company_name",
+                Edition: "edition",
+                Size: "tguide_size",
+                Jan: {
+                    callback: (value) => {
+                        var wip_tguide = value.wip_travel_guide;
+                        // console.log('wip_tguide',wip_tguide);
+                        if (
+                            wip_tguide.length !== 0 &&
+                            this.checkMonth(
+                                wip_tguide,
+                                `${this.selectedYear}-01`
+                            )
+                        ) {
+                            //loop through the package
+                            let new_arr = [];
+                            for (let tguide_package of wip_tguide) {
+                                if (
+                                    this.getMonth(
+                                        tguide_package.wip_package_date
+                                    ) === `${this.selectedYear}-01` &&
+                                    tguide_package.wip_package_done === 2
+                                ) {
+                                    //return without bracket
+                                    new_arr.push(`${tguide_package.wip_package_name}`)
+                                    
+                                } else if(this.getMonth(
+                                        tguide_package.wip_package_date
+                                    ) === `${this.selectedYear}-01` &&
+                                    tguide_package.wip_package_done === 1){
+                                    //return with bracket
+                                    new_arr.push(`(${tguide_package.wip_package_name})`)
+                                } 
+                                // else {
+                                //     new_arr.push(`\n`)
+                                // }
+                                
+                            } return `${new_arr.join('\n')}`
+                        } else {
+                            //return empty
+                            return ``;
+                        }
+                    },
+                },
+                Feb: {
+                    callback: (value) => {
+                        var wip_tguide = value.wip_travel_guide;
+                        if (
+                            wip_tguide.length !== 0 &&
+                            this.checkMonth(
+                                wip_tguide,
+                                `${this.selectedYear}-02`
+                            )
+                        ) {
+                            let new_arr = [];
+                            for (let tguide_package of wip_tguide) {
+                                if (
+                                    this.getMonth(
+                                        tguide_package.wip_package_date
+                                    ) === `${this.selectedYear}-02` &&
+                                    tguide_package.wip_package_done === 2
+                                ) {
+                                    new_arr.push(`${tguide_package.wip_package_name}`)
+                                    
+                                } else if(this.getMonth(
+                                        tguide_package.wip_package_date
+                                    ) === `${this.selectedYear}-02` &&
+                                    tguide_package.wip_package_done === 1){
+                                    new_arr.push(`(${tguide_package.wip_package_name})`)
+                                }
+                            } return `${new_arr.join('\n')}`
+                        } else {
+                            return ``;
+                        }
+                    },
+                },
+                Mar: {
+                    callback: (value) => {
+                        var wip_tguide = value.wip_travel_guide;
+                        if (
+                            wip_tguide.length !== 0 &&
+                            this.checkMonth(
+                                wip_tguide,
+                                `${this.selectedYear}-03`
+                            )
+                        ) {
+                            let new_arr = [];
+                            for (let tguide_package of wip_tguide) {
+                                if (
+                                    this.getMonth(
+                                        tguide_package.wip_package_date
+                                    ) === `${this.selectedYear}-03` &&
+                                    tguide_package.wip_package_done === 2
+                                ) {
+                                    new_arr.push(`${tguide_package.wip_package_name}`)
+                                    
+                                } else if(this.getMonth(
+                                        tguide_package.wip_package_date
+                                    ) === `${this.selectedYear}-03` &&
+                                    tguide_package.wip_package_done === 1){
+                                    new_arr.push(`(${tguide_package.wip_package_name})`)
+                                }
+                            } return `${new_arr.join('\n')}`
+                        } else {
+                            return ``;
+                        }
+                    },
+                },
+                Apr: {
+                    callback: (value) => {
+                        var wip_tguide = value.wip_travel_guide;
+                        if (
+                            wip_tguide.length !== 0 &&
+                            this.checkMonth(
+                                wip_tguide,
+                                `${this.selectedYear}-04`
+                            )
+                        ) {
+                            let new_arr = [];
+                            for (let tguide_package of wip_tguide) {
+                                if (
+                                    this.getMonth(
+                                        tguide_package.wip_package_date
+                                    ) === `${this.selectedYear}-04` &&
+                                    tguide_package.wip_package_done === 2
+                                ) {
+                                    new_arr.push(`${tguide_package.wip_package_name}`)
+                                    
+                                } else if(this.getMonth(
+                                        tguide_package.wip_package_date
+                                    ) === `${this.selectedYear}-04` &&
+                                    tguide_package.wip_package_done === 1){
+                                    new_arr.push(`(${tguide_package.wip_package_name})`)
+                                }
+                            } return `${new_arr.join('\n')}`
+                        } else {
+                            return ``;
+                        }
+                    },
+                },
+                May: {
+                    callback: (value) => {
+                        var wip_tguide = value.wip_travel_guide;
+                        if (
+                            wip_tguide.length !== 0 &&
+                            this.checkMonth(
+                                wip_tguide,
+                                `${this.selectedYear}-05`
+                            )
+                        ) {
+                            let new_arr = [];
+                            for (let tguide_package of wip_tguide) {
+                                if (
+                                    this.getMonth(
+                                        tguide_package.wip_package_date
+                                    ) === `${this.selectedYear}-05` &&
+                                    tguide_package.wip_package_done === 2
+                                ) {
+                                    new_arr.push(`${tguide_package.wip_package_name}`)
+                                    
+                                } else if(this.getMonth(
+                                        tguide_package.wip_package_date
+                                    ) === `${this.selectedYear}-05` &&
+                                    tguide_package.wip_package_done === 1){
+                                    new_arr.push(`(${tguide_package.wip_package_name})`)
+                                }
+                            } return `${new_arr.join('\n')}`
+                        } else {
+                            return ``;
+                        }
+                    },
+                },
+                Jun: {
+                    callback: (value) => {
+                        var wip_tguide = value.wip_travel_guide;
+                        if (
+                            wip_tguide.length !== 0 &&
+                            this.checkMonth(
+                                wip_tguide,
+                                `${this.selectedYear}-06`
+                            )
+                        ) {
+                            let new_arr = [];
+                            for (let tguide_package of wip_tguide) {
+                                if (
+                                    this.getMonth(
+                                        tguide_package.wip_package_date
+                                    ) === `${this.selectedYear}-06` &&
+                                    tguide_package.wip_package_done === 2
+                                ) {
+                                    new_arr.push(`${tguide_package.wip_package_name}`)
+                                    
+                                } else if(this.getMonth(
+                                        tguide_package.wip_package_date
+                                    ) === `${this.selectedYear}-06` &&
+                                    tguide_package.wip_package_done === 1){
+                                    new_arr.push(`(${tguide_package.wip_package_name})`)
+                                }
+                            } return `${new_arr.join('\n')}`
+                        } else {
+                            return ``;
+                        }
+                    },
+                },
+                Jul: {
+                    callback: (value) => {
+                        var wip_tguide = value.wip_travel_guide;
+                        if (
+                            wip_tguide.length !== 0 &&
+                            this.checkMonth(
+                                wip_tguide,
+                                `${this.selectedYear}-07`
+                            )
+                        ) {
+                            let new_arr = [];
+                            for (let tguide_package of wip_tguide) {
+                                if (
+                                    this.getMonth(
+                                        tguide_package.wip_package_date
+                                    ) === `${this.selectedYear}-07` &&
+                                    tguide_package.wip_package_done === 2
+                                ) {
+                                    new_arr.push(`${tguide_package.wip_package_name}`)
+                                    
+                                } else if(this.getMonth(
+                                        tguide_package.wip_package_date
+                                    ) === `${this.selectedYear}-07` &&
+                                    tguide_package.wip_package_done === 1){
+                                    new_arr.push(`(${tguide_package.wip_package_name})`)
+                                }
+                            } return `${new_arr.join('\n')}`
+                        } else {
+                            return ``;
+                        }
+                    },
+                },
+                Aug: {
+                    callback: (value) => {
+                        var wip_tguide = value.wip_travel_guide;
+                        if (
+                            wip_tguide.length !== 0 &&
+                            this.checkMonth(
+                                wip_tguide,
+                                `${this.selectedYear}-08`
+                            )
+                        ) {
+                            let new_arr = [];
+                            for (let tguide_package of wip_tguide) {
+                                if (
+                                    this.getMonth(
+                                        tguide_package.wip_package_date
+                                    ) === `${this.selectedYear}-08` &&
+                                    tguide_package.wip_package_done === 2
+                                ) {
+                                    new_arr.push(`${tguide_package.wip_package_name}`)
+                                    
+                                } else if(this.getMonth(
+                                        tguide_package.wip_package_date
+                                    ) === `${this.selectedYear}-08` &&
+                                    tguide_package.wip_package_done === 1){
+                                    new_arr.push(`(${tguide_package.wip_package_name})`)
+                                }
+                            } 
+                            // return `${new_arr.join('\n')}`
+                            return `${new_arr.join('-')}`
+                        } else {
+                            return ``;
+                        }
+                    },
+                },
+                Sep: {
+                    callback: (value) => {
+                        var wip_tguide = value.wip_travel_guide;
+                        if (
+                            wip_tguide.length !== 0 &&
+                            this.checkMonth(
+                                wip_tguide,
+                                `${this.selectedYear}-09`
+                            )
+                        ) {
+                            let new_arr = [];
+                            for (let tguide_package of wip_tguide) {
+                                if (
+                                    this.getMonth(
+                                        tguide_package.wip_package_date
+                                    ) === `${this.selectedYear}-09` &&
+                                    tguide_package.wip_package_done === 2
+                                ) {
+                                    new_arr.push(`${tguide_package.wip_package_name}`)
+                                    
+                                } else if(this.getMonth(
+                                        tguide_package.wip_package_date
+                                    ) === `${this.selectedYear}-09` &&
+                                    tguide_package.wip_package_done === 1){
+                                    new_arr.push(`(${tguide_package.wip_package_name})`)
+                                }
+                            } return `${new_arr.join('\n')}`
+                        } else {
+                            return ``;
+                        }
+                    },
+                },
+                Oct: {
+                    callback: (value) => {
+                        var wip_tguide = value.wip_travel_guide;
+                        if (
+                            wip_tguide.length !== 0 &&
+                            this.checkMonth(
+                                wip_tguide,
+                                `${this.selectedYear}-10`
+                            )
+                        ) {
+                            let new_arr = [];
+                            for (let tguide_package of wip_tguide) {
+                                if (
+                                    this.getMonth(
+                                        tguide_package.wip_package_date
+                                    ) === `${this.selectedYear}-10` &&
+                                    tguide_package.wip_package_done === 2
+                                ) {
+                                    new_arr.push(`${tguide_package.wip_package_name}`)
+                                    
+                                } else if(this.getMonth(
+                                        tguide_package.wip_package_date
+                                    ) === `${this.selectedYear}-10` &&
+                                    tguide_package.wip_package_done === 1){
+                                    new_arr.push(`(${tguide_package.wip_package_name})`)
+                                }
+                            } return `${new_arr.join('\n')}`
+                        } else {
+                            return ``;
+                        }
+                    },
+                },
+                Nov: {
+                    callback: (value) => {
+                        var wip_tguide = value.wip_travel_guide;
+                        if (
+                            wip_tguide.length !== 0 &&
+                            this.checkMonth(
+                                wip_tguide,
+                                `${this.selectedYear}-11`
+                            )
+                        ) {
+                            let new_arr = [];
+                            for (let tguide_package of wip_tguide) {
+                                if (
+                                    this.getMonth(
+                                        tguide_package.wip_package_date
+                                    ) === `${this.selectedYear}-11` &&
+                                    tguide_package.wip_package_done === 2
+                                ) {
+                                    new_arr.push(`${tguide_package.wip_package_name}`)
+                                    
+                                } else if(this.getMonth(
+                                        tguide_package.wip_package_date
+                                    ) === `${this.selectedYear}-11` &&
+                                    tguide_package.wip_package_done === 1){
+                                    new_arr.push(`(${tguide_package.wip_package_name})`)
+                                }
+                            } return `${new_arr.join('\n')}`
+                        } else {
+                            return ``;
+                        }
+                    },
+                },
+                Dec: {
+                    callback: (value) => {
+                        var wip_tguide = value.wip_travel_guide;
+                        if (
+                            wip_tguide.length !== 0 &&
+                            this.checkMonth(
+                                wip_tguide,
+                                `${this.selectedYear}-12`
+                            )
+                        ) {
+                            let new_arr = [];
+                            for (let tguide_package of wip_tguide) {
+                                if (
+                                    this.getMonth(
+                                        tguide_package.wip_package_date
+                                    ) === `${this.selectedYear}-12` &&
+                                    tguide_package.wip_package_done === 2
+                                ) {
+                                    new_arr.push(`${tguide_package.wip_package_name}`)
+                                    
+                                } else if(this.getMonth(
+                                        tguide_package.wip_package_date
+                                    ) === `${this.selectedYear}-12` &&
+                                    tguide_package.wip_package_done === 1){
+                                    new_arr.push(`(${tguide_package.wip_package_name})`)
+                                }
+                            } return `${new_arr.join('\n')}`
+                        } else {
+                            return ``;
+                        }
+                    },
+                },
+            },
+
+            tguide_wip_fields: {
+                Date: {
+                    callback: (value) => {
+                        return `${this.showToday(value.created_at)}`;
+                    },
+                },
+                User: "user_name",
+                Company: "company_name",
+                Edition: "edition",
+                Size: "tguide_size",
+                "A/W Reminder": {
+                    callback: (value) => {
+                        return value.art_reminder_done === 2
+                            ? `${value.art_reminder_date}`
+                            : `(${value.art_reminder_date})`;
+                    }
+                },
+            },
         };
     },
     watch: {
