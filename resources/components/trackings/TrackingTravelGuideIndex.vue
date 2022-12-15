@@ -68,7 +68,7 @@
                         :data="tracking_travel_guides.data"
                         :fields="tguide_master_fields"
                         worksheet="Travel Guide Summary"
-                        name="Travel Guide  Summary.xls"
+                        name="Travel Guide Master.xls"
                         class="btn btn-success btn-sm"
                     >
                         <ArrowTopRightOnSquareIcon
@@ -89,7 +89,7 @@
                         :data="tracking_travel_guides.data"
                         :fields="tguide_wip_fields"
                         worksheet="Travel Guide Summary"
-                        name="Travel Guide  Summary.xls"
+                        name="Travel Guide WIP.xls"
                         class="btn btn-success btn-sm"
                     >
                         <ArrowTopRightOnSquareIcon
@@ -4154,20 +4154,25 @@ export default {
                                     tguide_package.wip_package_done === 2
                                 ) {
                                     //return without bracket
-                                    new_arr.push(`${tguide_package.wip_package_name}`)
-                                    
-                                } else if(this.getMonth(
+                                    new_arr.push(
+                                        `${tguide_package.wip_package_name}`
+                                    );
+                                } else if (
+                                    this.getMonth(
                                         tguide_package.wip_package_date
                                     ) === `${this.selectedYear}-01` &&
-                                    tguide_package.wip_package_done === 1){
+                                    tguide_package.wip_package_done === 1
+                                ) {
                                     //return with bracket
-                                    new_arr.push(`(${tguide_package.wip_package_name})`)
-                                } 
+                                    new_arr.push(
+                                        `(${tguide_package.wip_package_name})`
+                                    );
+                                }
                                 // else {
-                                //     new_arr.push(`\n`)
+                                //     new_arr.push(`-`)
                                 // }
-                                
-                            } return `${new_arr.join('\n')}`
+                            }
+                            return `${new_arr.join("\n")}`;
                         } else {
                             //return empty
                             return ``;
@@ -4192,15 +4197,21 @@ export default {
                                     ) === `${this.selectedYear}-02` &&
                                     tguide_package.wip_package_done === 2
                                 ) {
-                                    new_arr.push(`${tguide_package.wip_package_name}`)
-                                    
-                                } else if(this.getMonth(
+                                    new_arr.push(
+                                        `${tguide_package.wip_package_name}`
+                                    );
+                                } else if (
+                                    this.getMonth(
                                         tguide_package.wip_package_date
                                     ) === `${this.selectedYear}-02` &&
-                                    tguide_package.wip_package_done === 1){
-                                    new_arr.push(`(${tguide_package.wip_package_name})`)
+                                    tguide_package.wip_package_done === 1
+                                ) {
+                                    new_arr.push(
+                                        `(${tguide_package.wip_package_name})`
+                                    );
                                 }
-                            } return `${new_arr.join('\n')}`
+                            }
+                            return `${new_arr.join("\n")}`;
                         } else {
                             return ``;
                         }
@@ -4224,15 +4235,21 @@ export default {
                                     ) === `${this.selectedYear}-03` &&
                                     tguide_package.wip_package_done === 2
                                 ) {
-                                    new_arr.push(`${tguide_package.wip_package_name}`)
-                                    
-                                } else if(this.getMonth(
+                                    new_arr.push(
+                                        `${tguide_package.wip_package_name}`
+                                    );
+                                } else if (
+                                    this.getMonth(
                                         tguide_package.wip_package_date
                                     ) === `${this.selectedYear}-03` &&
-                                    tguide_package.wip_package_done === 1){
-                                    new_arr.push(`(${tguide_package.wip_package_name})`)
+                                    tguide_package.wip_package_done === 1
+                                ) {
+                                    new_arr.push(
+                                        `(${tguide_package.wip_package_name})`
+                                    );
                                 }
-                            } return `${new_arr.join('\n')}`
+                            }
+                            return `${new_arr.join("\n")}`;
                         } else {
                             return ``;
                         }
@@ -4256,15 +4273,21 @@ export default {
                                     ) === `${this.selectedYear}-04` &&
                                     tguide_package.wip_package_done === 2
                                 ) {
-                                    new_arr.push(`${tguide_package.wip_package_name}`)
-                                    
-                                } else if(this.getMonth(
+                                    new_arr.push(
+                                        `${tguide_package.wip_package_name}`
+                                    );
+                                } else if (
+                                    this.getMonth(
                                         tguide_package.wip_package_date
                                     ) === `${this.selectedYear}-04` &&
-                                    tguide_package.wip_package_done === 1){
-                                    new_arr.push(`(${tguide_package.wip_package_name})`)
+                                    tguide_package.wip_package_done === 1
+                                ) {
+                                    new_arr.push(
+                                        `(${tguide_package.wip_package_name})`
+                                    );
                                 }
-                            } return `${new_arr.join('\n')}`
+                            }
+                            return `${new_arr.join("\n")}`;
                         } else {
                             return ``;
                         }
@@ -4288,15 +4311,21 @@ export default {
                                     ) === `${this.selectedYear}-05` &&
                                     tguide_package.wip_package_done === 2
                                 ) {
-                                    new_arr.push(`${tguide_package.wip_package_name}`)
-                                    
-                                } else if(this.getMonth(
+                                    new_arr.push(
+                                        `${tguide_package.wip_package_name}`
+                                    );
+                                } else if (
+                                    this.getMonth(
                                         tguide_package.wip_package_date
                                     ) === `${this.selectedYear}-05` &&
-                                    tguide_package.wip_package_done === 1){
-                                    new_arr.push(`(${tguide_package.wip_package_name})`)
+                                    tguide_package.wip_package_done === 1
+                                ) {
+                                    new_arr.push(
+                                        `(${tguide_package.wip_package_name})`
+                                    );
                                 }
-                            } return `${new_arr.join('\n')}`
+                            }
+                            return `${new_arr.join("\n")}`;
                         } else {
                             return ``;
                         }
@@ -4320,15 +4349,21 @@ export default {
                                     ) === `${this.selectedYear}-06` &&
                                     tguide_package.wip_package_done === 2
                                 ) {
-                                    new_arr.push(`${tguide_package.wip_package_name}`)
-                                    
-                                } else if(this.getMonth(
+                                    new_arr.push(
+                                        `${tguide_package.wip_package_name}`
+                                    );
+                                } else if (
+                                    this.getMonth(
                                         tguide_package.wip_package_date
                                     ) === `${this.selectedYear}-06` &&
-                                    tguide_package.wip_package_done === 1){
-                                    new_arr.push(`(${tguide_package.wip_package_name})`)
+                                    tguide_package.wip_package_done === 1
+                                ) {
+                                    new_arr.push(
+                                        `(${tguide_package.wip_package_name})`
+                                    );
                                 }
-                            } return `${new_arr.join('\n')}`
+                            }
+                            return `${new_arr.join("\n")}`;
                         } else {
                             return ``;
                         }
@@ -4352,15 +4387,21 @@ export default {
                                     ) === `${this.selectedYear}-07` &&
                                     tguide_package.wip_package_done === 2
                                 ) {
-                                    new_arr.push(`${tguide_package.wip_package_name}`)
-                                    
-                                } else if(this.getMonth(
+                                    new_arr.push(
+                                        `${tguide_package.wip_package_name}`
+                                    );
+                                } else if (
+                                    this.getMonth(
                                         tguide_package.wip_package_date
                                     ) === `${this.selectedYear}-07` &&
-                                    tguide_package.wip_package_done === 1){
-                                    new_arr.push(`(${tguide_package.wip_package_name})`)
+                                    tguide_package.wip_package_done === 1
+                                ) {
+                                    new_arr.push(
+                                        `(${tguide_package.wip_package_name})`
+                                    );
                                 }
-                            } return `${new_arr.join('\n')}`
+                            }
+                            return `${new_arr.join("\n")}`;
                         } else {
                             return ``;
                         }
@@ -4384,17 +4425,22 @@ export default {
                                     ) === `${this.selectedYear}-08` &&
                                     tguide_package.wip_package_done === 2
                                 ) {
-                                    new_arr.push(`${tguide_package.wip_package_name}`)
-                                    
-                                } else if(this.getMonth(
+                                    new_arr.push(
+                                        `${tguide_package.wip_package_name}`
+                                    );
+                                } else if (
+                                    this.getMonth(
                                         tguide_package.wip_package_date
                                     ) === `${this.selectedYear}-08` &&
-                                    tguide_package.wip_package_done === 1){
-                                    new_arr.push(`(${tguide_package.wip_package_name})`)
+                                    tguide_package.wip_package_done === 1
+                                ) {
+                                    new_arr.push(
+                                        `(${tguide_package.wip_package_name})`
+                                    );
                                 }
-                            } 
-                            // return `${new_arr.join('\n')}`
-                            return `${new_arr.join('-')}`
+                            }
+                            // return `${new_arr.join('-')}`
+                            return `${new_arr.join("\n")}`;
                         } else {
                             return ``;
                         }
@@ -4418,15 +4464,21 @@ export default {
                                     ) === `${this.selectedYear}-09` &&
                                     tguide_package.wip_package_done === 2
                                 ) {
-                                    new_arr.push(`${tguide_package.wip_package_name}`)
-                                    
-                                } else if(this.getMonth(
+                                    new_arr.push(
+                                        `${tguide_package.wip_package_name}`
+                                    );
+                                } else if (
+                                    this.getMonth(
                                         tguide_package.wip_package_date
                                     ) === `${this.selectedYear}-09` &&
-                                    tguide_package.wip_package_done === 1){
-                                    new_arr.push(`(${tguide_package.wip_package_name})`)
+                                    tguide_package.wip_package_done === 1
+                                ) {
+                                    new_arr.push(
+                                        `(${tguide_package.wip_package_name})`
+                                    );
                                 }
-                            } return `${new_arr.join('\n')}`
+                            }
+                            return `${new_arr.join("\n")}`;
                         } else {
                             return ``;
                         }
@@ -4450,15 +4502,21 @@ export default {
                                     ) === `${this.selectedYear}-10` &&
                                     tguide_package.wip_package_done === 2
                                 ) {
-                                    new_arr.push(`${tguide_package.wip_package_name}`)
-                                    
-                                } else if(this.getMonth(
+                                    new_arr.push(
+                                        `${tguide_package.wip_package_name}`
+                                    );
+                                } else if (
+                                    this.getMonth(
                                         tguide_package.wip_package_date
                                     ) === `${this.selectedYear}-10` &&
-                                    tguide_package.wip_package_done === 1){
-                                    new_arr.push(`(${tguide_package.wip_package_name})`)
+                                    tguide_package.wip_package_done === 1
+                                ) {
+                                    new_arr.push(
+                                        `(${tguide_package.wip_package_name})`
+                                    );
                                 }
-                            } return `${new_arr.join('\n')}`
+                            }
+                            return `${new_arr.join("\n")}`;
                         } else {
                             return ``;
                         }
@@ -4482,15 +4540,21 @@ export default {
                                     ) === `${this.selectedYear}-11` &&
                                     tguide_package.wip_package_done === 2
                                 ) {
-                                    new_arr.push(`${tguide_package.wip_package_name}`)
-                                    
-                                } else if(this.getMonth(
+                                    new_arr.push(
+                                        `${tguide_package.wip_package_name}`
+                                    );
+                                } else if (
+                                    this.getMonth(
                                         tguide_package.wip_package_date
                                     ) === `${this.selectedYear}-11` &&
-                                    tguide_package.wip_package_done === 1){
-                                    new_arr.push(`(${tguide_package.wip_package_name})`)
+                                    tguide_package.wip_package_done === 1
+                                ) {
+                                    new_arr.push(
+                                        `(${tguide_package.wip_package_name})`
+                                    );
                                 }
-                            } return `${new_arr.join('\n')}`
+                            }
+                            return `${new_arr.join("\n")}`;
                         } else {
                             return ``;
                         }
@@ -4514,15 +4578,21 @@ export default {
                                     ) === `${this.selectedYear}-12` &&
                                     tguide_package.wip_package_done === 2
                                 ) {
-                                    new_arr.push(`${tguide_package.wip_package_name}`)
-                                    
-                                } else if(this.getMonth(
+                                    new_arr.push(
+                                        `${tguide_package.wip_package_name}`
+                                    );
+                                } else if (
+                                    this.getMonth(
                                         tguide_package.wip_package_date
                                     ) === `${this.selectedYear}-12` &&
-                                    tguide_package.wip_package_done === 1){
-                                    new_arr.push(`(${tguide_package.wip_package_name})`)
+                                    tguide_package.wip_package_done === 1
+                                ) {
+                                    new_arr.push(
+                                        `(${tguide_package.wip_package_name})`
+                                    );
                                 }
-                            } return `${new_arr.join('\n')}`
+                            }
+                            return `${new_arr.join("\n")}`;
                         } else {
                             return ``;
                         }
@@ -4542,10 +4612,575 @@ export default {
                 Size: "tguide_size",
                 "A/W Reminder": {
                     callback: (value) => {
-                        return value.art_reminder_done === 2
-                            ? `${value.art_reminder_date}`
-                            : `(${value.art_reminder_date})`;
-                    }
+                        return !value.art_reminder_date
+                            ? ``
+                            : value.art_reminder_done === 2
+                            ? `${this.showToday(value.art_reminder_date)}.`
+                            : `(${this.showToday(value.art_reminder_date)})`;
+                    },
+                },
+                "A/W Received": {
+                    callback: (value) => {
+                        return !value.art_record_date
+                            ? ``
+                            : value.art_record_done === 2 &&
+                              value.art_record_date
+                            ? `${this.showToday(value.art_record_date)}.`
+                            : `(${this.showToday(value.art_record_date)})`;
+                    },
+                },
+
+                Jan: {
+                    callback: (value) => {
+                        var wip_tguide = value.wip_travel_guide;
+                        if (
+                            wip_tguide.length !== 0 &&
+                            this.checkMonth(
+                                wip_tguide,
+                                `${this.selectedYear}-01`
+                            )
+                        ) {
+                            let new_arr = [];
+                            for (let tguide_package of wip_tguide) {
+                                if (
+                                    this.getMonth(
+                                        tguide_package.wip_package_date
+                                    ) === `${this.selectedYear}-01` &&
+                                    tguide_package.wip_package_done === 2
+                                ) {
+                                    new_arr.push(
+                                        `${
+                                            tguide_package.wip_package_name
+                                        }:${this.getDayMonth(
+                                            tguide_package.wip_package_date
+                                        )}`
+                                    );
+                                } else if (
+                                    this.getMonth(
+                                        tguide_package.wip_package_date
+                                    ) === `${this.selectedYear}-01` &&
+                                    tguide_package.wip_package_done === 1
+                                ) {
+                                    new_arr.push(
+                                        `(${
+                                            tguide_package.wip_package_name
+                                        }:${this.getDayMonth(
+                                            tguide_package.wip_package_date
+                                        )})`
+                                    );
+                                }
+                            }
+                            return `${new_arr.join("\n")}`;
+                        } else {
+                            return ``;
+                        }
+                    },
+                },
+                Feb: {
+                    callback: (value) => {
+                        var wip_tguide = value.wip_travel_guide;
+                        if (
+                            wip_tguide.length !== 0 &&
+                            this.checkMonth(
+                                wip_tguide,
+                                `${this.selectedYear}-02`
+                            )
+                        ) {
+                            let new_arr = [];
+                            for (let tguide_package of wip_tguide) {
+                                if (
+                                    this.getMonth(
+                                        tguide_package.wip_package_date
+                                    ) === `${this.selectedYear}-02` &&
+                                    tguide_package.wip_package_done === 2
+                                ) {
+                                    new_arr.push(
+                                        `${
+                                            tguide_package.wip_package_name
+                                        }:${this.getDayMonth(
+                                            tguide_package.wip_package_date
+                                        )}`
+                                    );
+                                } else if (
+                                    this.getMonth(
+                                        tguide_package.wip_package_date
+                                    ) === `${this.selectedYear}-02` &&
+                                    tguide_package.wip_package_done === 1
+                                ) {
+                                    new_arr.push(
+                                        `(${
+                                            tguide_package.wip_package_name
+                                        }:${this.getDayMonth(
+                                            tguide_package.wip_package_date
+                                        )})`
+                                    );
+                                }
+                            }
+                            return `${new_arr.join("\n")}`;
+                        } else {
+                            return ``;
+                        }
+                    },
+                },
+                Mar: {
+                    callback: (value) => {
+                        var wip_tguide = value.wip_travel_guide;
+                        if (
+                            wip_tguide.length !== 0 &&
+                            this.checkMonth(
+                                wip_tguide,
+                                `${this.selectedYear}-03`
+                            )
+                        ) {
+                            let new_arr = [];
+                            for (let tguide_package of wip_tguide) {
+                                if (
+                                    this.getMonth(
+                                        tguide_package.wip_package_date
+                                    ) === `${this.selectedYear}-03` &&
+                                    tguide_package.wip_package_done === 2
+                                ) {
+                                    new_arr.push(
+                                        `${
+                                            tguide_package.wip_package_name
+                                        }:${this.getDayMonth(
+                                            tguide_package.wip_package_date
+                                        )}`
+                                    );
+                                } else if (
+                                    this.getMonth(
+                                        tguide_package.wip_package_date
+                                    ) === `${this.selectedYear}-03` &&
+                                    tguide_package.wip_package_done === 1
+                                ) {
+                                    new_arr.push(
+                                        `(${
+                                            tguide_package.wip_package_name
+                                        }:${this.getDayMonth(
+                                            tguide_package.wip_package_date
+                                        )})`
+                                    );
+                                }
+                            }
+                            return `${new_arr.join("\n")}`;
+                        } else {
+                            return ``;
+                        }
+                    },
+                },
+                Apr: {
+                    callback: (value) => {
+                        var wip_tguide = value.wip_travel_guide;
+                        if (
+                            wip_tguide.length !== 0 &&
+                            this.checkMonth(
+                                wip_tguide,
+                                `${this.selectedYear}-04`
+                            )
+                        ) {
+                            let new_arr = [];
+                            for (let tguide_package of wip_tguide) {
+                                if (
+                                    this.getMonth(
+                                        tguide_package.wip_package_date
+                                    ) === `${this.selectedYear}-04` &&
+                                    tguide_package.wip_package_done === 2
+                                ) {
+                                    new_arr.push(
+                                        `${
+                                            tguide_package.wip_package_name
+                                        }:${this.getDayMonth(
+                                            tguide_package.wip_package_date
+                                        )}`
+                                    );
+                                } else if (
+                                    this.getMonth(
+                                        tguide_package.wip_package_date
+                                    ) === `${this.selectedYear}-04` &&
+                                    tguide_package.wip_package_done === 1
+                                ) {
+                                    new_arr.push(
+                                        `(${
+                                            tguide_package.wip_package_name
+                                        }:${this.getDayMonth(
+                                            tguide_package.wip_package_date
+                                        )})`
+                                    );
+                                }
+                            }
+                            return `${new_arr.join("\n")}`;
+                        } else {
+                            return ``;
+                        }
+                    },
+                },
+                May: {
+                    callback: (value) => {
+                        var wip_tguide = value.wip_travel_guide;
+                        if (
+                            wip_tguide.length !== 0 &&
+                            this.checkMonth(
+                                wip_tguide,
+                                `${this.selectedYear}-05`
+                            )
+                        ) {
+                            let new_arr = [];
+                            for (let tguide_package of wip_tguide) {
+                                if (
+                                    this.getMonth(
+                                        tguide_package.wip_package_date
+                                    ) === `${this.selectedYear}-05` &&
+                                    tguide_package.wip_package_done === 2
+                                ) {
+                                    new_arr.push(
+                                        `${
+                                            tguide_package.wip_package_name
+                                        }:${this.getDayMonth(
+                                            tguide_package.wip_package_date
+                                        )}`
+                                    );
+                                } else if (
+                                    this.getMonth(
+                                        tguide_package.wip_package_date
+                                    ) === `${this.selectedYear}-05` &&
+                                    tguide_package.wip_package_done === 1
+                                ) {
+                                    new_arr.push(
+                                        `(${
+                                            tguide_package.wip_package_name
+                                        }:${this.getDayMonth(
+                                            tguide_package.wip_package_date
+                                        )})`
+                                    );
+                                }
+                            }
+                            return `${new_arr.join("\n")}`;
+                        } else {
+                            return ``;
+                        }
+                    },
+                },
+                Jun: {
+                    callback: (value) => {
+                        var wip_tguide = value.wip_travel_guide;
+                        if (
+                            wip_tguide.length !== 0 &&
+                            this.checkMonth(
+                                wip_tguide,
+                                `${this.selectedYear}-06`
+                            )
+                        ) {
+                            let new_arr = [];
+                            for (let tguide_package of wip_tguide) {
+                                if (
+                                    this.getMonth(
+                                        tguide_package.wip_package_date
+                                    ) === `${this.selectedYear}-06` &&
+                                    tguide_package.wip_package_done === 2
+                                ) {
+                                    new_arr.push(
+                                        `${
+                                            tguide_package.wip_package_name
+                                        }:${this.getDayMonth(
+                                            tguide_package.wip_package_date
+                                        )}`
+                                    );
+                                } else if (
+                                    this.getMonth(
+                                        tguide_package.wip_package_date
+                                    ) === `${this.selectedYear}-06` &&
+                                    tguide_package.wip_package_done === 1
+                                ) {
+                                    new_arr.push(
+                                        `(${
+                                            tguide_package.wip_package_name
+                                        }:${this.getDayMonth(
+                                            tguide_package.wip_package_date
+                                        )})`
+                                    );
+                                }
+                            }
+                            return `${new_arr.join("\n")}`;
+                        } else {
+                            return ``;
+                        }
+                    },
+                },
+                Jul: {
+                    callback: (value) => {
+                        var wip_tguide = value.wip_travel_guide;
+                        if (
+                            wip_tguide.length !== 0 &&
+                            this.checkMonth(
+                                wip_tguide,
+                                `${this.selectedYear}-07`
+                            )
+                        ) {
+                            let new_arr = [];
+                            for (let tguide_package of wip_tguide) {
+                                if (
+                                    this.getMonth(
+                                        tguide_package.wip_package_date
+                                    ) === `${this.selectedYear}-07` &&
+                                    tguide_package.wip_package_done === 2
+                                ) {
+                                    new_arr.push(
+                                        `${
+                                            tguide_package.wip_package_name
+                                        }:${this.getDayMonth(
+                                            tguide_package.wip_package_date
+                                        )}`
+                                    );
+                                } else if (
+                                    this.getMonth(
+                                        tguide_package.wip_package_date
+                                    ) === `${this.selectedYear}-07` &&
+                                    tguide_package.wip_package_done === 1
+                                ) {
+                                    new_arr.push(
+                                        `(${
+                                            tguide_package.wip_package_name
+                                        }:${this.getDayMonth(
+                                            tguide_package.wip_package_date
+                                        )})`
+                                    );
+                                }
+                            }
+                            return `${new_arr.join("\n")}`;
+                        } else {
+                            return ``;
+                        }
+                    },
+                },
+                Aug: {
+                    callback: (value) => {
+                        var wip_tguide = value.wip_travel_guide;
+                        if (
+                            wip_tguide.length !== 0 &&
+                            this.checkMonth(
+                                wip_tguide,
+                                `${this.selectedYear}-08`
+                            )
+                        ) {
+                            let new_arr = [];
+                            for (let tguide_package of wip_tguide) {
+                                if (
+                                    this.getMonth(
+                                        tguide_package.wip_package_date
+                                    ) === `${this.selectedYear}-08` &&
+                                    tguide_package.wip_package_done === 2
+                                ) {
+                                    new_arr.push(
+                                        `${
+                                            tguide_package.wip_package_name
+                                        }:${this.getDayMonth(
+                                            tguide_package.wip_package_date
+                                        )}`
+                                    );
+                                } else if (
+                                    this.getMonth(
+                                        tguide_package.wip_package_date
+                                    ) === `${this.selectedYear}-08` &&
+                                    tguide_package.wip_package_done === 1
+                                ) {
+                                    new_arr.push(
+                                        `(${
+                                            tguide_package.wip_package_name
+                                        }:${this.getDayMonth(
+                                            tguide_package.wip_package_date
+                                        )})`
+                                    );
+                                }
+                            }
+                            return `${new_arr.join("\n")}`;
+                        } else {
+                            return ``;
+                        }
+                    },
+                },
+                Sep: {
+                    callback: (value) => {
+                        var wip_tguide = value.wip_travel_guide;
+                        if (
+                            wip_tguide.length !== 0 &&
+                            this.checkMonth(
+                                wip_tguide,
+                                `${this.selectedYear}-09`
+                            )
+                        ) {
+                            let new_arr = [];
+                            for (let tguide_package of wip_tguide) {
+                                if (
+                                    this.getMonth(
+                                        tguide_package.wip_package_date
+                                    ) === `${this.selectedYear}-09` &&
+                                    tguide_package.wip_package_done === 2
+                                ) {
+                                    new_arr.push(
+                                        `${
+                                            tguide_package.wip_package_name
+                                        }:${this.getDayMonth(
+                                            tguide_package.wip_package_date
+                                        )}`
+                                    );
+                                } else if (
+                                    this.getMonth(
+                                        tguide_package.wip_package_date
+                                    ) === `${this.selectedYear}-09` &&
+                                    tguide_package.wip_package_done === 1
+                                ) {
+                                    new_arr.push(
+                                        `(${
+                                            tguide_package.wip_package_name
+                                        }:${this.getDayMonth(
+                                            tguide_package.wip_package_date
+                                        )})`
+                                    );
+                                }
+                            }
+                            return `${new_arr.join("\n")}`;
+                        } else {
+                            return ``;
+                        }
+                    },
+                },
+                Oct: {
+                    callback: (value) => {
+                        var wip_tguide = value.wip_travel_guide;
+                        if (
+                            wip_tguide.length !== 0 &&
+                            this.checkMonth(
+                                wip_tguide,
+                                `${this.selectedYear}-10`
+                            )
+                        ) {
+                            let new_arr = [];
+                            for (let tguide_package of wip_tguide) {
+                                if (
+                                    this.getMonth(
+                                        tguide_package.wip_package_date
+                                    ) === `${this.selectedYear}-10` &&
+                                    tguide_package.wip_package_done === 2
+                                ) {
+                                    new_arr.push(
+                                        `${
+                                            tguide_package.wip_package_name
+                                        }:${this.getDayMonth(
+                                            tguide_package.wip_package_date
+                                        )}`
+                                    );
+                                } else if (
+                                    this.getMonth(
+                                        tguide_package.wip_package_date
+                                    ) === `${this.selectedYear}-10` &&
+                                    tguide_package.wip_package_done === 1
+                                ) {
+                                    new_arr.push(
+                                        `(${
+                                            tguide_package.wip_package_name
+                                        }:${this.getDayMonth(
+                                            tguide_package.wip_package_date
+                                        )})`
+                                    );
+                                }
+                            }
+                            return `${new_arr.join("\n")}`;
+                        } else {
+                            return ``;
+                        }
+                    },
+                },
+                Nov: {
+                    callback: (value) => {
+                        var wip_tguide = value.wip_travel_guide;
+                        if (
+                            wip_tguide.length !== 0 &&
+                            this.checkMonth(
+                                wip_tguide,
+                                `${this.selectedYear}-11`
+                            )
+                        ) {
+                            let new_arr = [];
+                            for (let tguide_package of wip_tguide) {
+                                if (
+                                    this.getMonth(
+                                        tguide_package.wip_package_date
+                                    ) === `${this.selectedYear}-11` &&
+                                    tguide_package.wip_package_done === 2
+                                ) {
+                                    new_arr.push(
+                                        `${
+                                            tguide_package.wip_package_name
+                                        }:${this.getDayMonth(
+                                            tguide_package.wip_package_date
+                                        )}`
+                                    );
+                                } else if (
+                                    this.getMonth(
+                                        tguide_package.wip_package_date
+                                    ) === `${this.selectedYear}-11` &&
+                                    tguide_package.wip_package_done === 1
+                                ) {
+                                    new_arr.push(
+                                        `(${
+                                            tguide_package.wip_package_name
+                                        }:${this.getDayMonth(
+                                            tguide_package.wip_package_date
+                                        )})`
+                                    );
+                                }
+                            }
+                            return `${new_arr.join("\n")}`;
+                        } else {
+                            return ``;
+                        }
+                    },
+                },
+                Dec: {
+                    callback: (value) => {
+                        var wip_tguide = value.wip_travel_guide;
+                        if (
+                            wip_tguide.length !== 0 &&
+                            this.checkMonth(
+                                wip_tguide,
+                                `${this.selectedYear}-12`
+                            )
+                        ) {
+                            let new_arr = [];
+                            for (let tguide_package of wip_tguide) {
+                                if (
+                                    this.getMonth(
+                                        tguide_package.wip_package_date
+                                    ) === `${this.selectedYear}-12` &&
+                                    tguide_package.wip_package_done === 2
+                                ) {
+                                    new_arr.push(
+                                        `${
+                                            tguide_package.wip_package_name
+                                        }:${this.getDayMonth(
+                                            tguide_package.wip_package_date
+                                        )}`
+                                    );
+                                } else if (
+                                    this.getMonth(
+                                        tguide_package.wip_package_date
+                                    ) === `${this.selectedYear}-12` &&
+                                    tguide_package.wip_package_done === 1
+                                ) {
+                                    new_arr.push(
+                                        `(${
+                                            tguide_package.wip_package_name
+                                        }:${this.getDayMonth(
+                                            tguide_package.wip_package_date
+                                        )})`
+                                    );
+                                }
+                            }
+                            return `${new_arr.join("\n")}`;
+                        } else {
+                            return ``;
+                        }
+                    },
                 },
             },
         };
@@ -4703,6 +5338,11 @@ export default {
             }
             return count > 0 ? true : false;
             // console.log(count > 0 ? true : false)
+        },
+
+        getDayMonth(date) {
+            let day_month = moment(date).format("DD-MM");
+            return day_month;
         },
 
         deleteTrackingTravelGuide(tracking_id) {

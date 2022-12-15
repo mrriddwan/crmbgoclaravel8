@@ -42,7 +42,7 @@ class TrackingGeneralController extends Controller
         //         ->where('role_id', '=', 1)
         //         ->exists())
         // ) {
-        if ($view_type === 'master') {
+        if ($view_type === 'master' || $view_type === 'master_report') {
             $general = TrackingGeneral::select([
                 'tracking_generals.*',
                 'contact_categories.name as category_name',
@@ -72,7 +72,7 @@ class TrackingGeneralController extends Controller
             // ->get();
 
             return TrackingGeneralResource::collection($general);
-        } else {
+        } else if ($view_type === 'wip' || $view_type === 'wip_report'){
             $wip_general = WipGeneral::with([
                 'art_chase_user' => function ($q) {
                     $q->select([
@@ -147,8 +147,6 @@ class TrackingGeneralController extends Controller
                     'tracking_generals.general_enddate as general_enddate',
                     'tracking_generals.progress as general_progress',
                     'tracking_generals.general_remark as general_remark',
-
-                    
                 ])
                 ->join('tracking_generals', 'wip_generals.tracking_general_id', '=', 'tracking_generals.id')
                 ->join('contacts', 'tracking_generals.company_id', '=', 'contacts.id')

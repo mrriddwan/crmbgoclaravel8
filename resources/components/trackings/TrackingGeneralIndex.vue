@@ -23,7 +23,8 @@
                     v-if="
                         (can('export general master') ||
                             is('admin | super-admin')) &&
-                        view_type === 'master'
+                        (view_type === 'master' ||
+                            view_type === 'master_report')
                     "
                 >
                     <download-excel
@@ -44,7 +45,7 @@
                     v-if="
                         (can('export general wip') ||
                             is('admin | super-admin')) &&
-                        view_type === 'wip'
+                        (view_type === 'wip' || view_type === 'wip_report')
                     "
                 >
                     <download-excel
@@ -63,20 +64,22 @@
             </div>
         </div>
 
-        <div class="grid grid-cols-5 gap-3">
+        <div class="grid grid-cols-8 gap-3">
             <div class="grid grid-cols-2 items-center text-right">
-                <label for="paginate" class="mr-2">Per page</label>
+                <label for="paginate" class="mr-2 text-sm">Per page</label>
                 <input v-model.lazy="paginate" class="form-control w-max" />
             </div>
-            <div class="grid grid-cols-2 items-center text-right">
-                <label for="selectedYear" class="mr-2">View</label>
+            <div class="grid grid-cols-2 col-span-2 items-center text-right">
+                <label for="view_type" class="mr-2">View</label>
                 <select v-model="view_type" class="form-control mx-2">
                     <option value="">Select one</option>
                     <option value="master">Master</option>
                     <option value="wip">WIP</option>
+                    <option value="master_report">Report(Master)</option>
+                    <option value="wip_report">Report(WIP)</option>
                 </select>
             </div>
-            <div class="py-2 mx-8 col-span-2">
+            <div class="py-2 mx-8 col-span-3">
                 <input
                     v-model.lazy="search"
                     type="search"
@@ -84,7 +87,7 @@
                     placeholder="Search + Press ENTER"
                 />
             </div>
-            <div class="mt-1">
+            <div class="mt-1 col-span-2">
                 <Pagination
                     :data="tracking_generals"
                     :limit="2"
@@ -109,6 +112,20 @@
                     class="items-center text-center text-2xl uppercase font-mono text-white font-extrabold bg-blue-500 px-2 rounded-md"
                 >
                     Master Record
+                </h3>
+            </div>
+            <div v-if="view_type === 'master_report'">
+                <h3
+                    class="items-center text-center text-2xl uppercase font-mono text-white font-extrabold bg-purple-500 px-2 rounded-md"
+                >
+                    Master Report
+                </h3>
+            </div>
+            <div v-if="view_type === 'wip_report'">
+                <h3
+                    class="items-center text-center text-2xl uppercase font-mono text-white font-extrabold bg-purple-500 px-2 rounded-md"
+                >
+                    Work In Progress Report
                 </h3>
             </div>
             <div
@@ -405,7 +422,7 @@
                             </th>
 
                             <th class="py-3">
-                                <div class="text-sm text-center h-6">
+                                <div class="text-sm text-center h-6 w-32">
                                     <a
                                         href="#"
                                         @click.prevent="
@@ -468,7 +485,7 @@
                             </th>
 
                             <th class="py-3">
-                                <div class="text-sm text-center h-12">
+                                <div class="text-sm text-center h-12 w-32">
                                     <a
                                         href="#"
                                         @click.prevent="
@@ -733,7 +750,7 @@
                                 </div>
                             </th>
                             <th class="py-3">
-                                <div class="text-sm text-center h-12">
+                                <div class="text-sm text-center h-12 w-16">
                                     <a
                                         href="#"
                                         @click.prevent="
@@ -781,7 +798,7 @@
                                 </div>
                             </th>
                             <th class="py-3">
-                                <div class="text-sm text-center h-12">
+                                <div class="text-sm text-center h-12 w-16">
                                     <a
                                         href="#"
                                         @click.prevent="
@@ -986,12 +1003,13 @@
                                 }}
                             </td>
                             <td class="text-xs text-center">
-                                    {{
-                                        Math.round(
-                                            (tracking.general_tenure / 30) * 10
-                                        ) / 10
-                                    }} <br>
-                                    month(s)
+                                {{
+                                    Math.round(
+                                        (tracking.general_tenure / 30) * 10
+                                    ) / 10
+                                }}
+                                <br />
+                                month(s)
                             </td>
                             <td class="text-xs text-center">
                                 {{ showToday(tracking.general_startdate) }}
@@ -1062,7 +1080,7 @@
                                 <div class="text-sm text-center h-6"></div>
                             </th>
                             <th class="py-3">
-                                <div class="text-sm text-center h-6">
+                                <div class="text-sm text-center h-6 w-14">
                                     <a
                                         href="#"
                                         @click.prevent="
@@ -1523,7 +1541,7 @@
                                 <div class="text-sm text-center h-6"></div>
                             </th>
                             <th class="py-3">
-                                <div class="text-sm text-center h-6">
+                                <div class="text-sm text-center h-6 w-14">
                                     <a
                                         href="#"
                                         @click.prevent="
@@ -1572,7 +1590,7 @@
                                 <div class="text-sm text-center h-6"></div>
                             </th>
                             <th class="py-3">
-                                <div class="text-sm text-center h-6">
+                                <div class="text-sm text-center h-6 w-14">
                                     <a
                                         href="#"
                                         @click.prevent="
@@ -1628,35 +1646,6 @@
                                     >
                                         Art <br />
                                         Chase
-                                        <!-- <span
-                                            v-if="
-                                                (!(sort_direction == 'asc') ||
-                                                    !(
-                                                        sort_direction == 'desc'
-                                                    )) &&
-                                                !(sort_field == 'project_name')
-                                            "
-                                            class="inline-block"
-                                            ><ArrowsUpDownIcon class="h-4 w-4"
-                                        /></span>
-                                        <span
-                                            v-if="
-                                                sort_direction == 'desc' &&
-                                                sort_field == 'project_name'
-                                            "
-                                            class="inline-block"
-                                            ><ArrowUpIcon
-                                                class="h-4 w-4 text-amber-400 font-extrabold"
-                                        /></span>
-                                        <span
-                                            v-if="
-                                                sort_direction == 'asc' &&
-                                                sort_field == 'project_name'
-                                            "
-                                            class="inline-block"
-                                            ><ArrowDownIcon
-                                                class="h-4 w-4 text-amber-400 font-extrabold"
-                                        /></span> -->
                                     </a>
                                 </div>
                                 <div class="text-sm text-center h-6"></div>
@@ -1670,35 +1659,6 @@
                                     >
                                         Art <br />
                                         Received
-                                        <!-- <span
-                                            v-if="
-                                                (!(sort_direction == 'asc') ||
-                                                    !(
-                                                        sort_direction == 'desc'
-                                                    )) &&
-                                                !(sort_field == 'project_name')
-                                            "
-                                            class="inline-block"
-                                            ><ArrowsUpDownIcon class="h-4 w-4"
-                                        /></span>
-                                        <span
-                                            v-if="
-                                                sort_direction == 'desc' &&
-                                                sort_field == 'project_name'
-                                            "
-                                            class="inline-block"
-                                            ><ArrowUpIcon
-                                                class="h-4 w-4 text-amber-400 font-extrabold"
-                                        /></span>
-                                        <span
-                                            v-if="
-                                                sort_direction == 'asc' &&
-                                                sort_field == 'project_name'
-                                            "
-                                            class="inline-block"
-                                            ><ArrowDownIcon
-                                                class="h-4 w-4 text-amber-400 font-extrabold"
-                                        /></span> -->
                                     </a>
                                 </div>
                                 <div class="text-sm text-center h-6"></div>
@@ -1713,35 +1673,6 @@
                                     >
                                         Art <br />
                                         ToDo
-                                        <!-- <span
-                                            v-if="
-                                                (!(sort_direction == 'asc') ||
-                                                    !(
-                                                        sort_direction == 'desc'
-                                                    )) &&
-                                                !(sort_field == 'project_name')
-                                            "
-                                            class="inline-block"
-                                            ><ArrowsUpDownIcon class="h-4 w-4"
-                                        /></span>
-                                        <span
-                                            v-if="
-                                                sort_direction == 'desc' &&
-                                                sort_field == 'project_name'
-                                            "
-                                            class="inline-block"
-                                            ><ArrowUpIcon
-                                                class="h-4 w-4 text-amber-400 font-extrabold"
-                                        /></span>
-                                        <span
-                                            v-if="
-                                                sort_direction == 'asc' &&
-                                                sort_field == 'project_name'
-                                            "
-                                            class="inline-block"
-                                            ><ArrowDownIcon
-                                                class="h-4 w-4 text-amber-400 font-extrabold"
-                                        /></span> -->
                                     </a>
                                 </div>
                                 <div class="text-sm text-center h-6"></div>
@@ -1756,35 +1687,6 @@
                                     >
                                         C&S <br />
                                         Sent
-                                        <!-- <span
-                                            v-if="
-                                                (!(sort_direction == 'asc') ||
-                                                    !(
-                                                        sort_direction == 'desc'
-                                                    )) &&
-                                                !(sort_field == 'project_name')
-                                            "
-                                            class="inline-block"
-                                            ><ArrowsUpDownIcon class="h-4 w-4"
-                                        /></span>
-                                        <span
-                                            v-if="
-                                                sort_direction == 'desc' &&
-                                                sort_field == 'project_name'
-                                            "
-                                            class="inline-block"
-                                            ><ArrowUpIcon
-                                                class="h-4 w-4 text-amber-400 font-extrabold"
-                                        /></span>
-                                        <span
-                                            v-if="
-                                                sort_direction == 'asc' &&
-                                                sort_field == 'project_name'
-                                            "
-                                            class="inline-block"
-                                            ><ArrowDownIcon
-                                                class="h-4 w-4 text-amber-400 font-extrabold"
-                                        /></span> -->
                                     </a>
                                 </div>
                                 <div class="text-sm text-center h-6"></div>
@@ -1799,35 +1701,6 @@
                                     >
                                         C&S <br />
                                         Record
-                                        <!-- <span
-                                            v-if="
-                                                (!(sort_direction == 'asc') ||
-                                                    !(
-                                                        sort_direction == 'desc'
-                                                    )) &&
-                                                !(sort_field == 'project_name')
-                                            "
-                                            class="inline-block"
-                                            ><ArrowsUpDownIcon class="h-4 w-4"
-                                        /></span>
-                                        <span
-                                            v-if="
-                                                sort_direction == 'desc' &&
-                                                sort_field == 'project_name'
-                                            "
-                                            class="inline-block"
-                                            ><ArrowUpIcon
-                                                class="h-4 w-4 text-amber-400 font-extrabold"
-                                        /></span>
-                                        <span
-                                            v-if="
-                                                sort_direction == 'asc' &&
-                                                sort_field == 'project_name'
-                                            "
-                                            class="inline-block"
-                                            ><ArrowDownIcon
-                                                class="h-4 w-4 text-amber-400 font-extrabold"
-                                        /></span> -->
                                     </a>
                                 </div>
                                 <div class="text-sm text-center h-6"></div>
@@ -1842,35 +1715,6 @@
                                     >
                                         Schedule <br />
                                         Date
-                                        <!-- <span
-                                            v-if="
-                                                (!(sort_direction == 'asc') ||
-                                                    !(
-                                                        sort_direction == 'desc'
-                                                    )) &&
-                                                !(sort_field == 'project_name')
-                                            "
-                                            class="inline-block"
-                                            ><ArrowsUpDownIcon class="h-4 w-4"
-                                        /></span>
-                                        <span
-                                            v-if="
-                                                sort_direction == 'desc' &&
-                                                sort_field == 'project_name'
-                                            "
-                                            class="inline-block"
-                                            ><ArrowUpIcon
-                                                class="h-4 w-4 text-amber-400 font-extrabold"
-                                        /></span>
-                                        <span
-                                            v-if="
-                                                sort_direction == 'asc' &&
-                                                sort_field == 'project_name'
-                                            "
-                                            class="inline-block"
-                                            ><ArrowDownIcon
-                                                class="h-4 w-4 text-amber-400 font-extrabold"
-                                        /></span> -->
                                     </a>
                                 </div>
                                 <div class="text-sm text-center h-6"></div>
@@ -1884,35 +1728,6 @@
                                         class="text-white inline-flex"
                                     >
                                         Report
-                                        <!-- <span
-                                            v-if="
-                                                (!(sort_direction == 'asc') ||
-                                                    !(
-                                                        sort_direction == 'desc'
-                                                    )) &&
-                                                !(sort_field == 'project_name')
-                                            "
-                                            class="inline-block"
-                                            ><ArrowsUpDownIcon class="h-4 w-4"
-                                        /></span>
-                                        <span
-                                            v-if="
-                                                sort_direction == 'desc' &&
-                                                sort_field == 'project_name'
-                                            "
-                                            class="inline-block"
-                                            ><ArrowUpIcon
-                                                class="h-4 w-4 text-amber-400 font-extrabold"
-                                        /></span>
-                                        <span
-                                            v-if="
-                                                sort_direction == 'asc' &&
-                                                sort_field == 'project_name'
-                                            "
-                                            class="inline-block"
-                                            ><ArrowDownIcon
-                                                class="h-4 w-4 text-amber-400 font-extrabold"
-                                        /></span> -->
                                     </a>
                                 </div>
                                 <div class="text-sm text-center h-6"></div>
@@ -1927,35 +1742,6 @@
                                     >
                                         Client <br />
                                         Posting
-                                        <!-- <span
-                                            v-if="
-                                                (!(sort_direction == 'asc') ||
-                                                    !(
-                                                        sort_direction == 'desc'
-                                                    )) &&
-                                                !(sort_field == 'project_name')
-                                            "
-                                            class="inline-block"
-                                            ><ArrowsUpDownIcon class="h-4 w-4"
-                                        /></span>
-                                        <span
-                                            v-if="
-                                                sort_direction == 'desc' &&
-                                                sort_field == 'project_name'
-                                            "
-                                            class="inline-block"
-                                            ><ArrowUpIcon
-                                                class="h-4 w-4 text-amber-400 font-extrabold"
-                                        /></span>
-                                        <span
-                                            v-if="
-                                                sort_direction == 'asc' &&
-                                                sort_field == 'project_name'
-                                            "
-                                            class="inline-block"
-                                            ><ArrowDownIcon
-                                                class="h-4 w-4 text-amber-400 font-extrabold"
-                                        /></span> -->
                                     </a>
                                 </div>
                                 <div class="text-sm text-center h-6"></div>
@@ -1970,35 +1756,6 @@
                                     >
                                         Actual Live <br />
                                         Date
-                                        <!-- <span
-                                            v-if="
-                                                (!(sort_direction == 'asc') ||
-                                                    !(
-                                                        sort_direction == 'desc'
-                                                    )) &&
-                                                !(sort_field == 'project_name')
-                                            "
-                                            class="inline-block"
-                                            ><ArrowsUpDownIcon class="h-4 w-4"
-                                        /></span>
-                                        <span
-                                            v-if="
-                                                sort_direction == 'desc' &&
-                                                sort_field == 'project_name'
-                                            "
-                                            class="inline-block"
-                                            ><ArrowUpIcon
-                                                class="h-4 w-4 text-amber-400 font-extrabold"
-                                        /></span>
-                                        <span
-                                            v-if="
-                                                sort_direction == 'asc' &&
-                                                sort_field == 'project_name'
-                                            "
-                                            class="inline-block"
-                                            ><ArrowDownIcon
-                                                class="h-4 w-4 text-amber-400 font-extrabold"
-                                        /></span> -->
                                     </a>
                                 </div>
                                 <div class="text-sm text-center h-6"></div>
@@ -2167,9 +1924,7 @@
                                 <div
                                     v-if="!tracking.art_chase_date"
                                     class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300"
-                                >
-                                    Unset yet
-                                </div>
+                                ></div>
                                 <div
                                     v-else-if="tracking.art_chase_done === 2"
                                     class="bg-yellow-300 rounded-md p-1 mb-1"
@@ -2185,9 +1940,7 @@
                                 <div
                                     v-if="!tracking.art_chase_user"
                                     class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300"
-                                >
-                                    Unset yet
-                                </div>
+                                ></div>
                                 <div
                                     v-else-if="tracking.art_chase_done === 2"
                                     class="bg-yellow-300 rounded-md p-1 mb-1"
@@ -2203,9 +1956,7 @@
                                 <div
                                     v-if="!tracking.art_chase_remark"
                                     class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300"
-                                >
-                                    Unset yet
-                                </div>
+                                ></div>
                                 <div
                                     v-else-if="tracking.art_chase_done === 2"
                                     class="bg-yellow-300 rounded-md p-1 mb-1"
@@ -2224,9 +1975,7 @@
                                 <div
                                     v-if="!tracking.art_received_date"
                                     class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300"
-                                >
-                                    Unset yet
-                                </div>
+                                ></div>
                                 <div
                                     v-else-if="tracking.art_received_done === 2"
                                     class="bg-yellow-300 rounded-md p-1 mb-1"
@@ -2243,9 +1992,7 @@
                                 <div
                                     v-if="!tracking.art_received_user"
                                     class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300"
-                                >
-                                    Unset yet
-                                </div>
+                                ></div>
                                 <div
                                     v-else-if="tracking.art_received_done === 2"
                                     class="bg-yellow-300 rounded-md p-1 mb-1"
@@ -2263,9 +2010,7 @@
                                 <div
                                     v-if="!tracking.art_received_remark"
                                     class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300"
-                                >
-                                    Unset yet
-                                </div>
+                                ></div>
                                 <div
                                     v-else-if="tracking.art_received_done === 2"
                                     class="bg-yellow-300 rounded-md p-1 mb-1"
@@ -2286,9 +2031,7 @@
                                 <div
                                     v-if="!tracking.art_todo_date"
                                     class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300"
-                                >
-                                    Unset yet
-                                </div>
+                                ></div>
                                 <div
                                     v-else-if="tracking.art_todo_done === 2"
                                     class="bg-yellow-300 rounded-md p-1 mb-1"
@@ -2305,9 +2048,7 @@
                                 <div
                                     v-if="!tracking.art_todo_user"
                                     class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300"
-                                >
-                                    Unset yet
-                                </div>
+                                ></div>
                                 <div
                                     v-else-if="tracking.art_todo_done === 2"
                                     class="bg-yellow-300 rounded-md p-1 mb-1"
@@ -2324,9 +2065,7 @@
                                 <div
                                     v-if="!tracking.art_todo_remark"
                                     class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300"
-                                >
-                                    Unset yet
-                                </div>
+                                ></div>
                                 <div
                                     v-else-if="tracking.art_todo_done === 2"
                                     class="bg-yellow-300 rounded-md p-1 mb-1"
@@ -2347,9 +2086,7 @@
                                 <div
                                     v-if="!tracking.cns_sent_date"
                                     class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300"
-                                >
-                                    Unset yet
-                                </div>
+                                ></div>
                                 <div
                                     v-else-if="tracking.cns_sent_done === 2"
                                     class="bg-yellow-300 rounded-md p-1 mb-1"
@@ -2366,9 +2103,7 @@
                                 <div
                                     v-if="!tracking.cns_sent_user"
                                     class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300"
-                                >
-                                    Unset yet
-                                </div>
+                                ></div>
                                 <div
                                     v-else-if="tracking.cns_sent_done === 2"
                                     class="bg-yellow-300 rounded-md p-1 mb-1"
@@ -2386,9 +2121,7 @@
                                 <div
                                     v-if="!tracking.cns_sent_remark"
                                     class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300"
-                                >
-                                    Unset yet
-                                </div>
+                                ></div>
                                 <div
                                     v-else-if="tracking.cns_sent_done === 2"
                                     class="bg-yellow-300 rounded-md p-1 mb-1"
@@ -2409,9 +2142,7 @@
                                 <div
                                     v-if="!tracking.cns_record_date"
                                     class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300"
-                                >
-                                    Unset yet
-                                </div>
+                                ></div>
                                 <div
                                     v-else-if="tracking.cns_record_done === 2"
                                     class="bg-yellow-300 rounded-md p-1 mb-1"
@@ -2428,9 +2159,7 @@
                                 <div
                                     v-if="!tracking.cns_record_user"
                                     class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300"
-                                >
-                                    Unset yet
-                                </div>
+                                ></div>
                                 <div
                                     v-else-if="tracking.cns_record_done === 2"
                                     class="bg-yellow-300 rounded-md p-1 mb-1"
@@ -2447,9 +2176,7 @@
                                 <div
                                     v-if="!tracking.cns_record_remark"
                                     class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300"
-                                >
-                                    Unset yet
-                                </div>
+                                ></div>
                                 <div
                                     v-else-if="tracking.cns_record_done === 2"
                                     class="bg-yellow-300 rounded-md p-1 mb-1"
@@ -2469,9 +2196,7 @@
                                 <div
                                     v-if="!tracking.schedule_date"
                                     class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300"
-                                >
-                                    Unset yet
-                                </div>
+                                ></div>
                                 <div
                                     v-else-if="tracking.schedule_done === 2"
                                     class="bg-yellow-300 rounded-md p-1 mb-1"
@@ -2488,9 +2213,7 @@
                                 <div
                                     v-if="!tracking.schedule_user"
                                     class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300"
-                                >
-                                    Unset yet
-                                </div>
+                                ></div>
                                 <div
                                     v-else-if="tracking.schedule_done === 2"
                                     class="bg-yellow-300 rounded-md p-1 mb-1"
@@ -2507,9 +2230,7 @@
                                 <div
                                     v-if="!tracking.schedule_remark"
                                     class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300"
-                                >
-                                    Unset yet
-                                </div>
+                                ></div>
                                 <div
                                     v-else-if="tracking.schedule_done === 2"
                                     class="bg-yellow-300 rounded-md p-1 mb-1"
@@ -2529,9 +2250,7 @@
                                 <div
                                     v-if="!tracking.report_date"
                                     class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300"
-                                >
-                                    Unset yet
-                                </div>
+                                ></div>
                                 <div
                                     v-else-if="tracking.report_done === 2"
                                     class="bg-yellow-300 rounded-md p-1 mb-1"
@@ -2548,9 +2267,7 @@
                                 <div
                                     v-if="!tracking.report_user"
                                     class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300"
-                                >
-                                    Unset yet
-                                </div>
+                                ></div>
                                 <div
                                     v-else-if="tracking.report_done === 2"
                                     class="bg-yellow-300 rounded-md p-1 mb-1"
@@ -2567,9 +2284,7 @@
                                 <div
                                     v-if="!tracking.report_remark"
                                     class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300"
-                                >
-                                    Unset yet
-                                </div>
+                                ></div>
                                 <div
                                     v-else-if="tracking.report_done === 2"
                                     class="bg-yellow-300 rounded-md p-1 mb-1"
@@ -2589,9 +2304,7 @@
                                 <div
                                     v-if="!tracking.client_posting_date"
                                     class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300"
-                                >
-                                    Unset yet
-                                </div>
+                                ></div>
                                 <div
                                     v-else-if="
                                         tracking.client_posting_done === 2
@@ -2614,9 +2327,7 @@
                                 <div
                                     v-if="!tracking.client_posting_user"
                                     class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300"
-                                >
-                                    Unset yet
-                                </div>
+                                ></div>
                                 <div
                                     v-else-if="
                                         tracking.client_posting_done === 2
@@ -2635,9 +2346,7 @@
                                 <div
                                     v-if="!tracking.client_posting_remark"
                                     class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300"
-                                >
-                                    Unset yet
-                                </div>
+                                ></div>
                                 <div
                                     v-else-if="
                                         tracking.client_posting_done === 2
@@ -2659,9 +2368,7 @@
                                 <div
                                     v-if="!tracking.actual_live_date"
                                     class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300"
-                                >
-                                    Unset yet
-                                </div>
+                                ></div>
                                 <div
                                     v-else-if="tracking.actual_live_done === 2"
                                     class="bg-yellow-300 rounded-md p-1 mb-1"
@@ -2679,9 +2386,7 @@
                                 <div
                                     v-if="!tracking.actual_live_user"
                                     class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300"
-                                >
-                                    Unset yet
-                                </div>
+                                ></div>
                                 <div
                                     v-else-if="tracking.actual_live_done === 2"
                                     class="bg-yellow-300 rounded-md p-1 mb-1"
@@ -2698,9 +2403,7 @@
                                 <div
                                     v-if="!tracking.actual_live_remark"
                                     class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300"
-                                >
-                                    Unset yet
-                                </div>
+                                ></div>
                                 <div
                                     v-else-if="tracking.actual_live_done === 2"
                                     class="bg-yellow-300 rounded-md p-1 mb-1"
@@ -2713,6 +2416,2444 @@
                                 >
                                     {{ tracking.actual_live_remark }}
                                 </div>
+                            </td>
+                            <!-- WIP remark -->
+                            <td class="text-xs text-center">
+                                {{ tracking.wip_remark }}
+                            </td>
+
+                            <td class="text-xs text-center">
+                                {{ tracking.wip_progress }}
+                            </td>
+                            <td class="text-xs text-center">
+                                <router-link
+                                    :to="{
+                                        name: 'tracking_wip_edit',
+                                        params: { id: tracking.id },
+                                    }"
+                                    class="mr-2 mb-2 inline-flex items-center px-2 py-1 bg-yellow-400 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
+                                >
+                                    <PencilSquareIcon class="h-3 w-3"
+                                /></router-link>
+                                <button
+                                    class="mr-2 mb-2 inline-flex items-center px-2 py-1 bg-red-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
+                                    @click="deleteWIPGeneral(tracking.id)"
+                                >
+                                    <TrashIcon class="h-3 w-3" />
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div
+                v-if="view_type === 'master_report'"
+                class="table-wrp block max-h-screen overflow-y-auto overflow-x-auto"
+            >
+                <table
+                    class="table table-hover w-full mt-0"
+                    ref="general_master_table"
+                >
+                    <thead class="bg-slate-500 border-b sticky top-0">
+                        <tr>
+                            <th class="py-3">
+                                <div class="text-sm text-center h-12">
+                                    <a
+                                        href="#"
+                                        @click.prevent=""
+                                        class="text-white"
+                                    >
+                                    </a>
+                                    <span
+                                        v-if="
+                                            sort_direction == 'desc' &&
+                                            sort_field == ''
+                                        "
+                                        >&uarr;</span
+                                    >
+                                    <span
+                                        v-if="
+                                            sort_direction == 'asc' &&
+                                            sort_field == ''
+                                        "
+                                        >&darr;</span
+                                    >
+                                </div>
+                            </th>
+                            <th class="py-3">
+                                <div class="text-sm text-center h-12 w-16">
+                                    <a
+                                        href="#"
+                                        @click.prevent="
+                                            change_sort('created_at')
+                                        "
+                                        class="text-white inline-flex"
+                                    >
+                                        Date
+                                        <span
+                                            v-if="
+                                                (!(sort_direction == 'asc') ||
+                                                    !(
+                                                        sort_direction == 'desc'
+                                                    )) &&
+                                                !(sort_field == 'created_at')
+                                            "
+                                            class="inline-block"
+                                            ><ArrowsUpDownIcon class="h-4 w-4"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'desc' &&
+                                                sort_field == 'created_at'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowUpIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'asc' &&
+                                                sort_field == 'created_at'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowDownIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
+                                    </a>
+                                </div>
+                            </th>
+                            <th class="py-3 w-max">
+                                <div class="text-sm text-center h-6">
+                                    <a
+                                        href="#"
+                                        @click.prevent="
+                                            change_sort('division_name')
+                                        "
+                                        class="text-white inline-flex"
+                                    >
+                                        BGOC
+                                        <span
+                                            v-if="
+                                                (!(sort_direction == 'asc') ||
+                                                    !(
+                                                        sort_direction == 'desc'
+                                                    )) &&
+                                                !(sort_field == 'division_name')
+                                            "
+                                            class="inline-block"
+                                            ><ArrowsUpDownIcon class="h-4 w-4"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'desc' &&
+                                                sort_field == 'division_name'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowUpIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'asc' &&
+                                                sort_field == 'division_name'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowDownIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
+                                    </a>
+                                </div>
+                                <div class="text-sm text-center h-6">
+                                    <select
+                                        v-model="selectedDivision"
+                                        class="form-control form-control-sm text-xs"
+                                    >
+                                        <option class="text-xs" value="">
+                                            All
+                                        </option>
+                                        <option
+                                            class="text-xs"
+                                            v-for="division in divisions.data"
+                                            :key="division.id"
+                                            :value="division.id"
+                                        >
+                                            {{ division.name }}
+                                        </option>
+                                    </select>
+                                </div>
+                            </th>
+                            <th class="py-3">
+                                <div class="text-sm text-center h-6">
+                                    <a
+                                        href="#"
+                                        @click.prevent="
+                                            change_sort('user_name')
+                                        "
+                                        class="text-white inline-flex"
+                                    >
+                                        CS
+                                        <span
+                                            v-if="
+                                                (!(sort_direction == 'asc') ||
+                                                    !(
+                                                        sort_direction == 'desc'
+                                                    )) &&
+                                                !(sort_field == 'user_name')
+                                            "
+                                            class="inline-block"
+                                            ><ArrowsUpDownIcon class="h-4 w-4"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'desc' &&
+                                                sort_field == 'user_name'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowUpIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'asc' &&
+                                                sort_field == 'user_name'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowDownIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
+                                    </a>
+                                </div>
+                                <div class="text-sm text-center h-6 w-max">
+                                    <select
+                                        v-model="selectedUser"
+                                        class="form-control form-control-sm text-xs"
+                                    >
+                                        <option class="text-xs" value="">
+                                            All
+                                        </option>
+                                        <option
+                                            class="text-xs"
+                                            v-for="user in users.data"
+                                            :key="user.id"
+                                            :value="user.id"
+                                        >
+                                            {{ user.name }}
+                                        </option>
+                                    </select>
+                                </div>
+                            </th>
+
+                            <th class="py-3">
+                                <div class="text-sm text-center h-6 w-60">
+                                    <a
+                                        href="#"
+                                        @click.prevent="
+                                            change_sort('company_name')
+                                        "
+                                        class="text-white inline-flex"
+                                    >
+                                        Company
+                                        <span
+                                            v-if="
+                                                (!(sort_direction == 'asc') ||
+                                                    !(
+                                                        sort_direction == 'desc'
+                                                    )) &&
+                                                !(sort_field == 'company_name')
+                                            "
+                                            class="inline-block"
+                                            ><ArrowsUpDownIcon class="h-4 w-4"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'desc' &&
+                                                sort_field == 'company_name'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowUpIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'asc' &&
+                                                sort_field == 'company_name'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowDownIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
+                                    </a>
+                                </div>
+                                <div class="text-sm text-center h-6"></div>
+                            </th>
+
+                            <th
+                                class="py-3"
+                                v-if="
+                                    can('view tracking general amount') ||
+                                    is('admin | super-admin')
+                                "
+                            >
+                                <div class="text-sm text-center h-12">
+                                    <a
+                                        href="#"
+                                        @click.prevent="
+                                            change_sort('general_amount')
+                                        "
+                                        class="text-white inline-flex"
+                                    >
+                                        Amount
+                                        <span
+                                            v-if="
+                                                (!(sort_direction == 'asc') ||
+                                                    !(
+                                                        sort_direction == 'desc'
+                                                    )) &&
+                                                !(
+                                                    sort_field ==
+                                                    'general_amount'
+                                                )
+                                            "
+                                            class="inline-block"
+                                            ><ArrowsUpDownIcon class="h-4 w-4"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'desc' &&
+                                                sort_field == 'general_amount'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowUpIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'asc' &&
+                                                sort_field == 'general_amount'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowDownIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
+                                    </a>
+                                </div>
+                            </th>
+
+                            <th class="py-3">
+                                <div class="text-sm text-center h-6 w-28">
+                                    <a
+                                        href="#"
+                                        @click.prevent="
+                                            change_sort('category_name')
+                                        "
+                                        class="text-white inline-flex"
+                                    >
+                                        Product
+                                        <span
+                                            v-if="
+                                                (!(sort_direction == 'asc') ||
+                                                    !(
+                                                        sort_direction == 'desc'
+                                                    )) &&
+                                                !(sort_field == 'category_name')
+                                            "
+                                            class="inline-block"
+                                            ><ArrowsUpDownIcon class="h-4 w-4"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'desc' &&
+                                                sort_field == 'category_name'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowUpIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'asc' &&
+                                                sort_field == 'category_name'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowDownIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
+                                    </a>
+                                </div>
+                                <div
+                                    class="items-center text-xs text-center h-6 w-24"
+                                >
+                                    <select
+                                        v-model="selectedCategory"
+                                        class="form-control form-control-sm text-xs"
+                                    >
+                                        <option class="text-xs" value="">
+                                            All
+                                        </option>
+                                        <option
+                                            class="text-xs"
+                                            v-for="category in categories.data"
+                                            :key="category.id"
+                                            :value="category.id"
+                                        >
+                                            {{ category.name }}
+                                        </option>
+                                    </select>
+                                </div>
+                            </th>
+
+                            <th class="py-3">
+                                <div class="text-sm text-center h-12">
+                                    <a
+                                        href="#"
+                                        @click.prevent="
+                                            change_sort('category_description')
+                                        "
+                                        class="text-white inline-flex"
+                                    >
+                                        Product <br />
+                                        Description
+                                        <span
+                                            v-if="
+                                                (!(sort_direction == 'asc') ||
+                                                    !(
+                                                        sort_direction == 'desc'
+                                                    )) &&
+                                                !(
+                                                    sort_field ==
+                                                    'category_description'
+                                                )
+                                            "
+                                            class="inline-block"
+                                            ><ArrowsUpDownIcon class="h-4 w-4"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'desc' &&
+                                                sort_field ==
+                                                    'category_description'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowUpIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'asc' &&
+                                                sort_field ==
+                                                    'category_description'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowDownIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
+                                    </a>
+                                </div>
+                            </th>
+
+                            <th class="py-3">
+                                <div class="text-sm text-center h-12">
+                                    <a
+                                        href="#"
+                                        @click.prevent="
+                                            change_sort('general_type')
+                                        "
+                                        class="text-white inline-flex"
+                                    >
+                                        Type
+                                        <span
+                                            v-if="
+                                                (!(sort_direction == 'asc') ||
+                                                    !(
+                                                        sort_direction == 'desc'
+                                                    )) &&
+                                                !(sort_field == 'general_type')
+                                            "
+                                            class="inline-block"
+                                            ><ArrowsUpDownIcon class="h-4 w-4"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'desc' &&
+                                                sort_field == 'general_type'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowUpIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'asc' &&
+                                                sort_field == 'general_type'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowDownIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
+                                    </a>
+                                </div>
+                            </th>
+
+                            <th class="py-3">
+                                <div class="text-sm text-center h-12">
+                                    <a
+                                        href="#"
+                                        @click.prevent="
+                                            change_sort('art_format')
+                                        "
+                                        class="text-white inline-flex"
+                                    >
+                                        Artwork <br />
+                                        Format
+                                        <span
+                                            v-if="
+                                                (!(sort_direction == 'asc') ||
+                                                    !(
+                                                        sort_direction == 'desc'
+                                                    )) &&
+                                                !(sort_field == 'art_format')
+                                            "
+                                            class="inline-block"
+                                            ><ArrowsUpDownIcon class="h-4 w-4"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'desc' &&
+                                                sort_field == 'art_format'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowUpIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'asc' &&
+                                                sort_field == 'art_format'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowDownIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
+                                    </a>
+                                </div>
+                            </th>
+                            <th class="py-3">
+                                <div class="text-sm text-center h-12">
+                                    <a
+                                        href="#"
+                                        @click.prevent="
+                                            change_sort('art_frequency')
+                                        "
+                                        class="text-white inline-flex"
+                                    >
+                                        Artwork <br />
+                                        Frequency
+                                        <span
+                                            v-if="
+                                                (!(sort_direction == 'asc') ||
+                                                    !(
+                                                        sort_direction == 'desc'
+                                                    )) &&
+                                                !(sort_field == 'art_frequency')
+                                            "
+                                            class="inline-block"
+                                            ><ArrowsUpDownIcon class="h-4 w-4"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'desc' &&
+                                                sort_field == 'art_frequency'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowUpIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'asc' &&
+                                                sort_field == 'art_frequency'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowDownIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
+                                    </a>
+                                </div>
+                            </th>
+                            <th class="py-3">
+                                <div class="text-sm text-center h-12">
+                                    <a
+                                        href="#"
+                                        @click.prevent="
+                                            change_sort('general_reach')
+                                        "
+                                        class="text-white inline-flex"
+                                    >
+                                        REACH
+                                        <span
+                                            v-if="
+                                                (!(sort_direction == 'asc') ||
+                                                    !(
+                                                        sort_direction == 'desc'
+                                                    )) &&
+                                                !(sort_field == 'general_reach')
+                                            "
+                                            class="inline-block"
+                                            ><ArrowsUpDownIcon class="h-4 w-4"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'desc' &&
+                                                sort_field == 'general_reach'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowUpIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'asc' &&
+                                                sort_field == 'general_reach'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowDownIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
+                                    </a>
+                                </div>
+                            </th>
+                            <th class="py-3">
+                                <div class="text-sm text-center h-12 w-14">
+                                    <a
+                                        href="#"
+                                        @click.prevent="
+                                            change_sort('general_tenure')
+                                        "
+                                        class="text-white inline-flex"
+                                    >
+                                        Tenure
+                                        <span
+                                            v-if="
+                                                (!(sort_direction == 'asc') ||
+                                                    !(
+                                                        sort_direction == 'desc'
+                                                    )) &&
+                                                !(
+                                                    sort_field ==
+                                                    'general_tenure'
+                                                )
+                                            "
+                                            class="inline-block"
+                                            ><ArrowsUpDownIcon class="h-4 w-4"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'desc' &&
+                                                sort_field == 'general_tenure'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowUpIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'asc' &&
+                                                sort_field == 'general_tenure'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowDownIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
+                                    </a>
+                                </div>
+                            </th>
+                            <th class="py-3">
+                                <div class="text-sm text-center h-12 w-16">
+                                    <a
+                                        href="#"
+                                        @click.prevent="
+                                            change_sort('general_startdate')
+                                        "
+                                        class="text-white inline-flex"
+                                    >
+                                        Start <br />
+                                        Date
+                                        <span
+                                            v-if="
+                                                (!(sort_direction == 'asc') ||
+                                                    !(
+                                                        sort_direction == 'desc'
+                                                    )) &&
+                                                !(
+                                                    sort_field ==
+                                                    'general_startdate'
+                                                )
+                                            "
+                                            class="inline-block"
+                                            ><ArrowsUpDownIcon class="h-4 w-4"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'desc' &&
+                                                sort_field ==
+                                                    'general_startdate'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowUpIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'asc' &&
+                                                sort_field ==
+                                                    'general_startdate'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowDownIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
+                                    </a>
+                                </div>
+                            </th>
+                            <th class="py-3">
+                                <div class="text-sm text-center h-12 w-16">
+                                    <a
+                                        href="#"
+                                        @click.prevent="
+                                            change_sort('general_enddate')
+                                        "
+                                        class="text-white inline-flex"
+                                    >
+                                        End <br />
+                                        Date
+                                        <span
+                                            v-if="
+                                                (!(sort_direction == 'asc') ||
+                                                    !(
+                                                        sort_direction == 'desc'
+                                                    )) &&
+                                                !(
+                                                    sort_field ==
+                                                    'general_enddate'
+                                                )
+                                            "
+                                            class="inline-block"
+                                            ><ArrowsUpDownIcon class="h-4 w-4"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'desc' &&
+                                                sort_field == 'general_enddate'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowUpIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'asc' &&
+                                                sort_field == 'general_enddate'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowDownIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
+                                    </a>
+                                </div>
+                            </th>
+
+                            <th class="py-3">
+                                <div class="text-sm text-center h-12">
+                                    <a
+                                        href="#"
+                                        @click.prevent=""
+                                        class="text-white inline-flex"
+                                    >
+                                        Remark
+                                    </a>
+                                </div>
+                            </th>
+
+                            <th class="py-3">
+                                <div class="text-sm text-center h-6">
+                                    <a
+                                        href="#"
+                                        @click.prevent="change_sort('progress')"
+                                        class="text-white inline-flex"
+                                    >
+                                        Status
+                                        <span
+                                            v-if="
+                                                (!(sort_direction == 'asc') ||
+                                                    !(
+                                                        sort_direction == 'desc'
+                                                    )) &&
+                                                !(sort_field == 'progress')
+                                            "
+                                            class="inline-block"
+                                            ><ArrowsUpDownIcon class="h-4 w-4"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'desc' &&
+                                                sort_field == 'progress'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowUpIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'asc' &&
+                                                sort_field == 'progress'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowDownIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
+                                    </a>
+                                </div>
+                                <div class="text-sm text-center h-6">
+                                    <select
+                                        v-model="selectedResult"
+                                        class="form-control form-control-sm text-xs"
+                                    >
+                                        <option class="text-xs" value="">
+                                            All
+                                        </option>
+                                        <option class="text-xs" value="Pending">
+                                            Pending
+                                        </option>
+                                        <option
+                                            class="text-xs"
+                                            value="Completed"
+                                        >
+                                            Completed
+                                        </option>
+                                    </select>
+                                </div>
+                            </th>
+
+                            <th class="py-3">
+                                <div
+                                    class="text-sm text-center h-12 text-white"
+                                >
+                                    Action
+                                </div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="mt-2">
+                        <tr v-show="buffering">
+                            <td
+                                class="text-center text-sm font-bold"
+                                colspan="30"
+                            >
+                                Loading . .
+                            </td>
+                        </tr>
+                        <tr
+                            v-for="(tracking, index) in tracking_generals.data"
+                            :key="tracking.id"
+                        >
+                            <td class="text-xs text-center">{{ index + 1 }}</td>
+                            <td class="text-xs text-center">
+                                {{ showToday(tracking.created_at) }}
+                            </td>
+                            <td class="text-xs text-center">
+                                {{ tracking.division_name }}
+                            </td>
+                            <td class="text-xs text-center">
+                                {{ tracking.user_name }}
+                            </td>
+                            <td
+                                v-if="
+                                    check_id(tracking.user_id) ||
+                                    is('supervisor | admin | super-admin')
+                                "
+                                class="items-center text-xs text-center h-6 w-24"
+                            >
+                                <router-link
+                                    :to="`/contact/${tracking.company_id}/info`"
+                                    custom
+                                    v-slot="{ navigate, href }"
+                                >
+                                    <a :href="href" @click.stop="navigate">{{
+                                        tracking.company_name
+                                    }}</a>
+                                </router-link>
+                            </td>
+                            <td
+                                class="text-xs text-center"
+                                v-if="
+                                    can('view tracking general amount') ||
+                                    is('admin | super-admin')
+                                "
+                            >
+                                RM
+                                {{
+                                    tracking.general_amount.toLocaleString(
+                                        "en-US"
+                                    )
+                                }}
+                            </td>
+                            <td class="text-xs text-center">
+                                {{ tracking.category_name }}
+                            </td>
+                            <td class="text-xs text-center">
+                                {{ tracking.category_description }}
+                            </td>
+                            <td class="text-xs text-center">
+                                {{ tracking.general_type }}
+                            </td>
+
+                            <td class="text-xs text-center">
+                                {{ tracking.art_format }}
+                            </td>
+                            <td class="text-xs text-center">
+                                {{ tracking.art_frequency }}
+                            </td>
+                            <td class="text-xs text-center">
+                                {{
+                                    tracking.general_reach.toLocaleString(
+                                        "en-US"
+                                    )
+                                }}
+                            </td>
+                            <td class="text-xs text-center">
+                                {{
+                                    Math.round(
+                                        (tracking.general_tenure / 30) * 10
+                                    ) / 10
+                                }}
+                                <br />
+                                month(s)
+                            </td>
+                            <td class="text-xs text-center">
+                                {{ showToday(tracking.general_startdate) }}
+                            </td>
+                            <td class="text-xs text-center">
+                                {{ showToday(tracking.general_enddate) }}
+                            </td>
+                            <td class="text-xs text-center">
+                                {{ tracking.general_remark }}
+                            </td>
+                            <td class="text-xs text-center">
+                                {{ tracking.progress }}
+                            </td>
+                            <td class="text-xs text-center">
+                                <router-link
+                                    :to="{
+                                        name: 'tracking_general_edit',
+                                        params: { id: tracking.id },
+                                    }"
+                                    class="mr-2 mb-2 inline-flex items-center px-2 py-1 bg-yellow-400 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
+                                >
+                                    <PencilSquareIcon class="h-3 w-3"
+                                /></router-link>
+                                <button
+                                    class="mr-2 mb-2 inline-flex items-center px-2 py-1 bg-red-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
+                                    @click="deleteMasterGeneral(tracking.id)"
+                                >
+                                    <TrashIcon class="h-3 w-3" />
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div
+                v-if="view_type === 'wip_report'"
+                class="table-wrp block max-h-screen overflow-y-auto overflow-x-auto container w-full"
+            >
+                <table
+                    class="table table-hover w-full mt-0"
+                    ref="general_wip_table"
+                >
+                    <thead class="bg-slate-500 border-b sticky top-0">
+                        <tr>
+                            <th class="py-3">
+                                <div class="text-sm text-center h-6">
+                                    <a
+                                        href="#"
+                                        @click.prevent=""
+                                        class="text-white"
+                                    >
+                                    </a>
+                                    <span
+                                        v-if="
+                                            sort_direction == 'desc' &&
+                                            sort_field == ''
+                                        "
+                                        >&uarr;</span
+                                    >
+                                    <span
+                                        v-if="
+                                            sort_direction == 'asc' &&
+                                            sort_field == ''
+                                        "
+                                        >&darr;</span
+                                    >
+                                </div>
+                                <div class="text-sm text-center h-6"></div>
+                            </th>
+                            <th class="py-3">
+                                <div class="text-sm text-center h-6 w-16">
+                                    <a
+                                        href="#"
+                                        @click.prevent="
+                                            change_sort('created_at')
+                                        "
+                                        class="text-white inline-flex"
+                                    >
+                                        Date
+                                        <span
+                                            v-if="
+                                                (!(sort_direction == 'asc') ||
+                                                    !(
+                                                        sort_direction == 'desc'
+                                                    )) &&
+                                                !(sort_field == 'created_at')
+                                            "
+                                            class="inline-block"
+                                            ><ArrowsUpDownIcon class="h-4 w-4"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'desc' &&
+                                                sort_field == 'created_at'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowUpIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'asc' &&
+                                                sort_field == 'created_at'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowDownIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
+                                    </a>
+                                </div>
+                                <div class="text-sm text-center h-6"></div>
+                            </th>
+                            <th class="py-3 w-max">
+                                <div class="text-sm text-center h-6">
+                                    <a
+                                        href="#"
+                                        @click.prevent="
+                                            change_sort('division_name')
+                                        "
+                                        class="text-white inline-flex"
+                                    >
+                                        BGOC
+                                        <span
+                                            v-if="
+                                                (!(sort_direction == 'asc') ||
+                                                    !(
+                                                        sort_direction == 'desc'
+                                                    )) &&
+                                                !(sort_field == 'division_name')
+                                            "
+                                            class="inline-block"
+                                            ><ArrowsUpDownIcon class="h-4 w-4"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'desc' &&
+                                                sort_field == 'division_name'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowUpIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'asc' &&
+                                                sort_field == 'division_name'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowDownIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
+                                    </a>
+                                </div>
+                                <div class="text-sm text-center h-6">
+                                    <select
+                                        v-model="selectedDivision"
+                                        class="form-control form-control-sm text-xs"
+                                    >
+                                        <option class="text-xs" value="">
+                                            All
+                                        </option>
+                                        <option
+                                            class="text-xs"
+                                            v-for="division in divisions.data"
+                                            :key="division.id"
+                                            :value="division.id"
+                                        >
+                                            {{ division.name }}
+                                        </option>
+                                    </select>
+                                </div>
+                            </th>
+                            <th class="py-3">
+                                <div class="text-sm text-center h-6">
+                                    <a
+                                        href="#"
+                                        @click.prevent="
+                                            change_sort('user_name')
+                                        "
+                                        class="text-white inline-flex"
+                                    >
+                                        CS
+                                        <span
+                                            v-if="
+                                                (!(sort_direction == 'asc') ||
+                                                    !(
+                                                        sort_direction == 'desc'
+                                                    )) &&
+                                                !(sort_field == 'user_name')
+                                            "
+                                            class="inline-block"
+                                            ><ArrowsUpDownIcon class="h-4 w-4"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'desc' &&
+                                                sort_field == 'user_name'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowUpIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'asc' &&
+                                                sort_field == 'user_name'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowDownIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
+                                    </a>
+                                </div>
+                                <div class="text-sm text-center h-6">
+                                    <select
+                                        v-model="selectedUser"
+                                        class="form-control form-control-sm text-xs"
+                                    >
+                                        <option class="text-xs" value="">
+                                            All
+                                        </option>
+                                        <option
+                                            class="text-xs"
+                                            v-for="user in users.data"
+                                            :key="user.id"
+                                            :value="user.id"
+                                        >
+                                            {{ user.name }}
+                                        </option>
+                                    </select>
+                                </div>
+                            </th>
+
+                            <th class="py-3">
+                                <div class="text-sm text-center h-6 w-60">
+                                    <a
+                                        href="#"
+                                        @click.prevent="
+                                            change_sort('company_name')
+                                        "
+                                        class="text-white inline-flex"
+                                    >
+                                        Company
+                                        <span
+                                            v-if="
+                                                (!(sort_direction == 'asc') ||
+                                                    !(
+                                                        sort_direction == 'desc'
+                                                    )) &&
+                                                !(sort_field == 'company_name')
+                                            "
+                                            class="inline-block"
+                                            ><ArrowsUpDownIcon class="h-4 w-4"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'desc' &&
+                                                sort_field == 'company_name'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowUpIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'asc' &&
+                                                sort_field == 'company_name'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowDownIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
+                                    </a>
+                                </div>
+                                <div class="text-sm text-center h-6"></div>
+                            </th>
+
+                            <th class="py-3">
+                                <div class="text-sm text-center h-6">
+                                    <a
+                                        href="#"
+                                        @click.prevent="
+                                            change_sort('category_name')
+                                        "
+                                        class="text-white inline-flex"
+                                    >
+                                        Product
+                                        <span
+                                            v-if="
+                                                (!(sort_direction == 'asc') ||
+                                                    !(
+                                                        sort_direction == 'desc'
+                                                    )) &&
+                                                !(sort_field == 'category_name')
+                                            "
+                                            class="inline-block"
+                                            ><ArrowsUpDownIcon class="h-4 w-4"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'desc' &&
+                                                sort_field == 'category_name'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowUpIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'asc' &&
+                                                sort_field == 'category_name'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowDownIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
+                                    </a>
+                                </div>
+                                <div
+                                    class="items-center text-xs text-center h-6 w-24"
+                                >
+                                    <select
+                                        v-model="selectedCategory"
+                                        class="form-control form-control-sm text-xs"
+                                    >
+                                        <option class="text-xs" value="">
+                                            All
+                                        </option>
+                                        <option
+                                            class="text-xs"
+                                            v-for="category in categories.data"
+                                            :key="category.id"
+                                            :value="category.id"
+                                        >
+                                            {{ category.name }}
+                                        </option>
+                                    </select>
+                                </div>
+                            </th>
+
+                            <th class="py-3">
+                                <div class="text-sm text-center h-6">
+                                    <a
+                                        href="#"
+                                        @click.prevent="
+                                            change_sort(
+                                                'general_category_description'
+                                            )
+                                        "
+                                        class="text-white inline-flex"
+                                    >
+                                        Product <br />
+                                        Description
+                                        <span
+                                            v-if="
+                                                (!(sort_direction == 'asc') ||
+                                                    !(
+                                                        sort_direction == 'desc'
+                                                    )) &&
+                                                !(
+                                                    sort_field ==
+                                                    'general_category_description'
+                                                )
+                                            "
+                                            class="inline-block"
+                                            ><ArrowsUpDownIcon class="h-4 w-4"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'desc' &&
+                                                sort_field ==
+                                                    'general_category_description'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowUpIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'asc' &&
+                                                sort_field ==
+                                                    'general_category_description'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowDownIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
+                                    </a>
+                                </div>
+                                <div class="text-sm text-center h-6"></div>
+                            </th>
+
+                            <th class="py-3">
+                                <div class="text-sm text-center h-6">
+                                    <a
+                                        href="#"
+                                        @click.prevent="
+                                            change_sort('general_type')
+                                        "
+                                        class="text-white inline-flex"
+                                    >
+                                        Type
+                                        <span
+                                            v-if="
+                                                (!(sort_direction == 'asc') ||
+                                                    !(
+                                                        sort_direction == 'desc'
+                                                    )) &&
+                                                !(sort_field == 'general_type')
+                                            "
+                                            class="inline-block"
+                                            ><ArrowsUpDownIcon class="h-4 w-4"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'desc' &&
+                                                sort_field == 'general_type'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowUpIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'asc' &&
+                                                sort_field == 'general_type'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowDownIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
+                                    </a>
+                                </div>
+                                <div class="text-sm text-center h-6"></div>
+                            </th>
+                            <th
+                                class="py-3"
+                                v-if="
+                                    can('view tracking general amount') ||
+                                    is('admin | super-admin')
+                                "
+                            >
+                                <div class="text-sm text-center h-6">
+                                    <a
+                                        href="#"
+                                        @click.prevent="
+                                            change_sort('general_amount')
+                                        "
+                                        class="text-white inline-flex"
+                                    >
+                                        Amount
+                                        <span
+                                            v-if="
+                                                (!(sort_direction == 'asc') ||
+                                                    !(
+                                                        sort_direction == 'desc'
+                                                    )) &&
+                                                !(
+                                                    sort_field ==
+                                                    'general_amount'
+                                                )
+                                            "
+                                            class="inline-block"
+                                            ><ArrowsUpDownIcon class="h-4 w-4"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'desc' &&
+                                                sort_field == 'general_amount'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowUpIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'asc' &&
+                                                sort_field == 'general_amount'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowDownIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
+                                    </a>
+                                </div>
+                                <div class="text-sm text-center h-6"></div>
+                            </th>
+                            <th class="py-3">
+                                <div class="text-sm text-center h-6">
+                                    <a
+                                        href="#"
+                                        @click.prevent="
+                                            change_sort('frequency_no')
+                                        "
+                                        class="text-white inline-flex"
+                                    >
+                                        Frequency
+                                        <span
+                                            v-if="
+                                                (!(sort_direction == 'asc') ||
+                                                    !(
+                                                        sort_direction == 'desc'
+                                                    )) &&
+                                                !(sort_field == 'frequency_no')
+                                            "
+                                            class="inline-block"
+                                            ><ArrowsUpDownIcon class="h-4 w-4"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'desc' &&
+                                                sort_field == 'frequency_no'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowUpIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'asc' &&
+                                                sort_field == 'frequency_no'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowDownIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
+                                    </a>
+                                </div>
+                                <div class="text-sm text-center h-6"></div>
+                            </th>
+                            <th class="py-3">
+                                <div class="text-sm text-center h-6 w-16">
+                                    <a
+                                        href="#"
+                                        @click.prevent="
+                                            change_sort('general_startdate')
+                                        "
+                                        class="text-white inline-flex"
+                                    >
+                                        Start <br />
+                                        Date
+                                        <span
+                                            v-if="
+                                                (!(sort_direction == 'asc') ||
+                                                    !(
+                                                        sort_direction == 'desc'
+                                                    )) &&
+                                                !(
+                                                    sort_field ==
+                                                    'general_startdate'
+                                                )
+                                            "
+                                            class="inline-block"
+                                            ><ArrowsUpDownIcon class="h-4 w-4"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'desc' &&
+                                                sort_field ==
+                                                    'general_startdate'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowUpIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'asc' &&
+                                                sort_field ==
+                                                    'general_startdate'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowDownIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
+                                    </a>
+                                </div>
+                                <div class="text-sm text-center h-6"></div>
+                            </th>
+                            <th class="py-3">
+                                <div class="text-sm text-center h-6 w-16">
+                                    <a
+                                        href="#"
+                                        @click.prevent="
+                                            change_sort('general_enddate')
+                                        "
+                                        class="text-white inline-flex"
+                                    >
+                                        End <br />
+                                        Date
+                                        <span
+                                            v-if="
+                                                (!(sort_direction == 'asc') ||
+                                                    !(
+                                                        sort_direction == 'desc'
+                                                    )) &&
+                                                !(
+                                                    sort_field ==
+                                                    'general_enddate'
+                                                )
+                                            "
+                                            class="inline-block"
+                                            ><ArrowsUpDownIcon class="h-4 w-4"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'desc' &&
+                                                sort_field == 'general_enddate'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowUpIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'asc' &&
+                                                sort_field == 'general_enddate'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowDownIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
+                                    </a>
+                                </div>
+                                <div class="text-sm text-center h-6"></div>
+                            </th>
+                            <th class="py-3">
+                                <div class="text-sm text-center h-6">
+                                    <a
+                                        href="#"
+                                        @click.prevent=""
+                                        class="text-white inline-flex"
+                                    >
+                                        Art <br />
+                                        Chase
+                                    </a>
+                                </div>
+                                <div class="text-sm text-center h-6"></div>
+                            </th>
+                            <th class="py-3">
+                                <div class="text-sm text-center h-6">
+                                    <a
+                                        href="#"
+                                        @click.prevent=""
+                                        class="text-white inline-flex"
+                                    >
+                                        Art <br />
+                                        Received
+                                    </a>
+                                </div>
+                                <div class="text-sm text-center h-6"></div>
+                            </th>
+
+                            <th class="py-3">
+                                <div class="text-sm text-center h-6">
+                                    <a
+                                        href="#"
+                                        @click.prevent=""
+                                        class="text-white inline-flex"
+                                    >
+                                        Art <br />
+                                        ToDo
+                                    </a>
+                                </div>
+                                <div class="text-sm text-center h-6"></div>
+                            </th>
+
+                            <th class="py-3">
+                                <div class="text-sm text-center h-6">
+                                    <a
+                                        href="#"
+                                        @click.prevent=""
+                                        class="text-white inline-flex"
+                                    >
+                                        C&S <br />
+                                        Sent
+                                    </a>
+                                </div>
+                                <div class="text-sm text-center h-6"></div>
+                            </th>
+
+                            <th class="py-3">
+                                <div class="text-sm text-center h-6">
+                                    <a
+                                        href="#"
+                                        @click.prevent=""
+                                        class="text-white inline-flex"
+                                    >
+                                        C&S <br />
+                                        Record
+                                    </a>
+                                </div>
+                                <div class="text-sm text-center h-6"></div>
+                            </th>
+
+                            <th class="py-3">
+                                <div class="text-sm text-center h-6">
+                                    <a
+                                        href="#"
+                                        @click.prevent=""
+                                        class="text-white inline-flex"
+                                    >
+                                        Schedule <br />
+                                        Date
+                                    </a>
+                                </div>
+                                <div class="text-sm text-center h-6"></div>
+                            </th>
+
+                            <th class="py-3">
+                                <div class="text-sm text-center h-6">
+                                    <a
+                                        href="#"
+                                        @click.prevent=""
+                                        class="text-white inline-flex"
+                                    >
+                                        Report
+                                    </a>
+                                </div>
+                                <div class="text-sm text-center h-6"></div>
+                            </th>
+
+                            <th class="py-3">
+                                <div class="text-sm text-center h-6">
+                                    <a
+                                        href="#"
+                                        @click.prevent=""
+                                        class="text-white inline-flex"
+                                    >
+                                        Client <br />
+                                        Posting
+                                    </a>
+                                </div>
+                                <div class="text-sm text-center h-6"></div>
+                            </th>
+
+                            <th class="py-3">
+                                <div class="text-sm text-center h-6">
+                                    <a
+                                        href="#"
+                                        @click.prevent=""
+                                        class="text-white inline-flex"
+                                    >
+                                        Actual Live <br />
+                                        Date
+                                    </a>
+                                </div>
+                                <div class="text-sm text-center h-6"></div>
+                            </th>
+                            <th class="py-3">
+                                <div class="text-sm text-center h-6 w-60">
+                                    <a
+                                        href="#"
+                                        @click.prevent="
+                                            change_sort('company_name')
+                                        "
+                                        class="text-white inline-flex"
+                                    >
+                                        Company
+                                        <span
+                                            v-if="
+                                                (!(sort_direction == 'asc') ||
+                                                    !(
+                                                        sort_direction == 'desc'
+                                                    )) &&
+                                                !(sort_field == 'company_name')
+                                            "
+                                            class="inline-block"
+                                            ><ArrowsUpDownIcon class="h-4 w-4"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'desc' &&
+                                                sort_field == 'company_name'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowUpIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'asc' &&
+                                                sort_field == 'company_name'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowDownIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
+                                    </a>
+                                </div>
+                                <div class="text-sm text-center h-6"></div>
+                            </th>
+
+                            <th class="py-3">
+                                <div class="text-sm text-center h-6">
+                                    <a
+                                        href="#"
+                                        @click.prevent=""
+                                        class="text-white inline-flex"
+                                    >
+                                        Remark
+                                    </a>
+                                </div>
+                                <div class="text-sm text-center h-6"></div>
+                            </th>
+                            <th class="py-3">
+                                <div class="text-sm text-center h-6">
+                                    <a
+                                        href="#"
+                                        @click.prevent="
+                                            change_sort('wip_progress')
+                                        "
+                                        class="text-white inline-flex"
+                                    >
+                                        Status
+                                        <span
+                                            v-if="
+                                                (!(sort_direction == 'asc') ||
+                                                    !(
+                                                        sort_direction == 'desc'
+                                                    )) &&
+                                                !(sort_field == 'wip_progress')
+                                            "
+                                            class="inline-block"
+                                            ><ArrowsUpDownIcon class="h-4 w-4"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'desc' &&
+                                                sort_field == 'wip_progress'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowUpIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'asc' &&
+                                                sort_field == 'wip_progress'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowDownIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
+                                    </a>
+                                </div>
+                                <div class="text-sm text-center h-6">
+                                    <select
+                                        v-model="selectedResult"
+                                        class="form-control form-control-sm text-xs"
+                                    >
+                                        <option class="text-xs" value="">
+                                            All
+                                        </option>
+                                        <option class="text-xs" value="Pending">
+                                            Pending
+                                        </option>
+                                        <option
+                                            class="text-xs"
+                                            value="Completed"
+                                        >
+                                            Completed
+                                        </option>
+                                    </select>
+                                </div>
+                            </th>
+                            <th class="py-3">
+                                <div class="text-sm text-center h-6 text-white">
+                                    Action
+                                </div>
+                                <div class="text-sm text-center h-6"></div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="mt-2">
+                        <tr v-show="buffering">
+                            <td
+                                class="text-center text-sm font-bold"
+                                colspan="30"
+                            >
+                                Loading . .
+                            </td>
+                        </tr>
+                        <tr
+                            v-for="(tracking, index) in tracking_generals.data"
+                            :key="tracking.id"
+                        >
+                            <td class="text-xs text-center">{{ index + 1 }}</td>
+                            <td class="text-xs text-center">
+                                {{ showToday(tracking.created_at) }}
+                            </td>
+                            <td class="text-xs text-center">
+                                {{ tracking.division_name }}
+                            </td>
+                            <td class="text-xs text-center">
+                                {{ tracking.user_name }}
+                            </td>
+                            <td
+                                v-if="
+                                    check_id(tracking.user_id) ||
+                                    is('supervisor | admin | super-admin')
+                                "
+                                class="items-center text-xs text-center h-6 w-24"
+                            >
+                                <router-link
+                                    :to="`/contact/${tracking.company_id}/info`"
+                                    custom
+                                    v-slot="{ navigate, href }"
+                                >
+                                    <a :href="href" @click.stop="navigate">{{
+                                        tracking.company_name
+                                    }}</a>
+                                </router-link>
+                            </td>
+                            <td class="text-xs text-center">
+                                {{ tracking.category_name }}
+                            </td>
+                            <td class="text-xs text-center">
+                                {{ tracking.general_category_description }}
+                            </td>
+                            <td class="text-xs text-center">
+                                {{ tracking.general_type }}
+                            </td>
+                            <td
+                                class="text-xs text-center"
+                                v-if="
+                                    can('view tracking general amount') ||
+                                    is('admin | super-admin')
+                                "
+                            >
+                                RM
+                                {{
+                                    tracking.general_amount.toLocaleString(
+                                        "en-US"
+                                    )
+                                }}
+                            </td>
+                            <td class="text-xs text-center">
+                                {{
+                                    tracking.frequency_no +
+                                    " / " +
+                                    tracking.general_art_freq
+                                }}
+                            </td>
+                            <td class="text-xs text-center">
+                                {{ this.showToday(tracking.general_startdate) }}
+                            </td>
+                            <td class="text-xs text-center">
+                                {{ this.showToday(tracking.general_enddate) }}
+                            </td>
+                            <!-- style="background-color: yellow" -->
+
+                            <td class="text-xs text-center">
+                                <div class="flex">
+                                    <div
+                                        v-if="!tracking.art_chase_date"
+                                        class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300 w-max mr-1"
+                                    ></div>
+                                    <div
+                                        v-else-if="
+                                            tracking.art_chase_done === 2
+                                        "
+                                        class="bg-yellow-300 rounded-md p-1 mb-1 w-max mr-1"
+                                    >
+                                        {{ showToday(tracking.art_chase_date) }}
+                                    </div>
+                                    <div
+                                        v-else
+                                        class="bg-green-300 rounded-md p-1 mb-1"
+                                    >
+                                        {{ showToday(tracking.art_chase_date) }}
+                                    </div>
+                                    <div
+                                        v-if="!tracking.art_chase_user"
+                                        class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300 w-max mr-1"
+                                    ></div>
+                                    <div
+                                        v-else-if="
+                                            tracking.art_chase_done === 2
+                                        "
+                                        class="bg-yellow-300 rounded-md p-1 mb-1 w-max mr-1"
+                                    >
+                                        {{ tracking.art_chase_user.name }}
+                                    </div>
+                                    <div
+                                        v-else
+                                        class="bg-blue-300 rounded-md p-1 mb-1 w-max mr-1"
+                                    >
+                                        {{ tracking.art_chase_user.name }}
+                                    </div>
+                                    <div
+                                        v-if="!tracking.art_chase_remark"
+                                        class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300 w-max mr-1"
+                                    ></div>
+                                    <div
+                                        v-else-if="
+                                            tracking.art_chase_done === 2
+                                        "
+                                        class="bg-yellow-300 rounded-md p-1 mb-1 w-max mr-1"
+                                    >
+                                        {{ tracking.art_chase_remark }}
+                                    </div>
+                                    <div
+                                        v-else
+                                        class="bg-indigo-300 rounded-md p-1 w-max mr-1"
+                                    >
+                                        {{ tracking.art_chase_remark }}
+                                    </div>
+                                </div>
+                            </td>
+
+                            <td class="text-xs text-center bg-amber-600">
+                                <div class="flex">
+                                    <div
+                                        v-if="!tracking.art_received_date"
+                                        class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300 w-max mr-1"
+                                    ></div>
+                                    <div
+                                        v-else-if="
+                                            tracking.art_received_done === 2
+                                        "
+                                        class="bg-yellow-300 rounded-md p-1 mb-1 w-max mr-1"
+                                    >
+                                        {{
+                                            showToday(
+                                                tracking.art_received_date
+                                            )
+                                        }}
+                                    </div>
+                                    <div
+                                        v-else
+                                        class="bg-green-300 rounded-md p-1 mb-1"
+                                    >
+                                        {{
+                                            showToday(
+                                                tracking.art_received_date
+                                            )
+                                        }}
+                                    </div>
+                                    <!-- Art received user-->
+                                    <div
+                                        v-if="!tracking.art_received_user"
+                                        class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300 w-max mr-1"
+                                    ></div>
+                                    <div
+                                        v-else-if="
+                                            tracking.art_received_done === 2
+                                        "
+                                        class="bg-yellow-300 rounded-md p-1 mb-1 w-max mr-1"
+                                    >
+                                        {{ tracking.art_received_user.name }}
+                                    </div>
+
+                                    <div
+                                        v-else
+                                        class="bg-blue-300 rounded-md p-1 mb-1"
+                                    >
+                                        {{ tracking.art_received_user.name }}
+                                    </div>
+                                    <!-- Art received remark-->
+                                    <div
+                                        v-if="!tracking.art_received_remark"
+                                        class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300 w-max mr-1"
+                                    ></div>
+                                    <div
+                                        v-else-if="
+                                            tracking.art_received_done === 2
+                                        "
+                                        class="bg-yellow-300 rounded-md p-1 mb-1 w-max mr-1"
+                                    >
+                                        {{ tracking.art_received_remark }}
+                                    </div>
+
+                                    <div
+                                        v-else
+                                        class="bg-indigo-300 rounded-md p-1"
+                                    >
+                                        {{ tracking.art_received_remark }}
+                                    </div>
+                                </div>
+                            </td>
+
+                            <td class="text-xs text-center">
+                                <!-- Art todo date-->
+                                <div class="flex">
+                                    <div
+                                        v-if="!tracking.art_todo_date"
+                                        class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300"
+                                    ></div>
+                                    <div
+                                        v-else-if="tracking.art_todo_done === 2"
+                                        class="bg-yellow-300 rounded-md p-1 mb-1 w-max mr-1"
+                                    >
+                                        {{ showToday(tracking.art_todo_date) }}
+                                    </div>
+                                    <div
+                                        v-else
+                                        class="bg-green-300 rounded-md p-1 mb-1"
+                                    >
+                                        {{ showToday(tracking.art_todo_date) }}
+                                    </div>
+                                    <!-- Art todo user-->
+                                    <div
+                                        v-if="!tracking.art_todo_user"
+                                        class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300 w-max mr-1"
+                                    ></div>
+                                    <div
+                                        v-else-if="tracking.art_todo_done === 2"
+                                        class="bg-yellow-300 rounded-md p-1 mb-1 w-max mr-1"
+                                    >
+                                        {{ tracking.art_todo_user.name }}
+                                    </div>
+                                    <div
+                                        v-else
+                                        class="bg-blue-300 rounded-md p-1 mb-1"
+                                    >
+                                        {{ tracking.art_todo_user.name }}
+                                    </div>
+                                    <!-- Art todo remark-->
+                                    <div
+                                        v-if="!tracking.art_todo_remark"
+                                        class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300 w-max mr-1"
+                                    ></div>
+                                    <div
+                                        v-else-if="tracking.art_todo_done === 2"
+                                        class="bg-yellow-300 rounded-md p-1 mb-1 w-max mr-1"
+                                    >
+                                        {{ tracking.art_todo_remark }}
+                                    </div>
+
+                                    <div
+                                        v-else
+                                        class="bg-indigo-300 rounded-md p-1"
+                                    >
+                                        {{ tracking.art_todo_remark }}
+                                    </div>
+                                </div>
+                            </td>
+
+                            <td class="text-xs text-center">
+                                <!-- Art cns sent date-->
+                                <div class="flex">
+                                    <div
+                                        v-if="!tracking.cns_sent_date"
+                                        class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300 w-max mr-1"
+                                    ></div>
+                                    <div
+                                        v-else-if="tracking.cns_sent_done === 2"
+                                        class="bg-yellow-300 rounded-md p-1 mb-1 w-max mr-1"
+                                    >
+                                        {{ showToday(tracking.cns_sent_date) }}
+                                    </div>
+                                    <div
+                                        v-else
+                                        class="bg-green-300 rounded-md p-1 mb-1"
+                                    >
+                                        {{ showToday(tracking.cns_sent_date) }}
+                                    </div>
+                                    <!-- Art cns sent user-->
+                                    <div
+                                        v-if="!tracking.cns_sent_user"
+                                        class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300 w-max mr-1"
+                                    ></div>
+                                    <div
+                                        v-else-if="tracking.cns_sent_done === 2"
+                                        class="bg-yellow-300 rounded-md p-1 mb-1 w-max mr-1"
+                                    >
+                                        {{ tracking.cns_sent_user.name }}
+                                    </div>
+
+                                    <div
+                                        v-else
+                                        class="bg-blue-300 rounded-md p-1 mb-1"
+                                    >
+                                        {{ tracking.cns_sent_user.name }}
+                                    </div>
+                                    <!-- Art cns sent remark-->
+                                    <div
+                                        v-if="!tracking.cns_sent_remark"
+                                        class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300 w-max mr-1"
+                                    ></div>
+                                    <div
+                                        v-else-if="tracking.cns_sent_done === 2"
+                                        class="bg-yellow-300 rounded-md p-1 mb-1 w-max mr-1"
+                                    >
+                                        {{ tracking.cns_sent_remark }}
+                                    </div>
+
+                                    <div
+                                        v-else
+                                        class="bg-indigo-300 rounded-md p-1"
+                                    >
+                                        {{ tracking.cns_sent_remark }}
+                                    </div>
+                                </div>
+                            </td>
+
+                            <td class="text-xs text-center">
+                                <!-- Art cns record date-->
+                                <div class="flex">
+                                    <div
+                                        v-if="!tracking.cns_record_date"
+                                        class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300 w-max mr-1"
+                                    ></div>
+                                    <div
+                                        v-else-if="
+                                            tracking.cns_record_done === 2
+                                        "
+                                        class="bg-yellow-300 rounded-md p-1 mb-1 w-max mr-1"
+                                    >
+                                        {{
+                                            showToday(tracking.cns_record_date)
+                                        }}
+                                    </div>
+                                    <div
+                                        v-else
+                                        class="bg-green-300 rounded-md p-1 mb-1"
+                                    >
+                                        {{
+                                            showToday(tracking.cns_record_date)
+                                        }}
+                                    </div>
+                                    <!-- Art cns record user-->
+                                    <div
+                                        v-if="!tracking.cns_record_user"
+                                        class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300 w-max mr-1"
+                                    ></div>
+                                    <div
+                                        v-else-if="
+                                            tracking.cns_record_done === 2
+                                        "
+                                        class="bg-yellow-300 rounded-md p-1 mb-1 w-max mr-1"
+                                    >
+                                        {{ tracking.cns_record_user.name }}
+                                    </div>
+                                    <div
+                                        v-else
+                                        class="bg-blue-300 rounded-md p-1 mb-1"
+                                    >
+                                        {{ tracking.cns_record_user.name }}
+                                    </div>
+                                    <!-- Art cns record remark-->
+                                    <div
+                                        v-if="!tracking.cns_record_remark"
+                                        class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300 w-max mr-1"
+                                    ></div>
+                                    <div
+                                        v-else-if="
+                                            tracking.cns_record_done === 2
+                                        "
+                                        class="bg-yellow-300 rounded-md p-1 mb-1 w-max mr-1"
+                                    >
+                                        {{ tracking.cns_record_remark }}
+                                    </div>
+                                    <div
+                                        v-else
+                                        class="bg-indigo-300 rounded-md p-1"
+                                    >
+                                        {{ tracking.cns_record_remark }}
+                                    </div>
+                                </div>
+                            </td>
+
+                            <td class="text-xs text-center">
+                                <!-- Art cns schedule date -->
+                                <div class="flex">
+                                    <div
+                                        v-if="!tracking.schedule_date"
+                                        class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300 w-max mr-1"
+                                    ></div>
+                                    <div
+                                        v-else-if="tracking.schedule_done === 2"
+                                        class="bg-yellow-300 rounded-md p-1 mb-1 w-max mr-1"
+                                    >
+                                        {{ showToday(tracking.schedule_date) }}
+                                    </div>
+                                    <div
+                                        v-else
+                                        class="bg-green-300 rounded-md p-1 mb-1"
+                                    >
+                                        {{ showToday(tracking.schedule_date) }}
+                                    </div>
+                                    <!-- Art cns schedule user -->
+                                    <div
+                                        v-if="!tracking.schedule_user"
+                                        class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300 w-max mr-1"
+                                    ></div>
+                                    <div
+                                        v-else-if="tracking.schedule_done === 2"
+                                        class="bg-yellow-300 rounded-md p-1 mb-1 w-max mr-1"
+                                    >
+                                        {{ tracking.schedule_user.name }}
+                                    </div>
+                                    <div
+                                        v-else
+                                        class="bg-blue-300 rounded-md p-1 mb-1"
+                                    >
+                                        {{ tracking.schedule_user.name }}
+                                    </div>
+                                    <!-- Art cns schedule remark -->
+                                    <div
+                                        v-if="!tracking.schedule_remark"
+                                        class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300 w-max mr-1"
+                                    ></div>
+                                    <div
+                                        v-else-if="tracking.schedule_done === 2"
+                                        class="bg-yellow-300 rounded-md p-1 mb-1 w-max mr-1"
+                                    >
+                                        {{ tracking.schedule_remark }}
+                                    </div>
+                                    <div
+                                        v-else
+                                        class="bg-indigo-300 rounded-md p-1"
+                                    >
+                                        {{ tracking.schedule_remark }}
+                                    </div>
+                                </div>
+                            </td>
+
+                            <td class="text-xs text-center">
+                                <!-- Art report date -->
+
+                                <div class="flex">
+                                    <div
+                                        v-if="!tracking.report_date"
+                                        class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300 w-max mr-1"
+                                    ></div>
+                                    <div
+                                        v-else-if="tracking.report_done === 2"
+                                        class="bg-yellow-300 rounded-md p-1 mb-1 w-max mr-1"
+                                    >
+                                        {{ showToday(tracking.report_date) }}
+                                    </div>
+                                    <div
+                                        v-else
+                                        class="bg-green-300 rounded-md p-1 mb-1"
+                                    >
+                                        {{ showToday(tracking.report_date) }}
+                                    </div>
+                                    <!-- Art report user -->
+                                    <div
+                                        v-if="!tracking.report_user"
+                                        class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300 w-max mr-1"
+                                    ></div>
+                                    <div
+                                        v-else-if="tracking.report_done === 2"
+                                        class="bg-yellow-300 rounded-md p-1 mb-1 w-max mr-1"
+                                    >
+                                        {{ tracking.report_user.name }}
+                                    </div>
+                                    <div
+                                        v-else
+                                        class="bg-blue-300 rounded-md p-1 mb-1"
+                                    >
+                                        {{ tracking.report_user.name }}
+                                    </div>
+                                    <!-- Art report remark -->
+                                    <div
+                                        v-if="!tracking.report_remark"
+                                        class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300 w-max mr-1"
+                                    ></div>
+                                    <div
+                                        v-else-if="tracking.report_done === 2"
+                                        class="bg-yellow-300 rounded-md p-1 mb-1 w-max mr-1"
+                                    >
+                                        {{ tracking.report_remark }}
+                                    </div>
+                                    <div
+                                        v-else
+                                        class="bg-indigo-300 rounded-md p-1"
+                                    >
+                                        {{ tracking.report_remark }}
+                                    </div>
+                                </div>
+                            </td>
+
+                            <td class="text-xs text-center">
+                                <!-- Client posting date -->
+                                <div class="flex">
+                                    <div
+                                        v-if="!tracking.client_posting_date"
+                                        class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300 w-max mr-1"
+                                    ></div>
+                                    <div
+                                        v-else-if="
+                                            tracking.client_posting_done === 2
+                                        "
+                                        class="bg-yellow-300 rounded-md p-1 mb-1 w-max mr-1"
+                                    >
+                                        {{
+                                            showToday(
+                                                tracking.client_posting_date
+                                            )
+                                        }}
+                                    </div>
+                                    <div
+                                        v-else
+                                        class="bg-green-300 rounded-md p-1 mb-1"
+                                    >
+                                        {{
+                                            showToday(
+                                                tracking.client_posting_date
+                                            )
+                                        }}
+                                    </div>
+                                    <!-- Client posting user -->
+                                    <div
+                                        v-if="!tracking.client_posting_user"
+                                        class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300 w-max mr-1"
+                                    ></div>
+                                    <div
+                                        v-else-if="
+                                            tracking.client_posting_done === 2
+                                        "
+                                        class="bg-yellow-300 rounded-md p-1 mb-1 w-max mr-1"
+                                    >
+                                        {{ tracking.client_posting_user.name }}
+                                    </div>
+                                    <div
+                                        v-else
+                                        class="bg-blue-300 rounded-md p-1 mb-1"
+                                    >
+                                        {{ tracking.client_posting_user.name }}
+                                    </div>
+                                    <!-- Client posting remark -->
+                                    <div
+                                        v-if="!tracking.client_posting_remark"
+                                        class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300 w-max mr-1"
+                                    ></div>
+                                    <div
+                                        v-else-if="
+                                            tracking.client_posting_done === 2
+                                        "
+                                        class="bg-yellow-300 rounded-md p-1 mb-1 w-max mr-1"
+                                    >
+                                        {{ tracking.client_posting_remark }}
+                                    </div>
+                                    <div
+                                        v-else
+                                        class="bg-indigo-300 rounded-md p-1"
+                                    >
+                                        {{ tracking.client_posting_remark }}
+                                    </div>
+                                </div>
+                            </td>
+
+                            <td class="text-xs text-center">
+                                <!-- Actual live date -->
+                                <div class="flex">
+                                    <div
+                                        v-if="!tracking.actual_live_date"
+                                        class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300 w-max mr-1"
+                                    ></div>
+                                    <div
+                                        v-else-if="
+                                            tracking.actual_live_done === 2
+                                        "
+                                        class="bg-yellow-300 rounded-md p-1 mb-1 w-max mr-1"
+                                    >
+                                        {{ tracking.actual_live_date }}
+                                    </div>
+
+                                    <div
+                                        v-else
+                                        class="bg-green-300 rounded-md p-1 mb-1"
+                                    >
+                                        {{
+                                            showToday(tracking.actual_live_date)
+                                        }}
+                                    </div>
+                                    <!-- Actual live user -->
+                                    <div
+                                        v-if="!tracking.actual_live_user"
+                                        class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300 w-max mr-1"
+                                    ></div>
+                                    <div
+                                        v-else-if="
+                                            tracking.actual_live_done === 2
+                                        "
+                                        class="bg-yellow-300 rounded-md p-1 mb-1 w-max mr-1"
+                                    >
+                                        {{ tracking.actual_live_user.name }}
+                                    </div>
+                                    <div
+                                        v-else
+                                        class="bg-blue-300 rounded-md p-1 mb-1"
+                                    >
+                                        {{ tracking.actual_live_user.name }}
+                                    </div>
+                                    <!-- Actual live remark -->
+                                    <div
+                                        v-if="!tracking.actual_live_remark"
+                                        class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300 w-max mr-1"
+                                    ></div>
+                                    <div
+                                        v-else-if="
+                                            tracking.actual_live_done === 2
+                                        "
+                                        class="bg-yellow-300 rounded-md p-1 mb-1 w-max mr-1"
+                                    >
+                                        {{ tracking.actual_live_remark }}
+                                    </div>
+                                    <div
+                                        v-else
+                                        class="bg-indigo-300 rounded-md p-1"
+                                    >
+                                        {{ tracking.actual_live_remark }}
+                                    </div>
+                                </div>
+                            </td>
+                            <td
+                                v-if="
+                                    check_id(tracking.user_id) ||
+                                    is('supervisor | admin | super-admin')
+                                "
+                                class="items-center text-xs text-center h-6 w-24"
+                            >
+                                <router-link
+                                    :to="`/contact/${tracking.company_id}/info`"
+                                    custom
+                                    v-slot="{ navigate, href }"
+                                >
+                                    <a :href="href" @click.stop="navigate">{{
+                                        tracking.company_name
+                                    }}</a>
+                                </router-link>
                             </td>
                             <!-- WIP remark -->
                             <td class="text-xs text-center">
@@ -2803,7 +4944,7 @@ export default {
             buffering: false,
             // general_remark_visibility: false,
             // general_remark: null,
-            view_type: "master",
+            view_type: "wip_report",
             selectedUser: "",
             selectedCategory: "",
             selectedResult: "",
