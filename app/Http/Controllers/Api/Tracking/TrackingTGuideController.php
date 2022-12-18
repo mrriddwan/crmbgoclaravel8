@@ -26,7 +26,7 @@ class TrackingTGuideController extends Controller
 
 
 
-        if ($view_type === 'master') {
+        if ($view_type === 'master' || $view_type === 'master_report') {
             $travel_guide = TrackingTravelGuide::select([
                 'tracking_travel_guides.*',
                 'users.name as user_name',
@@ -64,7 +64,7 @@ class TrackingTGuideController extends Controller
 
             return TrackingTGuideResource::collection($travel_guide);
         } else {
-            if ($view_type === 'wip') {
+            if ($view_type === 'wip' || $view_type === 'wip_report')  {
                 $travel_guide = TrackingTravelGuide::select([
                     'tracking_travel_guides.*',
                     'users.name as user_name',

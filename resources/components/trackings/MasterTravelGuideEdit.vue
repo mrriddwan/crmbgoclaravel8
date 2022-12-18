@@ -1,16 +1,5 @@
 <template>
     <div class="container w-max mx-auto h-max px-3 py-3">
-        <div v-if="errors">
-            <div v-for="(v, k) in errors" :key="k">
-                <p
-                    v-for="error in v"
-                    :key="error"
-                    class="text-xs bg-red-500 text-white rounded font-bold mb-1 shadow-lg py-2 px-4 pr-0 w-max"
-                >
-                    {{ error }}
-                </p>
-            </div>
-        </div>
         <div class="">
             <GoBack />
         </div>
@@ -154,6 +143,17 @@
                             />
                         </div>
                     </div>
+                    <div v-if="tracking_errors">
+                        <div v-for="(v, k) in tracking_errors" :key="k">
+                            <p
+                                v-for="error in v"
+                                :key="error"
+                                class="text-xs bg-red-500 text-white rounded font-bold mb-1 shadow-lg py-2 px-4 pr-0 w-max"
+                            >
+                                {{ error }}
+                            </p>
+                        </div>
+                    </div>
 
                     <div
                         class="text-center bg-emerald-100 px-2 py-2 border-gray-300 my-3 rounded-md"
@@ -216,7 +216,7 @@
                                         maxlength="800"
                                         rows="1"
                                         placeholder="eg: Artwork by Bluedale"
-                                        class="block p-2.5 w-full text-xs rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
+                                        class="block p-2.5 w-full text-md rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
                                     ></textarea>
                                 </div>
                             </div>
@@ -279,10 +279,22 @@
                                         maxlength="800"
                                         rows="1"
                                         placeholder="eg: Artwork by Bluedale"
-                                        class="block p-2.5 w-full text-xs rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
+                                        class="block p-2.5 w-full text-md rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
                                     ></textarea>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+
+                    <div v-if="package_errors">
+                        <div v-for="(v, k) in package_errors" :key="k">
+                            <p
+                                v-for="error in v"
+                                :key="error"
+                                class="text-xs bg-red-500 text-white rounded font-bold mb-1 shadow-lg py-2 px-4 pr-0 w-max"
+                            >
+                                {{ error }}
+                            </p>
                         </div>
                     </div>
 
@@ -310,7 +322,12 @@
                                     </select>
                                 </div>
                                 <div class="grid grid-cols-1 my-2 col-span-2">
-                                    <label class="font-bold">Name</label>
+                                    <label class="font-bold"
+                                        >Name
+                                        <p class="inline text-red-600 text-lg">
+                                            *
+                                        </p></label
+                                    >
                                     <!-- <input
                                     maxlength="800"
                                     type="text"
@@ -330,7 +347,12 @@
                                     ></textarea>
                                 </div>
                                 <div class="mx-1 grid grid-cols-1">
-                                    <label class="font-bold">Date</label>
+                                    <label class="font-bold"
+                                        >Date
+                                        <p class="inline text-red-600 text-lg">
+                                            *
+                                        </p></label
+                                    >
                                     <div class="w-full">
                                         <VueDatePicker
                                             v-model="
@@ -379,7 +401,7 @@
                                         maxlength="800"
                                         rows="1"
                                         placeholder="eg: Artwork by Bluedale"
-                                        class="block p-2.5 w-full text-xs rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
+                                        class="block p-2.5 w-full text-md rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
                                     ></textarea>
                                 </div>
                             </div>
@@ -413,7 +435,12 @@
                                     </select>
                                 </div>
                                 <div class="grid grid-cols-1 my-2 col-span-2">
-                                    <label class="font-bold">Name</label>
+                                    <label class="font-bold"
+                                        >Name
+                                        <p class="inline text-red-600 text-lg">
+                                            *
+                                        </p></label
+                                    >
                                     <!-- <input
                                     maxlength="800"
                                     type="text"
@@ -433,7 +460,12 @@
                                     ></textarea>
                                 </div>
                                 <div class="mx-1 grid grid-cols-1">
-                                    <label class="font-bold">Date</label>
+                                    <label class="font-bold"
+                                        >Date
+                                        <p class="inline text-red-600 text-lg">
+                                            *
+                                        </p></label
+                                    >
                                     <div class="w-full">
                                         <VueDatePicker
                                             v-model="
@@ -482,7 +514,7 @@
                                         maxlength="800"
                                         rows="1"
                                         placeholder="eg: Artwork by Bluedale"
-                                        class="block p-2.5 w-full text-xs rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
+                                        class="block p-2.5 w-full text-md rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
                                     ></textarea>
                                 </div>
                             </div>
@@ -492,14 +524,14 @@
                         <div class="text-center items-center text-sm">
                             <PlusCircleIcon
                                 @click="addForm"
-                                class="text-center items-center h-10 w-10 text-green-400"
+                                class="text-center items-center h-10 w-10 text-green-400 hover:text-green-600 hover:cursor-pointer"
                             />
                         </div>
                         <div class="text-center items-center text-sm">
                             <MinusCircleIcon
                                 v-if="check_total > total_object"
                                 @click="removeForm"
-                                class="text-center items-center h-10 w-10 text-red-400"
+                                class="text-center items-center h-10 w-10 text-red-400 hover:text-red-600 hover:cursor-pointer"
                             />
                         </div>
                     </div>
@@ -549,6 +581,7 @@ export default {
             },
             wip_travel_guide: [
                 {
+                    id: "",
                     tracking_tguide_id: "",
                     wip_package_name: "",
                     wip_package_date: "",
@@ -560,7 +593,8 @@ export default {
             moment: moment,
             users: [],
             contacts: [],
-            errors: "",
+            tracking_errors: "",
+            package_errors: "",
             total_object: 0,
             check_total: Number,
         };
@@ -618,128 +652,88 @@ export default {
         async updateTrackingTravelGuide() {
             if (window.confirm("Confirm update tracking ?")) {
                 try {
-                    await axios.put(
-                        "/api/trackings/travel_guide/update/" +
-                            this.$route.params.id,
-                        {
-                            user_id: this.tguide.user_id,
-                            company_id: this.tguide.company_id,
-                            edition: this.tguide.edition,
-                            tguide_size: this.tguide.tguide_size,
-                            tguide_remark: this.tguide.tguide_remark
-                                ? this.tguide.tguide_remark
-                                : "No remark",
+                    await Promise.all([
+                        axios.put("/api/trackings/wip/travel_guide/update", {
+                            wip_travel_guide: this.wip_travel_guide,
+                            tracking_tguide_id: this.$route.params.id,
+                        }),
+                        axios.put(
+                            "/api/trackings/travel_guide/update/" +
+                                this.$route.params.id,
+                            {
+                                user_id: this.tguide.user_id,
+                                company_id: this.tguide.company_id,
+                                edition: this.tguide.edition,
+                                tguide_size: this.tguide.tguide_size,
+                                tguide_remark: this.tguide.tguide_remark
+                                    ? this.tguide.tguide_remark
+                                    : "No remark",
 
-                            art_reminder_date: this.tguide.art_reminder_date
-                                ? this.moment(
-                                      this.tguide.art_reminder_date
-                                  ).format("YYYY-MM-DD")
-                                : null,
-                            art_reminder_remark: this.tguide.art_reminder_remark
-                                ? this.tguide.art_reminder_remark
-                                : "No remark",
-                            art_reminder_user_id: this.tguide
-                                .art_reminder_user_id
-                                ? this.tguide.art_reminder_user_id
-                                : null,
-                            art_reminder_done: this.tguide.art_reminder_done,
+                                art_reminder_date: this.tguide.art_reminder_date
+                                    ? this.moment(
+                                          this.tguide.art_reminder_date
+                                      ).format("YYYY-MM-DD")
+                                    : null,
+                                art_reminder_remark: this.tguide
+                                    .art_reminder_remark
+                                    ? this.tguide.art_reminder_remark
+                                    : "No remark",
+                                art_reminder_user_id: this.tguide
+                                    .art_reminder_user_id
+                                    ? this.tguide.art_reminder_user_id
+                                    : null,
+                                art_reminder_done:
+                                    this.tguide.art_reminder_done,
 
-                            art_record_date: this.tguide.art_record_date
-                                ? this.moment(
-                                      this.tguide.art_record_date
-                                  ).format("YYYY-MM-DD")
-                                : null,
-                            art_record_remark: this.tguide.art_record_remark
-                                ? this.tguide.art_record_remark
-                                : "No remark",
-                            art_record_user_id: this.tguide.art_record_user_id
-                                ? this.tguide.art_record_user_id
-                                : null,
-                            art_record_done: this.tguide.art_record_done,
-                        }
-                    );
-
-                    for (let i = 0; i < this.wip_travel_guide.length; i++) {
-                        //if the wip_travel_guide[i].id exists, the data updates,
-                        //how: check for the tracking_tguide_id
-                        //if it is absent, creates new
-
-                        if (this.wip_travel_guide[i].tracking_tguide_id) {
-                            await axios.put(
-                                "/api/trackings/wip/travel_guide/update/" +
-                                    this.wip_travel_guide[i].id,
-                                {
-                                    wip_package_name:
-                                        this.wip_travel_guide[i]
-                                            .wip_package_name,
-                                    wip_package_date: this.wip_travel_guide[i]
-                                        .wip_package_date
-                                        ? this.moment(
-                                              this.wip_travel_guide[i]
-                                                  .wip_package_date
-                                          ).format("YYYY-MM-DD")
-                                        : null,
-                                    wip_package_done:
-                                        this.wip_travel_guide[i]
-                                            .wip_package_done,
-                                    wip_package_user_id: this.wip_travel_guide[
-                                        i
-                                    ].wip_package_user_id
-                                        ? this.wip_travel_guide[i]
-                                              .wip_package_user_id
-                                        : null,
-                                    wip_package_remark: this.wip_travel_guide[i]
-                                        .wip_package_remark
-                                        ? this.wip_travel_guide[i]
-                                              .wip_package_remark
-                                        : null,
-                                }
-                            );
-                        } else {
-                            await axios.post(
-                                "/api/trackings/wip/travel_guide/store",
-                                {
-                                    tracking_tguide_id: this.$route.params.id,
-                                    wip_package_name:
-                                        this.wip_travel_guide[i]
-                                            .wip_package_name,
-                                    wip_package_date: this.wip_travel_guide[i]
-                                        .wip_package_date
-                                        ? this.moment(
-                                              this.wip_travel_guide[i]
-                                                  .wip_package_date
-                                          ).format("YYYY-MM-DD")
-                                        : null,
-                                    wip_package_done:
-                                        this.wip_travel_guide[i]
-                                            .wip_package_done,
-                                    wip_package_user_id: this.wip_travel_guide[
-                                        i
-                                    ].wip_package_user_id
-                                        ? this.wip_travel_guide[i]
-                                              .wip_package_user_id
-                                        : null,
-                                    wip_package_remark: this.wip_travel_guide[i]
-                                        .wip_package_remark
-                                        ? this.wip_travel_guide[i]
-                                              .wip_package_remark
-                                        : null,
-                                }
-                            );
-                        }
-                    }
-
-                    alert("Tracking and package (wip) updated");
-                    this.$router.push({
-                        name: "tracking_travel_guide",
+                                art_record_date: this.tguide.art_record_date
+                                    ? this.moment(
+                                          this.tguide.art_record_date
+                                      ).format("YYYY-MM-DD")
+                                    : null,
+                                art_record_remark: this.tguide.art_record_remark
+                                    ? this.tguide.art_record_remark
+                                    : "No remark",
+                                art_record_user_id: this.tguide
+                                    .art_record_user_id
+                                    ? this.tguide.art_record_user_id
+                                    : null,
+                                art_record_done: this.tguide.art_record_done,
+                            }
+                        ),
+                    ]).then((res) => {
+                        alert("Tracking and package (wip) updated");
+                        this.$router.push({
+                            name: "tracking_travel_guide",
+                        });
                     });
                 } catch (e) {
                     {
                         if (e.response.status === 422) {
-                            this.errors = e.response.data.errors;
+                            this.tracking_errors = e.response.data.errors;
                         } else {
                             console.log("no error response");
                         }
+                    }
+                }
+            }
+        },
+
+        async updateWIPTravelGuide() {
+            try {
+                await axios
+                    .put("/api/trackings/wip/travel_guide/update", {
+                        wip_travel_guide: this.wip_travel_guide,
+                        tracking_tguide_id: this.$route.params.id,
+                    })
+                    .then((res) => {
+                        console.log(res);
+                    });
+            } catch (e) {
+                {
+                    if (e.response.status === 422) {
+                        this.package_errors = e.response.data.errors;
+                    } else {
+                        console.log("no error response");
                     }
                 }
             }

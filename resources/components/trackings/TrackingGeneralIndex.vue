@@ -116,14 +116,14 @@
             </div>
             <div v-if="view_type === 'master_report'">
                 <h3
-                    class="items-center text-center text-2xl uppercase font-mono text-white font-extrabold bg-purple-500 px-2 rounded-md"
+                    class="items-center text-center text-2xl uppercase font-mono text-white font-extrabold bg-blue-800 px-2 rounded-md"
                 >
                     Master Report
                 </h3>
             </div>
             <div v-if="view_type === 'wip_report'">
                 <h3
-                    class="items-center text-center text-2xl uppercase font-mono text-white font-extrabold bg-purple-500 px-2 rounded-md"
+                    class="items-center text-center text-2xl uppercase font-mono text-white font-extrabold bg-amber-800 px-2 rounded-md"
                 >
                     Work In Progress Report
                 </h3>
@@ -4944,7 +4944,7 @@ export default {
             buffering: false,
             // general_remark_visibility: false,
             // general_remark: null,
-            view_type: "wip_report",
+            view_type: "master",
             selectedUser: "",
             selectedCategory: "",
             selectedResult: "",

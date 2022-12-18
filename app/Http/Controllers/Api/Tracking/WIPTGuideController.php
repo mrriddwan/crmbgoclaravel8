@@ -42,36 +42,47 @@ class WIPTGuideController extends Controller
         ]);
     }
 
-    public function wip_tg_update(Request $request, WipTravelGuide $wip_travel_guide)
+    public function wip_tg_update(Request $request)
     {
 
-        $request->validate([
+        $travel_guides = $request->wip_travel_guide;
+        $tracking_id = $request->tracking_tguide_id;
 
-            // 'tracking_tguide_id' => ['required', 'int'],
-            'wip_package_name' => ['required', 'string'],
-            'wip_package_date' => ['required'],
-            // 'wip_package_user_id' => ['required', 'int'],
-            // 'wip_package_remark' => ['required', 'string'],
+        $this->validate($request, [
+            'wip_travel_guide.*.wip_package_name' => ['required', 'string'],
+            'wip_travel_guide.*.wip_package_date' => ['required'],
+            'tracking_tguide_id' => ['required', 'int'],
         ], [
-            // 'tracking_tguide_id.required' => 'The tracking travel guide id is required',
-            'wip_package_name.required' => 'The name of the package is required',
-            'wip_package_date.required' => 'The package date is required',
-            // 'wip_package_user_id.required' => 'The size is required.',
-            // 'wip_package_remark.required' => 'The travel guide tracking remark is required',
+            'wip_travel_guide.*.wip_package_name.required' => 'The name of the package is required',
+            'wip_travel_guide.*.wip_package_date.required' => 'The package date is required',
+            'tracking_tguide_id.required' => 'The tracking travel guide id is required',
         ]);
 
-
-        $wip_travel_guide->update([
-            // 'tracking_tguide_id' => $request->tracking_tguide_id,
-            'wip_package_name' => $request->wip_package_name,
-            'wip_package_done' => $request->wip_package_done,
-            'wip_package_date' => $request->wip_package_date ? Carbon::parse($request->wip_package_date)->toDate() : null,
-            'wip_package_user_id' => $request->wip_package_user_id ? $request->wip_package_user_id : null,
-            'wip_package_remark' => $request->wip_package_remark ? $request->wip_package_remark : null,
-        ]);
+        foreach ($travel_guides as $tguide) {
+            //if the id exists, update the data
+            if(array_key_exists('id', $tguide)){
+                WipTravelGuide::where('id',$tguide['id'])->update([
+                    'wip_package_name' => $tguide['wip_package_name'],
+                    'wip_package_done' => $tguide['wip_package_done'],
+                    'wip_package_date' => $tguide['wip_package_date'] ? Carbon::parse($tguide['wip_package_date'])->toDate() : null,
+                    'wip_package_user_id' => $tguide['wip_package_user_id'] ? $tguide['wip_package_user_id'] : null,
+                    'wip_package_remark' => $tguide['wip_package_remark'] ? $tguide['wip_package_remark'] : null,
+                ]);
+            } else {
+                //if the id does not exists, create the data
+                WipTravelGuide::create([
+                    'tracking_tguide_id' => $tracking_id,
+                    'wip_package_name' => $tguide['wip_package_name'],
+                    'wip_package_done' => $tguide['wip_package_done'],
+                    'wip_package_date' => $tguide['wip_package_date'] ? Carbon::parse($tguide['wip_package_date'])->toDate() : null,
+                    'wip_package_user_id' => $tguide['wip_package_user_id'] ? $tguide['wip_package_user_id ']: null,
+                    'wip_package_remark' => $tguide['wip_package_remark'] ? $tguide['wip_package_remark'] : null,
+                ]);
+            }
+        };
 
         return response()->json([
-            'data' => $wip_travel_guide,
+            'data' => $travel_guides,
             'status' => true,
             'message' => 'Successfully update package (wip) for travel guide',
         ]);

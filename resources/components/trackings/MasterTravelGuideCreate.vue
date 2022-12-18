@@ -418,14 +418,14 @@
                         <div class="text-center items-center text-sm">
                             <PlusCircleIcon
                                 @click="addForm"
-                                class="text-center items-center h-10 w-10 text-green-400 hover:text-green-600"
+                                class="text-center items-center h-10 w-10 text-green-400 hover:text-green-600 hover:cursor-pointer"
                             />
                         </div>
                         <div class="text-center items-center text-sm">
                             <MinusCircleIcon
                                 v-if="wip_travel_guide.length > 1"
                                 @click="removeForm"
-                                class="text-center items-center h-10 w-10 text-red-400 hover:text-red-600"
+                                class="text-center items-center h-10 w-10 text-red-400 hover:text-red-600 hover:cursor-pointer"
                             />
                         </div>
                     </div>
@@ -642,34 +642,6 @@ export default {
         async createPackageTravelGuide() {
             if (window.confirm("Confirm create package(s) ?")) {
                 try {
-                    // for (let i = 0; i < this.wip_travel_guide.length; i++) {
-                    //     await axios.post(
-                    //         "/api/trackings/wip/travel_guide/store",
-                    //         {
-                    //             tracking_tguide_id: this.created_tracking.id,
-                    //             wip_package_name:
-                    //                 this.wip_travel_guide[i].wip_package_name,
-                    //             wip_package_date: this.wip_travel_guide[i]
-                    //                 .wip_package_date
-                    //                 ? this.moment(
-                    //                       this.wip_travel_guide[i]
-                    //                           .wip_package_date
-                    //                   ).format("YYYY-MM-DD")
-                    //                 : null,
-                    //             wip_package_done: 2,
-                    //             wip_package_user_id: this.wip_travel_guide[i]
-                    //                 .wip_package_user_id
-                    //                 ? this.wip_travel_guide[i]
-                    //                       .wip_package_user_id
-                    //                 : null,
-                    //             wip_package_remark: this.wip_travel_guide[i]
-                    //                 .wip_package_remark
-                    //                 ? this.wip_travel_guide[i]
-                    //                       .wip_package_remark
-                    //                 : null,
-                    //         }
-                    //     );
-
                     await axios
                         .post("/api/trackings/wip/travel_guide/store", {
                             wip_travel_guide: this.wip_travel_guide,
@@ -681,7 +653,6 @@ export default {
                                 name: "tracking_travel_guide",
                             });
                         });
-                    // }
                 } catch (e) {
                     {
                         if (e.response.status === 422) {
