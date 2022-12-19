@@ -724,17 +724,17 @@
                             v-for="(tempboard, index) in tempboards.data"
                             :key="tempboard.id"
                         >
-                            <td class="text-xs">{{ index + 1 }}</td>
-                            <td class="text-xs w-max">
+                            <td class="text-xs text-left">{{ index + 1 }}</td>
+                            <td class="text-xs w-max text-left">
                                 {{ showToday(tempboard.tpboard_entrydate) }}
                             </td>
-                            <td class="text-xs break-normal">
+                            <td class="text-xs break-normal text-left">
                                 {{ tempboard.user_name }}
                             </td>
-                            <td class="text-xs break-normal">
+                            <td class="text-xs break-normal text-left">
                                 {{ tempboard.tpboard_location }}
                             </td>
-                            <td class="text-xs break-normal">
+                            <td class="text-xs break-normal text-left">
                                 <router-link
                                     :to="`/contact/${tempboard.contact_id}/info`"
                                     custom
@@ -745,28 +745,28 @@
                                     }}</a>
                                 </router-link>
                             </td>
-                            <td class="text-xs w-max">
+                            <td class="text-xs w-max text-left">
                                 {{ tempboard.tpboard_unit }}
                             </td>
-                            <td class="text-xs break-normal">
+                            <td class="text-xs break-normal text-left">
                                 {{ tempboard.tpboard_size }}
                             </td>
-                            <td class="text-xs break-normal">
+                            <td class="text-xs break-normal text-left">
                                 {{ showToday(tempboard.tpboard_startdate) }}
                             </td>
-                            <td class="text-xs break-normal">
+                            <td class="text-xs break-normal text-left">
                                 {{ showToday(tempboard.tpboard_enddate) }}
                             </td>
-                            <td class="text-xs break-normal">
+                            <td class="text-xs break-normal text-left">
                                 {{ tempboard.tpboard_collection }}
                             </td>
-                            <td class="text-xs break-normal">
+                            <td class="text-xs break-normal text-left">
                                 {{ tempboard.tpboard_material }}
                             </td>
-                            <td class="text-xs break-normal">
+                            <td class="text-xs break-normal text-left">
                                 {{ tempboard.tpboard_printing }}
                             </td>
-                            <td class="text-xs break-normal">
+                            <td class="text-xs break-normal text-left">
                                 {{ tempboard.tpboard_installation }}
                             </td>
                             <td class="text-xs break-normal">

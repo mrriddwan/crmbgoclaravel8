@@ -161,7 +161,7 @@ Route::get('/contacts/todo', [ContactController::class, 'todo'])->name('contact:
 Route::get('/contacts/history/{contact}', [ContactController::class, 'history'])->name('contact:history');
 Route::get('/contacts/getuserid', [ContactController::class, 'getuserid'])->name('contact:getuserid');
 Route::post('/contacts/import', [ContactController::class, 'import'])->name('contact:import');
-
+Route::get('/contacts/contact_check_result', [ContactController::class, 'contact_check_result'])->name('contact:contact_check_result');
 
 Route::get('/contacts/summary_action', [ContactController::class, 'summary_action'])->name('contact:summary_action');
 Route::get('/contacts/summary_todo', [ContactController::class, 'summary_todo'])->name('contact:summary_todo');
@@ -192,8 +192,6 @@ Route::get('/users/manage_list', [UserController::class, 'manage_list'])->name('
 Route::get('/users/action', [UserController::class, 'action'])->name('user:action');
 Route::get('/users/performance', [UserController::class, 'performance'])->name('user:performance');
 Route::post('/users/check_subordinate', [UserController::class, 'check_subordinate'])->name('user:check_subordinate');
-
-
 
 /*Incharge API*/
 Route::post('/incharges/store', [ContactInchargeController::class, 'store'])->name('incharge:store');

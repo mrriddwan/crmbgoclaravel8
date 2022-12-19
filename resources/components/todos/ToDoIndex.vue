@@ -733,10 +733,10 @@
                                 v-model="checked"
                             />
                         </td>
-                        <td class="text-xs">{{ index + 1 }}</td>
-                        <td class="text-xs">{{ todo.source_name }}</td>
-                        <td class="text-xs">{{ showToday(todo.todo_date) }}</td>
-                        <td class="text-xs">
+                        <td class="text-xs text-left">{{ index + 1 }}</td>
+                        <td class="text-xs text-left">{{ todo.source_name }}</td>
+                        <td class="text-xs text-left">{{ showToday(todo.todo_date) }}</td>
+                        <td class="text-xs text-left">
                             <span v-if="todo.todo_deadline === '2000-01-01'">
                                 None
                             </span>
@@ -749,9 +749,9 @@
                                 Unset yet
                             </span>
                         </td>
-                        <td class="text-xs">{{ todo.status_name }}</td>
-                        <td class="text-xs">{{ todo.type_name }}</td>
-                        <td class="text-xs">
+                        <td class="text-xs text-left">{{ todo.status_name }}</td>
+                        <td class="text-xs text-left">{{ todo.type_name }}</td>
+                        <td class="text-xs text-left">
                             <router-link
                                 :to="`/contact/${todo.contact_id}/info`"
                                 custom
@@ -762,9 +762,9 @@
                                 }}</a>
                             </router-link>
                         </td>
-                        <td class="text-xs">{{ todo.user_name }}</td>
-                        <td class="text-xs">{{ todo.task_name }}</td>
-                        <td class="text-xs">
+                        <td class="text-xs text-left">{{ todo.user_name }}</td>
+                        <td class="text-xs text-left">{{ todo.task_name }}</td>
+                        <td class="text-xs text-left">
                             {{ todo.todo_remark.substring(0, 10) + ". . ." }}
                             <button
                                 @click="toggleRemark(todo.id)"

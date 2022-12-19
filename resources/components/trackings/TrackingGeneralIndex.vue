@@ -925,7 +925,7 @@
                             </th>
                         </tr>
                     </thead>
-                    <tbody class="mt-2">
+                    <tbody class="mt-2 text-left">
                         <tr v-show="buffering">
                             <td
                                 class="text-center text-sm font-bold"
@@ -938,14 +938,14 @@
                             v-for="(tracking, index) in tracking_generals.data"
                             :key="tracking.id"
                         >
-                            <td class="text-xs text-center">{{ index + 1 }}</td>
-                            <td class="text-xs text-center">
+                            <td class="text-xs">{{ index + 1 }}</td>
+                            <td class="text-xs">
                                 {{ showToday(tracking.created_at) }}
                             </td>
-                            <td class="text-xs text-center">
+                            <td class="text-xs">
                                 {{ tracking.division_name }}
                             </td>
-                            <td class="text-xs text-center">
+                            <td class="text-xs">
                                 {{ tracking.user_name }}
                             </td>
                             <td
@@ -953,7 +953,7 @@
                                     check_id(tracking.user_id) ||
                                     is('supervisor | admin | super-admin')
                                 "
-                                class="items-center text-xs text-center h-6 w-24"
+                                class="items-center text-xs h-6 w-24"
                             >
                                 <router-link
                                     :to="`/contact/${tracking.company_id}/info`"
@@ -966,7 +966,7 @@
                                 </router-link>
                             </td>
                             <td
-                                class="text-xs text-center"
+                                class="text-xs"
                                 v-if="
                                     can('view tracking general amount') ||
                                     is('admin | super-admin')
@@ -979,30 +979,30 @@
                                     )
                                 }}
                             </td>
-                            <td class="text-xs text-center">
+                            <td class="text-xs">
                                 {{ tracking.category_name }}
                             </td>
-                            <td class="text-xs text-center">
+                            <td class="text-xs">
                                 {{ tracking.category_description }}
                             </td>
-                            <td class="text-xs text-center">
+                            <td class="text-xs">
                                 {{ tracking.general_type }}
                             </td>
 
-                            <td class="text-xs text-center">
+                            <td class="text-xs">
                                 {{ tracking.art_format }}
                             </td>
-                            <td class="text-xs text-center">
+                            <td class="text-xs">
                                 {{ tracking.art_frequency }}
                             </td>
-                            <td class="text-xs text-center">
+                            <td class="text-xs">
                                 {{
                                     tracking.general_reach.toLocaleString(
                                         "en-US"
                                     )
                                 }}
                             </td>
-                            <td class="text-xs text-center">
+                            <td class="text-xs">
                                 {{
                                     Math.round(
                                         (tracking.general_tenure / 30) * 10
@@ -1011,19 +1011,19 @@
                                 <br />
                                 month(s)
                             </td>
-                            <td class="text-xs text-center">
+                            <td class="text-xs">
                                 {{ showToday(tracking.general_startdate) }}
                             </td>
-                            <td class="text-xs text-center">
+                            <td class="text-xs">
                                 {{ showToday(tracking.general_enddate) }}
                             </td>
-                            <td class="text-xs text-center">
+                            <td class="text-xs">
                                 {{ tracking.general_remark }}
                             </td>
-                            <td class="text-xs text-center">
+                            <td class="text-xs">
                                 {{ tracking.progress }}
                             </td>
-                            <td class="text-xs text-center">
+                            <td class="text-xs">
                                 <router-link
                                     :to="{
                                         name: 'tracking_general_edit',
@@ -1842,7 +1842,7 @@
                             </th>
                         </tr>
                     </thead>
-                    <tbody class="mt-2">
+                    <tbody class="mt-2 text-left">
                         <tr v-show="buffering">
                             <td
                                 class="text-center text-sm font-bold"
@@ -1855,14 +1855,14 @@
                             v-for="(tracking, index) in tracking_generals.data"
                             :key="tracking.id"
                         >
-                            <td class="text-xs text-center">{{ index + 1 }}</td>
-                            <td class="text-xs text-center">
+                            <td class="text-xs border">{{ index + 1 }}</td>
+                            <td class="text-xs border">
                                 {{ showToday(tracking.created_at) }}
                             </td>
-                            <td class="text-xs text-center">
+                            <td class="text-xs border">
                                 {{ tracking.division_name }}
                             </td>
-                            <td class="text-xs text-center">
+                            <td class="text-xs border">
                                 {{ tracking.user_name }}
                             </td>
                             <td
@@ -1870,7 +1870,7 @@
                                     check_id(tracking.user_id) ||
                                     is('supervisor | admin | super-admin')
                                 "
-                                class="items-center text-xs text-center h-6 w-24"
+                                class="items-center text-xs h-6 w-24"
                             >
                                 <router-link
                                     :to="`/contact/${tracking.company_id}/info`"
@@ -1882,17 +1882,17 @@
                                     }}</a>
                                 </router-link>
                             </td>
-                            <td class="text-xs text-center">
+                            <td class="text-xs border">
                                 {{ tracking.category_name }}
                             </td>
-                            <td class="text-xs text-center">
+                            <td class="text-xs border">
                                 {{ tracking.general_category_description }}
                             </td>
-                            <td class="text-xs text-center">
+                            <td class="text-xs border">
                                 {{ tracking.general_type }}
                             </td>
                             <td
-                                class="text-xs text-center"
+                                class="text-xs border"
                                 v-if="
                                     can('view tracking general amount') ||
                                     is('admin | super-admin')
@@ -1905,25 +1905,25 @@
                                     )
                                 }}
                             </td>
-                            <td class="text-xs text-center">
+                            <td class="text-xs border">
                                 {{
                                     tracking.frequency_no +
                                     " / " +
                                     tracking.general_art_freq
                                 }}
                             </td>
-                            <td class="text-xs text-center">
-                                {{ tracking.general_startdate }}
+                            <td class="text-xs border">
+                                {{ showToday(tracking.general_startdate) }}
                             </td>
-                            <td class="text-xs text-center">
-                                {{ tracking.general_enddate }}
+                            <td class="text-xs border">
+                                {{ showToday(tracking.general_enddate) }}
                             </td>
                             <!-- style="background-color: yellow" -->
 
-                            <td class="text-xs text-center">
+                            <td class="text-xs text-center border">
                                 <div
                                     v-if="!tracking.art_chase_date"
-                                    class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300"
+                                    class="rounded-md p-1 mb-1 text-yellow-300"
                                 ></div>
                                 <div
                                     v-else-if="tracking.art_chase_done === 2"
@@ -1939,7 +1939,7 @@
                                 </div>
                                 <div
                                     v-if="!tracking.art_chase_user"
-                                    class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300"
+                                    class="rounded-md p-1 mb-1 text-yellow-300"
                                 ></div>
                                 <div
                                     v-else-if="tracking.art_chase_done === 2"
@@ -1955,7 +1955,7 @@
                                 </div>
                                 <div
                                     v-if="!tracking.art_chase_remark"
-                                    class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300"
+                                    class="rounded-md p-1 mb-1 text-yellow-300"
                                 ></div>
                                 <div
                                     v-else-if="tracking.art_chase_done === 2"
@@ -1971,10 +1971,10 @@
                                 </div>
                             </td>
 
-                            <td class="text-xs text-center bg-amber-600">
+                            <td class="text-xs text-center bg-amber-600 border">
                                 <div
                                     v-if="!tracking.art_received_date"
-                                    class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300"
+                                    class="rounded-md p-1 mb-1 text-yellow-300"
                                 ></div>
                                 <div
                                     v-else-if="tracking.art_received_done === 2"
@@ -1991,7 +1991,7 @@
                                 <!-- Art received user-->
                                 <div
                                     v-if="!tracking.art_received_user"
-                                    class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300"
+                                    class="rounded-md p-1 mb-1 text-yellow-300"
                                 ></div>
                                 <div
                                     v-else-if="tracking.art_received_done === 2"
@@ -2009,7 +2009,7 @@
                                 <!-- Art received remark-->
                                 <div
                                     v-if="!tracking.art_received_remark"
-                                    class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300"
+                                    class="rounded-md p-1 mb-1 text-yellow-300"
                                 ></div>
                                 <div
                                     v-else-if="tracking.art_received_done === 2"
@@ -2026,11 +2026,11 @@
                                 </div>
                             </td>
 
-                            <td class="text-xs text-center">
+                            <td class="text-xs text-center border">
                                 <!-- Art todo date-->
                                 <div
                                     v-if="!tracking.art_todo_date"
-                                    class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300"
+                                    class="rounded-md p-1 mb-1 text-yellow-300"
                                 ></div>
                                 <div
                                     v-else-if="tracking.art_todo_done === 2"
@@ -2047,7 +2047,7 @@
                                 <!-- Art todo user-->
                                 <div
                                     v-if="!tracking.art_todo_user"
-                                    class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300"
+                                    class="rounded-md p-1 mb-1 text-yellow-300"
                                 ></div>
                                 <div
                                     v-else-if="tracking.art_todo_done === 2"
@@ -2064,7 +2064,7 @@
                                 <!-- Art todo remark-->
                                 <div
                                     v-if="!tracking.art_todo_remark"
-                                    class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300"
+                                    class="rounded-md p-1 mb-1 text-yellow-300"
                                 ></div>
                                 <div
                                     v-else-if="tracking.art_todo_done === 2"
@@ -2081,11 +2081,11 @@
                                 </div>
                             </td>
 
-                            <td class="text-xs text-center">
+                            <td class="text-xs text-center border">
                                 <!-- Art cns sent date-->
                                 <div
                                     v-if="!tracking.cns_sent_date"
-                                    class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300"
+                                    class="rounded-md p-1 mb-1 text-yellow-300"
                                 ></div>
                                 <div
                                     v-else-if="tracking.cns_sent_done === 2"
@@ -2102,7 +2102,7 @@
                                 <!-- Art cns sent user-->
                                 <div
                                     v-if="!tracking.cns_sent_user"
-                                    class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300"
+                                    class="rounded-md p-1 mb-1 text-yellow-300"
                                 ></div>
                                 <div
                                     v-else-if="tracking.cns_sent_done === 2"
@@ -2120,7 +2120,7 @@
                                 <!-- Art cns sent remark-->
                                 <div
                                     v-if="!tracking.cns_sent_remark"
-                                    class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300"
+                                    class="rounded-md p-1 mb-1 text-yellow-300"
                                 ></div>
                                 <div
                                     v-else-if="tracking.cns_sent_done === 2"
@@ -2137,11 +2137,11 @@
                                 </div>
                             </td>
 
-                            <td class="text-xs text-center">
+                            <td class="text-xs text-center border">
                                 <!-- Art cns record date-->
                                 <div
                                     v-if="!tracking.cns_record_date"
-                                    class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300"
+                                    class="rounded-md p-1 mb-1 text-yellow-300"
                                 ></div>
                                 <div
                                     v-else-if="tracking.cns_record_done === 2"
@@ -2158,7 +2158,7 @@
                                 <!-- Art cns record user-->
                                 <div
                                     v-if="!tracking.cns_record_user"
-                                    class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300"
+                                    class="rounded-md p-1 mb-1 text-yellow-300"
                                 ></div>
                                 <div
                                     v-else-if="tracking.cns_record_done === 2"
@@ -2175,7 +2175,7 @@
                                 <!-- Art cns record remark-->
                                 <div
                                     v-if="!tracking.cns_record_remark"
-                                    class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300"
+                                    class="rounded-md p-1 mb-1 text-yellow-300"
                                 ></div>
                                 <div
                                     v-else-if="tracking.cns_record_done === 2"
@@ -2191,11 +2191,11 @@
                                 </div>
                             </td>
 
-                            <td class="text-xs text-center">
+                            <td class="text-xs text-center border">
                                 <!-- Art cns schedule date -->
                                 <div
                                     v-if="!tracking.schedule_date"
-                                    class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300"
+                                    class="rounded-md p-1 mb-1 text-yellow-300"
                                 ></div>
                                 <div
                                     v-else-if="tracking.schedule_done === 2"
@@ -2212,7 +2212,7 @@
                                 <!-- Art cns schedule user -->
                                 <div
                                     v-if="!tracking.schedule_user"
-                                    class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300"
+                                    class="rounded-md p-1 mb-1 text-yellow-300"
                                 ></div>
                                 <div
                                     v-else-if="tracking.schedule_done === 2"
@@ -2229,7 +2229,7 @@
                                 <!-- Art cns schedule remark -->
                                 <div
                                     v-if="!tracking.schedule_remark"
-                                    class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300"
+                                    class="rounded-md p-1 mb-1 text-yellow-300"
                                 ></div>
                                 <div
                                     v-else-if="tracking.schedule_done === 2"
@@ -2245,11 +2245,11 @@
                                 </div>
                             </td>
 
-                            <td class="text-xs text-center">
+                            <td class="text-xs text-center border">
                                 <!-- Art report date -->
                                 <div
                                     v-if="!tracking.report_date"
-                                    class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300"
+                                    class="rounded-md p-1 mb-1 text-yellow-300"
                                 ></div>
                                 <div
                                     v-else-if="tracking.report_done === 2"
@@ -2266,7 +2266,7 @@
                                 <!-- Art report user -->
                                 <div
                                     v-if="!tracking.report_user"
-                                    class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300"
+                                    class="rounded-md p-1 mb-1 text-yellow-300"
                                 ></div>
                                 <div
                                     v-else-if="tracking.report_done === 2"
@@ -2283,7 +2283,7 @@
                                 <!-- Art report remark -->
                                 <div
                                     v-if="!tracking.report_remark"
-                                    class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300"
+                                    class="rounded-md p-1 mb-1 text-yellow-300"
                                 ></div>
                                 <div
                                     v-else-if="tracking.report_done === 2"
@@ -2299,11 +2299,11 @@
                                 </div>
                             </td>
 
-                            <td class="text-xs text-center">
+                            <td class="text-xs text-center border">
                                 <!-- Client posting date -->
                                 <div
                                     v-if="!tracking.client_posting_date"
-                                    class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300"
+                                    class="rounded-md p-1 mb-1 text-yellow-300"
                                 ></div>
                                 <div
                                     v-else-if="
@@ -2326,7 +2326,7 @@
                                 <!-- Client posting user -->
                                 <div
                                     v-if="!tracking.client_posting_user"
-                                    class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300"
+                                    class="rounded-md p-1 mb-1 text-yellow-300"
                                 ></div>
                                 <div
                                     v-else-if="
@@ -2345,7 +2345,7 @@
                                 <!-- Client posting remark -->
                                 <div
                                     v-if="!tracking.client_posting_remark"
-                                    class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300"
+                                    class="rounded-md p-1 mb-1 text-yellow-300"
                                 ></div>
                                 <div
                                     v-else-if="
@@ -2363,17 +2363,17 @@
                                 </div>
                             </td>
 
-                            <td class="text-xs text-center">
+                            <td class="text-xs text-center border">
                                 <!-- Actual live date -->
                                 <div
                                     v-if="!tracking.actual_live_date"
-                                    class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300"
+                                    class="rounded-md p-1 mb-1 text-yellow-300"
                                 ></div>
                                 <div
                                     v-else-if="tracking.actual_live_done === 2"
                                     class="bg-yellow-300 rounded-md p-1 mb-1"
                                 >
-                                    {{ tracking.actual_live_date }}
+                                    {{ showToday(tracking.actual_live_date) }}
                                 </div>
 
                                 <div
@@ -2385,7 +2385,7 @@
                                 <!-- Actual live user -->
                                 <div
                                     v-if="!tracking.actual_live_user"
-                                    class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300"
+                                    class="rounded-md p-1 mb-1 text-yellow-300"
                                 ></div>
                                 <div
                                     v-else-if="tracking.actual_live_done === 2"
@@ -2402,7 +2402,7 @@
                                 <!-- Actual live remark -->
                                 <div
                                     v-if="!tracking.actual_live_remark"
-                                    class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300"
+                                    class="rounded-md p-1 mb-1 text-yellow-300"
                                 ></div>
                                 <div
                                     v-else-if="tracking.actual_live_done === 2"
@@ -2418,14 +2418,14 @@
                                 </div>
                             </td>
                             <!-- WIP remark -->
-                            <td class="text-xs text-center">
+                            <td class="text-xs text-center border">
                                 {{ tracking.wip_remark }}
                             </td>
 
-                            <td class="text-xs text-center">
+                            <td class="text-xs text-center border">
                                 {{ tracking.wip_progress }}
                             </td>
-                            <td class="text-xs text-center">
+                            <td class="text-xs text-center border">
                                 <router-link
                                     :to="{
                                         name: 'tracking_wip_edit',
@@ -3243,7 +3243,7 @@
                             </th>
                         </tr>
                     </thead>
-                    <tbody class="mt-2">
+                    <tbody class="mt-2 text-left">
                         <tr v-show="buffering">
                             <td
                                 class="text-center text-sm font-bold"
@@ -3256,14 +3256,14 @@
                             v-for="(tracking, index) in tracking_generals.data"
                             :key="tracking.id"
                         >
-                            <td class="text-xs text-center">{{ index + 1 }}</td>
-                            <td class="text-xs text-center">
+                            <td class="text-xs text-left">{{ index + 1 }}</td>
+                            <td class="text-xs text-left">
                                 {{ showToday(tracking.created_at) }}
                             </td>
-                            <td class="text-xs text-center">
+                            <td class="text-xs text-left">
                                 {{ tracking.division_name }}
                             </td>
-                            <td class="text-xs text-center">
+                            <td class="text-xs text-left">
                                 {{ tracking.user_name }}
                             </td>
                             <td
@@ -3271,7 +3271,7 @@
                                     check_id(tracking.user_id) ||
                                     is('supervisor | admin | super-admin')
                                 "
-                                class="items-center text-xs text-center h-6 w-24"
+                                class="items-center text-xs text-left h-6 w-24"
                             >
                                 <router-link
                                     :to="`/contact/${tracking.company_id}/info`"
@@ -3284,7 +3284,7 @@
                                 </router-link>
                             </td>
                             <td
-                                class="text-xs text-center"
+                                class="text-xs text-left"
                                 v-if="
                                     can('view tracking general amount') ||
                                     is('admin | super-admin')
@@ -3297,30 +3297,30 @@
                                     )
                                 }}
                             </td>
-                            <td class="text-xs text-center">
+                            <td class="text-xs">
                                 {{ tracking.category_name }}
                             </td>
-                            <td class="text-xs text-center">
+                            <td class="text-xs">
                                 {{ tracking.category_description }}
                             </td>
-                            <td class="text-xs text-center">
+                            <td class="text-xs">
                                 {{ tracking.general_type }}
                             </td>
 
-                            <td class="text-xs text-center">
+                            <td class="text-xs">
                                 {{ tracking.art_format }}
                             </td>
-                            <td class="text-xs text-center">
+                            <td class="text-xs">
                                 {{ tracking.art_frequency }}
                             </td>
-                            <td class="text-xs text-center">
+                            <td class="text-xs">
                                 {{
                                     tracking.general_reach.toLocaleString(
                                         "en-US"
                                     )
                                 }}
                             </td>
-                            <td class="text-xs text-center">
+                            <td class="text-xs">
                                 {{
                                     Math.round(
                                         (tracking.general_tenure / 30) * 10
@@ -3329,16 +3329,16 @@
                                 <br />
                                 month(s)
                             </td>
-                            <td class="text-xs text-center">
+                            <td class="text-xs">
                                 {{ showToday(tracking.general_startdate) }}
                             </td>
-                            <td class="text-xs text-center">
+                            <td class="text-xs">
                                 {{ showToday(tracking.general_enddate) }}
                             </td>
-                            <td class="text-xs text-center">
+                            <td class="text-xs">
                                 {{ tracking.general_remark }}
                             </td>
-                            <td class="text-xs text-center">
+                            <td class="text-xs">
                                 {{ tracking.progress }}
                             </td>
                             <td class="text-xs text-center">
@@ -4202,7 +4202,7 @@
                             </th>
                         </tr>
                     </thead>
-                    <tbody class="mt-2">
+                    <tbody class="mt-2 text-left">
                         <tr v-show="buffering">
                             <td
                                 class="text-center text-sm font-bold"
@@ -4215,14 +4215,14 @@
                             v-for="(tracking, index) in tracking_generals.data"
                             :key="tracking.id"
                         >
-                            <td class="text-xs text-center">{{ index + 1 }}</td>
-                            <td class="text-xs text-center">
+                            <td class="text-xs border">{{ index + 1 }}</td>
+                            <td class="text-xs border">
                                 {{ showToday(tracking.created_at) }}
                             </td>
-                            <td class="text-xs text-center">
+                            <td class="text-xs border">
                                 {{ tracking.division_name }}
                             </td>
-                            <td class="text-xs text-center">
+                            <td class="text-xs border">
                                 {{ tracking.user_name }}
                             </td>
                             <td
@@ -4230,7 +4230,7 @@
                                     check_id(tracking.user_id) ||
                                     is('supervisor | admin | super-admin')
                                 "
-                                class="items-center text-xs text-center h-6 w-24"
+                                class="items-center text-xs h-6 w-24 border"
                             >
                                 <router-link
                                     :to="`/contact/${tracking.company_id}/info`"
@@ -4242,17 +4242,17 @@
                                     }}</a>
                                 </router-link>
                             </td>
-                            <td class="text-xs text-center">
+                            <td class="text-xs border">
                                 {{ tracking.category_name }}
                             </td>
-                            <td class="text-xs text-center">
+                            <td class="text-xs border">
                                 {{ tracking.general_category_description }}
                             </td>
-                            <td class="text-xs text-center">
+                            <td class="text-xs border">
                                 {{ tracking.general_type }}
                             </td>
                             <td
-                                class="text-xs text-center"
+                                class="text-xs border"
                                 v-if="
                                     can('view tracking general amount') ||
                                     is('admin | super-admin')
@@ -4265,26 +4265,26 @@
                                     )
                                 }}
                             </td>
-                            <td class="text-xs text-center">
+                            <td class="text-xs border">
                                 {{
                                     tracking.frequency_no +
                                     " / " +
                                     tracking.general_art_freq
                                 }}
                             </td>
-                            <td class="text-xs text-center">
+                            <td class="text-xs border">
                                 {{ this.showToday(tracking.general_startdate) }}
                             </td>
-                            <td class="text-xs text-center">
+                            <td class="text-xs border">
                                 {{ this.showToday(tracking.general_enddate) }}
                             </td>
                             <!-- style="background-color: yellow" -->
 
-                            <td class="text-xs text-center">
+                            <td class="text-xs text-center border">
                                 <div class="flex">
                                     <div
                                         v-if="!tracking.art_chase_date"
-                                        class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300 w-max mr-1"
+                                        class="rounded-md p-1 mb-1 text-yellow-300 w-max mr-1"
                                     ></div>
                                     <div
                                         v-else-if="
@@ -4302,7 +4302,7 @@
                                     </div>
                                     <div
                                         v-if="!tracking.art_chase_user"
-                                        class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300 w-max mr-1"
+                                        class="rounded-md p-1 mb-1 text-yellow-300 w-max mr-1"
                                     ></div>
                                     <div
                                         v-else-if="
@@ -4320,7 +4320,7 @@
                                     </div>
                                     <div
                                         v-if="!tracking.art_chase_remark"
-                                        class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300 w-max mr-1"
+                                        class="rounded-md p-1 mb-1 text-yellow-300 w-max mr-1"
                                     ></div>
                                     <div
                                         v-else-if="
@@ -4339,11 +4339,11 @@
                                 </div>
                             </td>
 
-                            <td class="text-xs text-center bg-amber-600">
+                            <td class="text-xs text-center bg-amber-600 border">
                                 <div class="flex">
                                     <div
                                         v-if="!tracking.art_received_date"
-                                        class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300 w-max mr-1"
+                                        class="rounded-md p-1 mb-1 text-yellow-300 w-max mr-1"
                                     ></div>
                                     <div
                                         v-else-if="
@@ -4370,7 +4370,7 @@
                                     <!-- Art received user-->
                                     <div
                                         v-if="!tracking.art_received_user"
-                                        class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300 w-max mr-1"
+                                        class="rounded-md p-1 mb-1 text-yellow-300 w-max mr-1"
                                     ></div>
                                     <div
                                         v-else-if="
@@ -4390,7 +4390,7 @@
                                     <!-- Art received remark-->
                                     <div
                                         v-if="!tracking.art_received_remark"
-                                        class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300 w-max mr-1"
+                                        class="rounded-md p-1 mb-1 text-yellow-300 w-max mr-1"
                                     ></div>
                                     <div
                                         v-else-if="
@@ -4410,12 +4410,12 @@
                                 </div>
                             </td>
 
-                            <td class="text-xs text-center">
+                            <td class="text-xs text-center border">
                                 <!-- Art todo date-->
                                 <div class="flex">
                                     <div
                                         v-if="!tracking.art_todo_date"
-                                        class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300"
+                                        class="rounded-md p-1 mb-1 text-yellow-300"
                                     ></div>
                                     <div
                                         v-else-if="tracking.art_todo_done === 2"
@@ -4432,7 +4432,7 @@
                                     <!-- Art todo user-->
                                     <div
                                         v-if="!tracking.art_todo_user"
-                                        class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300 w-max mr-1"
+                                        class="rounded-md p-1 mb-1 text-yellow-300 w-max mr-1"
                                     ></div>
                                     <div
                                         v-else-if="tracking.art_todo_done === 2"
@@ -4449,7 +4449,7 @@
                                     <!-- Art todo remark-->
                                     <div
                                         v-if="!tracking.art_todo_remark"
-                                        class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300 w-max mr-1"
+                                        class="rounded-md p-1 mb-1 text-yellow-300 w-max mr-1"
                                     ></div>
                                     <div
                                         v-else-if="tracking.art_todo_done === 2"
@@ -4467,12 +4467,12 @@
                                 </div>
                             </td>
 
-                            <td class="text-xs text-center">
+                            <td class="text-xs text-center border">
                                 <!-- Art cns sent date-->
                                 <div class="flex">
                                     <div
                                         v-if="!tracking.cns_sent_date"
-                                        class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300 w-max mr-1"
+                                        class="rounded-md p-1 mb-1 text-yellow-300 w-max mr-1"
                                     ></div>
                                     <div
                                         v-else-if="tracking.cns_sent_done === 2"
@@ -4489,7 +4489,7 @@
                                     <!-- Art cns sent user-->
                                     <div
                                         v-if="!tracking.cns_sent_user"
-                                        class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300 w-max mr-1"
+                                        class="rounded-md p-1 mb-1 text-yellow-300 w-max mr-1"
                                     ></div>
                                     <div
                                         v-else-if="tracking.cns_sent_done === 2"
@@ -4507,7 +4507,7 @@
                                     <!-- Art cns sent remark-->
                                     <div
                                         v-if="!tracking.cns_sent_remark"
-                                        class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300 w-max mr-1"
+                                        class="rounded-md p-1 mb-1 text-yellow-300 w-max mr-1"
                                     ></div>
                                     <div
                                         v-else-if="tracking.cns_sent_done === 2"
@@ -4525,12 +4525,12 @@
                                 </div>
                             </td>
 
-                            <td class="text-xs text-center">
+                            <td class="text-xs text-center border">
                                 <!-- Art cns record date-->
                                 <div class="flex">
                                     <div
                                         v-if="!tracking.cns_record_date"
-                                        class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300 w-max mr-1"
+                                        class="rounded-md p-1 mb-1 text-yellow-300 w-max mr-1"
                                     ></div>
                                     <div
                                         v-else-if="
@@ -4553,7 +4553,7 @@
                                     <!-- Art cns record user-->
                                     <div
                                         v-if="!tracking.cns_record_user"
-                                        class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300 w-max mr-1"
+                                        class="rounded-md p-1 mb-1 text-yellow-300 w-max mr-1"
                                     ></div>
                                     <div
                                         v-else-if="
@@ -4572,7 +4572,7 @@
                                     <!-- Art cns record remark-->
                                     <div
                                         v-if="!tracking.cns_record_remark"
-                                        class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300 w-max mr-1"
+                                        class="rounded-md p-1 mb-1 text-yellow-300 w-max mr-1"
                                     ></div>
                                     <div
                                         v-else-if="
@@ -4591,12 +4591,12 @@
                                 </div>
                             </td>
 
-                            <td class="text-xs text-center">
+                            <td class="text-xs text-center border">
                                 <!-- Art cns schedule date -->
                                 <div class="flex">
                                     <div
                                         v-if="!tracking.schedule_date"
-                                        class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300 w-max mr-1"
+                                        class="rounded-md p-1 mb-1 text-yellow-300 w-max mr-1"
                                     ></div>
                                     <div
                                         v-else-if="tracking.schedule_done === 2"
@@ -4613,7 +4613,7 @@
                                     <!-- Art cns schedule user -->
                                     <div
                                         v-if="!tracking.schedule_user"
-                                        class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300 w-max mr-1"
+                                        class="rounded-md p-1 mb-1 text-yellow-300 w-max mr-1"
                                     ></div>
                                     <div
                                         v-else-if="tracking.schedule_done === 2"
@@ -4630,7 +4630,7 @@
                                     <!-- Art cns schedule remark -->
                                     <div
                                         v-if="!tracking.schedule_remark"
-                                        class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300 w-max mr-1"
+                                        class="rounded-md p-1 mb-1 text-yellow-300 w-max mr-1"
                                     ></div>
                                     <div
                                         v-else-if="tracking.schedule_done === 2"
@@ -4647,13 +4647,13 @@
                                 </div>
                             </td>
 
-                            <td class="text-xs text-center">
+                            <td class="text-xs text-center border">
                                 <!-- Art report date -->
 
                                 <div class="flex">
                                     <div
                                         v-if="!tracking.report_date"
-                                        class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300 w-max mr-1"
+                                        class="rounded-md p-1 mb-1 text-yellow-300 w-max mr-1"
                                     ></div>
                                     <div
                                         v-else-if="tracking.report_done === 2"
@@ -4670,7 +4670,7 @@
                                     <!-- Art report user -->
                                     <div
                                         v-if="!tracking.report_user"
-                                        class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300 w-max mr-1"
+                                        class="rounded-md p-1 mb-1 text-yellow-300 w-max mr-1"
                                     ></div>
                                     <div
                                         v-else-if="tracking.report_done === 2"
@@ -4687,7 +4687,7 @@
                                     <!-- Art report remark -->
                                     <div
                                         v-if="!tracking.report_remark"
-                                        class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300 w-max mr-1"
+                                        class="rounded-md p-1 mb-1 text-yellow-300 w-max mr-1"
                                     ></div>
                                     <div
                                         v-else-if="tracking.report_done === 2"
@@ -4704,12 +4704,12 @@
                                 </div>
                             </td>
 
-                            <td class="text-xs text-center">
+                            <td class="text-xs text-center border">
                                 <!-- Client posting date -->
                                 <div class="flex">
                                     <div
                                         v-if="!tracking.client_posting_date"
-                                        class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300 w-max mr-1"
+                                        class="rounded-md p-1 mb-1 text-yellow-300 w-max mr-1"
                                     ></div>
                                     <div
                                         v-else-if="
@@ -4736,7 +4736,7 @@
                                     <!-- Client posting user -->
                                     <div
                                         v-if="!tracking.client_posting_user"
-                                        class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300 w-max mr-1"
+                                        class="rounded-md p-1 mb-1 text-yellow-300 w-max mr-1"
                                     ></div>
                                     <div
                                         v-else-if="
@@ -4755,7 +4755,7 @@
                                     <!-- Client posting remark -->
                                     <div
                                         v-if="!tracking.client_posting_remark"
-                                        class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300 w-max mr-1"
+                                        class="rounded-md p-1 mb-1 text-yellow-300 w-max mr-1"
                                     ></div>
                                     <div
                                         v-else-if="
@@ -4774,12 +4774,12 @@
                                 </div>
                             </td>
 
-                            <td class="text-xs text-center">
+                            <td class="text-xs text-center border">
                                 <!-- Actual live date -->
                                 <div class="flex">
                                     <div
                                         v-if="!tracking.actual_live_date"
-                                        class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300 w-max mr-1"
+                                        class="rounded-md p-1 mb-1 text-yellow-300 w-max mr-1"
                                     ></div>
                                     <div
                                         v-else-if="
@@ -4787,7 +4787,9 @@
                                         "
                                         class="bg-yellow-300 rounded-md p-1 mb-1 w-max mr-1"
                                     >
-                                        {{ tracking.actual_live_date }}
+                                        {{
+                                            showToday(tracking.actual_live_date)
+                                        }}
                                     </div>
 
                                     <div
@@ -4801,7 +4803,7 @@
                                     <!-- Actual live user -->
                                     <div
                                         v-if="!tracking.actual_live_user"
-                                        class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300 w-max mr-1"
+                                        class="rounded-md p-1 mb-1 text-yellow-300 w-max mr-1"
                                     ></div>
                                     <div
                                         v-else-if="
@@ -4820,7 +4822,7 @@
                                     <!-- Actual live remark -->
                                     <div
                                         v-if="!tracking.actual_live_remark"
-                                        class="bg-yellow-300 rounded-md p-1 mb-1 text-yellow-300 w-max mr-1"
+                                        class="rounded-md p-1 mb-1 text-yellow-300 w-max mr-1"
                                     ></div>
                                     <div
                                         v-else-if="
@@ -4843,7 +4845,7 @@
                                     check_id(tracking.user_id) ||
                                     is('supervisor | admin | super-admin')
                                 "
-                                class="items-center text-xs text-center h-6 w-24"
+                                class="items-center text-xs text-left h-6 w-24 border"
                             >
                                 <router-link
                                     :to="`/contact/${tracking.company_id}/info`"
@@ -4856,14 +4858,14 @@
                                 </router-link>
                             </td>
                             <!-- WIP remark -->
-                            <td class="text-xs text-center">
+                            <td class="text-xs border text-left">
                                 {{ tracking.wip_remark }}
                             </td>
 
-                            <td class="text-xs text-center">
+                            <td class="text-xs border text-left">
                                 {{ tracking.wip_progress }}
                             </td>
-                            <td class="text-xs text-center">
+                            <td class="text-xs text-center border">
                                 <router-link
                                     :to="{
                                         name: 'tracking_wip_edit',

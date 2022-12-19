@@ -527,6 +527,7 @@
                                 can('export followup') ||
                                 is('admin | super-admin')
                             "
+                            class="text-left"
                         >
                             <input
                                 type="checkbox"
@@ -534,15 +535,17 @@
                                 v-model="checked"
                             />
                         </td>
-                        <td>{{ index + 1 }}</td>
-                        <td>{{ showToday(followup.followup_date) }}</td>
-                        <td>
+                        <td class="text-left">{{ index + 1 }}</td>
+                        <td class="text-left">
+                            {{ showToday(followup.followup_date) }}
+                        </td>
+                        <td class="text-left">
                             <span v-if="followup.followup_time">
                                 {{ followup.followup_time }}
                             </span>
                             <span v-else> No time set</span>
                         </td>
-                        <td>
+                        <td class="text-left">
                             <router-link
                                 :to="`/contact/${followup.contact.id}/info`"
                                 custom
@@ -553,9 +556,9 @@
                                 }}</a>
                             </router-link>
                         </td>
-                        <td>{{ followup.user.name }}</td>
-                        <td>{{ followup.task.name }}</td>
-                        <td>
+                        <td class="text-left">{{ followup.user.name }}</td>
+                        <td class="text-left">{{ followup.task.name }}</td>
+                        <td class="text-left">
                             {{ followup.followup_remark }}
                             <button
                                 @click="toggleRemark(followup.id)"

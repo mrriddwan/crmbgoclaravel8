@@ -32,7 +32,12 @@
                             Billboard</router-link
                         >
                     </div>
-                    <div class="px-2" v-if="can('export billboard') || is('admin | super-admin')">
+                    <div
+                        class="px-2"
+                        v-if="
+                            can('export billboard') || is('admin | super-admin')
+                        "
+                    >
                         <download-excel
                             :data="billboards.data"
                             :fields="billboard_fields"
@@ -352,15 +357,18 @@
                     </thead>
                     <tbody class="text-xs font-bold bg-gray-500 text-black">
                         <tr v-show="buffering">
-                        <td class="text-center text-sm font-bold text-white" colspan="20">
-                            Loading . .
-                        </td>
-                    </tr>
+                            <td
+                                class="text-center text-sm font-bold text-white"
+                                colspan="20"
+                            >
+                                Loading . .
+                            </td>
+                        </tr>
                         <tr
                             v-for="(billboard, index) in billboards.data"
                             :key="billboard.id"
                         >
-                            <td class="text-white font-bold">
+                            <td class="text-white text-left font-bold">
                                 {{ index + 1 }}
                             </td>
                             <td>
@@ -369,7 +377,7 @@
                                         can('edit billboard') ||
                                         is('supervisor | admin | super-admin')
                                     "
-                                    class="text-black"
+                                    class="text-black text-left"
                                 >
                                     <router-link
                                         :to="`/billboard/${billboard.id}/tenure`"
@@ -377,7 +385,7 @@
                                         v-slot="{ navigate, href }"
                                     >
                                         <a
-                                            class="text-blue-300 font-bold"
+                                            class="text-blue-300 font-bold text-left"
                                             :href="href"
                                             @click.stop="navigate"
                                             >{{ billboard.site_id }}</a
@@ -388,13 +396,13 @@
                                     {{ billboard.site_id }}
                                 </div>
                             </td>
-                            <td class="text-white font-bold">
+                            <td class="text-white font-bold text-left">
                                 {{ billboard.bboard_location }}
                             </td>
-                            <td class="text-white font-bold">
+                            <td class="text-white font-bold text-left">
                                 {{ billboard.bboard_size }}
                             </td>
-                            <td class="w-max">
+                            <td class="w-max text-left">
                                 <tr
                                     v-for="tenure in billboard.summary"
                                     :key="tenure.id"
@@ -409,7 +417,7 @@
                                                     v-slot="{ navigate, href }"
                                                 >
                                                     <a
-                                                        class="text-blue-300 font-bold"
+                                                        class="text-blue-300 font-bold text-left"
                                                         :href="href"
                                                         @click.stop="navigate"
                                                         >{{
@@ -422,7 +430,7 @@
                                     </div>
                                 </tr>
                             </td>
-                            <td class="text-xs py-2 w-max">
+                            <td class="text-xs py-2 w-max text-left">
                                 <tr
                                     v-for="tenure in billboard.summary"
                                     :key="tenure.id"
@@ -445,7 +453,7 @@
                                                 ) ===
                                                 this.selectedYear + '-01'
                                             "
-                                            class="bg-green-300 text-center px-1 font-bold border-2 border-slate-500 w-max"
+                                            class="bg-green-300 text-left px-1 font-bold border-2 border-slate-500 w-max"
                                         >
                                             {{
                                                 showToday(
@@ -461,7 +469,7 @@
                                                 ) ===
                                                 this.selectedYear + '-01'
                                             "
-                                            class="bg-red-300 text-center px-1 font-bold border-2 border-slate-500 w-max"
+                                            class="bg-red-300 text-left px-1 font-bold border-2 border-slate-500 w-max"
                                         >
                                             {{
                                                 showToday(tenure.tenure_enddate)
@@ -476,13 +484,13 @@
                                                 tenure.tenure_enddate
                                             )
                                         "
-                                        class="bg-green-300 text-center w-16 px-1 font-bold text-transparent border-2 border-slate-500"
+                                        class="bg-green-300 text-left w-16 px-1 font-bold text-transparent border-2 border-slate-500"
                                     >
                                         X
                                     </td>
                                     <td
                                         v-else
-                                        class="bg-yellow-300 text-center w-16 px-1 font-bold text-transparent border-2 border-slate-500"
+                                        class="bg-yellow-300 text-left w-16 px-1 font-bold text-transparent border-2 border-slate-500"
                                     >
                                         X
                                     </td>
@@ -1977,7 +1985,6 @@ export default {
     computed: {},
 
     methods: {
-
         getBillboards(page = 1) {
             if (typeof page === "undefined") {
                 page = 1;

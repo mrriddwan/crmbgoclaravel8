@@ -20,48 +20,12 @@
 
             <div class="py-2 px-2">
                 <div
-                    class="inline-block"
-                    v-if="
-                        (can('export travel guide master') ||
-                            is('admin | super-admin')) &&
-                        view_type === 'master'
-                    "
-                >
-                    <button
-                        class="bg-green-500 px-2 py-2 rounded-lg text-xs"
-                        @click="exportMasterTravelGuidelExcel('xls')"
-                    >
-                        <ArrowTopRightOnSquareIcon
-                            class="h-5 w-5 mr-1 inline-block"
-                        />Export Master
-                    </button>
-                </div>
-                <div
-                    class="inline-block"
-                    v-if="
-                        (can('export travel guide wip') ||
-                            is('admin | super-admin')) &&
-                        view_type === 'wip'
-                    "
-                >
-                    <button
-                        class="bg-green-500 px-2 py-2 rounded-lg text-xs"
-                        @click="exportWIPTravelGuideExcel('xls')"
-                    >
-                        <ArrowTopRightOnSquareIcon
-                            class="h-5 w-5 mr-1 inline-block"
-                        />Export WIP
-                    </button>
-                </div>
-            </div>
-
-            <div class="py-2 px-2">
-                <div
                     class="px-2"
                     v-if="
                         (can('export travel guide master') ||
                             is('admin | super-admin')) &&
-                        (view_type === 'master' ||  view_type === 'master_report')
+                        (view_type === 'master' ||
+                            view_type === 'master_report')
                     "
                 >
                     <download-excel
@@ -82,7 +46,7 @@
                     v-if="
                         (can('export travel guide wip') ||
                             is('admin | super-admin')) &&
-                        (view_type === 'wip' ||  view_type === 'wip_report')
+                        (view_type === 'wip' || view_type === 'wip_report')
                     "
                 >
                     <download-excel
@@ -200,7 +164,7 @@
                                 </div>
                             </th>
                             <th class="border py-3 w-max">
-                                <div class="text-sm text-center h-12">
+                                <div class="text-sm text-center h-12 w-14">
                                     <a
                                         href="#"
                                         @click.prevent="
@@ -611,20 +575,20 @@
                             </th>
                         </tr>
                     </thead>
-                    <tbody class="mt-2">
+                    <tbody class="mt-2 text-left">
                         <tr
                             v-for="(
                                 tracking, index
                             ) in tracking_travel_guides.data"
                             :key="tracking.id"
                         >
-                            <td class="border text-xs text-center">
+                            <td class="border text-xs">
                                 {{ index + 1 }}
                             </td>
-                            <td class="border text-xs text-center">
+                            <td class="border text-xs">
                                 {{ showToday(tracking.created_at) }}
                             </td>
-                            <td class="border text-xs text-center">
+                            <td class="border text-xs">
                                 {{ tracking.user_name }}
                             </td>
                             <td
@@ -632,7 +596,7 @@
                                     check_id(tracking.user_id) ||
                                     is('supervisor | admin | super-admin')
                                 "
-                                class="items-center text-xs text-center h-6 w-24"
+                                class="items-center text-xs h-6 w-24"
                             >
                                 <router-link
                                     :to="`/contact/${tracking.company_id}/info`"
@@ -644,14 +608,14 @@
                                     }}</a>
                                 </router-link>
                             </td>
-                            <td class="border text-xs text-center">
+                            <td class="border text-xs">
                                 {{ tracking.edition }}
                             </td>
-                            <td class="border text-xs text-center">
+                            <td class="border text-xs">
                                 {{ tracking.tguide_size }}
                             </td>
                             <td
-                                class="border text-xs text-center"
+                                class="border text-xs"
                                 v-if="
                                     tracking.wip_travel_guide.length !== 0 &&
                                     checkMonth(
@@ -715,9 +679,9 @@
                                     </div>
                                 </div>
                             </td>
-                            <td class="border text-xs text-center" v-else></td>
+                            <td class="border text-xs" v-else></td>
                             <td
-                                class="border text-xs text-center"
+                                class="border text-xs"
                                 v-if="
                                     tracking.wip_travel_guide.length !== 0 &&
                                     checkMonth(
@@ -781,9 +745,9 @@
                                     </div>
                                 </div>
                             </td>
-                            <td class="border text-xs text-center" v-else></td>
+                            <td class="border text-xs" v-else></td>
                             <td
-                                class="border text-xs text-center"
+                                class="border text-xs"
                                 v-if="
                                     tracking.wip_travel_guide.length !== 0 &&
                                     checkMonth(
@@ -847,9 +811,9 @@
                                     </div>
                                 </div>
                             </td>
-                            <td class="border text-xs text-center" v-else></td>
+                            <td class="border text-xs" v-else></td>
                             <td
-                                class="border text-xs text-center"
+                                class="border text-xs"
                                 v-if="
                                     tracking.wip_travel_guide.length !== 0 &&
                                     checkMonth(
@@ -913,9 +877,9 @@
                                     </div>
                                 </div>
                             </td>
-                            <td class="border text-xs text-center" v-else></td>
+                            <td class="border text-xs" v-else></td>
                             <td
-                                class="border text-xs text-center"
+                                class="border text-xs"
                                 v-if="
                                     tracking.wip_travel_guide.length !== 0 &&
                                     checkMonth(
@@ -979,9 +943,9 @@
                                     </div>
                                 </div>
                             </td>
-                            <td class="border text-xs text-center" v-else></td>
+                            <td class="border text-xs" v-else></td>
                             <td
-                                class="border text-xs text-center"
+                                class="border text-xs"
                                 v-if="
                                     tracking.wip_travel_guide.length !== 0 &&
                                     checkMonth(
@@ -1045,9 +1009,9 @@
                                     </div>
                                 </div>
                             </td>
-                            <td class="border text-xs text-center" v-else></td>
+                            <td class="border text-xs" v-else></td>
                             <td
-                                class="border text-xs text-center"
+                                class="border text-xs"
                                 v-if="
                                     tracking.wip_travel_guide.length !== 0 &&
                                     checkMonth(
@@ -1111,9 +1075,9 @@
                                     </div>
                                 </div>
                             </td>
-                            <td class="border text-xs text-center" v-else></td>
+                            <td class="border text-xs" v-else></td>
                             <td
-                                class="border text-xs text-center"
+                                class="border text-xs"
                                 v-if="
                                     tracking.wip_travel_guide.length !== 0 &&
                                     checkMonth(
@@ -1177,9 +1141,9 @@
                                     </div>
                                 </div>
                             </td>
-                            <td class="border text-xs text-center" v-else></td>
+                            <td class="border text-xs" v-else></td>
                             <td
-                                class="border text-xs text-center"
+                                class="border text-xs"
                                 v-if="
                                     tracking.wip_travel_guide.length !== 0 &&
                                     checkMonth(
@@ -1243,9 +1207,9 @@
                                     </div>
                                 </div>
                             </td>
-                            <td class="border text-xs text-center" v-else></td>
+                            <td class="border text-xs" v-else></td>
                             <td
-                                class="border text-xs text-center"
+                                class="border text-xs"
                                 v-if="
                                     tracking.wip_travel_guide.length !== 0 &&
                                     checkMonth(
@@ -1309,9 +1273,9 @@
                                     </div>
                                 </div>
                             </td>
-                            <td class="border text-xs text-center" v-else></td>
+                            <td class="border text-xs" v-else></td>
                             <td
-                                class="border text-xs text-center"
+                                class="border text-xs"
                                 v-if="
                                     tracking.wip_travel_guide.length !== 0 &&
                                     checkMonth(
@@ -1375,9 +1339,9 @@
                                     </div>
                                 </div>
                             </td>
-                            <td class="border text-xs text-center" v-else></td>
+                            <td class="border text-xs" v-else></td>
                             <td
-                                class="border text-xs text-center"
+                                class="border text-xs"
                                 v-if="
                                     tracking.wip_travel_guide.length !== 0 &&
                                     checkMonth(
@@ -1441,9 +1405,9 @@
                                     </div>
                                 </div>
                             </td>
-                            <td class="border text-xs text-center" v-else></td>
+                            <td class="border text-xs" v-else></td>
 
-                            <td class="border text-xs text-center">
+                            <td class="border text-xs">
                                 {{ tracking.tguide_remark }}
                             </td>
                             <!-- :to="{ name: 'tracking_general_edit', params: { id: tracking.id },}" -->
@@ -1506,7 +1470,7 @@
                                 <div class="text-sm text-center h-6"></div>
                             </th>
                             <th class="border py-3">
-                                <div class="text-sm text-center h-6">
+                                <div class="text-sm text-center h-6 w-14">
                                     <a
                                         href="#"
                                         @click.prevent="
@@ -2017,20 +1981,20 @@
                             </th>
                         </tr>
                     </thead>
-                    <tbody class="mt-2">
+                    <tbody class="mt-2 text-left">
                         <tr
                             v-for="(
                                 tracking, index
                             ) in tracking_travel_guides.data"
                             :key="tracking.id"
                         >
-                            <td class="border text-xs text-center">
+                            <td class="border text-xs">
                                 {{ index + 1 }}
                             </td>
-                            <td class="border text-xs text-center">
+                            <td class="border text-xs">
                                 {{ showToday(tracking.created_at) }}
                             </td>
-                            <td class="border text-xs text-center">
+                            <td class="border text-xs">
                                 {{ tracking.user_name }}
                             </td>
                             <td
@@ -2038,7 +2002,7 @@
                                     check_id(tracking.user_id) ||
                                     is('supervisor | admin | super-admin')
                                 "
-                                class="items-center text-xs text-center h-6 w-24"
+                                class="items-center text-xs h-6 w-24"
                             >
                                 <router-link
                                     :to="`/contact/${tracking.company_id}/info`"
@@ -2050,14 +2014,14 @@
                                     }}</a>
                                 </router-link>
                             </td>
-                            <td class="border text-xs text-center">
+                            <td class="border text-xs">
                                 {{ tracking.edition }}
                             </td>
-                            <td class="border text-xs text-center">
+                            <td class="border text-xs">
                                 {{ tracking.tguide_size }}
                             </td>
                             <td
-                                class="border text-xs text-center"
+                                class="border text-xs"
                                 v-if="
                                     !tracking.art_reminder_date &&
                                     !tracking.art_reminder_user_id &&
@@ -2070,7 +2034,7 @@
                             </td>
                             <td
                                 v-else-if="tracking.art_reminder_done === 2"
-                                class="border text-xs text-center"
+                                class="border text-xs"
                             >
                                 <div class="bg-yellow-300 p-1 rounded-md w-20">
                                     <div
@@ -2102,7 +2066,7 @@
                             </td>
                             <td
                                 v-else-if="tracking.art_reminder_done === 1"
-                                class="border text-xs text-center"
+                                class="border text-xs"
                             >
                                 <div class="bg-green-300 p-1 rounded-md w-20">
                                     <div
@@ -2133,7 +2097,7 @@
                                 </div>
                             </td>
                             <td
-                                class="border text-xs text-center"
+                                class="border text-xs"
                                 v-if="
                                     !tracking.art_record_date &&
                                     !tracking.art_record_user &&
@@ -2146,7 +2110,7 @@
                             </td>
                             <td
                                 v-else-if="tracking.art_record_done === 2"
-                                class="border text-xs text-center"
+                                class="border text-xs"
                             >
                                 <div class="bg-yellow-300 p-1 rounded-md w-20">
                                     <div
@@ -2176,7 +2140,7 @@
                             </td>
                             <td
                                 v-else-if="tracking.art_record_done === 1"
-                                class="border text-xs text-center"
+                                class="border text-xs"
                             >
                                 <div class="bg-green-300 p-1 rounded-md w-20">
                                     <div
@@ -2205,7 +2169,7 @@
                                 </div>
                             </td>
                             <td
-                                class="border text-xs text-center"
+                                class="border text-xs"
                                 v-if="
                                     tracking.wip_travel_guide.length !== 0 &&
                                     checkMonth(
@@ -2353,10 +2317,10 @@
                                     </div>
                                 </div>
                             </td>
-                            <td class="border text-xs text-center" v-else></td>
+                            <td class="border text-xs" v-else></td>
 
                             <td
-                                class="border text-xs text-center"
+                                class="border text-xs"
                                 v-if="
                                     tracking.wip_travel_guide.length !== 0 &&
                                     checkMonth(
@@ -2504,10 +2468,10 @@
                                     </div>
                                 </div>
                             </td>
-                            <td class="border text-xs text-center" v-else></td>
+                            <td class="border text-xs" v-else></td>
 
                             <td
-                                class="border text-xs text-center"
+                                class="border text-xs"
                                 v-if="
                                     tracking.wip_travel_guide.length !== 0 &&
                                     checkMonth(
@@ -2655,10 +2619,10 @@
                                     </div>
                                 </div>
                             </td>
-                            <td class="border text-xs text-center" v-else></td>
+                            <td class="border text-xs" v-else></td>
 
                             <td
-                                class="border text-xs text-center"
+                                class="border text-xs"
                                 v-if="
                                     tracking.wip_travel_guide.length !== 0 &&
                                     checkMonth(
@@ -2806,10 +2770,10 @@
                                     </div>
                                 </div>
                             </td>
-                            <td class="border text-xs text-center" v-else></td>
+                            <td class="border text-xs" v-else></td>
 
                             <td
-                                class="border text-xs text-center"
+                                class="border text-xs"
                                 v-if="
                                     tracking.wip_travel_guide.length !== 0 &&
                                     checkMonth(
@@ -2957,10 +2921,10 @@
                                     </div>
                                 </div>
                             </td>
-                            <td class="border text-xs text-center" v-else></td>
+                            <td class="border text-xs" v-else></td>
 
                             <td
-                                class="border text-xs text-center"
+                                class="border text-xs"
                                 v-if="
                                     tracking.wip_travel_guide.length !== 0 &&
                                     checkMonth(
@@ -3108,10 +3072,10 @@
                                     </div>
                                 </div>
                             </td>
-                            <td class="border text-xs text-center" v-else></td>
+                            <td class="border text-xs" v-else></td>
 
                             <td
-                                class="border text-xs text-center"
+                                class="border text-xs"
                                 v-if="
                                     tracking.wip_travel_guide.length !== 0 &&
                                     checkMonth(
@@ -3259,10 +3223,10 @@
                                     </div>
                                 </div>
                             </td>
-                            <td class="border text-xs text-center" v-else></td>
+                            <td class="border text-xs" v-else></td>
 
                             <td
-                                class="border text-xs text-center"
+                                class="border text-xs"
                                 v-if="
                                     tracking.wip_travel_guide.length !== 0 &&
                                     checkMonth(
@@ -3410,10 +3374,10 @@
                                     </div>
                                 </div>
                             </td>
-                            <td class="border text-xs text-center" v-else></td>
+                            <td class="border text-xs" v-else></td>
 
                             <td
-                                class="border text-xs text-center"
+                                class="border text-xs"
                                 v-if="
                                     tracking.wip_travel_guide.length !== 0 &&
                                     checkMonth(
@@ -3561,10 +3525,10 @@
                                     </div>
                                 </div>
                             </td>
-                            <td class="border text-xs text-center" v-else></td>
+                            <td class="border text-xs" v-else></td>
 
                             <td
-                                class="border text-xs text-center"
+                                class="border text-xs"
                                 v-if="
                                     tracking.wip_travel_guide.length !== 0 &&
                                     checkMonth(
@@ -3712,10 +3676,10 @@
                                     </div>
                                 </div>
                             </td>
-                            <td class="border text-xs text-center" v-else></td>
+                            <td class="border text-xs" v-else></td>
 
                             <td
-                                class="border text-xs text-center"
+                                class="border text-xs"
                                 v-if="
                                     tracking.wip_travel_guide.length !== 0 &&
                                     checkMonth(
@@ -3863,10 +3827,10 @@
                                     </div>
                                 </div>
                             </td>
-                            <td class="border text-xs text-center" v-else></td>
+                            <td class="border text-xs" v-else></td>
 
                             <td
-                                class="border text-xs text-center"
+                                class="border text-xs"
                                 v-if="
                                     tracking.wip_travel_guide.length !== 0 &&
                                     checkMonth(
@@ -4014,9 +3978,9 @@
                                     </div>
                                 </div>
                             </td>
-                            <td class="border text-xs text-center" v-else></td>
+                            <td class="border text-xs" v-else></td>
 
-                            <td class="border text-xs text-center">
+                            <td class="border text-xs">
                                 {{ tracking.tguide_remark }}
                             </td>
 
@@ -4481,20 +4445,20 @@
                             </th>
                         </tr>
                     </thead>
-                    <tbody class="mt-2">
+                    <tbody class="mt-2 text-left">
                         <tr
                             v-for="(
                                 tracking, index
                             ) in tracking_travel_guides.data"
                             :key="tracking.id"
                         >
-                            <td class="border text-xs text-center">
+                            <td class="border text-xs">
                                 {{ index + 1 }}
                             </td>
-                            <td class="border text-xs text-center">
+                            <td class="border text-xs">
                                 {{ showToday(tracking.created_at) }}
                             </td>
-                            <td class="border text-xs text-center">
+                            <td class="border text-xs">
                                 {{ tracking.user_name }}
                             </td>
                             <td
@@ -4502,7 +4466,7 @@
                                     check_id(tracking.user_id) ||
                                     is('supervisor | admin | super-admin')
                                 "
-                                class="items-center text-xs text-center h-6 w-24"
+                                class="items-center text-xs h-6 w-24"
                             >
                                 <router-link
                                     :to="`/contact/${tracking.company_id}/info`"
@@ -4514,14 +4478,14 @@
                                     }}</a>
                                 </router-link>
                             </td>
-                            <td class="border text-xs text-center">
+                            <td class="border text-xs">
                                 {{ tracking.edition }}
                             </td>
-                            <td class="border text-xs text-center">
+                            <td class="border text-xs">
                                 {{ tracking.tguide_size }}
                             </td>
                             <td
-                                class="border text-xs text-center"
+                                class="border text-xs"
                                 v-if="
                                     tracking.wip_travel_guide.length !== 0 &&
                                     checkMonth(
@@ -4587,9 +4551,9 @@
                                     </div>
                                 </div>
                             </td>
-                            <td class="border text-xs text-center" v-else></td>
+                            <td class="border text-xs" v-else></td>
                             <td
-                                class="border text-xs text-center"
+                                class="border text-xs"
                                 v-if="
                                     tracking.wip_travel_guide.length !== 0 &&
                                     checkMonth(
@@ -4655,9 +4619,9 @@
                                     </div>
                                 </div>
                             </td>
-                            <td class="border text-xs text-center" v-else></td>
+                            <td class="border text-xs" v-else></td>
                             <td
-                                class="border text-xs text-center"
+                                class="border text-xs"
                                 v-if="
                                     tracking.wip_travel_guide.length !== 0 &&
                                     checkMonth(
@@ -4723,9 +4687,9 @@
                                     </div>
                                 </div>
                             </td>
-                            <td class="border text-xs text-center" v-else></td>
+                            <td class="border text-xs" v-else></td>
                             <td
-                                class="border text-xs text-center"
+                                class="border text-xs"
                                 v-if="
                                     tracking.wip_travel_guide.length !== 0 &&
                                     checkMonth(
@@ -4791,9 +4755,9 @@
                                     </div>
                                 </div>
                             </td>
-                            <td class="border text-xs text-center" v-else></td>
+                            <td class="border text-xs" v-else></td>
                             <td
-                                class="border text-xs text-center"
+                                class="border text-xs"
                                 v-if="
                                     tracking.wip_travel_guide.length !== 0 &&
                                     checkMonth(
@@ -4859,9 +4823,9 @@
                                     </div>
                                 </div>
                             </td>
-                            <td class="border text-xs text-center" v-else></td>
+                            <td class="border text-xs" v-else></td>
                             <td
-                                class="border text-xs text-center"
+                                class="border text-xs"
                                 v-if="
                                     tracking.wip_travel_guide.length !== 0 &&
                                     checkMonth(
@@ -4927,9 +4891,9 @@
                                     </div>
                                 </div>
                             </td>
-                            <td class="border text-xs text-center" v-else></td>
+                            <td class="border text-xs" v-else></td>
                             <td
-                                class="border text-xs text-center"
+                                class="border text-xs"
                                 v-if="
                                     tracking.wip_travel_guide.length !== 0 &&
                                     checkMonth(
@@ -4995,9 +4959,9 @@
                                     </div>
                                 </div>
                             </td>
-                            <td class="border text-xs text-center" v-else></td>
+                            <td class="border text-xs" v-else></td>
                             <td
-                                class="border text-xs text-center"
+                                class="border text-xs"
                                 v-if="
                                     tracking.wip_travel_guide.length !== 0 &&
                                     checkMonth(
@@ -5063,9 +5027,9 @@
                                     </div>
                                 </div>
                             </td>
-                            <td class="border text-xs text-center" v-else></td>
+                            <td class="border text-xs" v-else></td>
                             <td
-                                class="border text-xs text-center"
+                                class="border text-xs"
                                 v-if="
                                     tracking.wip_travel_guide.length !== 0 &&
                                     checkMonth(
@@ -5131,9 +5095,9 @@
                                     </div>
                                 </div>
                             </td>
-                            <td class="border text-xs text-center" v-else></td>
+                            <td class="border text-xs" v-else></td>
                             <td
-                                class="border text-xs text-center"
+                                class="border text-xs"
                                 v-if="
                                     tracking.wip_travel_guide.length !== 0 &&
                                     checkMonth(
@@ -5199,9 +5163,9 @@
                                     </div>
                                 </div>
                             </td>
-                            <td class="border text-xs text-center" v-else></td>
+                            <td class="border text-xs" v-else></td>
                             <td
-                                class="border text-xs text-center"
+                                class="border text-xs"
                                 v-if="
                                     tracking.wip_travel_guide.length !== 0 &&
                                     checkMonth(
@@ -5267,9 +5231,9 @@
                                     </div>
                                 </div>
                             </td>
-                            <td class="border text-xs text-center" v-else></td>
+                            <td class="border text-xs" v-else></td>
                             <td
-                                class="border text-xs text-center"
+                                class="border text-xs"
                                 v-if="
                                     tracking.wip_travel_guide.length !== 0 &&
                                     checkMonth(
@@ -5335,9 +5299,9 @@
                                     </div>
                                 </div>
                             </td>
-                            <td class="border text-xs text-center" v-else></td>
+                            <td class="border text-xs" v-else></td>
 
-                            <td class="border text-xs text-center">
+                            <td class="border text-xs">
                                 {{ tracking.tguide_remark }}
                             </td>
                             <!-- :to="{ name: 'tracking_general_edit', params: { id: tracking.id },}" -->
@@ -5958,20 +5922,20 @@
                             </th>
                         </tr>
                     </thead>
-                    <tbody class="mt-2">
+                    <tbody class="mt-2 text-left">
                         <tr
                             v-for="(
                                 tracking, index
                             ) in tracking_travel_guides.data"
                             :key="tracking.id"
                         >
-                            <td class="border text-xs text-center">
+                            <td class="border text-xs">
                                 {{ index + 1 }}
                             </td>
-                            <td class="border text-xs text-center">
+                            <td class="border text-xs">
                                 {{ showToday(tracking.created_at) }}
                             </td>
-                            <td class="border text-xs text-center">
+                            <td class="border text-xs">
                                 {{ tracking.user_name }}
                             </td>
                             <td
@@ -5979,7 +5943,7 @@
                                     check_id(tracking.user_id) ||
                                     is('supervisor | admin | super-admin')
                                 "
-                                class="items-center text-xs text-center h-6 w-24"
+                                class="items-center text-xs h-6 w-24"
                             >
                                 <router-link
                                     :to="`/contact/${tracking.company_id}/info`"
@@ -5991,14 +5955,14 @@
                                     }}</a>
                                 </router-link>
                             </td>
-                            <td class="border text-xs text-center">
+                            <td class="border text-xs">
                                 {{ tracking.edition }}
                             </td>
-                            <td class="border text-xs text-center">
+                            <td class="border text-xs">
                                 {{ tracking.tguide_size }}
                             </td>
                             <td
-                                class="border text-xs text-center"
+                                class="border text-xs"
                                 v-if="
                                     !tracking.art_reminder_date &&
                                     !tracking.art_reminder_user_id &&
@@ -6011,7 +5975,7 @@
                             </td>
                             <td
                                 v-else-if="tracking.art_reminder_done === 2"
-                                class="border text-xs text-center"
+                                class="border text-xs"
                             >
                                 <span
                                     class="bg-yellow-300 p-1 rounded-md flex w-max"
@@ -6054,7 +6018,7 @@
                             </td>
                             <td
                                 v-else-if="tracking.art_reminder_done === 1"
-                                class="border text-xs text-center"
+                                class="border text-xs"
                             >
                                 <div
                                     class="bg-green-300 p-1 rounded-md flex w-max"
@@ -6096,7 +6060,7 @@
                                 </div>
                             </td>
                             <td
-                                class="border text-xs text-center"
+                                class="border text-xs"
                                 v-if="
                                     !tracking.art_record_date &&
                                     !tracking.art_record_user &&
@@ -6109,7 +6073,7 @@
                             </td>
                             <td
                                 v-else-if="tracking.art_record_done === 2"
-                                class="border text-xs text-center"
+                                class="border text-xs"
                             >
                                 <div
                                     class="bg-yellow-300 p-1 rounded-md flex w-max"
@@ -6150,7 +6114,7 @@
                             </td>
                             <td
                                 v-else-if="tracking.art_record_done === 1"
-                                class="border text-xs text-center"
+                                class="border text-xs"
                             >
                                 <div
                                     class="bg-green-300 p-1 rounded-md flex w-max"
@@ -6190,7 +6154,7 @@
                                 </div>
                             </td>
                             <td
-                                class="border text-xs text-center"
+                                class="border text-xs"
                                 v-if="
                                     tracking.wip_travel_guide.length !== 0 &&
                                     checkMonth(
@@ -6348,10 +6312,10 @@
                                     </div>
                                 </div>
                             </td>
-                            <td class="border text-xs text-center" v-else></td>
+                            <td class="border text-xs" v-else></td>
 
                             <td
-                                class="border text-xs text-center"
+                                class="border text-xs"
                                 v-if="
                                     tracking.wip_travel_guide.length !== 0 &&
                                     checkMonth(
@@ -6509,10 +6473,10 @@
                                     </div>
                                 </div>
                             </td>
-                            <td class="border text-xs text-center" v-else></td>
+                            <td class="border text-xs" v-else></td>
 
                             <td
-                                class="border text-xs text-center"
+                                class="border text-xs"
                                 v-if="
                                     tracking.wip_travel_guide.length !== 0 &&
                                     checkMonth(
@@ -6670,10 +6634,10 @@
                                     </div>
                                 </div>
                             </td>
-                            <td class="border text-xs text-center" v-else></td>
+                            <td class="border text-xs" v-else></td>
 
                             <td
-                                class="border text-xs text-center"
+                                class="border text-xs"
                                 v-if="
                                     tracking.wip_travel_guide.length !== 0 &&
                                     checkMonth(
@@ -6831,10 +6795,10 @@
                                     </div>
                                 </div>
                             </td>
-                            <td class="border text-xs text-center" v-else></td>
+                            <td class="border text-xs" v-else></td>
 
                             <td
-                                class="border text-xs text-center"
+                                class="border text-xs"
                                 v-if="
                                     tracking.wip_travel_guide.length !== 0 &&
                                     checkMonth(
@@ -6991,10 +6955,10 @@
                                     </div>
                                 </div>
                             </td>
-                            <td class="border text-xs text-center" v-else></td>
+                            <td class="border text-xs" v-else></td>
 
                             <td
-                                class="border text-xs text-center"
+                                class="border text-xs"
                                 v-if="
                                     tracking.wip_travel_guide.length !== 0 &&
                                     checkMonth(
@@ -7152,10 +7116,10 @@
                                     </div>
                                 </div>
                             </td>
-                            <td class="border text-xs text-center" v-else></td>
+                            <td class="border text-xs" v-else></td>
 
                             <td
-                                class="border text-xs text-center"
+                                class="border text-xs"
                                 v-if="
                                     tracking.wip_travel_guide.length !== 0 &&
                                     checkMonth(
@@ -7313,10 +7277,10 @@
                                     </div>
                                 </div>
                             </td>
-                            <td class="border text-xs text-center" v-else></td>
+                            <td class="border text-xs" v-else></td>
 
                             <td
-                                class="border text-xs text-center"
+                                class="border text-xs"
                                 v-if="
                                     tracking.wip_travel_guide.length !== 0 &&
                                     checkMonth(
@@ -7474,10 +7438,10 @@
                                     </div>
                                 </div>
                             </td>
-                            <td class="border text-xs text-center" v-else></td>
+                            <td class="border text-xs" v-else></td>
 
                             <td
-                                class="border text-xs text-center"
+                                class="border text-xs"
                                 v-if="
                                     tracking.wip_travel_guide.length !== 0 &&
                                     checkMonth(
@@ -7635,10 +7599,10 @@
                                     </div>
                                 </div>
                             </td>
-                            <td class="border text-xs text-center" v-else></td>
+                            <td class="border text-xs" v-else></td>
 
                             <td
-                                class="border text-xs text-center"
+                                class="border text-xs"
                                 v-if="
                                     tracking.wip_travel_guide.length !== 0 &&
                                     checkMonth(
@@ -7796,10 +7760,10 @@
                                     </div>
                                 </div>
                             </td>
-                            <td class="border text-xs text-center" v-else></td>
+                            <td class="border text-xs" v-else></td>
 
                             <td
-                                class="border text-xs text-center"
+                                class="border text-xs"
                                 v-if="
                                     tracking.wip_travel_guide.length !== 0 &&
                                     checkMonth(
@@ -7957,10 +7921,10 @@
                                     </div>
                                 </div>
                             </td>
-                            <td class="border text-xs text-center" v-else></td>
+                            <td class="border text-xs" v-else></td>
 
                             <td
-                                class="border text-xs text-center"
+                                class="border text-xs"
                                 v-if="
                                     tracking.wip_travel_guide.length !== 0 &&
                                     checkMonth(
@@ -8118,14 +8082,14 @@
                                     </div>
                                 </div>
                             </td>
-                            <td class="border text-xs text-center" v-else></td>
+                            <td class="border text-xs" v-else></td>
 
                             <td
                                 v-if="
                                     check_id(tracking.user_id) ||
                                     is('supervisor | admin | super-admin')
                                 "
-                                class="items-center text-xs text-center h-6 w-24"
+                                class="items-center text-xs h-6 w-24"
                             >
                                 <router-link
                                     :to="`/contact/${tracking.company_id}/info`"
@@ -8138,7 +8102,7 @@
                                 </router-link>
                             </td>
 
-                            <td class="border text-xs text-center w-36">
+                            <td class="border text-xs w-36">
                                 {{ tracking.tguide_remark }}
                             </td>
 

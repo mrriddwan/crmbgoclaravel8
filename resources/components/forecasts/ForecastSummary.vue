@@ -241,7 +241,7 @@
                             </th>
 
                             <th class="py-3">
-                                <div class="text-xs text-center h-6">
+                                <div class="text-xs text-center h-6 flex w-24">
                                     <a
                                         href="#"
                                         @click.prevent="change_sort('contact')"
@@ -505,14 +505,14 @@
                         >
                             <td class="text-xs text-center">{{ index + 1 }}</td>
                             <!-- <td class="text-xs">{{ contact.created_at }}</td> -->
-                            <td class="text-xs">{{ forecast.user_name }}</td>
-                            <td class="text-xs">
+                            <td class="text-xs text-left">{{ forecast.user_name }}</td>
+                            <td class="text-xs text-left">
                                 {{ forecast.contact_status }}
                             </td>
-                            <td class="text-xs">
+                            <td class="text-xs text-left">
                                 {{ forecast.contact_type }}
                             </td>
-                            <td class="text-xs">
+                            <td class="text-xs text-left">
                                 <router-link
                                     :to="`/contact/${forecast.contact_id}/info`"
                                     custom
@@ -524,16 +524,16 @@
                                 </router-link>
                             </td>
 
-                            <td class="text-xs">
+                            <td class="text-xs text-left">
                                 {{ forecast.forecast_type }}
                             </td>
-                            <td class="text-xs">
+                            <td class="text-xs text-left">
                                 {{ forecast.forecast_product }}
                             </td>
-                            <td class="text-xs" v-if="!forecast.forecast_result">
+                            <td class="text-xs text-left" v-if="!forecast.forecast_result">
                                 No result
                             </td>
-                            <td class="text-xs">
+                            <td class="text-xs text-left" v-else>
                                 {{ forecast.forecast_result }}
                             </td>
 

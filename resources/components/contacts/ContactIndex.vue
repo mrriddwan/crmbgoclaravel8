@@ -639,19 +639,19 @@
                                     v-model="checked"
                                 />
                             </td>
-                            <td class="text-xs">
+                            <td class="text-xs text-left">
                                 {{ contact.created_at }}
                             </td>
-                            <td class="text-xs">{{ contact.user.name }}</td>
-                            <td class="text-xs">{{ contact.status.name }}</td>
-                            <td class="text-xs">{{ contact.type.name }}</td>
-                            <td class="text-xs">{{ contact.industry.name }}</td>
+                            <td class="text-xs text-left">{{ contact.user.name }}</td>
+                            <td class="text-xs text-left">{{ contact.status.name }}</td>
+                            <td class="text-xs text-left">{{ contact.type.name }}</td>
+                            <td class="text-xs text-left">{{ contact.industry.name }}</td>
                             <td
                                 v-if="
                                     check_id(contact.user.id) ||
                                     is('supervisor | admin | super-admin')
                                 "
-                                class="items-center text-xs text-center h-6 w-24"
+                                class="items-left text-xs text-left h-6 w-24"
                             >
                                 <div>
                                     <router-link
@@ -680,14 +680,14 @@
                             </td>
                             <td
                                 v-else
-                                class="items-center text-xs text-center h-6 w-24"
+                                class="items-left text-xs text-center h-6 w-24"
                             >
                                 {{ contact.name }}
                             </td>
-                            <td class="text-xs">{{ contact.category.name }}</td>
-                            <td class="text-xs">{{ contact.address }}</td>
-                            <!-- <td class="text-xs">{{ check_if_subordinate(contact.user.id)['id'] }}</td> -->
-                            <td class="text-xs">
+                            <td class="text-xs text-left">{{ contact.category.name }}</td>
+                            <td class="text-xs text-left">{{ contact.address }}</td>
+                            <!-- <td class="text-xs text-left">{{ check_if_subordinate(contact.user.id)['id'] }}</td> -->
+                            <td class="text-xs text-left">
                                 {{ contact.remark }}
                                 <button
                                     @click="toggleRemark(contact.id)"

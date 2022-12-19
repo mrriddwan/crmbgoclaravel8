@@ -100,7 +100,8 @@ class ContactController extends Controller
 
     public function list()
     {
-        $contact = Contact::select('id', 'name')->orderBy('name')->get();
+        $search_term = request('q', '');
+        $contact = Contact::select('id', 'name')->orderBy('name')->search(trim($search_term))->get();
 
         return response()->json([
             'data' => $contact,
@@ -543,6 +544,23 @@ class ContactController extends Controller
             'message' => 'Successfully import Contact ',
         ]);
 
+    }
+
+    public function contact_check_result()
+    {
+        $search_term = request('q', '');
+
+        if(Contact::where('name', $search_term)->exists()){
+            return response()->json([
+                'data' => false,
+                'message' => 'Contact exists in database',
+            ]);
+        } else {
+            return response()->json([
+                'data' => true,
+                'message' => 'Contact does not exists in database',
+            ]);
+        }
     }
 
     public function test()

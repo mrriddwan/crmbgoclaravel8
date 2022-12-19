@@ -97,7 +97,7 @@
                                 </div>
                             </th>
                             <th class="py-3">
-                                <div class="text-sm text-center h-6">
+                                <div class="text-sm text-center h-6 w-max">
                                     <a
                                         href="#"
                                         @click.prevent="
@@ -145,7 +145,7 @@
                                 </div>
                             </th>
                             <th class="py-3">
-                                <div class="text-sm text-center h-6">
+                                <div class="text-sm text-center h-6 w-max">
                                     <a
                                         href="#"
                                         @click.prevent="
@@ -332,7 +332,7 @@
                                 </div>
                             </th>
                             <th class="py-3">
-                                <div class="text-sm text-center h-6">
+                                <div class="text-sm text-center h-6 w-14">
                                     <a
                                         href="#"
                                         @click.prevent="
@@ -394,14 +394,14 @@
                             v-for="(project, index) in projects.data"
                             :key="project.id"
                         >
-                            <td class="text-xs">{{ index + 1 }}</td>
-                            <td class="text-xs">
+                            <td class="text-xs text-left">{{ index + 1 }}</td>
+                            <td class="text-xs text-left">
                                 {{ showToday(project.project_startdate) }}
                             </td>
-                            <td class="text-xs">
+                            <td class="text-xs text-left">
                                 {{ showToday(project.project_enddate) }}
                             </td>
-                            <td class="text-xs">
+                            <td class="text-xs text-left">
                                 <!-- {{ project.project_enddate }} -->
                                 {{
                                     calculateDuration(
@@ -411,7 +411,7 @@
                                 }}
                                 day(s)
                             </td>
-                            <td class="text-xs grid-cols-2 w-max">
+                            <td class="text-xs grid-cols-2 w-max text-left">
                                 <router-link
                                     :to="`/contact/${project.contact.id}/info`"
                                     custom
@@ -422,10 +422,10 @@
                                     }}</a>
                                 </router-link>
                             </td>
-                            <td class="text-xs w-72">
+                            <td class="text-xs w-72 text-left">
                                 {{ project.project_name }}
                             </td>
-                            <td class="text-xs">
+                            <td class="text-xs text-left">
                                 {{ project.project_remark }}
                                 <button
                                     @click="toggleRemark(project.id)"
@@ -436,38 +436,40 @@
                                     />
                                 </button>
                             </td>
-                            <td class="text-xs">
+                            <td class="text-xs text-left">
                                 {{ showToday(project.created_at) }}
                             </td>
 
                             <td class="text-xs">
-                                <router-link
-                                    :to="{
-                                        name: 'todo_insert',
-                                        params: { id: project.contact.id },
-                                    }"
-                                    class="mr-2 mb-2 inline-flex items-center px-2 py-1 bg-green-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
-                                >
-                                    <PlusIcon class="h-5 w-5 mr-1" /> To
-                                    Do</router-link
-                                >
-                                <router-link
-                                    :to="{
-                                        name: 'project_edit',
-                                        params: {
-                                            id: project.id,
-                                        },
-                                    }"
-                                    class="mr-2 mb-2 inline-flex items-center px-2 py-1 bg-yellow-400 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
-                                >
-                                    <PencilSquareIcon class="h-3 w-3"
-                                /></router-link>
-                                <button
-                                    class="mr-2 mb-2 inline-flex items-center px-2 py-1 bg-red-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
-                                    @click="deleteProject(project.id)"
-                                >
-                                    <TrashIcon class="h-3 w-3" />
-                                </button>
+                                <div class="flex">
+                                    <router-link
+                                        :to="{
+                                            name: 'todo_insert',
+                                            params: { id: project.contact.id },
+                                        }"
+                                        class="mr-2 mb-2 inline-flex items-center px-2 py-1 bg-green-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
+                                    >
+                                        <PlusIcon class="h-5 w-5 mr-1" /> To
+                                        Do</router-link
+                                    >
+                                    <router-link
+                                        :to="{
+                                            name: 'project_edit',
+                                            params: {
+                                                id: project.id,
+                                            },
+                                        }"
+                                        class="mr-2 mb-2 inline-flex items-center px-2 py-1 bg-yellow-400 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
+                                    >
+                                        <PencilSquareIcon class="h-3 w-3"
+                                    /></router-link>
+                                    <button
+                                        class="mr-2 mb-2 inline-flex items-center px-2 py-1 bg-red-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
+                                        @click="deleteProject(project.id)"
+                                    >
+                                        <TrashIcon class="h-3 w-3" />
+                                    </button>
+                                </div>
                             </td>
                         </tr>
                     </tbody>
@@ -550,9 +552,9 @@ export default {
                 "Duration(days)": {
                     callback: (value) => {
                         return `${this.calculateDuration(
-                                        value.project_startdate,
-                                        value.project_enddate
-                                    )}`;
+                            value.project_startdate,
+                            value.project_enddate
+                        )}`;
                     },
                 },
                 Company: {

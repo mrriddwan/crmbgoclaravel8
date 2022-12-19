@@ -597,11 +597,11 @@
                                     v-model="checked"
                                 />
                             </td>
-                            <td class="text-xs">{{ index + 1 }}</td>
-                            <td class="text-xs">
+                            <td class="text-xs text-left">{{ index + 1 }}</td>
+                            <td class="text-xs text-left">
                                 {{ showToday(forecast.forecast_updatedate) }}
                             </td>
-                            <td class="text-xs grid-cols-2 w-max">
+                            <td class="text-xs grid-cols-2 w-max text-left">
                                 <router-link
                                     :to="`/contact/${forecast.contact.id}/info`"
                                     custom
@@ -620,21 +620,23 @@
                                         class="h-4 w-4 inline"
                                 /></router-link>
                             </td>
-                            <td class="text-xs">{{ forecast.user.name }}</td>
-                            <td class="text-xs w-max">
+                            <td class="text-xs text-left">
+                                {{ forecast.user.name }}
+                            </td>
+                            <td class="text-xs w-max text-left">
                                 {{ forecast.product.name }}
                             </td>
-                            <td class="text-xs">
+                            <td class="text-xs text-left">
                                 <p class="inline mr-1">RM</p>
                                 {{ forecast.amount.toLocaleString("en-US") }}
                             </td>
-                            <td class="text-xs">
+                            <td class="text-xs text-left">
                                 {{ showToday(forecast.forecast_date) }}
                             </td>
-                            <td class="text-xs">
+                            <td class="text-xs text-left">
                                 {{ forecast.forecast_type.name }}
                             </td>
-                            <td class="text-center align-middle">
+                            <td class="text-center align-top">
                                 <span v-if="forecast.result">
                                     <span
                                         v-if="forecast.result.id === 1"

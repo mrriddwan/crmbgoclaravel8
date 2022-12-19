@@ -92,7 +92,11 @@
                     <thead class="bg-slate-500 border-b sticky top-0">
                         <tr class="w-full">
                             <th class="w-10">
-                                <div class="text-xs text-center h-12 text-white">No.</div>
+                                <div
+                                    class="text-xs text-center h-12 text-white"
+                                >
+                                    No.
+                                </div>
                             </th>
                             <th class="w-10">
                                 <div class="text-xs text-center h-6">
@@ -486,23 +490,23 @@
                             v-for="(contact, index) in contacts.data"
                             :key="contact.id"
                         >
-                            <td class="text-xs break-normal text-center">
+                            <td class="text-xs break-normal text-left">
                                 {{ index + 1 }}
                             </td>
-                            <td class="text-xs break-normal text-center">
+                            <td class="text-xs break-normal text-left">
                                 {{ contact.user_name }}
                             </td>
-                            <td class="text-xs break-normal text-center">
+                            <td class="text-xs break-normal text-left">
                                 {{ contact.status_name }}
                             </td>
                             <td class="text-xs">{{ contact.type_name }}</td>
-                            <td class="text-xs break-normal text-center">
+                            <td class="text-xs break-normal text-left">
                                 {{ contact.category_name }}
                             </td>
-                            <td class="text-xs break-normal text-center">
+                            <td class="text-xs break-normal text-left">
                                 {{ contact.industry_name }}
                             </td>
-                            <td class="text-xs break-normal text-center">
+                            <td class="text-xs break-normal text-left">
                                 <router-link
                                     :to="`/contact/${contact.id}/info`"
                                     custom
@@ -533,8 +537,9 @@
                                     >
                                         {{
                                             showToday(summary_info["todo_date"])
-                                        }} </div
-                                    ><div
+                                        }}
+                                    </div>
+                                    <div
                                         v-if="
                                             index === 0 &&
                                             summary_info['action']
@@ -570,8 +575,9 @@
                                         {{
                                             showToday(summary_info["todo_date"])
                                         }}
-                                        <br /> </div
-                                    ><div
+                                        <br />
+                                    </div>
+                                    <div
                                         v-if="
                                             index === 0 &&
                                             summary_info['action']
@@ -607,8 +613,9 @@
                                         {{
                                             showToday(summary_info["todo_date"])
                                         }}
-                                        <br /> </div
-                                    ><div
+                                        <br />
+                                    </div>
+                                    <div
                                         v-if="
                                             index === 0 &&
                                             summary_info['action']
@@ -644,8 +651,9 @@
                                         {{
                                             showToday(summary_info["todo_date"])
                                         }}
-                                        <br /> </div
-                                    ><div
+                                        <br />
+                                    </div>
+                                    <div
                                         v-if="
                                             index === 0 &&
                                             summary_info['action']
@@ -681,8 +689,9 @@
                                         {{
                                             showToday(summary_info["todo_date"])
                                         }}
-                                        <br /> </div
-                                    ><div
+                                        <br />
+                                    </div>
+                                    <div
                                         v-if="
                                             index === 0 &&
                                             summary_info['action']
@@ -718,8 +727,9 @@
                                         {{
                                             showToday(summary_info["todo_date"])
                                         }}
-                                        <br /> </div
-                                    ><div
+                                        <br />
+                                    </div>
+                                    <div
                                         v-if="
                                             index === 0 &&
                                             summary_info['action']
@@ -755,8 +765,9 @@
                                         {{
                                             showToday(summary_info["todo_date"])
                                         }}
-                                        <br /> </div
-                                    ><div
+                                        <br />
+                                    </div>
+                                    <div
                                         v-if="
                                             index === 0 &&
                                             summary_info['action']
@@ -791,8 +802,9 @@
                                     >
                                         {{
                                             showToday(summary_info["todo_date"])
-                                        }} </div
-                                    ><div
+                                        }}
+                                    </div>
+                                    <div
                                         v-if="
                                             index === 0 &&
                                             summary_info['action']
@@ -827,8 +839,9 @@
                                     >
                                         {{
                                             showToday(summary_info["todo_date"])
-                                        }} </div
-                                    ><div
+                                        }}
+                                    </div>
+                                    <div
                                         v-if="
                                             index === 0 &&
                                             summary_info['action']
@@ -863,8 +876,9 @@
                                     >
                                         {{
                                             showToday(summary_info["todo_date"])
-                                        }} </div
-                                    ><div
+                                        }}
+                                    </div>
+                                    <div
                                         v-if="
                                             index === 0 &&
                                             summary_info['action']
@@ -899,8 +913,9 @@
                                     >
                                         {{
                                             showToday(summary_info["todo_date"])
-                                        }} </div
-                                    ><div
+                                        }}
+                                    </div>
+                                    <div
                                         v-if="
                                             index === 0 &&
                                             summary_info['action']

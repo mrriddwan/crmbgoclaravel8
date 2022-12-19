@@ -372,7 +372,7 @@ class AdminController extends Controller
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
-            'password' => Hash::make($request->password),
+            'password' => $request->password,
             'email_password' => 'Unset yet'
         ]);
 
@@ -381,7 +381,7 @@ class AdminController extends Controller
         return response()->json([
             'data' => $user,
             'status' => true,
-            'message' => 'Successfully store user',
+            'message' => 'Successfully create new user',
         ]);
     }
 
@@ -414,7 +414,7 @@ class AdminController extends Controller
             $request->validate([
                 'user_cat_id' => ['required', 'int'],
             ], [
-                'user_cat_id.required' => ' is required.',
+                'user_cat_id.required' => ' User category is required.',
             ]);
 
             $user->update([
@@ -430,7 +430,7 @@ class AdminController extends Controller
             ]);
 
             $user->update([
-                'password' => Hash::make($request->password),
+                'password' => $request->password,
             ]);
         }
 
