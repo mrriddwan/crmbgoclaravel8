@@ -550,6 +550,83 @@
                 :sv_id="supervisorUserAdd"
             />
 
+            <!-- User Performance-->
+            <div class="my-4">
+                <div
+                    class="bg-emerald-200 px-2 py-1 rounded-md flex w-full justify-center items-center row"
+                >
+                    <h2
+                        class="text-center text-gray-800 px-8 uppercase w-max font-mono font-extrabold"
+                    >
+                        User Performance
+                    </h2>
+                </div>
+                <div class="text-md text-center mt-3">Performance Target</div>
+                <div class="text-md text-center">
+                    <div class="form-group">
+                        <select
+                            class="text-center w-fullrounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                            @change="getUsers"
+                            v-model="selectedUserPerformance"
+                        >
+                            <option disabled value="">Select user</option>
+
+                            <option
+                                v-for="user in users"
+                                :key="user.id"
+                                :value="user.id"
+                            >
+                                {{ user.name }}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="text-center w-max mx-auto my-3">
+                    <table>
+                        <thead
+                            class="bg-slate-500 text-white font-bold uppercase"
+                        >
+                            <tr>
+                                <th class="text-center py-2 px-2 border">
+                                    Action
+                                </th>
+                                <th class="text-center py-2 px-2 border">
+                                    Target
+                                </th>
+                                <th class="text-center py-2 px-2 border w-8">
+                                    Edit
+                                </th>
+                                <th class="text-center py-2 px-2 border">
+                                    Save
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-emerald-100">
+                            <tr
+                                v-for="action in todo_actions"
+                                :key="action.id"
+                                class="py-8"
+                            >
+                                <td
+                                    class="text-left py-2 px-3 border font-semibold"
+                                >
+                                    {{ action.name }}
+                                </td>
+                                <td class="text-left py-2 px-3 border">10</td>
+                                <td class="text-center py-2 px-3 border">
+                                    <input
+                                        class="w-10 border-zinc-700 rounded-md text-center h-10"
+                                    />
+                                </td>
+                                <td class="text-center py-2 px-3 border">
+                                    <LockClosedIcon class="inline h-4 w-4" />
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
             <!-- User Category-->
             <div class="my-4">
                 <div
@@ -981,6 +1058,7 @@ import {
     LockClosedIcon,
     UserPlusIcon,
     ListBulletIcon,
+    Di
 } from "@heroicons/vue/24/solid";
 import axios from "axios";
 
@@ -1050,6 +1128,10 @@ export default {
             errors: "",
             category_errors: "",
             supervisor_errors: "",
+            todo_actions: [],
+            targets: [],
+
+            selectedUserPerformance: "",
         };
     },
 
@@ -1057,10 +1139,15 @@ export default {
         this.getTasks();
         this.getActions();
         this.getUsers();
+        this.getToDoActions();
         this.getUserCategories();
         this.getUserCategoryList();
         this.getBenchmarks();
         this.getSupervisors();
+        this.selectedUserPerformance = document
+            .querySelector('meta[name="user-id"]')
+            .getAttribute("content");
+        this.getPerformanceTarget();
     },
 
     watch: {
@@ -1075,9 +1162,35 @@ export default {
         selectedSupervisor(value) {
             this.getSupervisorUser(value);
         },
+
+        selectedUserPerformance: function (value) {
+            this.getPerformanceTarget();
+        },
     },
 
     methods: {
+        async getToDoActions() {
+            await axios
+                .get("/api/actions/index")
+                .then((res) => {
+                    this.todo_actions = res.data.data;
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        },
+
+        async getPerformanceTarget() {
+            await axios
+                .get("/api/performance/target/" + this.selectedUserPerformance)
+                .then((res) => {
+                    this.targets = res.data.data;
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        },
+
         toggleUserAddCategoryModal(user_cat_id) {
             this.userAddCategory = user_cat_id;
             this.userAddCategoryVisibility = !this.userAddCategoryVisibility;

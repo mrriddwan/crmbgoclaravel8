@@ -23,6 +23,7 @@ use App\Http\Controllers\Api\Forecast\ForecastController;
 use App\Http\Controllers\Api\Forecast\ForecastProductController;
 use App\Http\Controllers\Api\Forecast\ForecastResultController;
 use App\Http\Controllers\Api\Forecast\ForecastTypeController;
+use App\Http\Controllers\Api\Performance\PerformanceController;
 use App\Http\Controllers\Api\Project\ProjectController;
 use App\Http\Controllers\Api\ToDo\TaskController;
 use App\Http\Controllers\Api\ToDo\ToDoController;
@@ -137,6 +138,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     Route::post('/admin/users/remove/permission/{user}', [AdminController::class, 'user_permission_remove'])->name('user:direct_permission_remove');
 
     Route::get('/admin/module_export', [AdminController::class, 'module_export'])->name('admin:module_export');
+    Route::get('/performance/target/{user}', [PerformanceController::class, 'target'])->name('performance:target');
 
 // });
 

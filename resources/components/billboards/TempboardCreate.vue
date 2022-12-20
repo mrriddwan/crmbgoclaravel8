@@ -80,25 +80,16 @@
                         >
                     </div>
                     <div class="inline-block w-full">
-                        <div class="">
-                            <select
-                                class="text-center overflow-y block mt-1 w-full rounded-md border-gray-500 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                                v-model="form.contact_id"
-                                @change="getContacts"
-                            >
-                                <option disabled value="">
-                                    Please select one
-                                </option>
-                                <option
-                                    class=""
-                                    v-for="contact in contacts"
-                                    :key="contact.id"
-                                    :value="contact.id"
-                                >
-                                    {{ contact.name }}
-                                </option>
-                            </select>
-                        </div>
+                        <v-select
+                            label="name"
+                            :options="contacts"
+                            class="form_company"
+                            :reduce="(name) => name.id"
+                            v-model="form.contact_id"
+                            placeholder="Search & select company"
+                            @search="findContacts"
+                            :filterable="false"
+                        ></v-select>
                     </div>
 
                     <div class="inline-block w-full mt-2">
@@ -332,7 +323,7 @@ export default {
     },
     mounted() {
         this.getUsers();
-        this.getContacts();
+        // this.getContacts();
     },
     methods: {
         async createTempboard() {
@@ -397,6 +388,28 @@ export default {
                     console.log(error);
                 });
         },
+
+        findContacts(search, loading) {
+            if (search.length) {
+                loading(true);
+                this.searchContact(loading, search, this);
+            }
+        },
+
+        searchContact: _.debounce((loading, search, vm) => {
+            axios.get("/api/contacts/list?" + "q=" + search).then((res) => {
+                vm.contacts = res.data.data;
+                loading(false);
+            });
+        }, 350),
     },
 };
 </script>
+<style>
+.form_company {
+    background-color: rgb(255, 255, 255);
+    border-radius: 0.375rem;
+    border: 2px;
+    border-color: black;
+}
+</style>

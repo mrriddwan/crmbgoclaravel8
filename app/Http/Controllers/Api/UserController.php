@@ -38,9 +38,8 @@ class UserController extends Controller
                 )
                 ->get();
         }])
-            ->whereKeyNot(1)
-            ->orderBy('name')
             ->select('id', 'name', 'password', 'email')
+            ->orderBy('name')
             ->get();
 
         return response()->json([

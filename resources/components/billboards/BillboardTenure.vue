@@ -24,7 +24,6 @@
                     class="inline-block align-middle"
                 >
                     <div class="grid grid-cols-1 items-center text-center">
-
                         <div class="grid grid-cols-2">
                             <div class="grid grid-cols-1">
                                 <div class="inline-block w-full mt-2">
@@ -41,9 +40,7 @@
                                             <input
                                                 type="text"
                                                 class="text-center w-20 inline-block mt-1 rounded-md border-gray-500 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                                                v-model="
-                                                    billboard.site_id1
-                                                "
+                                                v-model="billboard.site_id1"
                                             />
                                         </div>
                                         <div class="pt-2 mx-2">
@@ -53,9 +50,7 @@
                                             <input
                                                 type="text"
                                                 class="text-center w-20 inline-block mt-1 rounded-md border-gray-500 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                                                v-model="
-                                                    billboard.site_id2
-                                                "
+                                                v-model="billboard.site_id2"
                                             />
                                         </div>
                                     </div>
@@ -77,9 +72,9 @@
                         </div>
 
                         <div
-                            class="grid grid-cols-2 w-auto items-center py-2 px-2"
+                            class="grid grid-cols-5 w-auto items-left py-2 px-2"
                         >
-                            <label class="mx-2"
+                            <label class="mx-2 py-3"
                                 >Location
                                 <p class="inline text-red-600 text-lg">
                                     *
@@ -87,7 +82,7 @@
                             >
                             <input
                                 type="text"
-                                class="inline-block text-center items-left mt-1 mx-2 rounded-md border-gray-500 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                class="inline-block col-span-4 text-center items-left mt-1 mx-2 rounded-md border-gray-500 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                                 v-model="billboard.bboard_location"
                             />
                         </div>
@@ -116,7 +111,11 @@
                                             </p>
                                         </div>
                                         <div class="pt-2 mx-2 py-2">
-                                            <p class="inline-block uppercase text-sm align-bottom">X</p>
+                                            <p
+                                                class="inline-block uppercase text-sm align-bottom"
+                                            >
+                                                X
+                                            </p>
                                         </div>
                                         <div class="mx-2">
                                             <input
@@ -158,7 +157,7 @@
             </div>
             <div class="text-center">
                 <h3
-                    class="items-center text-center text-white font-extrabold font-mono text-4xl uppercase bg-blue-900 px-2 py-2 rounded-md"
+                    class="items-center text-center text-white font-extrabold font-mono text-4xl uppercase bg-blue-900 px-10 py-2 rounded-md"
                 >
                     Create Tenure
                 </h3>
@@ -166,9 +165,9 @@
                     @submit.prevent="createTenure"
                     class="inline-block align-middle"
                 >
-                    <div class="grid grid-cols-1 items-center text-center">
+                    <div class="grid grid-cols-1 items-center text-left">
                         <div
-                            class="grid grid-cols-2 w-auto items-center py-2 px-2"
+                            class="grid grid-cols-5 w-auto items-center py-2 px-2"
                         >
                             <div class="inline-block">
                                 <label class=""
@@ -178,30 +177,28 @@
                                     </p></label
                                 >
                             </div>
-                            <div class="flex">
-                                <div class="">
-                                    <select
-                                        class="w-max rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                                        v-model="form2.user_id"
-                                        @change="getUsers"
-                                    >
-                                        <option disabled value="">
-                                            Please select user
-                                        </option>
+                            <div class="flex col-span-4">
+                                <select
+                                    class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                    v-model="form2.user_id"
+                                    @change="getUsers"
+                                >
+                                    <option disabled value="">
+                                        Please select user
+                                    </option>
 
-                                        <option
-                                            v-for="user in users"
-                                            :key="user.id"
-                                            :value="user.id"
-                                        >
-                                            {{ user.name }}
-                                        </option>
-                                    </select>
-                                </div>
+                                    <option
+                                        v-for="user in users"
+                                        :key="user.id"
+                                        :value="user.id"
+                                    >
+                                        {{ user.name }}
+                                    </option>
+                                </select>
                             </div>
                         </div>
 
-                        <div class="grid grid-cols-2 items-center py-2 px-2">
+                        <div class="grid grid-cols-5 items-center py-2 px-2">
                             <div class="inline-block">
                                 <label class=""
                                     >Contact
@@ -210,38 +207,30 @@
                                     </p></label
                                 >
                             </div>
-                            <div class="flex">
-                                <div class="">
-                                    <select
-                                        class="overflow-y block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                                        v-model="form2.contact_id"
-                                        @change="getContacts"
-                                    >
-                                        <option disabled value="">
-                                            Please select one
-                                        </option>
-                                        <option
-                                            class=""
-                                            v-for="contact in contacts"
-                                            :key="contact.id"
-                                            :value="contact.id"
-                                        >
-                                            {{ contact.name }}
-                                        </option>
-                                    </select>
-                                </div>
+
+                            <div class="form-group col-span-4">
+                                <v-select
+                                    label="name"
+                                    :options="contacts"
+                                    class="form_company"
+                                    :reduce="(name) => name.id"
+                                    v-model="form2.contact_id"
+                                    placeholder="Search & select company"
+                                    @search="findContacts"
+                                    :filterable="false"
+                                ></v-select>
                             </div>
                         </div>
                         <div
-                            class="grid grid-cols-2 w-auto items-center py-2 px-2"
+                            class="grid grid-cols-5 w-auto items-center text-left py-2 px-2"
                         >
-                            <label class="mx-2"
+                            <label class="mr-2"
                                 >Start Date
                                 <p class="inline text-red-600 text-lg">
                                     *
                                 </p></label
                             >
-                            <div class="w-max">
+                            <div class="w-full col-span-4">
                                 <VueDatePicker
                                     v-model="form2.tenure_startdate"
                                     showNowButton
@@ -251,15 +240,15 @@
                             </div>
                         </div>
                         <div
-                            class="grid grid-cols-2 w-auto items-center py-2 px-2"
+                            class="grid grid-cols-5 w-auto items-center text-left py-2 px-2"
                         >
-                            <label class="mx-2"
+                            <label class="mr-2"
                                 >End Date
                                 <p class="inline text-red-600 text-lg">
                                     *
                                 </p></label
                             >
-                            <div class="w-max">
+                            <div class="w-full col-span-4">
                                 <VueDatePicker
                                     v-model="form2.tenure_enddate"
                                     showNowButton
@@ -427,9 +416,23 @@ export default {
     mounted() {
         this.getBillboard();
         this.getUsers();
-        this.getContacts();
+        // this.getContacts();
     },
     methods: {
+        findContacts(search, loading) {
+            if (search.length) {
+                loading(true);
+                this.searchContact(loading, search, this);
+            }
+        },
+
+        searchContact: _.debounce((loading, search, vm) => {
+            axios.get("/api/contacts/list?" + "q=" + search).then((res) => {
+                vm.contacts = res.data.data;
+                loading(false);
+            });
+        }, 350),
+
         async getBillboard() {
             await axios
                 .get("/api/billboards/info/" + this.$route.params.id)
@@ -537,3 +540,11 @@ export default {
     },
 };
 </script>
+
+<style>
+.form_company {
+    background-color: rgb(255, 255, 255);
+    border-radius: 0.375rem;
+    text-align: left;
+}
+</style>

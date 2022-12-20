@@ -36,7 +36,7 @@
                             <p class="inline text-red-600 text-lg">*</p></label
                         >
                         <select
-                            class="block mt-1 w-full  rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                            class="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                             v-model="tracking.user_id"
                             @change="getUsers"
                         >
@@ -55,15 +55,18 @@
                             >Company
                             <p class="inline text-red-600 text-lg">*</p></label
                         >
-                        <v-select
-                            id="company_id"
-                            label="name"
-                            :options="contacts"
-                            class="block mt-1  w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                            :reduce="(name) => name.id"
-                            v-model="tracking.company_id"
-                            placeholder="Select company"
-                        ></v-select>
+                        <div class="">
+                            <v-select
+                                label="name"
+                                :options="contacts"
+                                class="form_company"
+                                :reduce="(name) => name.id"
+                                v-model="tracking.company_id"
+                                placeholder="Search & select company"
+                                @search="findContacts"
+                                :filterable="false"
+                            ></v-select>
+                        </div>
                         <!-- <select
                             class=" overflow-y block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                             v-model="tracking.company_id"
@@ -87,7 +90,7 @@
                             <p class="inline text-red-600 text-lg">*</p></label
                         >
                         <select
-                            class="block mt-1  w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                            class="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                             v-model="tracking.contact_category_id"
                             @change="getCategory"
                         >
@@ -108,7 +111,7 @@
                             <p class="inline text-red-600 text-lg">*</p></label
                         >
                         <select
-                            class="block mt-1  w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                            class="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                             v-model="tracking.division_id"
                             @change="getDivisions"
                         >
@@ -240,7 +243,7 @@
                                 disabled
                                 maxlength="800"
                                 type="number"
-                                class="bg-slate-500  form-control block px-3 py-1.5 text-base font-normal text-gray-700 bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                                class="bg-slate-500 form-control block px-3 py-1.5 text-base font-normal text-gray-700 bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                                 v-model="tracking.art_frequency"
                                 placeholder="eg: 6"
                             />
@@ -262,7 +265,7 @@
                             <input
                                 maxlength="800"
                                 type="number"
-                                class=" form-control block px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                                class="form-control block px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                                 v-model="tracking.general_reach"
                                 placeholder="eg: 300 000"
                             />
@@ -290,7 +293,7 @@
                             />
                             <select
                                 v-model="tenure_length"
-                                class="w-max  overflow-y block mt-1 rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                class="w-max overflow-y block mt-1 rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                             >
                                 <option value="day">Day(s)</option>
                                 <option value="month">Month(s)</option>
@@ -407,7 +410,7 @@ export default {
             categories: [],
             contacts: [],
             divisions: [],
-            tenure_length: "day",
+            tenure_length: "month",
             errors: "",
         };
     },
@@ -423,14 +426,28 @@ export default {
     created() {},
 
     methods: {
+        findContacts(search, loading) {
+            if (search.length) {
+                loading(true);
+                this.searchContact(loading, search, this);
+            }
+        },
+
+        searchContact: _.debounce((loading, search, vm) => {
+            axios.get("/api/contacts/list?" + "q=" + search).then((res) => {
+                vm.contacts = res.data.data;
+                loading(false);
+            });
+        }, 350),
+
         async getTracking() {
             await axios
                 .get("/api/trackings/general/show/" + this.$route.params.id)
                 .then((res) => {
                     this.tracking = res.data.data;
-                    // this.tracking.general_tenure = (
-                    //     this.tracking.general_tenure / 30
-                    // ).toFixed(1);
+                    this.tracking.general_tenure = (
+                        this.tracking.general_tenure / 30
+                    ).toFixed(1);
                 })
                 .catch((error) => {
                     console.log(error);
@@ -540,3 +557,10 @@ export default {
     components: { GoBack },
 };
 </script>
+<style>
+.form_company {
+    background-color: rgb(255, 255, 255);
+    border-radius: 0.375rem;
+    font-size: medium;
+}
+</style>

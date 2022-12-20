@@ -1,13 +1,13 @@
 <template>
     <div
-        class="container w-max-10 align-center mx-auto h-max px-5 py-3"
+        class="container w-max-10 align-center mx-auto h-max px-5 pt-3 pb-60"
     >
         <div>
             <GoBack />
         </div>
 
         <div
-            class="items-center text-center text-white font-mono font-extrabold bg-orange-400 px-48 py-2 rounded-md"
+            class="items-center text-center text-white font-mono font-extrabold bg-orange-400 px-48 py-2 rounded-md uppercase"
         >
             <h1 class="px-2 py-1 bg-black-50">Edit Project</h1>
         </div>
@@ -88,13 +88,15 @@
                         >
                         <div class="h-max-10">
                             <v-select
-                            label="name"
-                            :options="contacts"
-                            class=""
-                            :reduce="(name) => name.id"
-                            v-model="project.contact_id"
-                            placeholder="Select company"
-                        ></v-select>
+                                label="name"
+                                :options="contacts"
+                                class="form_company"
+                                :reduce="(name) => name.id"
+                                v-model="project.contact_id"
+                                placeholder="Search & select company"
+                                @search="findContacts"
+                                :filterable="false"
+                            ></v-select>
                         </div>
                     </div>
 
@@ -158,6 +160,20 @@ export default {
     },
 
     methods: {
+        findContacts(search, loading) {
+            if (search.length) {
+                loading(true);
+                this.searchContact(loading, search, this);
+            }
+        },
+
+        searchContact: _.debounce((loading, search, vm) => {
+            axios.get("/api/contacts/list?" + "q=" + search).then((res) => {
+                vm.contacts = res.data.data;
+                loading(false);
+            });
+        }, 350),
+
         async updateProject() {
             try {
                 await axios.put(
@@ -215,3 +231,9 @@ export default {
     
 };
 </script>
+<style>
+.form_company {
+    background-color: rgb(255, 255, 255);
+    border-radius: 0.375rem;
+}
+</style>

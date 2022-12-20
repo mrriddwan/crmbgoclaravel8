@@ -114,8 +114,19 @@
     >
         <thead v-if="viewType !== 'year'" class="bg-blue-900">
             <tr>
-                <th v-if="viewType === 'week'" class="text-sm text-center text-amber-400">Date - Day</th>
-                <th v-if="viewType === 'month'" class="text-sm text-center text-amber-400">Week</th>
+                <th
+                    v-if="viewType === 'week'"
+                    class="text-sm text-center text-amber-400"
+                >
+                    Date - Day
+                </th>
+                <th
+                    v-if="viewType === 'month'"
+                    class="text-sm text-center text-amber-400"
+                >
+                    Week
+                </th>
+
                 <th
                     class="text-sm text-center"
                     v-for="action in actions"
@@ -123,6 +134,25 @@
                 >
                     <span class="text-amber-400 break-normal">
                         {{ action.name }}
+                    </span>
+                </th>
+            </tr>
+            <tr class="bg-slate-400">
+                <th class="text-sm text-center text-white">Target</th>
+                <th
+                    class="text-sm text-center"
+                    v-for="(action, index) in actions"
+                    :key="action.id"
+                >
+                    <span
+                        v-for="target in targets"
+                        :key="target.id"
+                        class="text-white break-normal font-bold"
+                    >
+                        <span v-if="target.action_name !== action.name"> </span>
+                        <span v-else>
+                            {{ target.action_target }}
+                        </span>
                     </span>
                 </th>
             </tr>
@@ -138,6 +168,25 @@
                 >
                     <span class="break-normal">
                         {{ action.name }}
+                    </span>
+                </th>
+            </tr>
+            <tr class="bg-slate-400">
+                <th class="text-sm text-center text-white">Target</th>
+                <th
+                    class="text-sm text-center"
+                    v-for="(action, index) in actions"
+                    :key="action.id"
+                >
+                    <span
+                        v-for="target in targets"
+                        :key="target.id"
+                        class="text-white break-normal font-bold"
+                    >
+                        <span v-if="target.action_name !== action.name"> </span>
+                        <span v-else>
+                            {{ target.action_target }}
+                        </span>
                     </span>
                 </th>
             </tr>
@@ -220,7 +269,7 @@
         >
             <tr>
                 <td>
-                    {{ months[moment(weeks.start_date).add(2, 'd').month()] }}
+                    {{ months[moment(weeks.start_date).add(2, "d").month()] }}
                 </td>
                 <td class="flex">
                     {{ showToday(weeks.start_date) }}
@@ -277,14 +326,17 @@ export default {
         ArrowTopRightOnSquareIcon,
     },
 
-    created() {},
-
-    mounted() {
-        this.getActions();
-        this.getUsers();
+    created() {
         this.selectedUser = document
             .querySelector('meta[name="user-id"]')
             .getAttribute("content");
+        // this.selectedUser = 3;
+    },
+
+    mounted() {
+        this.getPerformanceTarget();
+        this.getActions();
+        this.getUsers();
 
         this.getCurrentDate();
         this.getDates(this.currentDate);
@@ -312,8 +364,8 @@ export default {
         this.selectedEndDate = this.datesInWeek[6];
         // this.selectedEndDate = "2022-11-06"
         // console.log("selectedEndDate", this.selectedEndDate);
-        this.getUserPerformance();
 
+        this.getUserPerformance();
     },
 
     props: {},
@@ -336,6 +388,7 @@ export default {
             selectedUser: "",
             datesInWeek: [],
             dates_in_one_year: [],
+            targets: [],
             months: [
                 "January",
                 "February",
@@ -371,6 +424,7 @@ export default {
     watch: {
         selectedUser: function (value) {
             this.getUserPerformance();
+            this.getPerformanceTarget();
         },
 
         viewType: function (value) {
@@ -428,6 +482,17 @@ export default {
                 .get("/api/users/users_list")
                 .then((res) => {
                     this.users = res.data.data;
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        },
+
+        async getPerformanceTarget() {
+            await axios
+                .get("/api/performance/target/" + this.selectedUser)
+                .then((res) => {
+                    this.targets = res.data.data;
                 })
                 .catch((error) => {
                     console.log(error);

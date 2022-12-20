@@ -49,15 +49,18 @@
                                     *
                                 </p></label
                             >
-                            <v-select
-                                id="company_id"
-                                label="name"
-                                :options="contacts"
-                                class="select_company"
-                                :reduce="(name) => name.id"
-                                v-model="tguide.company_id"
-                                placeholder="Select company"
-                            ></v-select>
+                            <div class="">
+                                <v-select
+                                    label="name"
+                                    :options="contacts"
+                                    class="form_company"
+                                    :reduce="(name) => name.id"
+                                    v-model="tguide.company_id"
+                                    placeholder="Search & select company"
+                                    @search="findContacts"
+                                    :filterable="false"
+                                ></v-select>
+                            </div>
                         </div>
 
                         <div class="mt-2 grid grid-cols-2">
@@ -609,6 +612,20 @@ export default {
     created() {},
 
     methods: {
+        findContacts(search, loading) {
+            if (search.length) {
+                loading(true);
+                this.searchContact(loading, search, this);
+            }
+        },
+
+        searchContact: _.debounce((loading, search, vm) => {
+            axios.get("/api/contacts/list?" + "q=" + search).then((res) => {
+                vm.contacts = res.data.data;
+                loading(false);
+            });
+        }, 350),
+
         async getTrackingTravelGuide() {
             await axios
                 .get(
@@ -780,8 +797,9 @@ export default {
 };
 </script>
 <style>
-.select_company {
-    background: #f8fafc;
-    height: max-content;
+.form_company {
+    background-color: rgb(255, 255, 255);
+    border-radius: 0.375rem;
+    font-size: medium;
 }
 </style>
