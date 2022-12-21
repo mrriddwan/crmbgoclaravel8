@@ -137,12 +137,13 @@
                     </span>
                 </th>
             </tr>
-            <tr class="bg-slate-400">
+            <tr class="bg-slate-400" v-if="viewType === 'week'">
                 <th class="text-sm text-center text-white">Target</th>
                 <th
                     class="text-sm text-center"
                     v-for="(action, index) in actions"
                     :key="action.id"
+                    
                 >
                     <span
                         v-for="target in targets"
@@ -152,6 +153,26 @@
                         <span v-if="target.action_name !== action.name"> </span>
                         <span v-else>
                             {{ target.action_target }}
+                        </span>
+                    </span>
+                </th>
+            </tr>
+            <tr class="bg-slate-400" v-else>
+                <th class="text-sm text-center text-white">Target</th>
+                <th
+                    class="text-sm text-center"
+                    v-for="(action, index) in actions"
+                    :key="action.id"
+                    
+                >
+                    <span
+                        v-for="target in targets"
+                        :key="target.id"
+                        class="text-white break-normal font-bold"
+                    >
+                        <span v-if="target.action_name !== action.name"> </span>
+                        <span v-else>
+                            {{ target.action_target * 5 }}
                         </span>
                     </span>
                 </th>
@@ -172,7 +193,8 @@
                 </th>
             </tr>
             <tr class="bg-slate-400">
-                <th class="text-sm text-center text-white">Target</th>
+                <th v-if="viewType !== 'year'" class="text-sm text-center text-white">Target</th>
+                <th class="text-sm text-center text-white" colspan="2">Target</th>
                 <th
                     class="text-sm text-center"
                     v-for="(action, index) in actions"
@@ -185,7 +207,7 @@
                     >
                         <span v-if="target.action_name !== action.name"> </span>
                         <span v-else>
-                            {{ target.action_target }}
+                            {{ target.action_target * 5 }}
                         </span>
                     </span>
                 </th>

@@ -561,7 +561,14 @@
                         User Performance
                     </h2>
                 </div>
-                <div class="text-md text-center mt-3">Performance Target</div>
+                <div
+                    class="container h-max align-middle my-4 text-lg uppercase font-mono text-center"
+                >
+                    <span class="bg-slate-300 w-max py-2 px-2 rounded-md">
+                        <PencilSquareIcon class="inline h-6 w-6" />
+                        <p class="inline uppercase font-bold h-1">Target</p>
+                    </span>
+                </div>
                 <div class="text-md text-center">
                     <div class="form-group">
                         <select
@@ -596,14 +603,11 @@
                                 <th class="text-center py-2 px-2 border w-8">
                                     Edit
                                 </th>
-                                <th class="text-center py-2 px-2 border">
-                                    Save
-                                </th>
                             </tr>
                         </thead>
                         <tbody class="bg-emerald-100">
                             <tr
-                                v-for="action in todo_actions"
+                                v-for="(action, index) in todo_actions"
                                 :key="action.id"
                                 class="py-8"
                             >
@@ -612,18 +616,49 @@
                                 >
                                     {{ action.name }}
                                 </td>
-                                <td class="text-left py-2 px-3 border">10</td>
-                                <td class="text-center py-2 px-3 border">
-                                    <input
-                                        class="w-10 border-zinc-700 rounded-md text-center h-10"
-                                    />
+                                <td class="text-left py-2 px-3 border">
+                                    <span
+                                        v-for="target in targets"
+                                        :key="target.id"
+                                        class="text-amber-600 break-normal font-bold"
+                                    >
+                                        <span
+                                            v-if="
+                                                target.action_name !==
+                                                action.name
+                                            "
+                                        >
+                                        </span>
+                                        <span
+                                            v-else-if="
+                                                target.action_name ===
+                                                action.name
+                                            "
+                                        >
+                                            {{ target.action_target }}
+                                        </span>
+                                        <!-- <span v-else
+                                            ><input
+                                                class="w-10 border-zinc-700 rounded-md text-center h-10"
+                                        /></span> -->
+                                    </span>
                                 </td>
                                 <td class="text-center py-2 px-3 border">
-                                    <LockClosedIcon class="inline h-4 w-4" />
+                                    <input
+                                        type="number"
+                                        class="w-20 border-zinc-700 rounded-md text-center h-10"
+                                        v-model="user_action_target[index]"
+                                    />
                                 </td>
                             </tr>
                         </tbody>
                     </table>
+                    <button
+                        @click="updatePerformanceTarget"
+                        class="bg-green-400 py-2 px-2 text-center rounded-md mt-3"
+                    >
+                        <LockClosedIcon class="inline h-4 w-4" /> Target
+                    </button>
                 </div>
             </div>
 
@@ -1058,7 +1093,6 @@ import {
     LockClosedIcon,
     UserPlusIcon,
     ListBulletIcon,
-    Di
 } from "@heroicons/vue/24/solid";
 import axios from "axios";
 
@@ -1130,7 +1164,7 @@ export default {
             supervisor_errors: "",
             todo_actions: [],
             targets: [],
-
+            user_action_target: [],
             selectedUserPerformance: "",
         };
     },
@@ -1144,9 +1178,10 @@ export default {
         this.getUserCategoryList();
         this.getBenchmarks();
         this.getSupervisors();
-        this.selectedUserPerformance = document
-            .querySelector('meta[name="user-id"]')
-            .getAttribute("content");
+        this.selectedUserPerformance = 3;
+        // this.selectedUserPerformance = document
+        //     .querySelector('meta[name="user-id"]')
+        //     .getAttribute("content");
         this.getPerformanceTarget();
     },
 
@@ -1189,6 +1224,29 @@ export default {
                 .catch((error) => {
                     console.log(error);
                 });
+        },
+
+        async updatePerformanceTarget() {
+            //loop through the user_target array as target
+            // this.user_action_target.forEach(target => {
+            //     !target ? target = 0 : target
+            // })
+            // //if target is undefined/null
+            //     //replace it with 0
+            await axios
+                .put("/api/performance/target/update", {
+                    action_target: this.user_action_target,
+                    actions: this.actions,
+                    user_id: this.selectedUserPerformance,
+                })
+                .then((res) => {
+                    alert("User performance target has been updated");
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+
+            this.getPerformanceTarget();
         },
 
         toggleUserAddCategoryModal(user_cat_id) {

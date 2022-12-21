@@ -26,7 +26,7 @@ class CreatePerformanceTargetsTable extends Migration
                 ->on('actions')
                 ->onDelete('cascade');
             $table->integer('action_target');
-            $table->string('target_remark');
+            $table->string('target_remark')->nullable();
             $table->timestamps();
         });
     }

@@ -10,7 +10,6 @@ class PerformanceTarget extends Model
     use HasFactory;
     protected $fillable = [
         'user_id',
-        'users',
         'action_id',
         'action_target',
         'target_remark',

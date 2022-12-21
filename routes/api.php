@@ -139,7 +139,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
     Route::get('/admin/module_export', [AdminController::class, 'module_export'])->name('admin:module_export');
     Route::get('/performance/target/{user}', [PerformanceController::class, 'target'])->name('performance:target');
-
+    Route::put('/performance/target/update', [PerformanceController::class, 'target_update'])->name('performance:target_update');
 // });
 
 
