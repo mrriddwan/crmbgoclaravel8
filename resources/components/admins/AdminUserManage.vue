@@ -655,7 +655,7 @@
                     </table>
                     <button
                         @click="updatePerformanceTarget"
-                        class="bg-green-400 py-2 px-2 text-center rounded-md mt-3"
+                        class="bg-green-300 py-2 px-2 text-center rounded-md mt-3 uppercase text-sm font-bold"
                     >
                         <LockClosedIcon class="inline h-4 w-4" /> Target
                     </button>
@@ -1178,10 +1178,10 @@ export default {
         this.getUserCategoryList();
         this.getBenchmarks();
         this.getSupervisors();
-        this.selectedUserPerformance = 3;
-        // this.selectedUserPerformance = document
-        //     .querySelector('meta[name="user-id"]')
-        //     .getAttribute("content");
+        // this.selectedUserPerformance = 3;
+        this.selectedUserPerformance = document
+            .querySelector('meta[name="user-id"]')
+            .getAttribute("content");
         this.getPerformanceTarget();
     },
 

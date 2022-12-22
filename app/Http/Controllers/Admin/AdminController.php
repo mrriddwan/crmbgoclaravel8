@@ -703,31 +703,51 @@ class AdminController extends Controller
 
         else if ($export_type === 'forecast') {
 
-            $selectedProduct = request('selectedProduct');
+            $selectedForecastProduct = request('selectedForecastProduct');
             $selectedForecastType = request('selectedForecastType');
+            $selectedContactType = request('selectedContactType');
+            $selectedContactStatus = request('selectedContactStatus');
             $selectedUser = request('selectedUser');
             $filterResult = request('filterResult');
 
             $forecast = Forecast::select([
-                'forecasts.*',
-                'forecast_products.name as product_name',
+                'forecasts.id',
+                'forecasts.forecast_updatedate',
+                'forecasts.amount',
+                'forecasts.forecast_date',
+                'forecasts.result_id',
+                'forecasts.user_id',
+                'forecasts.contact_id',
+                'forecasts.product_id',
+                'forecasts.forecast_type_id',
+                'forecast_products.name as forecast_product',
                 'users.name as user_name',
                 'contacts.name as contact_name',
                 'forecast_results.name as result_name',
-                'forecast_types.name as forecast_type_name',
-                'contact_types.name as contact_type_name',
+                'forecast_types.name as forecast_type',
+                'contact_types.name as contact_type',
+                'contact_statuses.name as contact_status',
+                'forecasts.updated_at',
+                'forecasts.created_at',
             ])
                 ->join('forecast_products', 'forecasts.product_id', '=', 'forecast_products.id')
                 ->join('contacts', 'forecasts.contact_id', '=', 'contacts.id')
                 ->join('users', 'forecasts.user_id', '=', 'users.id')
                 ->join('forecast_types', 'forecasts.forecast_type_id', '=', 'forecast_types.id')
-                ->join('contact_types', 'forecasts.contact_type_id', '=', 'contact_types.id')
+                ->join('contact_types', 'contacts.type_id', '=', 'contact_types.id')
+                ->join('contact_statuses', 'contacts.status_id', '=', 'contact_statuses.id')
                 ->leftJoin('forecast_results', 'forecasts.result_id', '=', 'forecast_results.id')
                 ->when($selectedForecastType, function ($query) use ($selectedForecastType) {
                     $query->where('forecasts.forecast_type_id', $selectedForecastType);
                 })
-                ->when($selectedProduct, function ($query) use ($selectedProduct) {
-                    $query->where('forecasts.product_id', $selectedProduct);
+                ->when($selectedForecastProduct, function ($query) use ($selectedForecastProduct) {
+                    $query->where('forecasts.product_id', $selectedForecastProduct);
+                })
+                ->when($selectedContactType, function ($query) use ($selectedContactType) {
+                    $query->where('contacts.type_id', $selectedContactType);
+                })
+                ->when($selectedContactStatus, function ($query) use ($selectedContactStatus) {
+                    $query->where('contacts.status_id', $selectedContactStatus);
                 })
                 ->when($selectedUser, function ($query) use ($selectedUser) {
                     $query->where('forecasts.user_id', $selectedUser);

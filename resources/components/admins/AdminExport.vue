@@ -154,6 +154,130 @@
                 </div>
             </div>
         </div>
+        <div class="grid grid-cols-8">
+            <div>
+                <button
+                    class="uppercase bg-orange-400 px-2 py-2 rounded-md text-xs"
+                >
+                    Filters
+                </button>
+            </div>
+            <div class="bg-white border border-slate-600 rounded-sm"></div>
+            <div class="bg-white border border-slate-600 rounded-sm"></div>
+            <div class="bg-white border border-slate-600 rounded-sm"></div>
+            <div class="bg-white border border-slate-600 rounded-sm"></div>
+            <div class="bg-white border border-slate-600 rounded-sm"></div>
+            <div class="bg-white border border-slate-600 rounded-sm"></div>
+            <div class="bg-white border border-slate-600 rounded-sm"></div>
+        </div>
+
+        <div class="grid grid-cols-7 text-xs my-2 gap-2">
+            <div class="grid grid-cols-2 col-span-2">
+                <!-- Filter type select-->
+                <label class="mx-auto my-auto">Parameter</label>
+                <select class="form-control" v-model="parameter_type">
+                    <option class="text-xs" value="">Select parameter</option>
+                    <option class="text-xs" value="contact_type">
+                        Contact Type
+                    </option>
+                    <option class="text-xs" value="contact_status">
+                        Contact Status
+                    </option>
+                    <option class="text-xs" value="user">CS</option>
+                    <option class="text-xs" value="forecast_product">
+                        Forecast Product
+                    </option>
+                    <!-- <option class="text-xs">Amount</option> -->
+                    <option class="text-xs" value="forecast_date">
+                        Expected Forecast Date
+                    </option>
+                    <option class="text-xs" value="forecast_type">
+                        Forecast Type
+                    </option>
+                    <option class="text-xs" value="forecast_result">
+                        Result
+                    </option>
+                </select>
+            </div>
+            <div
+                class="grid grid-cols-2 col-span-4"
+                v-if="parameter_type !== 'forecast_date'"
+            >
+                <!-- Parameter filter select-->
+                <label class="mx-auto my-auto">Filter</label>
+                <select class="form-control">
+                    <option class="text-xs" value="">Select</option>
+                    <option
+                        v-if="parameter_type === 'contact_type'"
+                        v-for="contact_type in types.data"
+                        :key="contact_type.id"
+                        :value="contact_type.id"
+                    >
+                        {{ contact_type.name }}
+                    </option>
+                    <option
+                        v-if="parameter_type === 'contact_status'"
+                        v-for="status in statuses.data"
+                        :key="status.id"
+                        :value="status.id"
+                    >
+                        {{ status.name }}
+                    </option>
+                    <option
+                        v-if="parameter_type === 'user'"
+                        v-for="user in users.data"
+                        :key="user.id"
+                        :value="user.id"
+                    >
+                        {{ user.name }}
+                    </option>
+                    <option
+                        v-if="parameter_type === 'forecast_product'"
+                        v-for="product in products.data"
+                        :key="product.id"
+                        :value="product.id"
+                    >
+                        {{ product.name }}
+                    </option>
+                </select>
+            </div>
+            <div
+                v-else-if="parameter_type === 'forecast_date'"
+                class="grid grid-cols-6 gap-2 col-span-4 text-center"
+            >
+                <div class="px-1 my-auto mx-auto">
+                    <p>Start date</p>
+                </div>
+
+                <div class="px-2 col-span-2 w-full">
+                    <VueDatePicker
+                        v-model="forecast_startdate"
+                        showNowButton
+                        nowButtonLabel="Today"
+                        :enableTimePicker="false"
+                    />
+                </div>
+                <div class="px-1 my-auto mx-auto">
+                    <p>End date</p>
+                </div>
+
+                <div class="px-2 col-span-2 w-full">
+                    <VueDatePicker
+                        v-model="forecast_enddate"
+                        showNowButton
+                        nowButtonLabel="Today"
+                        :enableTimePicker="false"
+                    />
+                </div>
+            </div>
+            <div class="text-center">
+                <button
+                    class="uppercase bg-green-400 px-2 py-2 rounded-md text-xs mt-2 mx-auto"
+                >
+                    Add
+                </button>
+            </div>
+        </div>
 
         <div class="">
             <div
@@ -1210,16 +1334,16 @@
                                 </div>
                                 <div class="text-sm text-center h-6"></div>
                             </th>
-                            <th class="py-3 w-max">
-                                <div class="text-sm text-center h-6 w-max">
+                            <th class="py-3">
+                                <div class="text-sm text-center h-6">
                                     <a
                                         href="#"
                                         @click.prevent="
                                             change_sort('contact_name')
                                         "
-                                        class="text-white inline-flex"
+                                        class="text-white"
                                     >
-                                        Contact
+                                        Company
                                         <span
                                             v-if="
                                                 (!(sort_direction == 'asc') ||
@@ -1237,8 +1361,7 @@
                                                 sort_field == 'contact_name'
                                             "
                                             class="inline-block"
-                                            ><ArrowUpIcon
-                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                            ><ArrowUpIcon class="h-4 w-4"
                                         /></span>
                                         <span
                                             v-if="
@@ -1246,12 +1369,128 @@
                                                 sort_field == 'contact_name'
                                             "
                                             class="inline-block"
+                                            ><ArrowDownIcon class="h-4 w-4"
+                                        /></span>
+                                    </a>
+                                </div>
+                                <div class="text-sm text-center h-6"></div>
+                            </th>
+                            <th class="py-3">
+                                <div class="text-sm text-center h-max">
+                                    <a
+                                        href="#"
+                                        @click.prevent="
+                                            change_sort('contact_type')
+                                        "
+                                        class="text-white inline-flex"
+                                    >
+                                        Contact Type
+                                        <span
+                                            v-if="
+                                                (!(sort_direction == 'asc') ||
+                                                    !(
+                                                        sort_direction == 'desc'
+                                                    )) &&
+                                                !(sort_field == 'contact_type')
+                                            "
+                                            class="inline-block"
+                                            ><ArrowsUpDownIcon class="h-4 w-4"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'desc' &&
+                                                sort_field == 'contact_type'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowUpIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'asc' &&
+                                                sort_field == 'contact_type'
+                                            "
+                                            class="inline-block"
                                             ><ArrowDownIcon
                                                 class="h-4 w-4 text-amber-400 font-extrabold"
                                         /></span>
                                     </a>
                                 </div>
-                                <div class="text-sm text-center h-6"></div>
+                                <div class="text-sm text-center h-6">
+                                    <select
+                                        v-model="selectedContactType"
+                                        class="form-control form-control-sm w-max"
+                                    >
+                                        <option value="">All</option>
+                                        <option
+                                            v-for="contact_type in types.data"
+                                            :key="contact_type.id"
+                                            :value="contact_type.id"
+                                        >
+                                            {{ contact_type.name }}
+                                        </option>
+                                    </select>
+                                </div>
+                            </th>
+                            <th class="py-3">
+                                <div class="text-sm text-center h-max">
+                                    <a
+                                        href="#"
+                                        @click.prevent="
+                                            change_sort('contact_status')
+                                        "
+                                        class="text-white inline-flex"
+                                    >
+                                        Contact Status
+                                        <span
+                                            v-if="
+                                                (!(sort_direction == 'asc') ||
+                                                    !(
+                                                        sort_direction == 'desc'
+                                                    )) &&
+                                                !(
+                                                    sort_field ==
+                                                    'contact_status'
+                                                )
+                                            "
+                                            class="inline-block"
+                                            ><ArrowsUpDownIcon class="h-4 w-4"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'desc' &&
+                                                sort_field == 'contact_status'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowUpIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
+                                        <span
+                                            v-if="
+                                                sort_direction == 'asc' &&
+                                                sort_field == 'contact_status'
+                                            "
+                                            class="inline-block"
+                                            ><ArrowDownIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
+                                        /></span>
+                                    </a>
+                                </div>
+                                <div class="text-sm text-center h-6">
+                                    <select
+                                        v-model="selectedContactStatus"
+                                        class="form-control form-control-sm"
+                                    >
+                                        <option value="">All</option>
+                                        <option
+                                            v-for="status in statuses.data"
+                                            :key="status.id"
+                                            :value="status.id"
+                                        >
+                                            {{ status.name }}
+                                        </option>
+                                    </select>
+                                </div>
                             </th>
                             <th class="py-3">
                                 <div class="text-sm text-center h-6">
@@ -1320,7 +1559,7 @@
                                     <a
                                         href="#"
                                         @click.prevent="
-                                            change_sort('product_name')
+                                            change_sort('forecast_product')
                                         "
                                         class="text-white inline-flex"
                                     >
@@ -1331,7 +1570,10 @@
                                                     !(
                                                         sort_direction == 'desc'
                                                     )) &&
-                                                !(sort_field == 'product_name')
+                                                !(
+                                                    sort_field ==
+                                                    'forecast_product'
+                                                )
                                             "
                                             class="inline-block"
                                             ><ArrowsUpDownIcon class="h-4 w-4"
@@ -1339,7 +1581,7 @@
                                         <span
                                             v-if="
                                                 sort_direction == 'desc' &&
-                                                sort_field == 'product_name'
+                                                sort_field == 'forecast_product'
                                             "
                                             class="inline-block"
                                             ><ArrowUpIcon
@@ -1348,7 +1590,7 @@
                                         <span
                                             v-if="
                                                 sort_direction == 'asc' &&
-                                                sort_field == 'product_name'
+                                                sort_field == 'forecast_product'
                                             "
                                             class="inline-block"
                                             ><ArrowDownIcon
@@ -1358,7 +1600,7 @@
                                 </div>
                                 <div class="text-center h-6 w-20">
                                     <select
-                                        v-model="selectedProduct"
+                                        v-model="selectedForecastProduct"
                                         class="form-control form-control-sm text-xs"
                                     >
                                         <option class="text-xs" value="">
@@ -1464,7 +1706,7 @@
                                     <a
                                         href="#"
                                         @click.prevent="
-                                            change_sort('forecast_type_name')
+                                            change_sort('forecast_type')
                                         "
                                         class="text-white inline-flex"
                                     >
@@ -1475,10 +1717,7 @@
                                                     !(
                                                         sort_direction == 'desc'
                                                     )) &&
-                                                !(
-                                                    sort_field ==
-                                                    'forecast_type_name'
-                                                )
+                                                !(sort_field == 'forecast_type')
                                             "
                                             class="inline-block"
                                             ><ArrowsUpDownIcon class="h-4 w-4"
@@ -1486,8 +1725,7 @@
                                         <span
                                             v-if="
                                                 sort_direction == 'desc' &&
-                                                sort_field ==
-                                                    'forecast_type_name'
+                                                sort_field == 'forecast_type'
                                             "
                                             class="inline-block"
                                             ><ArrowUpIcon
@@ -1496,8 +1734,7 @@
                                         <span
                                             v-if="
                                                 sort_direction == 'asc' &&
-                                                sort_field ==
-                                                    'forecast_type_name'
+                                                sort_field == 'forecast_type'
                                             "
                                             class="inline-block"
                                             ><ArrowDownIcon
@@ -1506,21 +1743,19 @@
                                     </a>
                                 </div>
                                 <div class="text-sm text-center h-6">
-                                    <div class="text-sm text-center h-6">
-                                        <select
-                                            v-model="selectedForecastType"
-                                            class="form-control form-control-sm w-max"
+                                    <select
+                                        v-model="selectedForecastType"
+                                        class="form-control form-control-sm w-max"
+                                    >
+                                        <option value="">All</option>
+                                        <option
+                                            v-for="forecast_type in forecast_types.data"
+                                            :key="forecast_type.id"
+                                            :value="forecast_type.id"
                                         >
-                                            <option value="">All</option>
-                                            <option
-                                                v-for="forecast_type in forecast_types.data"
-                                                :key="forecast_type.id"
-                                                :value="forecast_type.id"
-                                            >
-                                                {{ forecast_type.name }}
-                                            </option>
-                                        </select>
-                                    </div>
+                                            {{ forecast_type.name }}
+                                        </option>
+                                    </select>
                                 </div>
                             </th>
                             <th class="py-3">
@@ -1528,7 +1763,7 @@
                                     <a
                                         href="#"
                                         @click.prevent="
-                                            change_sort('forecast_result')
+                                            change_sort('result_name')
                                         "
                                         class="text-white inline-flex"
                                     >
@@ -1539,10 +1774,7 @@
                                                     !(
                                                         sort_direction == 'desc'
                                                     )) &&
-                                                !(
-                                                    sort_field ==
-                                                    'forecast_result'
-                                                )
+                                                !(sort_field == 'result_name')
                                             "
                                             class="inline-block"
                                             ><ArrowsUpDownIcon class="h-4 w-4"
@@ -1550,7 +1782,7 @@
                                         <span
                                             v-if="
                                                 sort_direction == 'desc' &&
-                                                sort_field == 'forecast_result'
+                                                sort_field == 'result_name'
                                             "
                                             class="inline-block"
                                             ><ArrowUpIcon
@@ -1559,7 +1791,7 @@
                                         <span
                                             v-if="
                                                 sort_direction == 'asc' &&
-                                                sort_field == 'forecast_result'
+                                                sort_field == 'result_name'
                                             "
                                             class="inline-block"
                                             ><ArrowDownIcon
@@ -1617,9 +1849,13 @@
                                     }}</a>
                                 </router-link>
                             </td>
+                            <td class="text-xs">{{ forecast.contact_type }}</td>
+                            <td class="text-xs">
+                                {{ forecast.contact_status }}
+                            </td>
                             <td class="text-xs">{{ forecast.user_name }}</td>
                             <td class="text-xs w-max">
-                                {{ forecast.product_name }}
+                                {{ forecast.forecast_product }}
                             </td>
                             <td class="text-xs">
                                 <p class="inline mr-1">RM</p>
@@ -1629,7 +1865,7 @@
                                 {{ showToday(forecast.forecast_date) }}
                             </td>
                             <td class="text-xs">
-                                {{ forecast.forecast_type_name }}
+                                {{ forecast.forecast_type }}
                             </td>
                             <td class="text-center align-middle">
                                 <span v-if="forecast.result_name">
@@ -2010,6 +2246,7 @@
 import LaravelVuePagination from "laravel-vue-pagination";
 import axios from "axios";
 import moment from "moment";
+import { VueDatePicker } from "@vuepic/vue-datepicker";
 
 import {
     PencilSquareIcon,
@@ -2039,12 +2276,13 @@ export default {
         QuestionMarkCircleIcon,
         ArrowDownOnSquareIcon,
         ExclamationTriangleIcon,
+        VueDatePicker,
     },
 
     mounted() {
-        // this.selectedUser = document
-        //     .querySelector('meta[name="user-id"]')
-        //     .getAttribute("content");
+        this.selectedUser = document
+            .querySelector('meta[name="user-id"]')
+            .getAttribute("content");
         this.getUsers();
         //contact
         this.getIndustries();
@@ -2062,7 +2300,7 @@ export default {
 
         //tempboard
 
-        // this.getModule();
+        this.getModule();
     },
     data() {
         return {
@@ -2082,8 +2320,8 @@ export default {
             forecast_types: [],
             results: [],
 
-            export_type: "",
-            import_export: "",
+            export_type: "forecast",
+            import_export: "export",
             import_type: "",
             excel: "",
             new_search: false,
@@ -2098,9 +2336,13 @@ export default {
             selectedSource: "",
             selectedContact: "",
             selectedTask: "",
+            parameter_type: "",
+            forecast_startdate: "",
+            forecast_enddate: "",
 
-            selectedProduct: "",
+            selectedForecastProduct: "",
             selectedContactType: "",
+            selectedContactStatus: "",
             selectedForecastType: "",
             filterResult: "",
 
@@ -2265,10 +2507,13 @@ export default {
         selectedCategory: function (value) {
             this.new_search = true;
         },
-        selectedProduct: function (value) {
+        selectedForecastProduct: function (value) {
             this.new_search = true;
         },
         selectedContactType: function (value) {
+            this.new_search = true;
+        },
+        selectedContactStatus: function (value) {
             this.new_search = true;
         },
         selectedForecastType: function (value) {
@@ -2322,8 +2567,10 @@ export default {
                         this.selectedForecastType +
                         "&selectedContactType=" +
                         this.selectedContactType +
-                        "&selectedProduct=" +
-                        this.selectedProduct +
+                        "&selectedContactStatus=" +
+                        this.selectedContactStatus +
+                        "&selectedForecastProduct=" +
+                        this.selectedForecastProduct +
                         "&filterResult=" +
                         this.filterResult +
                         "&sort_direction=" +

@@ -642,10 +642,18 @@
                             <td class="text-xs text-left">
                                 {{ contact.created_at }}
                             </td>
-                            <td class="text-xs text-left">{{ contact.user.name }}</td>
-                            <td class="text-xs text-left">{{ contact.status.name }}</td>
-                            <td class="text-xs text-left">{{ contact.type.name }}</td>
-                            <td class="text-xs text-left">{{ contact.industry.name }}</td>
+                            <td class="text-xs text-left">
+                                {{ contact.user.name }}
+                            </td>
+                            <td class="text-xs text-left">
+                                {{ contact.status.name }}
+                            </td>
+                            <td class="text-xs text-left">
+                                {{ contact.type.name }}
+                            </td>
+                            <td class="text-xs text-left">
+                                {{ contact.industry.name }}
+                            </td>
                             <td
                                 v-if="
                                     check_id(contact.user.id) ||
@@ -683,9 +691,27 @@
                                 class="items-left text-xs text-center h-6 w-24"
                             >
                                 {{ contact.name }}
+
+                                <div
+                                    class="mt-5"
+                                    v-if="check_id(contact.user.id)"
+                                >
+                                    <router-link
+                                        :to="`/forecast/${contact.id}/create`"
+                                        class="ml-1px-2 py-1 items-center border text-xs text-right rounded-lg w-max text-lime-600"
+                                    >
+                                        <PlusIcon class="h-3 w-3 inline" />
+                                        <DocumentChartBarIcon
+                                            class="h-4 w-4 inline"
+                                    /></router-link>
+                                </div>
                             </td>
-                            <td class="text-xs text-left">{{ contact.category.name }}</td>
-                            <td class="text-xs text-left">{{ contact.address }}</td>
+                            <td class="text-xs text-left">
+                                {{ contact.category.name }}
+                            </td>
+                            <td class="text-xs text-left">
+                                {{ contact.address }}
+                            </td>
                             <!-- <td class="text-xs text-left">{{ check_if_subordinate(contact.user.id)['id'] }}</td> -->
                             <td class="text-xs text-left">
                                 {{ contact.remark }}
@@ -814,16 +840,17 @@ export default {
 
     mounted() {
         this.getStatus();
-        this.selectedUser = document
-            .querySelector('meta[name="user-id"]')
-            .getAttribute("content");
-        // this.selectedUser = 3;
+        // this.selectedUser = document
+        //     .querySelector('meta[name="user-id"]')
+        //     .getAttribute("content");
+        this.selectedUser = 3;
 
         this.getUsers();
         this.getIndustries();
         this.getTypes();
         this.getCategories();
         this.getContacts();
+        this.check_if_subordinate(3)
     },
     data() {
         return {
@@ -927,22 +954,22 @@ export default {
         },
 
         async check_if_subordinate(contact_user_id) {
-            let result = await axios
+            await axios
                 .post("/api/users/check_subordinate", {
                     contact_user_id: contact_user_id,
                 })
                 .then((response) => {
-                    return response.data.data;
+                    let result = response.data.data;
+                    if (result.id === 1) {
+                        // console.log("this is under the user")
+                        return true;
+                    } else {
+                        // console.log("this is not under the user")
+                        return false;
+                    }
                 });
-            console.log("result: ", result);
 
-            if (result.id === 1) {
-                // console.log("this is under the user")
-                return "true";
-            } else {
-                // console.log("this is not under the user")
-                return "false";
-            }
+            // console.log("result: ", result);
         },
 
         async getContacts(page = 1) {

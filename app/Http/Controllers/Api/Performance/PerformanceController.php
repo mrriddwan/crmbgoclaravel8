@@ -63,34 +63,5 @@ class PerformanceController extends Controller
                 'status' => true,
                 'message' => 'Successfully update user performance target',
             ]);
-
-        // foreach ($travel_guides as $tguide) {
-        //     //if the id exists, update the data
-        //     if(array_key_exists('id', $tguide)){
-        //         WipTravelGuide::where('id',$tguide['id'])->update([
-        //             'wip_package_name' => $tguide['wip_package_name'],
-        //             'wip_package_done' => $tguide['wip_package_done'],
-        //             'wip_package_date' => $tguide['wip_package_date'] ? Carbon::parse($tguide['wip_package_date'])->toDate() : null,
-        //             'wip_package_user_id' => $tguide['wip_package_user_id'] ? $tguide['wip_package_user_id'] : null,
-        //             'wip_package_remark' => $tguide['wip_package_remark'] ? $tguide['wip_package_remark'] : null,
-        //         ]);
-        //     } else {
-        //         //if the id does not exists, create the data
-        //         WipTravelGuide::create([
-        //             'tracking_tguide_id' => $tracking_id,
-        //             'wip_package_name' => $tguide['wip_package_name'],
-        //             'wip_package_done' => $tguide['wip_package_done'],
-        //             'wip_package_date' => $tguide['wip_package_date'] ? Carbon::parse($tguide['wip_package_date'])->toDate() : null,
-        //             'wip_package_user_id' => $tguide['wip_package_user_id'] ? $tguide['wip_package_user_id ']: null,
-        //             'wip_package_remark' => $tguide['wip_package_remark'] ? $tguide['wip_package_remark'] : null,
-        //         ]);
-        //     }
-        // };
-
-        // return response()->json([
-        //     'data' => $travel_guides,
-        //     'status' => true,
-        //     'message' => 'Successfully update package (wip) for travel guide',
-        // ]);
     }
 }
