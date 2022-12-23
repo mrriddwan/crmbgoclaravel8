@@ -101,11 +101,6 @@
                 <div class="border-gray-400 inline-block px-1 py-1">
                     <p for="paginate">Per page</p>
                     <input v-model.lazy="paginate" class="form-control" />
-                    <!-- <select v-model="paginate" class="form-control">
-                        <option value="10">10</option>
-                        <option value="50">50</option>
-                        <option value="100">100</option>
-                    </select> -->
                 </div>
 
                 <div class="inline-block ml-2">

@@ -357,6 +357,7 @@ class ForecastController extends Controller
 
 
             $forecast = Forecast::select(
+                'forecasts.created_at',
                 'forecasts.id',
                 'forecasts.contact_id',
                 'forecasts.forecast_date',

@@ -1,5 +1,5 @@
 <template>
-    <div class="container" id="index-container">
+    <div class="container pb-10" id="index-container">
         <h1
             class="items-center text-center text-5xl text-white font-extrabold px-2 rounded-md font-mono uppercase bg-blue-900"
         >
@@ -154,134 +154,10 @@
                 </div>
             </div>
         </div>
-        <div class="grid grid-cols-8">
-            <div>
-                <button
-                    class="uppercase bg-orange-400 px-2 py-2 rounded-md text-xs"
-                >
-                    Filters
-                </button>
-            </div>
-            <div class="bg-white border border-slate-600 rounded-sm"></div>
-            <div class="bg-white border border-slate-600 rounded-sm"></div>
-            <div class="bg-white border border-slate-600 rounded-sm"></div>
-            <div class="bg-white border border-slate-600 rounded-sm"></div>
-            <div class="bg-white border border-slate-600 rounded-sm"></div>
-            <div class="bg-white border border-slate-600 rounded-sm"></div>
-            <div class="bg-white border border-slate-600 rounded-sm"></div>
-        </div>
 
-        <div class="grid grid-cols-7 text-xs my-2 gap-2">
-            <div class="grid grid-cols-2 col-span-2">
-                <!-- Filter type select-->
-                <label class="mx-auto my-auto">Parameter</label>
-                <select class="form-control" v-model="parameter_type">
-                    <option class="text-xs" value="">Select parameter</option>
-                    <option class="text-xs" value="contact_type">
-                        Contact Type
-                    </option>
-                    <option class="text-xs" value="contact_status">
-                        Contact Status
-                    </option>
-                    <option class="text-xs" value="user">CS</option>
-                    <option class="text-xs" value="forecast_product">
-                        Forecast Product
-                    </option>
-                    <!-- <option class="text-xs">Amount</option> -->
-                    <option class="text-xs" value="forecast_date">
-                        Expected Forecast Date
-                    </option>
-                    <option class="text-xs" value="forecast_type">
-                        Forecast Type
-                    </option>
-                    <option class="text-xs" value="forecast_result">
-                        Result
-                    </option>
-                </select>
-            </div>
+        <div class="min-w-screen">
             <div
-                class="grid grid-cols-2 col-span-4"
-                v-if="parameter_type !== 'forecast_date'"
-            >
-                <!-- Parameter filter select-->
-                <label class="mx-auto my-auto">Filter</label>
-                <select class="form-control">
-                    <option class="text-xs" value="">Select</option>
-                    <option
-                        v-if="parameter_type === 'contact_type'"
-                        v-for="contact_type in types.data"
-                        :key="contact_type.id"
-                        :value="contact_type.id"
-                    >
-                        {{ contact_type.name }}
-                    </option>
-                    <option
-                        v-if="parameter_type === 'contact_status'"
-                        v-for="status in statuses.data"
-                        :key="status.id"
-                        :value="status.id"
-                    >
-                        {{ status.name }}
-                    </option>
-                    <option
-                        v-if="parameter_type === 'user'"
-                        v-for="user in users.data"
-                        :key="user.id"
-                        :value="user.id"
-                    >
-                        {{ user.name }}
-                    </option>
-                    <option
-                        v-if="parameter_type === 'forecast_product'"
-                        v-for="product in products.data"
-                        :key="product.id"
-                        :value="product.id"
-                    >
-                        {{ product.name }}
-                    </option>
-                </select>
-            </div>
-            <div
-                v-else-if="parameter_type === 'forecast_date'"
-                class="grid grid-cols-6 gap-2 col-span-4 text-center"
-            >
-                <div class="px-1 my-auto mx-auto">
-                    <p>Start date</p>
-                </div>
-
-                <div class="px-2 col-span-2 w-full">
-                    <VueDatePicker
-                        v-model="forecast_startdate"
-                        showNowButton
-                        nowButtonLabel="Today"
-                        :enableTimePicker="false"
-                    />
-                </div>
-                <div class="px-1 my-auto mx-auto">
-                    <p>End date</p>
-                </div>
-
-                <div class="px-2 col-span-2 w-full">
-                    <VueDatePicker
-                        v-model="forecast_enddate"
-                        showNowButton
-                        nowButtonLabel="Today"
-                        :enableTimePicker="false"
-                    />
-                </div>
-            </div>
-            <div class="text-center">
-                <button
-                    class="uppercase bg-green-400 px-2 py-2 rounded-md text-xs mt-2 mx-auto"
-                >
-                    Add
-                </button>
-            </div>
-        </div>
-
-        <div class="">
-            <div
-                class="table-wrp block max-h-screen overflow-y-auto overflow-x-auto"
+                class="table-wrp block min-h-screen max-h-screen overflow-y-auto overflow-x-auto"
             >
                 <!-- table for contacts-->
                 <table
@@ -1286,8 +1162,8 @@
                 >
                     <thead class="bg-slate-500 border-b sticky top-0 text-xs">
                         <tr>
-                            <th class="py-3 align-middle text-center">
-                                <div class="text-sm text-center h-6">
+                            <th class="align-middle text-center w-36">
+                                <div class="text-sm text-center">
                                     <a
                                         href="#"
                                         @click.prevent="
@@ -1332,16 +1208,15 @@
                                         /></span>
                                     </a>
                                 </div>
-                                <div class="text-sm text-center h-6"></div>
                             </th>
-                            <th class="py-3">
-                                <div class="text-sm text-center h-6">
+                            <th rowspan="2" class="align-middle text-center">
+                                <div class="text-sm text-center">
                                     <a
                                         href="#"
                                         @click.prevent="
                                             change_sort('contact_name')
                                         "
-                                        class="text-white"
+                                        class="text-white text-center"
                                     >
                                         Company
                                         <span
@@ -1361,7 +1236,8 @@
                                                 sort_field == 'contact_name'
                                             "
                                             class="inline-block"
-                                            ><ArrowUpIcon class="h-4 w-4"
+                                            ><ArrowUpIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
                                         /></span>
                                         <span
                                             v-if="
@@ -1369,13 +1245,13 @@
                                                 sort_field == 'contact_name'
                                             "
                                             class="inline-block"
-                                            ><ArrowDownIcon class="h-4 w-4"
+                                            ><ArrowDownIcon
+                                                class="h-4 w-4 text-amber-400 font-extrabold"
                                         /></span>
                                     </a>
                                 </div>
-                                <div class="text-sm text-center h-6"></div>
                             </th>
-                            <th class="py-3">
+                            <th class="">
                                 <div class="text-sm text-center h-max">
                                     <a
                                         href="#"
@@ -1416,23 +1292,8 @@
                                         /></span>
                                     </a>
                                 </div>
-                                <div class="text-sm text-center h-6">
-                                    <select
-                                        v-model="selectedContactType"
-                                        class="form-control form-control-sm w-max"
-                                    >
-                                        <option value="">All</option>
-                                        <option
-                                            v-for="contact_type in types.data"
-                                            :key="contact_type.id"
-                                            :value="contact_type.id"
-                                        >
-                                            {{ contact_type.name }}
-                                        </option>
-                                    </select>
-                                </div>
                             </th>
-                            <th class="py-3">
+                            <th class="">
                                 <div class="text-sm text-center h-max">
                                     <a
                                         href="#"
@@ -1476,24 +1337,9 @@
                                         /></span>
                                     </a>
                                 </div>
-                                <div class="text-sm text-center h-6">
-                                    <select
-                                        v-model="selectedContactStatus"
-                                        class="form-control form-control-sm"
-                                    >
-                                        <option value="">All</option>
-                                        <option
-                                            v-for="status in statuses.data"
-                                            :key="status.id"
-                                            :value="status.id"
-                                        >
-                                            {{ status.name }}
-                                        </option>
-                                    </select>
-                                </div>
                             </th>
-                            <th class="py-3">
-                                <div class="text-sm text-center h-6">
+                            <th class="">
+                                <div class="text-sm text-center">
                                     <a
                                         href="#"
                                         @click.prevent="
@@ -1533,28 +1379,8 @@
                                         /></span>
                                     </a>
                                 </div>
-                                <div
-                                    class="items-center text-xs text-center h-6 w-24"
-                                >
-                                    <select
-                                        v-model="selectedUser"
-                                        class="form-control form-control-sm text-xs"
-                                    >
-                                        <option class="text-xs" value="">
-                                            All
-                                        </option>
-                                        <option
-                                            class="text-xs"
-                                            v-for="user in users.data"
-                                            :key="user.id"
-                                            :value="user.id"
-                                        >
-                                            {{ user.name }}
-                                        </option>
-                                    </select>
-                                </div>
                             </th>
-                            <th class="py-3 w-max">
+                            <th class="w-max">
                                 <div class="text-sm text-center h-max">
                                     <a
                                         href="#"
@@ -1598,31 +1424,13 @@
                                         /></span>
                                     </a>
                                 </div>
-                                <div class="text-center h-6 w-20">
-                                    <select
-                                        v-model="selectedForecastProduct"
-                                        class="form-control form-control-sm text-xs"
-                                    >
-                                        <option class="text-xs" value="">
-                                            All
-                                        </option>
-                                        <option
-                                            class="text-xs"
-                                            v-for="product in products.data"
-                                            :key="product.id"
-                                            :value="product.id"
-                                        >
-                                            {{ product.name }}
-                                        </option>
-                                    </select>
-                                </div>
                             </th>
-                            <th class="py-3">
-                                <div class="text-sm text-center h-6">
+                            <th rowspan="2" class="align-middle text-center">
+                                <span class="text-sm text-center" rowspan="2">
                                     <a
                                         href="#"
                                         @click.prevent="change_sort('amount')"
-                                        class="text-white inline-flex"
+                                        class="text-white"
                                     >
                                         Amount
                                         <span
@@ -1655,11 +1463,10 @@
                                                 class="h-4 w-4 text-amber-400 font-extrabold"
                                         /></span>
                                     </a>
-                                </div>
-                                <div class="text-sm text-center h-6"></div>
+                                </span>
                             </th>
-                            <th class="py-3">
-                                <div class="text-sm text-center h-max">
+                            <th class="">
+                                <div class="text-sm text-center h-max w-36">
                                     <a
                                         href="#"
                                         @click.prevent="
@@ -1699,9 +1506,8 @@
                                         /></span>
                                     </a>
                                 </div>
-                                <div class="text-sm text-center h-6"></div>
                             </th>
-                            <th class="py-3">
+                            <th class="">
                                 <div class="text-sm text-center h-max">
                                     <a
                                         href="#"
@@ -1742,24 +1548,9 @@
                                         /></span>
                                     </a>
                                 </div>
-                                <div class="text-sm text-center h-6">
-                                    <select
-                                        v-model="selectedForecastType"
-                                        class="form-control form-control-sm w-max"
-                                    >
-                                        <option value="">All</option>
-                                        <option
-                                            v-for="forecast_type in forecast_types.data"
-                                            :key="forecast_type.id"
-                                            :value="forecast_type.id"
-                                        >
-                                            {{ forecast_type.name }}
-                                        </option>
-                                    </select>
-                                </div>
                             </th>
-                            <th class="py-3">
-                                <div class="text-sm text-center h-max">
+                            <th class="">
+                                <div class="text-sm text-center w-32 mx-auto">
                                     <a
                                         href="#"
                                         @click.prevent="
@@ -1799,25 +1590,145 @@
                                         /></span>
                                     </a>
                                 </div>
-                                <div class="text-sm text-center h-6">
-                                    <div class="text-sm text-center h-6">
-                                        <select
-                                            v-model="filterResult"
-                                            class="form-control form-control-sm w-max"
-                                        >
-                                            <option value="">All</option>
-                                            <option value="null">
-                                                No result
-                                            </option>
-                                            <option
-                                                v-for="result in results.data"
-                                                :key="result.id"
-                                                :value="result.id"
-                                            >
-                                                {{ result.name }}
-                                            </option>
-                                        </select>
-                                    </div>
+                            </th>
+                        </tr>
+                        <tr class="">
+                            <th class="grid grid-cols-1 gap-1">
+                                <!-- <div class="border-gray-800 flex px-1 py-1"> -->
+                                <div class="w-32">
+                                    <VueDatePicker
+                                        v-model="forecast_startupdate"
+                                        showNowButton
+                                        nowButtonLabel="Today"
+                                        :enableTimePicker="false"
+                                        class="date_picker"
+                                    />
+                                </div>
+
+                                <div class="text-white text-center">to</div>
+
+                                <!-- </div> -->
+                                <!-- <div class="border-gray-800 flex px-1 py-1"> -->
+                                <div class="w-32">
+                                    <VueDatePicker
+                                        v-model="forecast_endupdate"
+                                        showNowButton
+                                        nowButtonLabel="Today"
+                                        :enableTimePicker="false"
+                                        class="date_picker"
+                                    />
+                                </div>
+                                <!-- </div> -->
+                            </th>
+                            <!-- <th>Company</th> -->
+                            <th class="align-top">
+                                <div class="text-xs text-center w-20 align-top">
+                                    <v-select
+                                        label="name"
+                                        :options="types.data"
+                                        :reduce="(name) => name.id"
+                                        v-model="selectedContactType"
+                                        multiple
+                                        class="vue_select"
+                                    ></v-select>
+                                </div>
+                            </th>
+                            <th class="align-top">
+                                <div
+                                    class="text-xs text-center h-max w-20 align-top"
+                                >
+                                    <v-select
+                                        label="name"
+                                        :options="statuses.data"
+                                        :reduce="(name) => name.id"
+                                        v-model="selectedContactStatus"
+                                        multiple
+                                        class="vue_select"
+                                    ></v-select>
+                                </div>
+                            </th>
+                            <th class="align-top">
+                                <div
+                                    class="text-xs text-center h-max w-20 align-top"
+                                >
+                                    <v-select
+                                        label="name"
+                                        :options="users.data"
+                                        :reduce="(name) => name.id"
+                                        v-model="selectedForecastUsers"
+                                        multiple
+                                        class="vue_select"
+                                    ></v-select>
+                                </div>
+                            </th>
+                            <th class="align-top">
+                                <div
+                                    class="text-xs text-center h-max w-20 align-top"
+                                >
+                                    <v-select
+                                        label="name"
+                                        :options="products.data"
+                                        :reduce="(name) => name.id"
+                                        v-model="selectedForecastProduct"
+                                        multiple
+                                        class="vue_select"
+                                    ></v-select>
+                                </div>
+                            </th>
+                            <!-- <th>Amount</th> -->
+                            <th><th class="grid grid-cols-1 gap-1">
+                                <!-- <div class="border-gray-800 flex px-1 py-1"> -->
+                                <div class="w-32">
+                                    <VueDatePicker
+                                        v-model="forecast_startdate"
+                                        showNowButton
+                                        nowButtonLabel="Today"
+                                        :enableTimePicker="false"
+                                        class="date_picker"
+                                    />
+                                </div>
+
+                                <div class="text-white text-center">to</div>
+
+                                <!-- </div> -->
+                                <!-- <div class="border-gray-800 flex px-1 py-1"> -->
+                                <div class="w-32">
+                                    <VueDatePicker
+                                        v-model="forecast_enddate"
+                                        showNowButton
+                                        nowButtonLabel="Today"
+                                        :enableTimePicker="false"
+                                        class="date_picker"
+                                    />
+                                </div>
+                                <!-- </div> -->
+                            </th></th>
+                            <th class="align-top">
+                                <div
+                                    class="text-xs text-center h-max w-20 align-top"
+                                >
+                                    <v-select
+                                        label="name"
+                                        :options="forecast_types.data"
+                                        :reduce="(name) => name.id"
+                                        v-model="selectedForecastType"
+                                        multiple
+                                        class="vue_select"
+                                    ></v-select>
+                                </div>
+                            </th>
+                            <th class="align-top">
+                                <div
+                                    class="text-xs text-center h-max w-full align-top"
+                                >
+                                    <v-select
+                                        label="name"
+                                        :options="results.data"
+                                        :reduce="(name) => name.id"
+                                        v-model="filterResult"
+                                        multiple
+                                        class="vue_select"
+                                    ></v-select>
                                 </div>
                             </th>
                         </tr>
@@ -2280,9 +2191,11 @@ export default {
     },
 
     mounted() {
-        this.selectedUser = document
-            .querySelector('meta[name="user-id"]')
-            .getAttribute("content");
+        // this.selectedForecastUsers = [
+        //     document
+        //         .querySelector('meta[name="user-id"]')
+        //         .getAttribute("content"),
+        // ];
         this.getUsers();
         //contact
         this.getIndustries();
@@ -2337,14 +2250,32 @@ export default {
             selectedContact: "",
             selectedTask: "",
             parameter_type: "",
+
+            filter_forecast_startdate: "",
+            filter_forecast_enddate: "",
+            filter_forecast_startupdate: "",
+            filter_forecast_endupdate: "",
+
+            filter_contact_types: [],
+            filter_forecast_types: [],
+            filter_contact_statuses: [],
+            filter_forecast_products: [],
+            filter_forecast_users: [],
+            filter_forecast_results: [],
+            // display_contact_status: [],
+            // display_user: [],
+
+            selectedForecastProduct: [],
+            selectedContactType: [],
+            selectedContactStatus: [],
+            selectedForecastType: [],
+            selectedForecastUsers: [],
+            filterResult: [],
+
             forecast_startdate: "",
             forecast_enddate: "",
-
-            selectedForecastProduct: "",
-            selectedContactType: "",
-            selectedContactStatus: "",
-            selectedForecastType: "",
-            filterResult: "",
+            forecast_startupdate: "",
+            forecast_endupdate: "",
 
             sort_direction: "desc",
             sort_field: "created_at",
@@ -2507,24 +2438,50 @@ export default {
         selectedCategory: function (value) {
             this.new_search = true;
         },
+        selectedForecastUsers: function (value) {
+            this.filter_forecast_users = value;
+            this.new_search = true;
+        },
         selectedForecastProduct: function (value) {
+            this.filter_forecast_products = value;
             this.new_search = true;
         },
         selectedContactType: function (value) {
+            this.filter_contact_types = value;
             this.new_search = true;
         },
         selectedContactStatus: function (value) {
+            this.filter_contact_statuses = value;
             this.new_search = true;
         },
         selectedForecastType: function (value) {
+            this.filter_forecast_types = value;
             this.new_search = true;
         },
         filterResult: function (value) {
+            this.filter_forecast_results = value;
             this.new_search = true;
         },
         selectedSource: function (value) {
             this.new_search = true;
         },
+        forecast_startdate: function (value) {
+            this.filter_forecast_startdate = this.moment(value).format("YYYY-MM-DD");
+            this.new_search = true;
+        },
+        forecast_enddate: function (value) {
+            this.filter_forecast_enddate = this.moment(value).format("YYYY-MM-DD");
+            this.new_search = true;
+        },
+        forecast_startupdate: function (value) {
+            this.filter_forecast_startupdate = this.moment(value).format("YYYY-MM-DD");
+            this.new_search = true;
+        },
+        forecast_endupdate: function (value) {
+            this.filter_forecast_endupdate = this.moment(value).format("YYYY-MM-DD");
+            this.new_search = true;
+        },
+        
 
         export_type: function (value) {
             this.new_search = true;
@@ -2563,16 +2520,36 @@ export default {
                         this.selectedSource +
                         "&selectedTask=" +
                         this.selectedTask +
-                        "&selectedForecastType=" +
-                        this.selectedForecastType +
-                        "&selectedContactType=" +
-                        this.selectedContactType +
-                        "&selectedContactStatus=" +
-                        this.selectedContactStatus +
-                        "&selectedForecastProduct=" +
-                        this.selectedForecastProduct +
-                        "&filterResult=" +
-                        this.filterResult +
+                        // "&selectedForecastType=" +
+                        // this.selectedForecastType +
+                        // "&selectedContactType=" +
+                        // this.selectedContactType +
+                        "&filter_contact_types=" +
+                        this.filter_contact_types +
+                        "&filter_contact_statuses=" +
+                        this.filter_contact_statuses +
+                        "&filter_forecast_products=" +
+                        this.filter_forecast_products +
+                        "&filter_forecast_types=" +
+                        this.filter_forecast_types +
+                        "&filter_forecast_users=" +
+                        this.filter_forecast_users +
+                        "&filter_forecast_results=" +
+                        this.filter_forecast_results +
+                        // "&selectedContactStatus=" +
+                        // this.selectedContactStatus +
+                        "&filter_forecast_startdate=" +
+                        this.filter_forecast_startdate +
+                        "&filter_forecast_enddate=" +
+                        this.filter_forecast_enddate +
+                        "&filter_forecast_startupdate=" +
+                        this.filter_forecast_startupdate +
+                        "&filter_forecast_endupdate=" +
+                        this.filter_forecast_endupdate +
+                        // "&selectedForecastProduct=" +
+                        // this.selectedForecastProduct +
+                        // "&filterResult=" +
+                        // this.filterResult +
                         "&sort_direction=" +
                         this.sort_direction +
                         "&sort_field=" +
@@ -2753,4 +2730,15 @@ export default {
 
 <style scoped>
 @import "bootstrap/dist/css/bootstrap.min.css";
+
+.vue_select {
+    background-color: rgb(255, 255, 255);
+    border-radius: 0.375rem;
+    font-size: smaller;
+    font-style: normal;
+}
+
+.date_picker {
+    font-size: 5px;
+}
 </style>

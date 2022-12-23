@@ -703,14 +703,22 @@ class AdminController extends Controller
 
         else if ($export_type === 'forecast') {
 
-            $selectedForecastProduct = request('selectedForecastProduct');
-            $selectedForecastType = request('selectedForecastType');
-            $selectedContactType = request('selectedContactType');
-            $selectedContactStatus = request('selectedContactStatus');
-            $selectedUser = request('selectedUser');
-            $filterResult = request('filterResult');
+            
+            $filter_forecast_results = request('filter_forecast_results') ? explode(',',request('filter_forecast_results')) : [];
+            $filter_contact_types = request('filter_contact_types') ? explode(',',request('filter_contact_types')) : [];
+            $filter_contact_statuses = request('filter_contact_statuses') ? explode(',',request('filter_contact_statuses')) : [];
+            $filter_forecast_types = request('filter_forecast_types') ? explode(',',request('filter_forecast_types')) : [];
+            $filter_forecast_products = request('filter_forecast_products') ? explode(',',request('filter_forecast_products')) : [];
+            $filter_forecast_users = request('filter_forecast_users') ? explode(',',request('filter_forecast_users')) : [];
+
+            $filter_forecast_startdate = request('filter_forecast_startdate');
+            $filter_forecast_enddate = request('filter_forecast_enddate');
+            $filter_forecast_startupdate = request('filter_forecast_startupdate');
+            $filter_forecast_endupdate = request('filter_forecast_endupdate');
+            
 
             $forecast = Forecast::select([
+                'forecasts.created_at',
                 'forecasts.id',
                 'forecasts.forecast_updatedate',
                 'forecasts.amount',
@@ -737,27 +745,34 @@ class AdminController extends Controller
                 ->join('contact_types', 'contacts.type_id', '=', 'contact_types.id')
                 ->join('contact_statuses', 'contacts.status_id', '=', 'contact_statuses.id')
                 ->leftJoin('forecast_results', 'forecasts.result_id', '=', 'forecast_results.id')
-                ->when($selectedForecastType, function ($query) use ($selectedForecastType) {
-                    $query->where('forecasts.forecast_type_id', $selectedForecastType);
+                ->when($filter_forecast_types, function ($query) use ($filter_forecast_types) {
+                    $query->whereIn('forecasts.forecast_type_id', $filter_forecast_types);
                 })
-                ->when($selectedForecastProduct, function ($query) use ($selectedForecastProduct) {
-                    $query->where('forecasts.product_id', $selectedForecastProduct);
+                ->when($filter_forecast_products, function ($query) use ($filter_forecast_products) {
+                    $query->whereIn('forecasts.product_id', $filter_forecast_products);
                 })
-                ->when($selectedContactType, function ($query) use ($selectedContactType) {
-                    $query->where('contacts.type_id', $selectedContactType);
+                ->when($filter_contact_types, function ($query) use ($filter_contact_types) {
+                    $query->whereIn('contacts.type_id', $filter_contact_types);
                 })
-                ->when($selectedContactStatus, function ($query) use ($selectedContactStatus) {
-                    $query->where('contacts.status_id', $selectedContactStatus);
+                ->when($filter_contact_statuses, function ($query) use ($filter_contact_statuses) {
+                    $query->whereIn('contacts.status_id', $filter_contact_statuses);
                 })
-                ->when($selectedUser, function ($query) use ($selectedUser) {
-                    $query->where('forecasts.user_id', $selectedUser);
+                ->when($filter_forecast_users, function ($query) use ($filter_forecast_users) {
+                    $query->whereIn('forecasts.user_id', $filter_forecast_users);
                 })
-                ->when($filterResult, function ($query) use ($filterResult) {
-                    if ($filterResult === "null") {
-                        $query->whereNull('forecasts.result_id');
+                //if have id 100, query include whereNull
+                ->when($filter_forecast_results, function ($query) use ($filter_forecast_results) {
+                    if (in_array("100", $filter_forecast_results)) {
+                        $query->whereIn('forecasts.result_id', $filter_forecast_results)->orWhereNull('forecasts.result_id');
                     } else {
-                        $query->where('forecasts.result_id', $filterResult);
+                        $query->whereIn('forecasts.result_id', $filter_forecast_results);
                     }
+                })
+                ->when($filter_forecast_startdate && $filter_forecast_enddate, function ($query) use ($filter_forecast_startdate, $filter_forecast_enddate) {
+                    $query->whereBetween('forecasts.forecast_date', [$filter_forecast_startdate, $filter_forecast_enddate]);
+                })
+                ->when($filter_forecast_startupdate && $filter_forecast_endupdate, function ($query) use ($filter_forecast_startupdate, $filter_forecast_endupdate) {
+                    $query->whereBetween('forecasts.forecast_updatedate', [$filter_forecast_startupdate, $filter_forecast_endupdate]);
                 })
                 ->orderBy($sort_field, $sort_direction)
                 ->search(trim($search_term))
@@ -765,7 +780,7 @@ class AdminController extends Controller
 
             return response()->json([
                 'status' => true,
-                'message' => 'Contact retrieved',
+                'message' => 'Forecast retrieved',
                 'data' => $forecast,
             ]);
         }
