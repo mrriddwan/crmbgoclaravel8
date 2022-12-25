@@ -166,8 +166,11 @@ class TrackingGeneralController extends Controller
                     $query->where('tracking_generals.division_id', $selectedDivision);
                 })
                 ->orderBy($sort_field, $sort_direction)
+                ->orderBy('wip_generals.frequency_no')
+                ->orderBy('wip_generals.created_at')
                 ->search(trim($search_term))
-                ->paginate($paginate);
+                ->paginate($paginate)
+                ;
 
             return WIPGeneralResource::collection($wip_general);
         }

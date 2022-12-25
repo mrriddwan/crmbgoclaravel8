@@ -1,5 +1,5 @@
 <template>
-    <div class="container pb-10" id="index-container">
+    <div class="container min-w-96 min-h-96" id="index-container">
         <h1
             class="items-center text-center text-5xl text-white font-extrabold px-2 rounded-md font-mono uppercase bg-blue-900"
         >
@@ -57,20 +57,52 @@
                 </div>
             </form>
         </div>
-
+        <!-- v-if="is('supervisor | admin | super-admin')" -->
         <div class="flex" v-if="import_export === 'export'">
             <div class="py-2 flex">
                 Select module:
                 <select v-model="export_type" class="form-control">
                     <option value="">Pick one</option>
-                    <option value="contact">Contact</option>
-                    <option value="todo">To Do</option>
-                    <option value="forecast">Forecast</option>
-                    <option value="project">Project</option>
+                    <option
+                        value="contact"
+                        v-if="
+                            can('export admin contact') ||
+                            is('super-admin | admin')
+                        "
+                    >
+                        Contact
+                    </option>
+                    <option
+                        value="todo"
+                        v-if="
+                            can('export admin todo') ||
+                            is('super-admin | admin')
+                        "
+                    >
+                        To Do
+                    </option>
+                    <option
+                        value="forecast"
+                        v-if="
+                            can('export admin forecast') ||
+                            is('super-admin | admin')
+                        "
+                    >
+                        Forecast
+                    </option>
+                    <option
+                        value="project"
+                        v-if="
+                            can('export admin project') ||
+                            is('super-admin | admin')
+                        "
+                    >
+                        Project
+                    </option>
                 </select>
             </div>
 
-            <div class="py-2 mx-2" v-if="export_type">
+            <div class="py-2 mx-2 my-auto" v-if="export_type">
                 <button
                     @click="getModule"
                     class="inline-block items-center px-2 py-1 bg-slate-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
@@ -93,7 +125,7 @@
                 />
             </div>
 
-            <div class="py-2 mx-2">
+            <div class="py-2 mx-2 my-auto">
                 <div v-if="module_infos.length !== 0">
                     <div v-if="export_type === 'contact'">
                         <download-excel
@@ -101,7 +133,7 @@
                             :fields="contact_fields"
                             worksheet="Contacts"
                             name="Contacts.xls"
-                            class="btn btn-success btn-sm text-xs"
+                            class="btn btn-success btn-sm text-xs uppercase"
                         >
                             <ArrowTopRightOnSquareIcon
                                 class="h-5 w-5 mr-1 inline-block"
@@ -115,7 +147,7 @@
                             :fields="todo_fields"
                             worksheet="To Do"
                             name="To Dos.xls"
-                            class="btn btn-success btn-sm text-xs"
+                            class="btn btn-success btn-sm text-xs uppercase"
                         >
                             <ArrowTopRightOnSquareIcon
                                 class="h-5 w-5 mr-1 inline-block"
@@ -129,7 +161,7 @@
                             :fields="forecast_fields"
                             worksheet="Forecast"
                             name="Forecast.xls"
-                            class="btn btn-success btn-sm text-xs"
+                            class="btn btn-success btn-sm text-xs uppercase"
                         >
                             <ArrowTopRightOnSquareIcon
                                 class="h-5 w-5 mr-1 inline-block"
@@ -143,7 +175,7 @@
                             :fields="project_fields"
                             worksheet="Project"
                             name="Project.xls"
-                            class="btn btn-success btn-sm text-xs"
+                            class="btn btn-success btn-sm text-xs uppercase"
                         >
                             <ArrowTopRightOnSquareIcon
                                 class="h-5 w-5 mr-1 inline-block"
@@ -152,6 +184,14 @@
                         </download-excel>
                     </div>
                 </div>
+            </div>
+            <div class="w-max my-auto" v-if="export_type === 'forecast'">
+                <button
+                    @click="revealFilter"
+                    class="bg-blue-500 rounded-md uppercase text-xs px-2 py-2 font-bold font-mono text-white"
+                >
+                    Filter
+                </button>
             </div>
         </div>
 
@@ -1209,7 +1249,10 @@
                                     </a>
                                 </div>
                             </th>
-                            <th rowspan="2" class="align-middle text-center">
+                            <th
+                                :rowspan="showFilter ? 2 : 1"
+                                class="align-middle text-center"
+                            >
                                 <div class="text-sm text-center">
                                     <a
                                         href="#"
@@ -1425,8 +1468,11 @@
                                     </a>
                                 </div>
                             </th>
-                            <th rowspan="2" class="align-middle text-center">
-                                <span class="text-sm text-center" rowspan="2">
+                            <th
+                                :rowspan="showFilter ? 2 : 1"
+                                class="align-middle text-center"
+                            >
+                                <span class="text-sm text-center">
                                     <a
                                         href="#"
                                         @click.prevent="change_sort('amount')"
@@ -1592,10 +1638,10 @@
                                 </div>
                             </th>
                         </tr>
-                        <tr class="">
-                            <th class="grid grid-cols-1 gap-1">
+                        <tr class="" v-if="showFilter">
+                            <th class="grid grid-cols-1 gap-1 w-40">
                                 <!-- <div class="border-gray-800 flex px-1 py-1"> -->
-                                <div class="w-32">
+                                <div class="w-full">
                                     <VueDatePicker
                                         v-model="forecast_startupdate"
                                         showNowButton
@@ -1609,7 +1655,7 @@
 
                                 <!-- </div> -->
                                 <!-- <div class="border-gray-800 flex px-1 py-1"> -->
-                                <div class="w-32">
+                                <div class="w-full">
                                     <VueDatePicker
                                         v-model="forecast_endupdate"
                                         showNowButton
@@ -1621,8 +1667,10 @@
                                 <!-- </div> -->
                             </th>
                             <!-- <th>Company</th> -->
-                            <th class="align-top">
-                                <div class="text-xs text-center w-20 align-top">
+                            <th class="align-top w-20">
+                                <div
+                                    class="text-xs text-center w-full align-top"
+                                >
                                     <v-select
                                         label="name"
                                         :options="types.data"
@@ -1633,9 +1681,9 @@
                                     ></v-select>
                                 </div>
                             </th>
-                            <th class="align-top">
+                            <th class="align-top w-20">
                                 <div
-                                    class="text-xs text-center h-max w-20 align-top"
+                                    class="text-xs text-center h-max w-full align-top"
                                 >
                                     <v-select
                                         label="name"
@@ -1647,9 +1695,9 @@
                                     ></v-select>
                                 </div>
                             </th>
-                            <th class="align-top">
+                            <th class="align-top w-20">
                                 <div
-                                    class="text-xs text-center h-max w-20 align-top"
+                                    class="text-xs text-center h-max w-full align-top"
                                 >
                                     <v-select
                                         label="name"
@@ -1661,9 +1709,9 @@
                                     ></v-select>
                                 </div>
                             </th>
-                            <th class="align-top">
+                            <th class="align-top w-20">
                                 <div
-                                    class="text-xs text-center h-max w-20 align-top"
+                                    class="text-xs text-center h-max w-full align-top"
                                 >
                                     <v-select
                                         label="name"
@@ -1676,9 +1724,9 @@
                                 </div>
                             </th>
                             <!-- <th>Amount</th> -->
-                            <th><th class="grid grid-cols-1 gap-1">
+                            <th class="grid grid-cols-1 gap-1 w-40">
                                 <!-- <div class="border-gray-800 flex px-1 py-1"> -->
-                                <div class="w-32">
+                                <div class="w-full">
                                     <VueDatePicker
                                         v-model="forecast_startdate"
                                         showNowButton
@@ -1692,7 +1740,7 @@
 
                                 <!-- </div> -->
                                 <!-- <div class="border-gray-800 flex px-1 py-1"> -->
-                                <div class="w-32">
+                                <div class="w-full">
                                     <VueDatePicker
                                         v-model="forecast_enddate"
                                         showNowButton
@@ -1702,10 +1750,10 @@
                                     />
                                 </div>
                                 <!-- </div> -->
-                            </th></th>
-                            <th class="align-top">
+                            </th>
+                            <th class="align-top w-20">
                                 <div
-                                    class="text-xs text-center h-max w-20 align-top"
+                                    class="text-xs text-center h-max w-full align-top"
                                 >
                                     <v-select
                                         label="name"
@@ -2213,7 +2261,7 @@ export default {
 
         //tempboard
 
-        this.getModule();
+        // this.getModule();
     },
     data() {
         return {
@@ -2233,8 +2281,8 @@ export default {
             forecast_types: [],
             results: [],
 
-            export_type: "forecast",
-            import_export: "export",
+            export_type: "",
+            import_export: "",
             import_type: "",
             excel: "",
             new_search: false,
@@ -2271,6 +2319,7 @@ export default {
             selectedForecastType: [],
             selectedForecastUsers: [],
             filterResult: [],
+            showFilter: false,
 
             forecast_startdate: "",
             forecast_enddate: "",
@@ -2466,22 +2515,42 @@ export default {
             this.new_search = true;
         },
         forecast_startdate: function (value) {
-            this.filter_forecast_startdate = this.moment(value).format("YYYY-MM-DD");
+            if (value === null) {
+                this.filter_forecast_startdate = "";
+            } else {
+                this.filter_forecast_startdate =
+                    this.moment(value).format("YYYY-MM-DD");
+            }
+
             this.new_search = true;
         },
         forecast_enddate: function (value) {
-            this.filter_forecast_enddate = this.moment(value).format("YYYY-MM-DD");
+            if (value === null) {
+                this.filter_forecast_enddate = "";
+            } else {
+                this.filter_forecast_enddate =
+                    this.moment(value).format("YYYY-MM-DD");
+            }
             this.new_search = true;
         },
         forecast_startupdate: function (value) {
-            this.filter_forecast_startupdate = this.moment(value).format("YYYY-MM-DD");
+            if (value === null) {
+                this.filter_forecast_startupdate = "";
+            } else {
+                this.filter_forecast_startupdate =
+                    this.moment(value).format("YYYY-MM-DD");
+            }
             this.new_search = true;
         },
         forecast_endupdate: function (value) {
-            this.filter_forecast_endupdate = this.moment(value).format("YYYY-MM-DD");
+            if (value === null) {
+                this.filter_forecast_endupdate = "";
+            } else {
+                this.filter_forecast_endupdate =
+                    this.moment(value).format("YYYY-MM-DD");
+            }
             this.new_search = true;
         },
-        
 
         export_type: function (value) {
             this.new_search = true;
@@ -2520,10 +2589,6 @@ export default {
                         this.selectedSource +
                         "&selectedTask=" +
                         this.selectedTask +
-                        // "&selectedForecastType=" +
-                        // this.selectedForecastType +
-                        // "&selectedContactType=" +
-                        // this.selectedContactType +
                         "&filter_contact_types=" +
                         this.filter_contact_types +
                         "&filter_contact_statuses=" +
@@ -2536,9 +2601,6 @@ export default {
                         this.filter_forecast_users +
                         "&filter_forecast_results=" +
                         this.filter_forecast_results +
-                        // "&selectedContactStatus=" +
-                        // this.selectedContactStatus +
-                        "&filter_forecast_startdate=" +
                         this.filter_forecast_startdate +
                         "&filter_forecast_enddate=" +
                         this.filter_forecast_enddate +
@@ -2546,10 +2608,6 @@ export default {
                         this.filter_forecast_startupdate +
                         "&filter_forecast_endupdate=" +
                         this.filter_forecast_endupdate +
-                        // "&selectedForecastProduct=" +
-                        // this.selectedForecastProduct +
-                        // "&filterResult=" +
-                        // this.filterResult +
                         "&sort_direction=" +
                         this.sort_direction +
                         "&sort_field=" +
@@ -2570,6 +2628,10 @@ export default {
             const end = new Date(end_date);
 
             return moment(end - start).format("D");
+        },
+
+        revealFilter() {
+            this.showFilter = !this.showFilter;
         },
 
         getStatus() {

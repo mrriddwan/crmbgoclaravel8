@@ -243,21 +243,29 @@
                             </x-slot>
 
                             <x-slot name="content" class="">
+                                @can('view admin data')
                                 <x-nav-link class="w-full hover:bg-blue-300 hover:font-bold" :href="route('admin-data')" :active="request()->routeIs('admin-data')">
                                     {{ __('Data') }}
                                 </x-nav-link>
+                                @can
                                 <br>
+                                @can('view admin user manage')
                                 <x-nav-link class="w-full hover:bg-blue-300 hover:font-bold" :href="route('admin-management')" :active="request()->routeIs('admin-management')">
                                     {{ __('User Management') }}
                                 </x-nav-link>
+                                @endcan
                                 <br>
+                                @can('view admin user access')
                                 <x-nav-link class="w-full hover:bg-blue-300 hover:font-bold" :href="route('admin-access')" :active="request()->routeIs('admin-access')">
                                     {{ __('User Access') }}
                                 </x-nav-link>
+                                @endcan
                                 <br>
+                                @can('view admin export import')
                                 <x-nav-link class="w-full hover:bg-blue-300 hover:font-bold" :href="route('admin-export')" :active="request()->routeIs('admin-export')">
                                     {{ __('Export/Import') }}
                                 </x-nav-link>
+                                @endcan
                             </x-slot>
                         </x-dropdown>
                     </div>

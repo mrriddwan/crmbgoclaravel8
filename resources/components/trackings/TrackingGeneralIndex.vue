@@ -4926,9 +4926,9 @@ export default {
     },
 
     mounted() {
-        this.selectedUser = document
-            .querySelector('meta[name="user-id"]')
-            .getAttribute("content");
+        // this.selectedUser = document
+        //     .querySelector('meta[name="user-id"]')
+        //     .getAttribute("content");
         this.getTrackingGenerals();
         this.getUsers();
         this.getCategories();
@@ -4946,7 +4946,7 @@ export default {
             buffering: false,
             // general_remark_visibility: false,
             // general_remark: null,
-            view_type: "master",
+            view_type: "",
             selectedUser: "",
             selectedCategory: "",
             selectedResult: "",

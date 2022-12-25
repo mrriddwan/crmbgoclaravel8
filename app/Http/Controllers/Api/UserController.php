@@ -40,7 +40,9 @@ class UserController extends Controller
         }])
             ->select('id', 'name', 'password', 'email')
             ->orderBy('name')
-            ->get();
+            ->get()
+            ->makeVisible(['password']);
+            ;
 
         return response()->json([
             'data' => $user,
