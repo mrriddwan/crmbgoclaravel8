@@ -840,10 +840,10 @@ export default {
 
     mounted() {
         this.getStatus();
-        // this.selectedUser = document
-        //     .querySelector('meta[name="user-id"]')
-        //     .getAttribute("content");
-        this.selectedUser = 3;
+        this.selectedUser = document
+            .querySelector('meta[name="user-id"]')
+            .getAttribute("content");
+        // this.selectedUser = 3;
 
         this.getUsers();
         this.getIndustries();

@@ -247,7 +247,7 @@
                                 <x-nav-link class="w-full hover:bg-blue-300 hover:font-bold" :href="route('admin-data')" :active="request()->routeIs('admin-data')">
                                     {{ __('Data') }}
                                 </x-nav-link>
-                                @can
+                                @endcan
                                 <br>
                                 @can('view admin user manage')
                                 <x-nav-link class="w-full hover:bg-blue-300 hover:font-bold" :href="route('admin-management')" :active="request()->routeIs('admin-management')">
