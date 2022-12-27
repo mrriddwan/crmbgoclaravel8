@@ -5,6 +5,8 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
 // use App\Models\Admin\Permission;
+
+use App\Models\Admin\Announcement;
 use App\Models\ToDo\ToDo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -73,14 +75,13 @@ class User extends Authenticatable
         return $this->belongsTo(Billboard::class);
     }
 
-    // public function getAllPermissionsAttribute()
+    public function reminder()
+    {
+        return $this->hasMany(Announcement::class, 'to_user_id');
+    }
+
+    // public function announcement()
     // {
-    //     $permission = [];
-    //     foreach(Permission::all() as $permission) {
-    //         if(Auth::user()->can($permission->name)) {
-    //             $permission[] = $permission->name;
-    //         }
-    //     }
-    //     return $permission;
+    //     return collect(Announcement::where('message_type_id', 1));
     // }
 }

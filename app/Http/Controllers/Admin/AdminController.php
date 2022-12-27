@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Admin\Announcement;
 use App\Models\Admin\Permission;
 use App\Models\Admin\SvSbPivot;
 use App\Models\Contact\Contact;
@@ -703,19 +704,19 @@ class AdminController extends Controller
 
         else if ($export_type === 'forecast') {
 
-            
-            $filter_forecast_results = request('filter_forecast_results') ? explode(',',request('filter_forecast_results')) : [];
-            $filter_contact_types = request('filter_contact_types') ? explode(',',request('filter_contact_types')) : [];
-            $filter_contact_statuses = request('filter_contact_statuses') ? explode(',',request('filter_contact_statuses')) : [];
-            $filter_forecast_types = request('filter_forecast_types') ? explode(',',request('filter_forecast_types')) : [];
-            $filter_forecast_products = request('filter_forecast_products') ? explode(',',request('filter_forecast_products')) : [];
-            $filter_forecast_users = request('filter_forecast_users') ? explode(',',request('filter_forecast_users')) : [];
+
+            $filter_forecast_results = request('filter_forecast_results') ? explode(',', request('filter_forecast_results')) : [];
+            $filter_contact_types = request('filter_contact_types') ? explode(',', request('filter_contact_types')) : [];
+            $filter_contact_statuses = request('filter_contact_statuses') ? explode(',', request('filter_contact_statuses')) : [];
+            $filter_forecast_types = request('filter_forecast_types') ? explode(',', request('filter_forecast_types')) : [];
+            $filter_forecast_products = request('filter_forecast_products') ? explode(',', request('filter_forecast_products')) : [];
+            $filter_forecast_users = request('filter_forecast_users') ? explode(',', request('filter_forecast_users')) : [];
 
             $filter_forecast_startdate = request('filter_forecast_startdate');
             $filter_forecast_enddate = request('filter_forecast_enddate');
             $filter_forecast_startupdate = request('filter_forecast_startupdate');
             $filter_forecast_endupdate = request('filter_forecast_endupdate');
-            
+
 
             $forecast = Forecast::select([
                 'forecasts.created_at',
@@ -822,5 +823,74 @@ class AdminController extends Controller
                 'data' => $project,
             ]);
         }
+    }
+
+    public function announcement_reminder()
+    {
+        $announcement = Announcement::with('from_user', 'to_user')->get();
+
+        return response()->json([
+            'status' => true,
+            'message' => 'All announcement/reminder retrieved',
+            'data' => $announcement,
+        ]);
+    }
+
+    public function message(Request $request)
+    {
+        if($request->message_type_id === 2){
+            $request->validate([
+                'message' => ['required', 'string'],
+                'from_user_id' => ['required', 'integer'],
+                'to_user_id' => ['required'],
+                'message_type_id' => ['required', 'integer']
+            ], [
+                'message.required' => 'The message is required',
+                'from_user_id.required' => 'The sender user is required',
+                'message_type_id.required' => 'The message type is required',
+                'to_user_id.required' => 'The receiver user is required',
+            ]);
+        } else {
+            $request->validate([
+                'message' => ['required', 'string'],
+                'from_user_id' => ['required', 'integer'],
+                'message_type_id' => ['required', 'integer'],
+            ], [
+                'message.required' => 'The message is required',
+                'from_user_id.required' => 'The sender user is required',
+                'message_type_id.required' => 'The message type is required',
+            ]);
+        }
+        
+        $receiver_user_id = $request->to_user_id;
+
+        if (!$receiver_user_id) {
+            Announcement::create([
+                'message' => $request->message,
+                'from_user_id' => $request->from_user_id,
+                'message_type_id' => $request->message_type_id,
+                'to_user_id' => null,
+            ]);
+        } else {
+            foreach ($receiver_user_id as $user) {
+                Announcement::create([
+                    'message' => $request->message,
+                    'from_user_id' => $request->from_user_id,
+                    'message_type_id' => $request->message_type_id,
+                    'to_user_id' => $user ?? null,
+                ]);
+            }
+        }
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Successfully create announcement / task',
+        ]);
+    }
+
+    public function message_delete(Announcement $announcement)
+    {
+        $announcement->delete();
+        return response()->json('Announcement/reminder deleted.');
     }
 }

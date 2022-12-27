@@ -49,6 +49,7 @@ class DatabaseSeeder extends Seeder
             TrackingTGuideSeeder::class,
             WIPTGuideSeeder::class,
             PerformanceTargetSeeder::class,
+            AnnouncementSeeder::class,
         ]);
     }
 }

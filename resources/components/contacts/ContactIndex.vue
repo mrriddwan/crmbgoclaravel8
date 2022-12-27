@@ -687,11 +687,41 @@
                                 </div>
                             </td>
                             <td
+                                v-else-if="
+                                    check_if_subordinate(contact.user.id)
+                                "
+                                class="items-left text-xs text-left h-6 w-24"
+                            >
+                                <div>
+                                    <router-link
+                                        :to="`/contact/${contact.id}/info`"
+                                        custom
+                                        v-slot="{ navigate, href }"
+                                    >
+                                        <a
+                                            :href="href"
+                                            @click.stop="navigate"
+                                            >{{ contact.name }}</a
+                                        >
+                                    </router-link>
+                                </div>
+
+                                <div class="mt-5">
+                                    <router-link
+                                        :to="`/forecast/${contact.id}/create`"
+                                        class="ml-1px-2 py-1 items-center border text-xs text-right rounded-lg w-max text-lime-600"
+                                    >
+                                        <PlusIcon class="h-3 w-3 inline" />
+                                        <DocumentChartBarIcon
+                                            class="h-4 w-4 inline"
+                                    /></router-link>
+                                </div>
+                            </td>
+                            <td
                                 v-else
                                 class="items-left text-xs text-center h-6 w-24"
                             >
                                 {{ contact.name }}
-
                                 <div
                                     class="mt-5"
                                     v-if="check_id(contact.user.id)"
@@ -850,7 +880,7 @@ export default {
         this.getTypes();
         this.getCategories();
         this.getContacts();
-        this.check_if_subordinate(3)
+        // this.check_if_subordinate(3)
     },
     data() {
         return {
@@ -960,12 +990,12 @@ export default {
                 })
                 .then((response) => {
                     let result = response.data.data;
-                    if (result.id === 1) {
-                        // console.log("this is under the user")
-                        return true;
-                    } else {
-                        // console.log("this is not under the user")
+                    if (result.id !== 1) {
+                        console.log("this is NOT UNDER the user")
                         return false;
+                    } else {
+                        console.log("this is UNDER the user")
+                        return true;
                     }
                 });
 

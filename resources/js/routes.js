@@ -65,6 +65,10 @@ import MasterTravelGuideEdit from "../components/trackings/MasterTravelGuideEdit
 import TutorialContacts from "../components/tutorials/TutorialContacts.vue";
 import TutorialToDoFollowUps from "../components/tutorials/TutorialToDoFollowUps.vue";
 
+/**Tracking Travel Guide Imports */
+import AnnouncementIndex from "../components/admins/AnnouncementIndex.vue";
+import AnnouncementEdit from "../components/admins/AnnouncementEdit.vue";
+
 const routes = [
     /*                      
         test Routes                      
@@ -416,6 +420,23 @@ const routes = [
         name: "tutorial_todo_followup",
         component: TutorialToDoFollowUps,
     },
+
+         /*                                                  
+        Announcement Routes 
+    */
+
+        {
+            //Announcement Page
+            path: "/announcement/index",
+            name: "announcement_index",
+            component: AnnouncementIndex,
+        },
+        {
+            //Announcement Edit Page
+            path: "/announcement/edit",
+            name: "announcement_edit",
+            component: AnnouncementEdit,
+        },
 ];
 
 export default createRouter({

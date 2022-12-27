@@ -121,3 +121,11 @@ Route::get('/admin/user/access', function () {
 Route::get('/admin/export', function () {
     return view('admin_export');
 })->middleware(['auth'])->name('admin-export');
+
+Route::get('/announcement/index', function () {
+    return view('announcement');
+})->middleware(['auth'])->name('announcement-index');
+
+Route::get('/announcement/edit', function () {
+    return view('announcement_edit');
+})->middleware(['auth'])->name('announcement-edit');

@@ -1062,7 +1062,9 @@
                             <tr v-for="user in users">
                                 <td>{{ user.name }}</td>
                                 <td>{{ user.password }}</td>
-                                <td>{{ user.roles[0].name }}</td>
+                                <td>
+                                    {{ user.roles[0].name }}
+                                </td>
                                 <td>{{ user.email }}</td>
                             </tr>
                         </tbody>

@@ -140,6 +140,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     Route::get('/admin/module_export', [AdminController::class, 'module_export'])->name('admin:module_export');
     Route::get('/performance/target/{user}', [PerformanceController::class, 'target'])->name('performance:target');
     Route::put('/performance/target/update', [PerformanceController::class, 'target_update'])->name('performance:target_update');
+    Route::get('/admin/announcement_reminder', [AdminController::class, 'announcement_reminder'])->name('admin:announcement_reminder');
+    Route::post('/admin/announcement_reminder/message', [AdminController::class, 'message'])->name('admin:message');
+    Route::delete('/admin/announcement_reminder/delete/{announcement}', [AdminController::class, 'message_delete'])->name('admin:message');
 // });
 
 
@@ -194,6 +197,7 @@ Route::get('/users/manage_list', [UserController::class, 'manage_list'])->name('
 Route::get('/users/action', [UserController::class, 'action'])->name('user:action');
 Route::get('/users/performance', [UserController::class, 'performance'])->name('user:performance');
 Route::post('/users/check_subordinate', [UserController::class, 'check_subordinate'])->name('user:check_subordinate');
+Route::get('/users/home', [UserController::class, 'user_home'])->name('user:home');
 
 /*Incharge API*/
 Route::post('/incharges/store', [ContactInchargeController::class, 'store'])->name('incharge:store');
