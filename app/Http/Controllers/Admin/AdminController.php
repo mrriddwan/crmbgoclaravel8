@@ -373,7 +373,7 @@ class AdminController extends Controller
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
-            'password' => $request->password,
+            'password' => Hash::make($request->password),
             'email_password' => 'Unset yet'
         ]);
 
@@ -431,7 +431,7 @@ class AdminController extends Controller
             ]);
 
             $user->update([
-                'password' => $request->password,
+                'password' => Hash::make($request->password),
             ]);
         }
 
@@ -892,5 +892,18 @@ class AdminController extends Controller
     {
         $announcement->delete();
         return response()->json('Announcement/reminder deleted.');
+    }
+
+    public function announcement_reminder_info($announcement)
+    {
+        $info = Announcement::where('announcements.id', $announcement)
+            ->get();
+
+        return response()->json([
+
+            'status' => true,
+            'message' => 'Selected announcement/reminder retrieved',
+            'data' => $info,
+        ]);
     }
 }

@@ -26,7 +26,12 @@
                 <div class="mt-3 text-center font-extrabold">
                     <label>Announcement / Reminder </label>
                 </div>
-                <textarea cols="30" rows="6" class="form-control" v-model="form.message"/>
+                <textarea
+                    cols="30"
+                    rows="6"
+                    class="form-control"
+                    v-model="form.message"
+                />
                 <div class="mt-3">
                     <div>
                         <label class="mt-2">Message Type</label>
@@ -121,6 +126,7 @@
                             <div class="flex text-center">
                                 <button
                                     class="uppercase text-xs text-center bg-yellow-400 hover:bg-yellow-600 px-1 py-1 mr-1 rounded-md my-auto"
+                                    @click="anncReminderModalVisible(annc_reminder.id)"
                                 >
                                     <PencilSquareIcon
                                         class="h-4 w-4 my-auto text-center"
@@ -140,6 +146,55 @@
                 </tbody>
             </table>
         </div>
+        <div>
+            <Modal v-show="isModalVisible" @close="closeModal">
+                <template #header class="text-center bg-slate-400 text-white">
+                    <h3>Edit Announcement</h3>
+                </template>
+
+                <template #body>
+                    <div>
+                        <textarea cols="30" rows="6" class="form-control" v-model="selected_annc_reminder.message"/>
+                    </div>
+                    <div class="mt-3">
+                        <div>
+                            <label class="mt-2">Message Type</label>
+                            <select class="form-control mt-2" v-model="selected_annc_reminder.message_type_id">
+                                <option value="1">
+                                    Announcement (All)
+                                </option>
+                                <option value="2">Reminder</option>
+                            </select>
+                        </div>
+                        <div class="text-sm text-center my-2" v-if="selected_annc_reminder.message_type_id === '2'">
+                            <select
+                                class="form-control form-control-sm text-xs"
+                                v-model="selected_annc_reminder.to_user_id"
+                            >
+                                <option class="text-xs" :value="null">Select user</option>
+                                <option
+                                    
+                                    class="text-xs"
+                                    v-for="user in users"
+                                    :key="user.id"
+                                    :value="user.id"
+                                >
+                                    {{ user.name }}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="text-center">
+                        <button class="bg-green-400 px-2 py-2 rounded-md" @click="updateAnnouncementReminder">Save</button>
+                    </div>
+                </template>
+
+                <!-- <template #footer>
+                    <p></p>
+                </template> -->
+            </Modal>
+        </div>
     </div>
 </template>
 
@@ -147,16 +202,12 @@
 import moment from "moment";
 import AdminPermissionAddViaRole from "./AdminPermissionAddViaRole.vue";
 import AdminUserRolePermissionEdit from "./AdminUserRolePermissionEdit.vue";
+import Modal from "../utils/Modal.vue";
 
 import {
     PencilSquareIcon,
     TrashIcon,
-    ChevronDoubleLeftIcon,
-    ChevronDoubleRightIcon,
     PlusIcon,
-    LightBulbIcon,
-    ArrowTopRightOnSquareIcon,
-    ArrowsUpDownIcon,
     PencilIcon,
     ClipboardDocumentCheckIcon,
     LockClosedIcon,
@@ -177,6 +228,7 @@ export default {
         PencilIcon,
         AdminPermissionAddViaRole,
         AdminUserRolePermissionEdit,
+        Modal,
     },
 
     data() {
@@ -192,6 +244,14 @@ export default {
             to_user_id: [],
             users: [],
             errors: [],
+            isModalVisible: false,
+            selected_annc_reminder: {
+                id: "",
+                message: "",
+                message_type_id: "",
+                from_user_id: "",
+                to_user_id: "",
+            },
         };
     },
 
@@ -203,6 +263,13 @@ export default {
     watch: {},
 
     methods: {
+        showModal() {
+            this.isModalVisible = true;
+        },
+        closeModal() {
+            this.isModalVisible = false;
+        },
+
         async getUsers() {
             await axios
                 .get("/api/users/index")
@@ -225,12 +292,28 @@ export default {
                 });
         },
 
+        anncReminderModalVisible(annc_reminder_id){
+            this.getSelectedAnnouncementReminder(annc_reminder_id);
+            this.isModalVisible = true;
+        },
+
+        async getSelectedAnnouncementReminder(annc_reminder_id) {
+            await axios
+                .get("/api/admin/announcement_reminder/" + annc_reminder_id)
+                .then((res) => {
+                    this.selected_annc_reminder = res.data.data[0];
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        },
+
         async createMessage() {
             try {
-                if (!window.confirm("Confirm create?")){
+                if (!window.confirm("Confirm create?")) {
                     return;
                 }
-                await axios.post("/api/admin/announcement_reminder/message", {
+                await axios.post("/api/admin/announcement_reminder/create", {
                     message: this.form.message,
                     from_user_id: Number(
                         document
@@ -240,7 +323,7 @@ export default {
                     message_type_id: this.message_type === "reminder" ? 2 : 1,
                     to_user_id: this.to_user_id,
                 });
-                alert('Announcement/reminder created.')
+                alert("Announcement/reminder created.");
                 this.form.message = "";
                 (this.form.from_user_id = ""),
                     (this.form.message_type_id = ""),
@@ -256,12 +339,14 @@ export default {
             }
         },
 
-        async deleteMessage(annc_reminder_id){
+        async deleteMessage(annc_reminder_id) {
             if (!window.confirm("Are you sure?")) {
                 return;
             }
-            await axios.delete("/api/admin/announcement_reminder/delete/" + annc_reminder_id);
-            alert('Announcement/reminder deleted.')
+            await axios.delete(
+                "/api/admin/announcement_reminder/delete/" + annc_reminder_id
+            );
+            alert("Announcement/reminder deleted.");
             this.getAnnouncementsReminders();
         },
 
@@ -269,6 +354,19 @@ export default {
             let new_date = new Date(date);
             let day = moment(new_date).format("DD-MM-YY");
             return day;
+        },
+
+        async updateAnnouncementReminder(){
+            if (!window.confirm("Are you sure?")) {
+                return;
+            }
+            await axios.put(
+                "/api/admin/announcement_reminder/update/" + this.selected_annc_reminder.id, {
+                    
+                }
+            );
+            alert("Announcement/reminder updated.");
+            this.getAnnouncementsReminders();
         },
     },
 };

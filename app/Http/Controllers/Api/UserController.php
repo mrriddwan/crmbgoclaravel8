@@ -379,9 +379,9 @@ class UserController extends Controller
 
     public function user_home()
     {
-        // $id = Auth::id();
+        $id = Auth::id();
 
-        $user = User::where('id', 1)->with(['roles' => function ($q) {
+        $user = User::where('id', $id)->with(['roles' => function ($q) {
             $q->select('id', 'name');
         }, 'reminder'])->select('id', 'name')->get();
 
