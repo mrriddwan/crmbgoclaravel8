@@ -2,16 +2,29 @@
     <div class="mx-auto max-w-screen-lg">
         <GoBack />
 
-        <span v-for="info in contact" :key="info.id">
-            <h3
-                class="mb-4 text-xl font-extrabold tracking-tight leading-none text-gray-900 md:text-2xl lg:text-2xl text-center"
+        <div v-for="info in contact" :key="info.id">
+            <div
+                class="mb-4 tracking-tight leading-none text-gray-900 md:text-4xl lg:text-5xl text-center"
             >
-                Company - {{ info.name }}
-            </h3>
+                <span
+                    class="bg-yellow-400 px-10 py-3 rounded-md uppercase text-4xl font-extrabold"
+                    >{{ info.name }}</span
+                >
+            </div>
             <div
                 v-if="info.todo.length !== 0"
                 class="overflow-x-auto relative shadow-md sm:rounded-lg"
             >
+                <!-- <div class="mt-1">
+                    <Pagination
+                        :data="info.todo"
+                        :limit="2"
+                        @pagination-change-page="getContact"
+                        :size="'small'"
+                        :align="'right'"
+                        class="pagination"
+                    />
+                </div> -->
                 <table
                     class="border-2 mb-4 text-xs text-left text-gray-500 dark:text-gray-400"
                 >
@@ -70,26 +83,28 @@
                     </tbody>
                 </table>
             </div>
-            <span v-else class="items-center my-5">
+            <div v-else class="items-center my-5 min-w-96 px-96">
                 <h5
                     class="mx-auto font-mono px-2 py-2 bg-grey-900 mb-2 text-xl font-extrabold tracking-tight leading-none text-gray-700 md:text-2xl lg:text-2xl text-center bg-slate-300 rounded-md uppercase w-max"
                 >
                     No History Data
                 </h5>
-            </span>
-        </span>
+            </div>
+        </div>
     </div>
 </template>
 
 <script>
 import { EyeIcon } from "@heroicons/vue/24/solid";
 import GoBack from "../utils/GoBack.vue";
-import moment from 'moment'
+import moment from "moment";
+import LaravelVuePagination from "laravel-vue-pagination";
 
 export default {
     components: {
         GoBack,
         EyeIcon,
+        Pagination: LaravelVuePagination,
     },
 
     data() {

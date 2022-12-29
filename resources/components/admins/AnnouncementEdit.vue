@@ -126,7 +126,11 @@
                             <div class="flex text-center">
                                 <button
                                     class="uppercase text-xs text-center bg-yellow-400 hover:bg-yellow-600 px-1 py-1 mr-1 rounded-md my-auto"
-                                    @click="anncReminderModalVisible(annc_reminder.id)"
+                                    @click="
+                                        anncReminderModalVisible(
+                                            annc_reminder.id
+                                        )
+                                    "
                                 >
                                     <PencilSquareIcon
                                         class="h-4 w-4 my-auto text-center"
@@ -148,33 +152,59 @@
         </div>
         <div>
             <Modal v-show="isModalVisible" @close="closeModal">
-                <template #header class="text-center bg-slate-400 text-white">
-                    <h3>Edit Announcement</h3>
+                <template #header>
+                    <div
+                        class="text-center justify-center bg-slate-400 text-white rounded-md px-20 py-2 uppercase font-mono mx-auto"
+                    >
+                        <h3>Edit</h3>
+                    </div>
                 </template>
 
                 <template #body>
+                    <div v-if="edit_errors">
+                        <div v-for="(v, k) in edit_errors" :key="k">
+                            <p
+                                v-for="error in v"
+                                :key="error"
+                                class="text-xs bg-red-500 text-white rounded font-bold shadow-lg py-2 px-4 pr-0 w-max"
+                            >
+                                {{ error }}
+                            </p>
+                        </div>
+                    </div>
                     <div>
-                        <textarea cols="30" rows="6" class="form-control" v-model="selected_annc_reminder.message"/>
+                        <textarea
+                            cols="30"
+                            rows="6"
+                            class="form-control"
+                            v-model="selected_annc_reminder.message"
+                        />
                     </div>
                     <div class="mt-3">
-                        <div>
+                        <div class="text-center my-2">
                             <label class="mt-2">Message Type</label>
-                            <select class="form-control mt-2" v-model="selected_annc_reminder.message_type_id">
-                                <option value="1">
-                                    Announcement (All)
-                                </option>
-                                <option value="2">Reminder</option>
+                            <select
+                                class="form-control mt-2"
+                                v-model="selected_annc_reminder.message_type_id"
+                            >
+                                <option :value="1">Announcement (All)</option>
+                                <option :value="2">Reminder</option>
                             </select>
                         </div>
-                        <div class="text-sm text-center my-2" v-if="selected_annc_reminder.message_type_id === '2'">
+                        <div
+                            class="text-center my-2"
+                            v-if="selected_annc_reminder.message_type_id === 2"
+                        >
+                            <label class="mt-2">Selected User</label>
                             <select
                                 class="form-control form-control-sm text-xs"
                                 v-model="selected_annc_reminder.to_user_id"
                             >
-                                <option class="text-xs" :value="null">Select user</option>
+                                <option class="text-sm" :value="null">
+                                    Select user
+                                </option>
                                 <option
-                                    
-                                    class="text-xs"
+                                    class="text-sm"
                                     v-for="user in users"
                                     :key="user.id"
                                     :value="user.id"
@@ -186,7 +216,12 @@
                     </div>
 
                     <div class="text-center">
-                        <button class="bg-green-400 px-2 py-2 rounded-md" @click="updateAnnouncementReminder">Save</button>
+                        <button
+                            class="bg-green-400 px-2 py-2 rounded-md"
+                            @click="updateAnnouncementReminder"
+                        >
+                            Save
+                        </button>
                     </div>
                 </template>
 
@@ -244,6 +279,7 @@ export default {
             to_user_id: [],
             users: [],
             errors: [],
+            edit_errors: [],
             isModalVisible: false,
             selected_annc_reminder: {
                 id: "",
@@ -292,7 +328,7 @@ export default {
                 });
         },
 
-        anncReminderModalVisible(annc_reminder_id){
+        anncReminderModalVisible(annc_reminder_id) {
             this.getSelectedAnnouncementReminder(annc_reminder_id);
             this.isModalVisible = true;
         },
@@ -340,7 +376,7 @@ export default {
         },
 
         async deleteMessage(annc_reminder_id) {
-            if (!window.confirm("Are you sure?")) {
+            if (!window.confirm("Delete message?")) {
                 return;
             }
             await axios.delete(
@@ -356,17 +392,41 @@ export default {
             return day;
         },
 
-        async updateAnnouncementReminder(){
-            if (!window.confirm("Are you sure?")) {
-                return;
-            }
-            await axios.put(
-                "/api/admin/announcement_reminder/update/" + this.selected_annc_reminder.id, {
-                    
+        async updateAnnouncementReminder() {
+            try {
+                if (!window.confirm("Confirm update?")) {
+                    return;
                 }
-            );
-            alert("Announcement/reminder updated.");
-            this.getAnnouncementsReminders();
+                await axios
+                    .put(
+                        "/api/admin/announcement_reminder/update/" +
+                            this.selected_annc_reminder.id,
+                        {
+                            message: this.selected_annc_reminder.message,
+                            from_user_id: Number(
+                                document
+                                    .querySelector('meta[name="user-id"]')
+                                    .getAttribute("content")
+                            ),
+                            message_type_id:
+                                this.selected_annc_reminder.message_type_id,
+                            to_user_id: this.selected_annc_reminder.to_user_id
+                                ? this.selected_annc_reminder.to_user_id
+                                : null,
+                        }
+                    )
+                    .then((res) => {
+                        alert("Announcement/reminder updated.");
+                        this.isModalVisible = false;
+                        this.getAnnouncementsReminders();
+                    });
+            } catch (e) {
+                {
+                    if (e.response.status === 422) {
+                        this.edit_errors = e.response.data.errors;
+                    }
+                }
+            }
         },
     },
 };

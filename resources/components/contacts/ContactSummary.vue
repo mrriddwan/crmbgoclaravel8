@@ -518,7 +518,7 @@
                                 </router-link>
                             </td>
                             <td
-                                v-if="contact.summary_todo['Jan2022']"
+                                v-if="contact.summary_todo[`Jan` + this.selectedYear]"
                                 class="text-xs"
                             >
                                 <div
@@ -555,7 +555,7 @@
                             <td v-else></td>
 
                             <td
-                                v-if="contact.summary_todo['Feb2022']"
+                                v-if="contact.summary_todo[`Feb` + this.selectedYear]"
                                 class="text-xs"
                             >
                                 <div
@@ -593,7 +593,7 @@
                             <td v-else></td>
 
                             <td
-                                v-if="contact.summary_todo['Mar2022']"
+                                v-if="contact.summary_todo[`Mar` + this.selectedYear]"
                                 class="text-xs"
                             >
                                 <div
@@ -631,7 +631,7 @@
                             <td v-else></td>
 
                             <td
-                                v-if="contact.summary_todo['Apr2022']"
+                                v-if="contact.summary_todo[`Apr` + this.selectedYear]"
                                 class="text-xs"
                             >
                                 <div
@@ -669,7 +669,7 @@
                             <td v-else></td>
 
                             <td
-                                v-if="contact.summary_todo['May2022']"
+                                v-if="contact.summary_todo[`May` + this.selectedYear]"
                                 class="text-xs"
                             >
                                 <div
@@ -707,7 +707,7 @@
                             <td v-else></td>
 
                             <td
-                                v-if="contact.summary_todo['Jun2022']"
+                                v-if="contact.summary_todo[`Jun` + this.selectedYear]"
                                 class="text-xs"
                             >
                                 <div
@@ -745,7 +745,7 @@
                             <td v-else></td>
 
                             <td
-                                v-if="contact.summary_todo['Jul2022']"
+                                v-if="contact.summary_todo[`Jul` + this.selectedYear]"
                                 class="text-xs"
                             >
                                 <div
@@ -783,7 +783,7 @@
                             <td v-else></td>
 
                             <td
-                                v-if="contact.summary_todo['Aug2022']"
+                                v-if="contact.summary_todo[`Aug` + this.selectedYear]"
                                 class="text-xs"
                             >
                                 <div
@@ -820,7 +820,7 @@
                             <td v-else></td>
 
                             <td
-                                v-if="contact.summary_todo['Sep2022']"
+                                v-if="contact.summary_todo[`Sep` + this.selectedYear]"
                                 class="text-xs"
                             >
                                 <div
@@ -857,7 +857,7 @@
                             <td v-else></td>
 
                             <td
-                                v-if="contact.summary_todo['Oct2022']"
+                                v-if="contact.summary_todo[`Oct` + this.selectedYear]"
                                 class="text-xs"
                             >
                                 <div
@@ -894,7 +894,7 @@
                             <td v-else></td>
 
                             <td
-                                v-if="contact.summary_todo['Nov2022']"
+                                v-if="contact.summary_todo[`Nov` + this.selectedYear]"
                                 class="text-xs"
                             >
                                 <div
@@ -931,7 +931,7 @@
                             <td v-else></td>
 
                             <td
-                                v-if="contact.summary_todo['Dec2022']"
+                                v-if="contact.summary_todo[`Dec` + this.selectedYear]"
                                 class="text-xs"
                             >
                                 <div
@@ -1404,6 +1404,11 @@ export default {
             this.getContactsByTodo();
         },
         selectedIndustry: function (value) {
+            this.contacts = [];
+            this.getContactsByTodo();
+        },
+
+        selectedYear: function (value) {
             this.contacts = [];
             this.getContactsByTodo();
         },

@@ -8,7 +8,13 @@
         </h1>
 
         <div class="flex">
-            <div class="py-2 px-2">
+            <div
+                class="py-2 px-2"
+                v-if="
+                    can('create tracking travelguide') ||
+                    is('admin | super-admin')
+                "
+            >
                 <router-link
                     :to="{ name: 'tracking_travel_guide_create' }"
                     class="inline-block items-center px-2 py-1 align-top bg-blue-800 border border-transparent rounded-md font-semibold text-m text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
@@ -1413,6 +1419,10 @@
                             <!-- :to="{ name: 'tracking_general_edit', params: { id: tracking.id },}" -->
                             <td class="border text-xs text-center">
                                 <router-link
+                                    v-if="
+                                        can('edit master travelguide') ||
+                                        is('admin | super-admin')
+                                    "
                                     :to="{
                                         name: 'tracking_travel_guide_edit',
                                         params: { id: tracking.id },
@@ -1422,6 +1432,10 @@
                                     <PencilSquareIcon class="h-3 w-3"
                                 /></router-link>
                                 <button
+                                    v-if="
+                                        can('delete master travelguide') ||
+                                        is('admin | super-admin')
+                                    "
                                     class="mr-2 mb-2 inline-flex items-center px-2 py-1 bg-red-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
                                     @click="
                                         deleteTrackingTravelGuide(tracking.id)
@@ -3986,6 +4000,10 @@
 
                             <td class="border text-xs text-center">
                                 <router-link
+                                    v-if="
+                                        can('edit wip travelguide') ||
+                                        is('admin | super-admin')
+                                    "
                                     :to="{
                                         name: 'tracking_travel_guide_edit',
                                         params: { id: tracking.id },
@@ -5308,6 +5326,10 @@
                             <td class="border text-xs text-center">
                                 <div class="flex">
                                     <router-link
+                                        v-if="
+                                            can('edit master travelguide') ||
+                                            is('admin | super-admin')
+                                        "
                                         :to="{
                                             name: 'tracking_travel_guide_edit',
                                             params: { id: tracking.id },
@@ -5317,6 +5339,10 @@
                                         <PencilSquareIcon class="h-3 w-3"
                                     /></router-link>
                                     <button
+                                        v-if="
+                                            can('delete master travelguide') ||
+                                            is('admin | super-admin')
+                                        "
                                         class="mr-2 mb-2 inline-flex items-center px-2 py-1 bg-red-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
                                         @click="
                                             deleteTrackingTravelGuide(
@@ -8108,6 +8134,10 @@
 
                             <td class="border text-xs text-center">
                                 <router-link
+                                    v-if="
+                                        can('edit wip travelguide') ||
+                                        is('admin | super-admin')
+                                    "
                                     :to="{
                                         name: 'tracking_travel_guide_edit',
                                         params: { id: tracking.id },

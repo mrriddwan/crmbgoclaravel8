@@ -34,7 +34,9 @@
                     </div>
                     <form
                         class="px-6 pb-4 space-y-6 lg:px-8 sm:pb-6 xl:pb-8"
-                        @submit.prevent="addPermissionToRole(selectedPermission)"
+                        @submit.prevent="
+                            addPermissionToRole(selectedPermission)
+                        "
                     >
                         <h3
                             class="text-xl font-medium text-slate-900 uppercase"
@@ -58,7 +60,20 @@
                                 class="block mb-2 text-sm font-medium text-slate-900 dark:text-slate-400"
                                 >Permission</label
                             >
-                            <div class="form-group">
+                            <div
+                                class="text-xs text-center h-max w-full align-top"
+                            >
+                                <v-select
+                                    label="name"
+                                    :options="permissions"
+                                    :reduce="(name) => name.id"
+                                    v-model="selectedPermission"
+                                    multiple
+                                    class="vue_select"
+                                    placeholder="Select permission"
+                                ></v-select>
+                            </div>
+                            <!-- <div class="form-group">
                                 <select
                                     class="text-center w-fullrounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                                     @change="getPermissions"
@@ -76,7 +91,7 @@
                                         {{ permission.name }}
                                     </option>
                                 </select>
-                            </div>
+                            </div> -->
                         </div>
                         <button
                             type="submit"
@@ -102,7 +117,7 @@ export default {
     data() {
         return {
             permissions: [],
-            selectedPermission: "",
+            selectedPermission: [],
             errors: "",
         };
     },
@@ -119,12 +134,16 @@ export default {
 
         async addPermissionToRole() {
             try {
-                await axios.post("/api/admin/roles/add/permission/" + this.$props.role_id, {
-                    role_id: this.$props.role_id,
-                    permission_name: this.selectedPermission,
-                });
+                await axios.post(
+                    "/api/admin/roles/add/permission/" + this.$props.role_id,
+                    {
+                        role_id: this.$props.role_id,
+                        permission_name: this.selectedPermission,
+                    }
+                );
                 this.getRolePermissions();
                 alert("Added permission in selected Role.");
+                this.closeModal();
             } catch (e) {
                 {
                     if (e.response.status === 422) {
@@ -158,3 +177,12 @@ export default {
     },
 };
 </script>
+
+<style>
+.vue_select {
+    background-color: rgb(255, 255, 255);
+    border-radius: 0.375rem;
+    font-size: smaller;
+    font-style: normal;
+}
+</style>

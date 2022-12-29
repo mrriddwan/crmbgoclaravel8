@@ -553,12 +553,12 @@ class AdminController extends Controller
     public function user_permission_update(User $user, Request $request)
     {
         $request->validate([
-            'permission_name' => ['required', 'string'],
+            'permission_name' => ['required'],
         ], [
             'permission_name.required' => 'Please select a permission.',
         ]);
 
-        $user->givePermissionTo($request->permission_name);
+        $user->givePermissionTo([$request->permission_name]);
 
         return response()->json([
             'status' => true,
@@ -836,7 +836,7 @@ class AdminController extends Controller
         ]);
     }
 
-    public function message(Request $request)
+    public function message_create(Request $request)
     {
         if($request->message_type_id === 2){
             $request->validate([
@@ -905,5 +905,28 @@ class AdminController extends Controller
             'message' => 'Selected announcement/reminder retrieved',
             'data' => $info,
         ]);
+    }
+
+    public function message_update(Announcement $announcement, Request $request)
+    {
+        $request->validate([
+            'message' => ['required', 'string'],
+            'from_user_id' => ['required', 'integer'],
+            'to_user_id' => ['required'],
+            'message_type_id' => ['required', 'integer']
+        ], [
+            'message.required' => 'The message is required',
+            'from_user_id.required' => 'The sender user is required',
+            'message_type_id.required' => 'The message type is required',
+            'to_user_id.required' => 'The receiver user is required',
+        ]);
+        
+        $announcement->update([
+                'message' => $request->message,
+                'from_user_id' => $request->from_user_id,
+                'message_type_id' => $request->message_type_id,
+                'to_user_id' => $request->to_user_id ?? null,
+        ]);
+        return response()->json('Announcement/reminder updated.');
     }
 }

@@ -163,6 +163,23 @@ class ContactController extends Controller
         return response()->json('Contact deleted.');
     }
 
+    
+
+    public function remark(Contact $contact)
+    {
+        $contact = Contact::where('id', $contact->id)
+            ->select('remark')
+            ->get();
+
+        $data = $contact->toArray();
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Successfully fetch data Contact ',
+            'data' => $data,
+        ]);
+    }
+
     public function info(Contact $contact)
     {
         $contact = Contact::with([
@@ -183,47 +200,48 @@ class ContactController extends Controller
         ]);
     }
 
-    public function remark(Contact $contact)
-    {
-        $contact = Contact::where('id', $contact->id)
-            ->select('remark')
-            ->get();
-
-        $data = $contact->toArray();
-
-        return response()->json([
-            'status' => true,
-            'message' => 'Successfully fetch data Contact ',
-            'data' => $data,
-        ]);
-    }
-
 
     public function history(Contact $contact)
     {
-        $contact = Contact::with([
-            'todo' => function ($q) {
-                $q->select(
-                    'id',
-                    'contact_id',
-                    'todo_date',
-                    'todo_deadline',
-                    'todo_remark',
-                    'user_id',
-                    'task_id',
-                    'action_id'
-                )
-                    ->orderBy('todo_date', 'desc');
-            },
-        ])->select('contacts.id', 'contacts.name')
-            ->where('id', $contact->id)
-            ->get();
+        // $contact = Contact::with(['category', 'type', 'status','user','industry', 
+        //     'todo' => function ($q) {
+        //         $q->select(
+        //             'id',
+        //             'contact_id',
+        //             'todo_date',
+        //             'todo_deadline',
+        //             'todo_remark',
+        //             'user_id',
+        //             'task_id',
+        //             'action_id'
+        //         )
+        //             ->orderBy('todo_date', 'desc');
+        //     },
+        // ])->where('id', $contact->id)->paginate(100);
 
-        $data = $contact->toArray();
+        // $data = $contact
+        // // ->toArray()
+        // ;
+
+        // return response()->json([
+        //     'status' => true,
+        //     'message' => 'Successfully fetch Contact History ',
+        //     'data' => $data,
+        // ]);
+        $contact = Contact::with([
+            'category', 'type', 'status', 'incharge', 'user',
+            'todo' => function ($q) {
+                $q->orderBy('todo_date', 'desc');
+            }, 'industry', 'forecast'
+        ])
+            ->where('id', $contact->id)
+            ->paginate(100);
+
+        $data = $contact;
 
         return response()->json([
             'status' => true,
-            'message' => 'Successfully fetch data Contact ',
+            'message' => 'Successfully fetch Contact history ',
             'data' => $data,
         ]);
     }

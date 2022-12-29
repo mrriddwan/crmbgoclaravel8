@@ -56,36 +56,36 @@ export default {
     },
 
     mounted() {
-        this.getUsers();
-        this.getSelectedAnnouncementReminder();
+        // this.getUsers();
+        // this.getSelectedAnnouncementReminder();
     },
 
-    methods: {
-        async getSelectedAnnouncementReminder() {
-            await axios
-                .get(
-                    "/api/admin/announcement_reminder/" +
-                        this.$props.annc_reminder_id
-                )
-                .then((res) => {
-                    this.annc_reminder = res.data.data;
-                })
-                .catch((error) => {
-                    console.log(error);
-                });
-        },
+    // methods: {
+    //     async getSelectedAnnouncementReminder() {
+    //         await axios
+    //             .get(
+    //                 "/api/admin/announcement_reminder/" +
+    //                     this.$props.annc_reminder_id
+    //             )
+    //             .then((res) => {
+    //                 this.annc_reminder = res.data.data;
+    //             })
+    //             .catch((error) => {
+    //                 console.log(error);
+    //             });
+    //     },
 
-        async getUsers() {
-            await axios
-                .get("/api/users/index")
-                .then((res) => {
-                    this.users = res.data.data;
-                })
-                .catch((error) => {
-                    console.log(error);
-                });
-        },
-    },
+    //     async getUsers() {
+    //         await axios
+    //             .get("/api/users/index")
+    //             .then((res) => {
+    //                 this.users = res.data.data;
+    //             })
+    //             .catch((error) => {
+    //                 console.log(error);
+    //             });
+    //     },
+    // },
 };
 </script>
 
@@ -119,6 +119,7 @@ export default {
 .modal-footer {
     padding: 15px;
     display: flex;
+    justify-content: center;
 }
 
 .modal-header {

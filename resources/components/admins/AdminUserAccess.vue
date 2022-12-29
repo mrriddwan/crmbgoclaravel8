@@ -487,7 +487,7 @@
 
                             <tbody v-else>
                                 <tr>
-                                    <td colspan="2">No Role(s)</td>
+                                    <td colspan="2">No Permission(s)</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -1119,7 +1119,7 @@ export default {
                 }
 
                 this.getUserRolePermissions();
-                alert("Removed role from user.");
+                alert("Removed permission from user.");
             } catch (e) {
                 {
                     if (e.response.status === 422) {

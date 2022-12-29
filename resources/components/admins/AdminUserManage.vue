@@ -312,7 +312,7 @@
                     <h2
                         class="text-center text-gray-800 px-8 uppercase w-max font-mono font-extrabold"
                     >
-                        Supervisor
+                        Supervisor Level
                     </h2>
                 </div>
 

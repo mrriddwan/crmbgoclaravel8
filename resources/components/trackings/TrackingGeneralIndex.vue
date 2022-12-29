@@ -7,7 +7,12 @@
         </h1>
 
         <div class="flex">
-            <div class="py-2 px-2">
+            <div
+                class="py-2 px-2"
+                v-if="
+                    can('create tracking general') || is('admin | super-admin')
+                "
+            >
                 <router-link
                     to="/tracking/general/create"
                     class="inline-block items-center px-2 py-1 align-top bg-blue-800 border border-transparent rounded-md font-semibold text-m text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
@@ -1025,6 +1030,10 @@
                             </td>
                             <td class="text-xs">
                                 <router-link
+                                    v-if="
+                                        can('edit master general') ||
+                                        is('admin | super-admin')
+                                    "
                                     :to="{
                                         name: 'tracking_general_edit',
                                         params: { id: tracking.id },
@@ -1034,6 +1043,10 @@
                                     <PencilSquareIcon class="h-3 w-3"
                                 /></router-link>
                                 <button
+                                    v-if="
+                                        can('delete master general') ||
+                                        is('admin | super-admin')
+                                    "
                                     class="mr-2 mb-2 inline-flex items-center px-2 py-1 bg-red-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
                                     @click="deleteMasterGeneral(tracking.id)"
                                 >
@@ -2427,6 +2440,10 @@
                             </td>
                             <td class="text-xs text-center border">
                                 <router-link
+                                    v-if="
+                                        can('edit wip general') ||
+                                        is('admin | super-admin')
+                                    "
                                     :to="{
                                         name: 'tracking_wip_edit',
                                         params: { id: tracking.id },
@@ -2436,6 +2453,10 @@
                                     <PencilSquareIcon class="h-3 w-3"
                                 /></router-link>
                                 <button
+                                    v-if="
+                                        can('delete wip general') ||
+                                        is('admin | super-admin')
+                                    "
                                     class="mr-2 mb-2 inline-flex items-center px-2 py-1 bg-red-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
                                     @click="deleteWIPGeneral(tracking.id)"
                                 >
@@ -3343,6 +3364,10 @@
                             </td>
                             <td class="text-xs text-center">
                                 <router-link
+                                    v-if="
+                                        can('edit master general') ||
+                                        is('admin | super-admin')
+                                    "
                                     :to="{
                                         name: 'tracking_general_edit',
                                         params: { id: tracking.id },
@@ -3352,6 +3377,10 @@
                                     <PencilSquareIcon class="h-3 w-3"
                                 /></router-link>
                                 <button
+                                    v-if="
+                                        can('delete master general') ||
+                                        is('admin | super-admin')
+                                    "
                                     class="mr-2 mb-2 inline-flex items-center px-2 py-1 bg-red-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
                                     @click="deleteMasterGeneral(tracking.id)"
                                 >
@@ -4867,6 +4896,10 @@
                             </td>
                             <td class="text-xs text-center border">
                                 <router-link
+                                    v-if="
+                                        can('edit wip general') ||
+                                        is('admin | super-admin')
+                                    "
                                     :to="{
                                         name: 'tracking_wip_edit',
                                         params: { id: tracking.id },
@@ -4876,6 +4909,10 @@
                                     <PencilSquareIcon class="h-3 w-3"
                                 /></router-link>
                                 <button
+                                    v-if="
+                                        can('delete wip general') ||
+                                        is('admin | super-admin')
+                                    "
                                     class="mr-2 mb-2 inline-flex items-center px-2 py-1 bg-red-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
                                     @click="deleteWIPGeneral(tracking.id)"
                                 >
@@ -4926,9 +4963,9 @@ export default {
     },
 
     mounted() {
-        // this.selectedUser = document
-        //     .querySelector('meta[name="user-id"]')
-        //     .getAttribute("content");
+        this.selectedUser = document
+            .querySelector('meta[name="user-id"]')
+            .getAttribute("content");
         this.getTrackingGenerals();
         this.getUsers();
         this.getCategories();
@@ -4946,7 +4983,7 @@ export default {
             buffering: false,
             // general_remark_visibility: false,
             // general_remark: null,
-            view_type: "",
+            view_type: "master",
             selectedUser: "",
             selectedCategory: "",
             selectedResult: "",

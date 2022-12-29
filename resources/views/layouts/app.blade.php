@@ -36,7 +36,8 @@
 
 <body class="font-sans antialiased">
     {{-- <div class="min-h-screen bg-blue-900" id="app"> --}}
-        <div class="min-h-screen" id="app">
+    {{-- <div class="min-h-screen bg-cover bg-center bg-[url('/storage/images/bluedale_crm_bg.jpg')]" id="app" > --}}
+    <div class="min-h-screen" id="app">
         @include('layouts.navigation')
 
         <!-- Page Heading -->

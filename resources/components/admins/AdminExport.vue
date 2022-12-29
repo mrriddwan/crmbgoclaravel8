@@ -1,9 +1,9 @@
 <template>
     <div class="container min-w-96 min-h-96" id="index-container">
         <h1
-            class="items-center text-center text-5xl text-white font-extrabold px-2 rounded-md font-mono uppercase bg-blue-900"
+            class="items-center text-center text-5xl text-white font-extrabold px-80 rounded-md font-mono uppercase bg-blue-900"
         >
-            Export
+            Export / Import
         </h1>
 
         <div>
@@ -28,10 +28,10 @@
             </select>
         </div>
 
-        <div v-if="import_type === 'contact'" class="w-max">
+        <div v-if="import_type === 'contact'" class="w-full">
             <form
                 id="excel_contact"
-                class="grid grid-cols-1 gap-2"
+                class="grid grid-cols-1 gap-2 w-max mx-auto"
                 @submit.prevent="importContacts"
                 @change="getExcelData"
                 enctype="multipart/form-data"
@@ -46,16 +46,26 @@
                     ref="contact_file"
                     name="file"
                 />
-                <button
+                <div>
+
+                </div>
+                <div class="inline-block items-center font-semibold text-center mx-auto w-max text-xs text-white uppercase px-2 py-1 border border-transparent rounded-md tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150 bg-green-600 ">
+                    <button
                     type="submit"
-                    class="inline-block items-center font-semibold text-xs text-white uppercase px-2 py-1 bg-green-800 border border-transparent rounded-md tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
+                    class=""
                 >
                     <ArrowDownOnSquareIcon class="h-6 w-6 inline" />Import
                 </button>
+                </div>
+                
                 <div v-show="buffering" class="text-center text-sm font-bold">
                     Loading . . . please
                 </div>
             </form>
+
+            <div class="my-4">
+            <vue-pdf-embed :source="import_format_contact" class="mx-auto" />
+            </div>
         </div>
         <!-- v-if="is('supervisor | admin | super-admin')" -->
         <div class="flex" v-if="import_export === 'export'">
@@ -2206,6 +2216,7 @@ import LaravelVuePagination from "laravel-vue-pagination";
 import axios from "axios";
 import moment from "moment";
 import { VueDatePicker } from "@vuepic/vue-datepicker";
+import VuePdfEmbed from "vue-pdf-embed";
 
 import {
     PencilSquareIcon,
@@ -2236,6 +2247,7 @@ export default {
         ArrowDownOnSquareIcon,
         ExclamationTriangleIcon,
         VueDatePicker,
+        VuePdfEmbed,
     },
 
     mounted() {
@@ -2286,6 +2298,7 @@ export default {
             import_type: "",
             excel: "",
             new_search: false,
+            import_format_contact: "/storage/tutorials/3_import_format_contact.pdf",
 
             search: "",
             selectedUser: "",

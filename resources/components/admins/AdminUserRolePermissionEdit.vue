@@ -4,18 +4,20 @@
         <div
             id="authentication-modal"
             aria-hidden="true"
-            class="flex h-screen bg-gray-200/50 overflow-y-auto overflow-x-hidden fixed right-0 left-0 top-4 z-50 justify-center items-center md:h-full md:inset-0"
+            class="h-screen bg-gray-200/50 overflow-y-auto overflow-x-hidden fixed right-0 left-0 top-4 z-50 justify-center items-center md:h-full md:inset-0"
         >
-            <div class="relative px-4 w-full max-w-md h-full md:h-auto">
+            <div
+                class="absolute px-10 py-10 w-full max-w-md h-full md:h-auto max-h-96 my-auto mx-auto"
+            >
                 <!-- Modal content -->
                 <div
-                    class="relative bg-white rounded-lg shadow dark:bg-gray-700 w-max"
+                    class="relative bg-white rounded-lg shadow dark:bg-gray-700 w-max py-5 px-5 inset-0"
                 >
                     <div class="flex justify-end p-2">
                         <button
                             @click.prevent="closeModal"
                             type="button"
-                            class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white"
+                            class="text-gray-500 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white"
                             data-modal-toggle="authentication-modal"
                         >
                             <svg
@@ -34,9 +36,7 @@
                     </div>
                     <form
                         class="px-6 pb-4 space-y-6 lg:px-8 sm:pb-6 xl:pb-8"
-                        @submit.prevent="
-                            updateUserRole(current_role)
-                        "
+                        @submit.prevent="updateUserRole(current_role)"
                     >
                         <h3
                             class="text-xl font-medium text-slate-900 uppercase"
@@ -68,7 +68,11 @@
                                 v-for="user in current_user_role_permissions"
                                 :key="user.id"
                             >
-                                <div v-for="role in user.roles" :key="role.id" v-if="user.roles.length !== 0">
+                                <div
+                                    v-for="role in user.roles"
+                                    :key="role.id"
+                                    v-if="user.roles.length !== 0"
+                                >
                                     <select
                                         class="w-full text-center w-fullrounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                                         @change="getRoles"
@@ -146,11 +150,26 @@
                                 class="text-center block mb-2 text-sm font-medium text-slate-900 dark:text-slate-400"
                                 >Permission</label
                             >
+
                             <div
+                                class="text-xs text-center h-max w-full align-top"
+                            >
+                                <v-select
+                                    label="name"
+                                    :options="permissions"
+                                    :reduce="(name) => name.id"
+                                    v-model="selectedPermission"
+                                    multiple
+                                    class="vue_select"
+                                    placeholder="Select permission"
+                                ></v-select>
+                            </div>
+
+                            <!-- <div
                                 class="form-group"
                                 v-for="user in current_user_role_permissions"
                                 :key="user.id"
-                            >
+                            >   
                                 <select
                                     class="w-full text-center w-fullrounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                                     @change="getPermissions"
@@ -168,7 +187,7 @@
                                         {{ permission.name }}
                                     </option>
                                 </select>
-                            </div>
+                            </div> -->
                         </div>
                         <button
                             type="submit"
@@ -223,13 +242,14 @@
                                         <div
                                             v-for="permission in user.permissions"
                                             :key="permission.id"
-                                            class="px-1 py-1 bg-cyan-400 rounded-md w-max flex text-xs"
+                                            class="px-1 py-1 bg-cyan-400 rounded-md w-max flex text-xs m-2"
                                         >
                                             {{ permission.name }}
                                             <div class="w-max text-center mx-2">
                                                 <button
                                                     @click="
                                                         removeDirectPermissionFromUser(
+                                                            user.id,
                                                             permission.id
                                                         )
                                                     "
@@ -283,12 +303,11 @@ export default {
         this.getCurrentUserRolePermissions(this.$props.user_id);
         this.getPermissions();
         this.getRoles();
-        
     },
 
     methods: {
         closeModal() {
-            console.log(this.$props.user_id)
+            console.log(this.$props.user_id);
             this.getCurrentUserRolePermissions(this.$props.user_id);
             this.$emit("toggle-modal");
         },
@@ -296,14 +315,15 @@ export default {
         async addPermissionDirecttoUser() {
             try {
                 await axios.post(
-                    "/api/admin/roles/user/update/permission/" + this.$props.user_id,
+                    "/api/admin/roles/user/update/permission/" +
+                        this.$props.user_id,
                     {
                         user_id: this.$props.role_id,
                         permission_name: this.selectedPermission,
                     }
                 );
-                this.selectedPermission = "",
-                this.getCurrentUserRolePermissions(this.$props.user_id);
+                (this.selectedPermission = ""),
+                    this.getCurrentUserRolePermissions(this.$props.user_id);
                 alert("Added permission in selected user.");
             } catch (e) {
                 {
@@ -366,6 +386,39 @@ export default {
                     console.log(error);
                 });
         },
+
+        async removeDirectPermissionFromUser(user_id, permission_id) {
+            try {
+                if (!window.confirm("Are you sure?")) {
+                    return;
+                } else {
+                    // console.log("this is the user_id: " + user_id);
+                    // console.log("this is the permission_id: " + permission_id);
+                    await axios
+                        .post("/api/admin/users/remove/permission/" + user_id, {
+                            user_id: user_id,
+                            permission_id: permission_id,
+                        })
+                        .then((res) => {});
+                }
+                alert("Removed permission from user.");
+                this.getCurrentUserRolePermissions(this.$props.user_id);
+            } catch (e) {
+                {
+                    if (e.response.status === 422) {
+                        this.errors = e.response.data.errors;
+                    }
+                }
+            }
+        },
     },
 };
 </script>
+<style>
+.vue_select {
+    background-color: rgb(255, 255, 255);
+    border-radius: 0.375rem;
+    font-size: smaller;
+    font-style: normal;
+}
+</style>
