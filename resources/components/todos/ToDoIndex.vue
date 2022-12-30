@@ -7,72 +7,103 @@
         </h1>
 
         <div class="text-sm mb-2">
-            <div class="py-1">
-                <div class="border border-gray-500 inline-block">
-                    <div class="m-1 inline-block items-center px-1 py-1">
-                        <p>View by</p>
+            <div class="py-1 grid grid-cols-7">
+                <div class="border border-gray-500 grid grid-cols-3 col-span-2">
+                    <div
+                        class="grid grid-cols-1 items-center align-middle px-1 py-1"
+                    >
+                        <label class="mx-auto my-auto">View by</label>
                         <select
-                            v-model="viewType"
-                            class="form-control text-center"
+                            v-model="view_type"
+                            class="form-control text-center mx-auto my-auto"
                         >
-                            <option value="day">Day</option>
-                            <option value="month">Month</option>
-                            <option value="range">Date Range</option>
+                            <option value="day" class="text-xs">Day</option>
+                            <option value="month" class="text-xs">Month</option>
+                            <option value="range" class="text-xs">
+                                Date Range
+                            </option>
                         </select>
+                        <div
+                            class="w-max text-center justify-center py-1 mx-auto"
+                            v-if="view_type === 'range'"
+                        >
+                            <button
+                                @click="getToDos"
+                                class="px-2 py-2 bg-green-400 rounded-md"
+                            >
+                                Search
+                            </button>
+                        </div>
                     </div>
-                    <div class="m-1 inline-block items-center px-1 py-1">
-                        <span v-show="viewType === `day`">
-                            <p>Select date</p>
-                            <div class="px-2">
+                    <div class="px-1 py-1 col-span-2">
+                        <div
+                            v-show="view_type === `day`"
+                            class="grid grid-cols-1 text-center align-bottom items-center"
+                        >
+                            <div class="my-auto mx-auto py-2">
+                                <label class="">Select date</label>
+                            </div>
+                            <div class="my-auto mx-auto">
+                                <div class="px-2 w-40">
+                                    <VueDatePicker
+                                        v-model="search_date"
+                                        showNowButton
+                                        nowButtonLabel="Today"
+                                        :enableTimePicker="false"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                        <div
+                            v-show="view_type === `month`"
+                            class="grid grid-cols-1 text-center align-bottom items-center"
+                        >
+                            <div class="my-auto mx-auto py-2">
+                                <label class="">Select month/year</label>
+                            </div>
+                            <div class="my-auto mx-auto">
+                                <input
+                                    v-model.lazy="search_month_year"
+                                    class="border-gray-300"
+                                    type="month"
+                                />
+                            </div>
+                        </div>
+
+                        <div
+                            v-show="view_type === `range`"
+                            class="grid grid-cols-1 text-center align-bottom items-center"
+                        >
+                            <!-- <div class="border-gray-800 grid grid-cols-2 py-1 align-middle"> -->
+                            <label class="mx-auto my-auto">Start date</label>
+
+                            <div class="w-40 mx-auto">
                                 <VueDatePicker
-                                    v-model="selectedDate"
+                                    v-model="search_start_date"
                                     showNowButton
                                     nowButtonLabel="Today"
                                     :enableTimePicker="false"
+                                    class="date_picker"
                                 />
                             </div>
-                        </span>
-                        <span v-show="viewType === `month`">
-                            <p>Select month/year</p>
-                            <input
-                                v-model.lazy="currentMonth"
-                                class="border-gray-300"
-                                type="month"
-                            />
-                        </span>
-
-                        <span
-                            v-show="viewType === `range`"
-                            class="inline-block items-center py-1"
-                        >
-                            <div class="border-gray-800 flex px-1 py-1">
-                                <p class="px-1 mt-1">Start date</p>
-
-                                <div class="px-2">
-                                    <VueDatePicker
-                                        v-model="selectedDateStart"
-                                        showNowButton
-                                        nowButtonLabel="Today"
-                                        :enableTimePicker="false"
-                                    />
-                                </div>
+                            <!-- </div> -->
+                            <!-- <div class="border-gray-800 grid grid-cols-2 py-1 align-middle"> -->
+                            <label class="mx-auto my-auto">End date</label>
+                            <div class="w-40 mx-auto">
+                                <VueDatePicker
+                                    v-model="search_end_date"
+                                    showNowButton
+                                    nowButtonLabel="Today"
+                                    :enableTimePicker="false"
+                                    class="date_picker"
+                                />
                             </div>
-                            <div class="border-gray-800 flex px-1 py-1">
-                                <p class="px-1">End date</p>
-                                <div class="px-2">
-                                    <VueDatePicker
-                                        v-model="selectedDateEnd"
-                                        showNowButton
-                                        nowButtonLabel="Today"
-                                        :enableTimePicker="false"
-                                    />
-                                </div>
-                            </div>
-                        </span>
+                            <!-- </div> -->
+                        </div>
                     </div>
                 </div>
 
-                <div class="m-1 inline-block items-center px-1 py-1">
+                <div class="m-1 inline-block items-center px-1 py-1 col-span-2">
                     <p>Filter term</p>
                     <input
                         v-model.lazy="search"
@@ -98,7 +129,7 @@
                     </select>
                 </div>
 
-                <div class="border-gray-400 inline-block px-1 py-1">
+                <div class="border-gray-400 inline-block px-1 py-1 m-1">
                     <p for="paginate">Per page</p>
                     <input v-model.lazy="paginate" class="form-control" />
                 </div>
@@ -115,34 +146,32 @@
                     </div>
 
                     <div class="inline-block py-1">
-                        <span v-if="viewType === 'day'">
+                        <span v-if="view_type === 'day'">
                             <Pagination
                                 :data="todos"
-                                @pagination-change-page="getToDosSelectDate"
+                                @pagination-change-page="getToDos"
                                 :size="'small'"
                                 :align="'right'"
                                 class="pagination"
                                 :limit="2"
                             />
                         </span>
-                        <span v-else-if="viewType === 'month'">
+                        <span v-else-if="view_type === 'month'">
                             <Pagination
                                 :data="todos"
                                 :limit="2"
-                                @pagination-change-page="getToDosSelectMonth"
+                                @pagination-change-page="getToDos"
                                 :size="'small'"
                                 :align="'right'"
                                 class="pagination"
                             />
                         </span>
 
-                        <span v-else-if="viewType === 'range'">
+                        <span v-else-if="view_type === 'range'">
                             <Pagination
                                 :data="todos"
                                 :limit="2"
-                                @pagination-change-page="
-                                    getToDosSelectDateRange
-                                "
+                                @pagination-change-page="getToDos"
                                 :size="'small'"
                                 :align="'right'"
                                 class="pagination"
@@ -238,21 +267,21 @@
                     />
                 </button>
             </div>
-            <span v-show="viewType === `day`">
+            <span v-show="view_type === `day`">
                 <div class="mt-1">
                     <h3 class="uppercase text-white font-extrabold">
                         {{ showToday(selectedDate) }}
                     </h3>
                 </div>
             </span>
-            <span v-show="viewType === `month`">
+            <span v-show="view_type === `month`">
                 <div class="mt-1">
                     <h3 class="uppercase text-white font-extrabold">
                         {{ showMonth(selectedMonthYear) }}
                     </h3>
                 </div>
             </span>
-            <span v-show="viewType === `range`">
+            <span v-show="view_type === `range`">
                 <div class="mt-1 inline-flex">
                     <h3
                         class="uppercase text-white font-extrabold inline-flex w-max"
@@ -729,8 +758,12 @@
                             />
                         </td>
                         <td class="text-xs text-left">{{ index + 1 }}</td>
-                        <td class="text-xs text-left">{{ todo.source_name }}</td>
-                        <td class="text-xs text-left">{{ showToday(todo.todo_date) }}</td>
+                        <td class="text-xs text-left">
+                            {{ todo.source_name }}
+                        </td>
+                        <td class="text-xs text-left">
+                            {{ showToday(todo.todo_date) }}
+                        </td>
                         <td class="text-xs text-left">
                             <span v-if="todo.todo_deadline === '2000-01-01'">
                                 None
@@ -744,7 +777,9 @@
                                 Unset yet
                             </span>
                         </td>
-                        <td class="text-xs text-left">{{ todo.status_name }}</td>
+                        <td class="text-xs text-left">
+                            {{ todo.status_name }}
+                        </td>
                         <td class="text-xs text-left">{{ todo.type_name }}</td>
                         <td class="text-xs text-left">
                             <router-link
@@ -951,9 +986,6 @@ export default {
     created() {},
 
     mounted() {
-        console.log(
-            "this is the route params: " + this.$route.params.selectedDate
-        );
         this.getStatus();
         this.getActions();
 
@@ -965,39 +997,15 @@ export default {
         this.getTasks();
         this.getTypes();
         if (!this.$route.params.selectedDate) {
-            this.currentDate = this.getCurrentDate();
-            this.selectedDate = this.currentDate;
-            this.getToDosSelectDate();
+            this.search_date = this.moment().format("YYYY-MM-DD");
+            // this.getToDos();
         } else {
-            this.selectedDate = this.$route.params.selectedDate;
-            this.getToDosSelectDate();
+            this.search_date = this.$route.params.selectedDate;
+            // this.getToDos();
         }
-        //initial date selection
         console.log(
-            "Result of mounted getCurrentDate: " + this.getCurrentDate()
+            "this is the route params: " + this.$route.params.selectedDate
         );
-
-        // this.getSelectedDate(this.selectedDate);
-        console.log("Result of mounted currrentDate: " + this.currentDate);
-
-        //initial month selection
-        this.selectedMonth = this.getSelectedMonth(this.selectedDate);
-        this.selectedYear = this.getSelectedYear(this.selectedDate);
-        this.selectedMonthYear =
-            this.selectedYear + "-" + this.selectedMonth + "-" + "01";
-        this.currentMonth = this.selectedYear + "-" + this.selectedMonth;
-        //initialise date range
-        this.selectedDateStart = this.selectedDate;
-        this.selectedDateEnd = this.selectedDate;
-        console.log(
-            "Result of mounted selectedDateStart: " + this.selectedDateStart
-        );
-        console.log(
-            "Result of mounted selectedDateEnd: " + this.selectedDateEnd
-        );
-
-        this.incrementDate();
-        this.decrementDate();
     },
 
     props: {},
@@ -1012,7 +1020,7 @@ export default {
             types: [],
 
             paginate: 100,
-            viewType: "day",
+            view_type: "day",
             moment: moment,
 
             search: "",
@@ -1036,8 +1044,12 @@ export default {
             selectedTask: "",
 
             currentDate: "",
-            currentMonth: "",
             currentYear: "",
+
+            search_date: "",
+            search_month_year: "",
+            search_start_date: "",
+            search_end_date: "",
 
             selectedDate: "",
             selectedMonth: "",
@@ -1073,139 +1085,83 @@ export default {
         },
 
         paginate: function (value) {
-            if (this.viewType === "day") {
-                this.getToDosSelectDate();
-            } else if (this.viewType === "month") {
-                this.getToDosSelectMonth();
-            } else if (this.viewType === "range") {
-                this.getToDosSelectDateRange();
-            }
+            this.getToDos();
         },
         search: function (value) {
-            if (this.viewType === "day") {
-                this.getToDosSelectDate();
-            } else if (this.viewType === "month") {
-                this.getToDosSelectMonth();
-            } else if (this.viewType === "range") {
-                this.getToDosSelectDateRange();
-            }
+            this.getToDos();
         },
         selectedStatus: function (value) {
-            if (this.viewType === "day") {
-                this.getToDosSelectDate();
-            } else if (this.viewType === "month") {
-                this.getToDosSelectMonth();
-            } else if (this.viewType === "range") {
-                this.getToDosSelectDateRange();
-            }
+            this.getToDos();
         },
-
         selectedUser: function (value) {
-            if (this.viewType === "day") {
-                this.getToDosSelectDate();
-            } else if (this.viewType === "month") {
-                this.getToDosSelectMonth();
-            } else if (this.viewType === "range") {
-                this.getToDosSelectDateRange();
-            }
+            this.getToDos();
         },
         selectedType: function (value) {
-            if (this.viewType === "day") {
-                this.getToDosSelectDate();
-            } else if (this.viewType === "month") {
-                this.getToDosSelectMonth();
-            } else if (this.viewType === "range") {
-                this.getToDosSelectDateRange();
-            }
+            this.getToDos();
         },
         selectedContact: function (value) {
-            if (this.viewType === "day") {
-                this.getToDosSelectDate();
-            } else if (this.viewType === "month") {
-                this.getToDosSelectMonth();
-            } else if (this.viewType === "range") {
-                this.getToDosSelectDateRange();
-            }
+            this.getToDos();
         },
         selectedTask: function (value) {
-            if (this.viewType === "day") {
-                this.getToDosSelectDate();
-            } else if (this.viewType === "month") {
-                this.getToDosSelectMonth();
-            } else if (this.viewType === "range") {
-                this.getToDosSelectDateRange();
-            }
+            this.getToDos();
         },
         selectedSource: function (value) {
-            if (this.viewType === "day") {
-                this.getToDosSelectDate();
-            } else if (this.viewType === "month") {
-                this.getToDosSelectMonth();
-            } else if (this.viewType === "range") {
-                this.getToDosSelectDateRange();
-            }
+            this.getToDos();
         },
 
-        viewType: function (value) {
+        view_type: function (value) {
             if (value === "day") {
-                if (this.viewType === "day") {
-                    this.getToDosSelectDate();
+                this.getToDos();
+            } else if (value === "month") {
+                if (!this.search_month_year) {
+                    this.selectedMonthYear = this.moment().format("MMMM-YYYY");
+                    this.search_month_year = this.moment().format("YYYY-MM");
+                    this.selectedMonth = this.moment().format("MM");
+                    this.selectedYear = this.moment().format("YYYY");
+                    this.getToDos();
+                } else {
+                    this.selectedMonthYear = this.moment(
+                        this.search_month_year
+                    ).format("MMMM-YYYY");
+                    this.selectedMonth = this.moment(
+                        this.search_month_year
+                    ).format("MM");
+                    this.selectedYear = this.moment(
+                        this.search_month_year
+                    ).format("YYYY");
+                    this.getToDos();
                 }
-            }
-            if (value === "month") {
-                const monthYear = this.selectedMonthYear;
-                this.getSelectedMonth(monthYear);
-                this.getSelectedYear(monthYear);
-                console.log(
-                    "Result of this.getSelectedMonth(monthYear): " +
-                        this.getSelectedMonth(monthYear)
-                );
-                console.log(
-                    "Result of this.getSelectedYear(monthYear): " +
-                        this.getSelectedYear(monthYear)
-                );
-                this.getToDosSelectMonth();
-            }
-            if (value === "range") {
-                this.getSelectedDateStart(this.currentDate);
-                this.getSelectedDateEnd(this.currentDate);
-                this.getToDosSelectDateRange();
+            } else {
+                if (!this.search_start_date && !this.search_end_date) {
+                    this.search_start_date = this.moment().format("YYYY-MM-DD");
+                    this.search_end_date = this.moment().format("YYYY-MM-DD");
+                    // this.getToDos();
+                }
+                // else {
+                //     this.selectedMonth = this.moment(this.search_month_year).format("MM");
+                //     this.selectedYear = this.moment(this.search_month_year).format("YYYY");
+                //     this.getToDos();
+                // }
             }
         },
-        selectedDate: function (value) {
-            if (this.viewType === "day") {
-                this.getSelectedDate(this.selectedDate);
-                this.getToDosSelectDate();
-            }
+        search_date: function (value) {
+            this.selectedDate = this.moment(value).format("YYYY-MM-DD");
+            this.getToDos();
         },
 
-        currentMonth: function (value) {
-            const monthYear = this.currentMonth + "-" + "01";
-            this.selectedMonthYear = monthYear;
-            this.getSelectedMonth(monthYear);
-            this.getSelectedYear(monthYear);
-            this.getToDosSelectMonth();
-            console.log("current date after month change: " + this.currentDate);
+        search_month_year: function (value) {
+            this.selectedMonthYear = this.moment(value).format("MMMM-YYYY");
+            this.selectedMonth = this.moment(value).format("MM");
+            this.selectedYear = this.moment(value).format("YYYY");
+            this.getToDos();
         },
 
-        selectedDateRange(newVal) {
-            const [selectedDateStart, selectedDateEnd] = newVal.split("|");
-            this.getSelectedDateStart(selectedDateStart);
-            this.getSelectedDateEnd(selectedDateEnd);
-            console.log(
-                "result of date after this.getSelectedDateEnd(selectedDateStart): " +
-                    this.getSelectedDateEnd(selectedDateStart)
-            );
-            console.log(
-                "result of date after this.getSelectedDateEnd(selectedDateEnd): " +
-                    this.getSelectedDateEnd(selectedDateEnd)
-            );
-            this.getToDosSelectDateRange();
+        search_start_date: function (value) {
+            this.selectedDateStart = this.moment(value).format("YYYY-MM-DD");
         },
-    },
-    computed: {
-        selectedDateRange() {
-            return `${this.selectedDateStart}|${this.selectedDateEnd}`;
+
+        search_end_date: function (value) {
+            this.selectedDateEnd = this.moment(value).format("YYYY-MM-DD");
         },
     },
 
@@ -1215,7 +1171,7 @@ export default {
             this.todo_remark_visibility = !this.todo_remark_visibility;
         },
 
-        getToDosSelectDate(page = 1) {
+        getToDos(page = 1) {
             if (typeof page === "undefined") {
                 page = 1;
             }
@@ -1227,50 +1183,14 @@ export default {
                         this.search +
                         "&selectedDate=" +
                         this.selectedDate +
-                        "&selectedUser=" +
-                        this.selectedUser +
-                        "&selectedSource=" +
-                        this.selectedSource +
-                        "&selectedType=" +
-                        this.selectedType +
-                        "&selectedContact=" +
-                        this.selectedContact +
-                        "&selectedTask=" +
-                        this.selectedTask +
-                        "&selectedStatus=" +
-                        this.selectedStatus +
-                        "&paginate=" +
-                        this.paginate +
-                        "&page=" +
-                        page +
-                        "&sort_direction=" +
-                        this.sort_direction +
-                        "&sort_field=" +
-                        this.sort_field
-                )
-                .then((res) => {
-                    this.buffering = false;
-                    this.todos = res.data;
-                })
-                .catch((error) => {
-                    console.log(error);
-                });
-        },
-
-        getToDosSelectMonth(page = 1) {
-            if (typeof page === "undefined") {
-                page = 1;
-            }
-            this.buffering = true;
-            axios
-                .get(
-                    "/api/todos/index/monthrange?" +
-                        "q=" +
-                        this.search +
                         "&selectedMonth=" +
                         this.selectedMonth +
                         "&selectedYear=" +
                         this.selectedYear +
+                        "&selectedDateStart=" +
+                        this.selectedDateStart +
+                        "&selectedDateEnd=" +
+                        this.selectedDateEnd +
                         "&selectedUser=" +
                         this.selectedUser +
                         "&selectedSource=" +
@@ -1283,40 +1203,8 @@ export default {
                         this.selectedTask +
                         "&selectedStatus=" +
                         this.selectedStatus +
-                        "&paginate=" +
-                        this.paginate +
-                        "&page=" +
-                        page +
-                        "&sort_direction=" +
-                        this.sort_direction +
-                        "&sort_field=" +
-                        this.sort_field
-                )
-                .then((res) => {
-                    this.buffering = false;
-                    this.todos = res.data;
-                })
-                .catch((error) => {
-                    console.log(error);
-                });
-        },
-
-        getToDosSelectDateRange(page = 1) {
-            if (typeof page === "undefined") {
-                page = 1;
-            }
-            this.buffering = true;
-            axios
-                .get(
-                    "/api/todos/index/daterange?" +
-                        "q=" +
-                        this.search +
-                        "&selectedDateStart=" +
-                        this.selectedDateStart +
-                        "&selectedDateEnd=" +
-                        this.selectedDateEnd +
-                        "&selectedStatus=" +
-                        this.selectedStatus +
+                        "&view_type=" +
+                        this.view_type +
                         "&paginate=" +
                         this.paginate +
                         "&page=" +
@@ -1402,31 +1290,13 @@ export default {
         },
 
         change_sort(field) {
-            if (this.viewType === "day") {
-                if (this.sort_field == field) {
-                    this.sort_direction =
-                        this.sort_direction == "asc" ? "desc" : "asc";
-                } else {
-                    this.sort_field = field;
-                }
-                this.getToDosSelectDate();
-            } else if (this.viewType === "month") {
-                if (this.sort_field == field) {
-                    this.sort_direction =
-                        this.sort_direction == "asc" ? "desc" : "asc";
-                } else {
-                    this.sort_field = field;
-                }
-                this.getToDosSelectMonth();
-            } else if (this.viewType === "range") {
-                if (this.sort_field == field) {
-                    this.sort_direction =
-                        this.sort_direction == "asc" ? "desc" : "asc";
-                } else {
-                    this.sort_field = field;
-                }
-                this.getToDosSelectDateRange();
+            if (this.sort_field == field) {
+                this.sort_direction =
+                    this.sort_direction == "asc" ? "desc" : "asc";
+            } else {
+                this.sort_field = field;
             }
+            this.getToDos();
         },
 
         showToday(date) {
@@ -1475,29 +1345,20 @@ export default {
             return this.selectedYear;
         },
 
-        deleteToDo(id) {
+        async deleteToDo(id) {
             if (!window.confirm("Are you sure?")) {
                 return;
             }
-            axios.delete("/api/todos/delete/" + id);
-            if (this.viewType === "day") {
-                this.getToDosSelectDate();
-            } else if (this.viewType === "month") {
-                this.getToDosSelectMonth();
-            } else if (this.viewType === "range") {
-                this.getToDosSelectDateRange();
-            }
+            await axios.delete("/api/todos/delete/" + id);
+            this.getToDos();
         },
 
-        actionSelected(action, toDoId, contactId) {
+        async actionSelected(action, toDoId, contactId) {
             if (!window.confirm("Update task?")) {
                 this.todo_action.action_id = "";
                 return;
             }
-            console.log("this is is the action ID: " + action);
-            console.log("this is is the todo ID: " + toDoId);
-            console.log("this is is the contact ID: " + contactId);
-            axios.put("/api/todos/action/" + toDoId, {
+            await axios.put("/api/todos/action/" + toDoId, {
                 action_id: action ? action : null,
             });
             alert("Task updated");
@@ -1512,13 +1373,13 @@ export default {
         },
 
         incrementDate() {
-            if (this.viewType === "day") {
+            if (this.view_type === "day") {
                 document.getElementById("incrementDate").disabled = false;
-                return (this.selectedDate = moment(this.selectedDate).add(
+                return (this.search_date = moment(this.search_date).add(
                     1,
                     "d"
                 ));
-            } else if (this.viewType === "month") {
+            } else if (this.view_type === "month") {
                 document.getElementById("incrementDate").disabled = false;
                 var monthYear =
                     this.selectedYear + "-" + this.selectedMonth + "-" + "01";
@@ -1533,20 +1394,20 @@ export default {
                 this.selectedMonthYear = monthYearAdd;
                 var month = this.getSelectedMonth(monthYearAdd);
                 var year = this.getSelectedYear(monthYearAdd);
-                return (this.currentMonth = year + "-" + month);
+                return (this.search_month_year = year + "-" + month);
             } else {
                 document.getElementById("incrementDate").disabled = true;
             }
         },
 
         decrementDate() {
-            if (this.viewType === "day") {
+            if (this.view_type === "day") {
                 document.getElementById("decrementDate").disabled = false;
-                return (this.selectedDate = moment(this.selectedDate).subtract(
+                return (this.search_date = moment(this.search_date).subtract(
                     1,
                     "d"
                 ));
-            } else if (this.viewType === "month") {
+            } else if (this.view_type === "month") {
                 document.getElementById("decrementDate").disabled = false;
                 var monthYear =
                     this.selectedYear + "-" + this.selectedMonth + "-" + "01";
@@ -1561,19 +1422,11 @@ export default {
                 this.selectedMonthYear = monthYearMinus;
                 var month = this.getSelectedMonth(monthYearMinus);
                 var year = this.getSelectedYear(monthYearMinus);
-                return (this.currentMonth = year + "-" + month);
+                return (this.search_month_year = year + "-" + month);
             } else {
                 document.getElementById("decrementDate").disabled = true;
             }
         },
-
-        // exportSelected() {
-        //     if (this.checked.length === 0) {
-        //         return alert("Need select record.");
-        //     } else {
-        //         axios.get("/api/todos/export");
-        //     }
-        // },
 
         isChecked(todo_id) {
             return this.checked.includes(todo_id);
@@ -1591,4 +1444,8 @@ export default {
 
 <style scoped>
 @import "bootstrap/dist/css/bootstrap.min.css";
+
+.date_picker {
+    font-size: 5px;
+}
 </style>

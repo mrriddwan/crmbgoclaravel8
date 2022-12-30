@@ -44,6 +44,7 @@
                     </thead>
                     <tbody class="text-left">
                         <tr
+                            v-if="announcement.length"
                             v-for="announcement_info in announcement"
                             :key="announcement_info.id"
                             class=""
@@ -57,6 +58,9 @@
                             <td class="px-3 py-3">
                                 {{ announcement_info.from_user.name }}
                             </td>
+                        </tr>
+                        <tr v-else class="text-center mt-2 bg-slate-200 border">
+                            <td colspan="3" class="py-3 font-bold font-sans">No announcement</td>
                         </tr>
                     </tbody>
                 </table>
@@ -83,7 +87,7 @@
                     </thead>
                     <tbody class="text-left">
                         <tr
-                            v-if="user_info['reminder']"
+                            v-if="user_info['reminder'].length"
                             v-for="reminder in user_info['reminder']"
                             :key="reminder.id"
                             class="py-3 mt-2"
@@ -107,8 +111,8 @@
                                 </div>
                             </td>
                         </tr>
-                        <tr v-else class="text-center mt-2">
-                            <td colspan="3" class="py-3">No reminder</td>
+                        <tr v-else class="text-center mt-2 bg-slate-200 border">
+                            <td colspan="3" class="py-3 font-bold font-sans">No reminder</td>
                         </tr>
                     </tbody>
                 </table>

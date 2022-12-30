@@ -253,12 +253,12 @@
                                 </x-slot>
 
                                 <x-slot name="content" class="">
-                                    {{-- @can('view admin data') --}}
+                                    @can('view admin announcement')
                                     <x-nav-link class="w-full text-xs  hover:bg-blue-300 hover:font-bold"
                                         :href="route('announcement-edit')" :active="request()->routeIs('announcement-edit')">
                                         {{ __('Announcement') }}
                                     </x-nav-link>
-                                    {{-- @endcan --}}
+                                    @endcan
                                     @can('view admin data')
                                         <x-nav-link class="w-full text-xs  hover:bg-blue-300 hover:font-bold"
                                             :href="route('admin-data')" :active="request()->routeIs('admin-data')">

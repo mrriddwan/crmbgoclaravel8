@@ -25,6 +25,7 @@ class ToDoController extends Controller
 
         $sort_direction = request('sort_direction');
         $sort_field = request('sort_field');
+        $view_type = request('view_type');
 
         $selectedSource = request('selectedSource');
         $selectedStatus = request('selectedStatus');
@@ -33,440 +34,94 @@ class ToDoController extends Controller
         $selectedType = request('selectedType');
 
         $selectedDate = request('selectedDate');
-
-        $id = Auth::id();
-
-        if (
-            (DB::table('model_has_roles')
-                ->where('model_id', '=', $id)
-                ->where('role_id', '=', 2)
-                ->exists()) ||
-            (DB::table('model_has_roles')
-                ->where('model_id', '=', $id)
-                ->where('role_id', '=', 1)
-                ->exists())
-        ) {
-            $todo = ToDo::select([
-                'to_dos.*',
-                'contacts.id as contact_id',
-                'contacts.name as contact_name',
-                'contact_statuses.name as status_name',
-                'contact_types.name as type_name',
-                'users.name as user_name',
-                'tasks.name as task_name',
-                'priorities.name as priority_name',
-                'text_colors.color_code as color_name',
-                'contacts.type_id as contact_type_id',
-                'contacts.status_id as contact_status_id',
-                'to_do_sources.name as source_name',
-                'actions.name as action_name',
-            ])
-                ->join('contacts', 'to_dos.contact_id', '=', 'contacts.id')
-                ->join('contact_statuses', 'contacts.status_id', '=', 'contact_statuses.id')
-                ->join('contact_types', 'contacts.type_id', '=', 'contact_types.id')
-                ->join('tasks', 'to_dos.task_id', '=', 'tasks.id')
-                ->join('priorities', 'to_dos.priority_id', '=', 'priorities.id')
-                ->join('users', 'to_dos.user_id', '=', 'users.id')
-                ->join('text_colors', 'to_dos.color_id', '=', 'text_colors.id')
-                ->leftJoin('to_do_sources', 'to_dos.source_id', '=', 'to_do_sources.id')
-                ->leftJoin('actions', 'to_dos.action_id', '=', 'actions.id')
-                ->when($selectedStatus, function ($query) use ($selectedStatus) {
-                    $query->where('to_dos.status_id', $selectedStatus);
-                })
-                // ->when($selectedContact, function ($query) use ($selectedContact) {
-                //     $query->where('to_dos.contact_id', $selectedContact);
-                // })
-                ->when($selectedSource, function ($query) use ($selectedSource) {
-                    $query->where('to_dos.source_id', $selectedSource);
-                })
-                ->when($selectedTask, function ($query) use ($selectedTask) {
-                    $query->where('to_dos.task_id', $selectedTask);
-                })
-                ->when($selectedType, function ($query) use ($selectedType) {
-                    $query->where('to_dos.type_id', $selectedType);
-                })
-                ->when($selectedUser, function ($query) use ($selectedUser) {
-                    $query->where('to_dos.user_id', $selectedUser);
-                })
-                ->when($selectedDate, function ($query) use ($selectedDate) {
-                    $query->whereDate('to_dos.todo_date', ('='), ($selectedDate));
-                })
-                ->orderBy($sort_field, $sort_direction)
-                ->search(trim($search_term))
-                ->paginate($paginate);
-
-            return ToDoResource::collection($todo);
-        } else {
-            $sv_sb = "";
-            $final = [$id];
-
-            if (SvSbPivot::where('supervisor_id', '=', $id)->exists()) {
-                $sv_sb = SvSbPivot::select('subordinate_id')
-                    ->where('supervisor_id', '=', $id)
-                    ->pluck('subordinate_id');
-            } else {
-                $sv_sb = ["null"];
-            }
-            array_push($final, ...$sv_sb);
-
-            $todo = ToDo::select([
-                'to_dos.*',
-                'contacts.id as contact_id',
-                'contacts.name as contact_name',
-                'contact_statuses.name as status_name',
-                'contact_types.name as type_name',
-                'users.name as user_name',
-                'tasks.name as task_name',
-                'priorities.name as priority_name',
-                'text_colors.color_code as color_name',
-                'contacts.type_id as contact_type_id',
-                'contacts.status_id as contact_status_id',
-                'to_do_sources.name as source_name',
-                'actions.name as action_name',
-            ])
-                ->whereIn('to_dos.user_id', $final) // for view under supervisor and the subordinates
-
-                ->join('contacts', 'to_dos.contact_id', '=', 'contacts.id')
-                ->join('contact_statuses', 'contacts.status_id', '=', 'contact_statuses.id')
-                ->join('contact_types', 'contacts.type_id', '=', 'contact_types.id')
-                ->join('tasks', 'to_dos.task_id', '=', 'tasks.id')
-                ->join('priorities', 'to_dos.priority_id', '=', 'priorities.id')
-                ->join('users', 'to_dos.user_id', '=', 'users.id')
-                ->join('text_colors', 'to_dos.color_id', '=', 'text_colors.id')
-                ->leftJoin('to_do_sources', 'to_dos.source_id', '=', 'to_do_sources.id')
-                ->leftJoin('actions', 'to_dos.action_id', '=', 'actions.id')
-                ->when($selectedStatus, function ($query) use ($selectedStatus) {
-                    $query->where('to_dos.status_id', $selectedStatus);
-                })
-                // ->when($selectedContact, function ($query) use ($selectedContact) {
-                //     $query->where('to_dos.contact_id', $selectedContact);
-                // })
-                ->when($selectedSource, function ($query) use ($selectedSource) {
-                    $query->where('to_dos.source_id', $selectedSource);
-                })
-                ->when($selectedTask, function ($query) use ($selectedTask) {
-                    $query->where('to_dos.task_id', $selectedTask);
-                })
-                ->when($selectedType, function ($query) use ($selectedType) {
-                    $query->where('to_dos.type_id', $selectedType);
-                })
-                ->when($selectedUser, function ($query) use ($selectedUser) {
-                    $query->where('to_dos.user_id', $selectedUser);
-                })
-                ->when($selectedDate, function ($query) use ($selectedDate) {
-                    $query->whereDate('to_dos.todo_date', ('='), ($selectedDate));
-                })
-                ->orderBy($sort_field, $sort_direction)
-                ->search(trim($search_term))
-                ->paginate($paginate);
-
-            return ToDoResource::collection($todo);
-        }
-    }
-
-    public function monthrange()
-    {
-        $paginate = request('paginate');
-        $search_term = request('q', '');
-
-        $sort_direction = request('sort_direction');
-        $sort_field = request('sort_field');
-
-        $selectedSource = request('selectedSource');
-        $selectedStatus = request('selectedStatus');
-        $selectedUser = request('selectedUser');
-        $selectedTask = request('selectedTask');
-        $selectedType = request('selectedType');
-
         $selectedMonth = request('selectedMonth');
         $selectedYear = request('selectedYear');
-
-        $id = Auth::id();
-
-        $id = Auth::id();
-
-        if (
-            (DB::table('model_has_roles')
-                ->where('model_id', '=', $id)
-                ->where('role_id', '=', 2)
-                ->exists()) ||
-            (DB::table('model_has_roles')
-                ->where('model_id', '=', $id)
-                ->where('role_id', '=', 1)
-                ->exists())
-        ) {
-            $todo = ToDo::select([
-                'to_dos.*',
-                'contacts.id as contact_id',
-                'contacts.name as contact_name',
-                'contact_statuses.name as status_name',
-                'contact_types.name as type_name',
-                'users.name as user_name',
-                'tasks.name as task_name',
-                'priorities.name as priority_name',
-                'text_colors.color_code as color_name',
-                'contacts.type_id as contact_type_id',
-                'contacts.status_id as contact_status_id',
-                // 'contacts.name as contact_name',
-                'to_do_sources.name as source_name',
-                'actions.name as action_name',
-            ])
-                ->join('contacts', 'to_dos.contact_id', '=', 'contacts.id')
-                ->join('contact_statuses', 'contacts.status_id', '=', 'contact_statuses.id')
-                ->join('contact_types', 'contacts.type_id', '=', 'contact_types.id')
-                ->join('tasks', 'to_dos.task_id', '=', 'tasks.id')
-                ->join('priorities', 'to_dos.priority_id', '=', 'priorities.id')
-                ->join('users', 'to_dos.user_id', '=', 'users.id')
-                ->join('text_colors', 'to_dos.color_id', '=', 'text_colors.id')
-                ->leftJoin('to_do_sources', 'to_dos.source_id', '=', 'to_do_sources.id')
-                ->leftJoin('actions', 'to_dos.action_id', '=', 'actions.id')
-                ->when($selectedStatus, function ($query) use ($selectedStatus) {
-                    $query->where('to_dos.status_id', $selectedStatus);
-                })
-                // ->when($selectedContact, function ($query) use ($selectedContact) {
-                //     $query->where('to_dos.contact_id', $selectedContact);
-                // })
-                ->when($selectedSource, function ($query) use ($selectedSource) {
-                    $query->where('to_dos.source_id', $selectedSource);
-                })
-                ->when($selectedTask, function ($query) use ($selectedTask) {
-                    $query->where('to_dos.task_id', $selectedTask);
-                })
-                ->when($selectedType, function ($query) use ($selectedType) {
-                    $query->where('to_dos.type_id', $selectedType);
-                })
-                ->when($selectedUser, function ($query) use ($selectedUser) {
-                    $query->where('to_dos.user_id', $selectedUser);
-                })
-                ->when($selectedMonth, function ($query) use ($selectedMonth) {
-                    $query->whereMonth('to_dos.todo_date', '=', ($selectedMonth));
-                })
-                ->when($selectedYear, function ($query) use ($selectedYear) {
-                    $query->whereYear('to_dos.todo_date', '=', ($selectedYear));
-                })
-                ->orderBy($sort_field, $sort_direction)
-                ->search(trim($search_term))
-                ->paginate($paginate);
-
-            return ToDoResource::collection($todo);
-        } else {
-            $sv_sb = "";
-            $final = [$id];
-
-            if (SvSbPivot::where('supervisor_id', '=', $id)->exists()) {
-                $sv_sb = SvSbPivot::select('subordinate_id')
-                    ->where('supervisor_id', '=', $id)
-                    ->pluck('subordinate_id');
-            } else {
-                $sv_sb = ["null"];
-            }
-            array_push($final, ...$sv_sb);
-
-            $todo = ToDo::select([
-                'to_dos.*',
-                'contacts.id as contact_id',
-                'contacts.name as contact_name',
-                'contact_statuses.name as status_name',
-                'contact_types.name as type_name',
-                'users.name as user_name',
-                'tasks.name as task_name',
-                'priorities.name as priority_name',
-                'text_colors.color_code as color_name',
-                'contacts.type_id as contact_type_id',
-                'contacts.status_id as contact_status_id',
-                // 'contacts.name as contact_name',
-                'to_do_sources.name as source_name',
-                'actions.name as action_name',
-            ])
-                ->whereIn('to_dos.user_id', $final) // for view under supervisor and the subordinates
-
-                ->join('contacts', 'to_dos.contact_id', '=', 'contacts.id')
-                ->join('contact_statuses', 'contacts.status_id', '=', 'contact_statuses.id')
-                ->join('contact_types', 'contacts.type_id', '=', 'contact_types.id')
-                ->join('tasks', 'to_dos.task_id', '=', 'tasks.id')
-                ->join('priorities', 'to_dos.priority_id', '=', 'priorities.id')
-                ->join('users', 'to_dos.user_id', '=', 'users.id')
-                ->join('text_colors', 'to_dos.color_id', '=', 'text_colors.id')
-                ->leftJoin('to_do_sources', 'to_dos.source_id', '=', 'to_do_sources.id')
-                ->leftJoin('actions', 'to_dos.action_id', '=', 'actions.id')
-                ->when($selectedStatus, function ($query) use ($selectedStatus) {
-                    $query->where('to_dos.status_id', $selectedStatus);
-                })
-                // ->when($selectedContact, function ($query) use ($selectedContact) {
-                //     $query->where('to_dos.contact_id', $selectedContact);
-                // })
-                ->when($selectedSource, function ($query) use ($selectedSource) {
-                    $query->where('to_dos.source_id', $selectedSource);
-                })
-                ->when($selectedTask, function ($query) use ($selectedTask) {
-                    $query->where('to_dos.task_id', $selectedTask);
-                })
-                ->when($selectedType, function ($query) use ($selectedType) {
-                    $query->where('to_dos.type_id', $selectedType);
-                })
-                ->when($selectedUser, function ($query) use ($selectedUser) {
-                    $query->where('to_dos.user_id', $selectedUser);
-                })
-                ->when($selectedMonth, function ($query) use ($selectedMonth) {
-                    $query->whereMonth('to_dos.todo_date', '=', ($selectedMonth));
-                })
-                ->when($selectedYear, function ($query) use ($selectedYear) {
-                    $query->whereYear('to_dos.todo_date', '=', ($selectedYear));
-                })
-                ->orderBy($sort_field, $sort_direction)
-                ->search(trim($search_term))
-                ->paginate($paginate);
-
-            return ToDoResource::collection($todo);
-        }
-    }
-
-
-    public function daterange()
-    {
-        $paginate = request('paginate');
-        $search_term = request('q', '');
-
-        $sort_direction = request('sort_direction');
-        $sort_field = request('sort_field');
-
-        $selectedSource = request('selectedSource');
-        $selectedStatus = request('selectedStatus');
-        $selectedUser = request('selectedUser');
-        $selectedTask = request('selectedTask');
-        $selectedType = request('selectedType');
-
         $selectedDateStart = request('selectedDateStart');
         $selectedDateEnd = request('selectedDateEnd');
 
         $id = Auth::id();
+        // $id = 1;
 
-        if (
-            (DB::table('model_has_roles')
-                ->where('model_id', '=', $id)
-                ->where('role_id', '=', 2)
-                ->exists()) ||
-            (DB::table('model_has_roles')
-                ->where('model_id', '=', $id)
-                ->where('role_id', '=', 1)
-                ->exists())
-        ) {
-            $todo = ToDo::select([
-                'to_dos.*',
-                'contacts.id as contact_id',
-                'contacts.name as contact_name',
-                'contact_statuses.name as status_name',
-                'contact_types.name as type_name',
-                'users.name as user_name',
-                'tasks.name as task_name',
-                'priorities.name as priority_name',
-                'text_colors.color_code as color_name',
-                'contacts.type_id as contact_type_id',
-                'contacts.status_id as contact_status_id',
-                'to_do_sources.name as source_name',
-                'actions.name as action_name',
-            ])
-                ->join('contacts', 'to_dos.contact_id', '=', 'contacts.id')
-                ->join('contact_statuses', 'contacts.status_id', '=', 'contact_statuses.id')
-                ->join('contact_types', 'contacts.type_id', '=', 'contact_types.id')
-                ->join('tasks', 'to_dos.task_id', '=', 'tasks.id')
-                ->join('priorities', 'to_dos.priority_id', '=', 'priorities.id')
-                ->join('users', 'to_dos.user_id', '=', 'users.id')
-                ->join('text_colors', 'to_dos.color_id', '=', 'text_colors.id')
-                ->leftJoin('to_do_sources', 'to_dos.source_id', '=', 'to_do_sources.id')
-                ->leftJoin('actions', 'to_dos.action_id', '=', 'actions.id')
-                ->when($selectedStatus, function ($query) use ($selectedStatus) {
-                    $query->where('to_dos.status_id', $selectedStatus);
-                })
-                // ->when($selectedContact, function ($query) use ($selectedContact) {
-                //     $query->where('to_dos.contact_id', $selectedContact);
-                // })
-                ->when($selectedSource, function ($query) use ($selectedSource) {
-                    $query->where('to_dos.source_id', $selectedSource);
-                })
-                ->when($selectedTask, function ($query) use ($selectedTask) {
-                    $query->where('to_dos.task_id', $selectedTask);
-                })
-                ->when($selectedType, function ($query) use ($selectedType) {
-                    $query->where('to_dos.type_id', $selectedType);
-                })
-                ->when($selectedUser, function ($query) use ($selectedUser) {
-                    $query->where('to_dos.user_id', $selectedUser);
-                })
-                ->when($selectedDateStart && $selectedDateEnd, function ($query) use ($selectedDateStart, $selectedDateEnd) {
-                    $query->whereBetween('to_dos.todo_date', [$selectedDateStart, $selectedDateEnd]);
-                })
-                ->orderBy($sort_field, $sort_direction)
-                ->search(trim($search_term))
-                ->paginate($paginate);
+        //check if supervisor
+        $sv_sb = "";
+        $final = [$id];
 
-            return ToDoResource::collection($todo);
+        if (SvSbPivot::where('supervisor_id', '=', $id)->exists()) {
+            $sv_sb = SvSbPivot::select('subordinate_id')
+                ->where('supervisor_id', '=', $id)
+                ->pluck('subordinate_id');
         } else {
-            $sv_sb = "";
-            $final = [$id];
-
-            if (SvSbPivot::where('supervisor_id', '=', $id)->exists()) {
-                $sv_sb = SvSbPivot::select('subordinate_id')
-                    ->where('supervisor_id', '=', $id)
-                    ->pluck('subordinate_id');
-            } else {
-                $sv_sb = ["null"];
-            }
-            array_push($final, ...$sv_sb);
-
-            $todo = ToDo::select([
-                'to_dos.*',
-                'contacts.id as contact_id',
-                'contacts.name as contact_name',
-                'contact_statuses.name as status_name',
-                'contact_types.name as type_name',
-                'users.name as user_name',
-                'tasks.name as task_name',
-                'priorities.name as priority_name',
-                'text_colors.color_code as color_name',
-                'contacts.type_id as contact_type_id',
-                'contacts.status_id as contact_status_id',
-                'to_do_sources.name as source_name',
-                'actions.name as action_name',
-            ])
-                ->whereIn('to_dos.user_id', $final) // for view under supervisor and the subordinates
-
-                ->join('contacts', 'to_dos.contact_id', '=', 'contacts.id')
-                ->join('contact_statuses', 'contacts.status_id', '=', 'contact_statuses.id')
-                ->join('contact_types', 'contacts.type_id', '=', 'contact_types.id')
-                ->join('tasks', 'to_dos.task_id', '=', 'tasks.id')
-                ->join('priorities', 'to_dos.priority_id', '=', 'priorities.id')
-                ->join('users', 'to_dos.user_id', '=', 'users.id')
-                ->join('text_colors', 'to_dos.color_id', '=', 'text_colors.id')
-                ->leftJoin('to_do_sources', 'to_dos.source_id', '=', 'to_do_sources.id')
-                ->leftJoin('actions', 'to_dos.action_id', '=', 'actions.id')
-                ->when($selectedStatus, function ($query) use ($selectedStatus) {
-                    $query->where('to_dos.status_id', $selectedStatus);
-                })
-                // ->when($selectedContact, function ($query) use ($selectedContact) {
-                //     $query->where('to_dos.contact_id', $selectedContact);
-                // })
-                ->when($selectedSource, function ($query) use ($selectedSource) {
-                    $query->where('to_dos.source_id', $selectedSource);
-                })
-                ->when($selectedTask, function ($query) use ($selectedTask) {
-                    $query->where('to_dos.task_id', $selectedTask);
-                })
-                ->when($selectedType, function ($query) use ($selectedType) {
-                    $query->where('to_dos.type_id', $selectedType);
-                })
-                ->when($selectedUser, function ($query) use ($selectedUser) {
-                    $query->where('to_dos.user_id', $selectedUser);
-                })
-                ->when($selectedDateStart && $selectedDateEnd, function ($query) use ($selectedDateStart, $selectedDateEnd) {
-                    $query->whereBetween('to_dos.todo_date', [$selectedDateStart, $selectedDateEnd]);
-                })
-                ->orderBy($sort_field, $sort_direction)
-                ->search(trim($search_term))
-                ->paginate($paginate);
-
-            return ToDoResource::collection($todo);
+            $sv_sb = ["null"];
         }
+        array_push($final, ...$sv_sb);
+
+        
+        $todo = ToDo::select([
+            'to_dos.*',
+            'contacts.id as contact_id',
+            'contacts.name as contact_name',
+            'contact_statuses.name as status_name',
+            'contact_types.name as type_name',
+            'users.name as user_name',
+            'tasks.name as task_name',
+            'priorities.name as priority_name',
+            'text_colors.color_code as color_name',
+            'contacts.type_id as contact_type_id',
+            'contacts.status_id as contact_status_id',
+            'to_do_sources.name as source_name',
+            'actions.name as action_name',
+        ])
+            ->join('contacts', 'to_dos.contact_id', '=', 'contacts.id')
+            ->join('contact_statuses', 'contacts.status_id', '=', 'contact_statuses.id')
+            ->join('contact_types', 'contacts.type_id', '=', 'contact_types.id')
+            ->join('tasks', 'to_dos.task_id', '=', 'tasks.id')
+            ->join('priorities', 'to_dos.priority_id', '=', 'priorities.id')
+            ->join('users', 'to_dos.user_id', '=', 'users.id')
+            ->join('text_colors', 'to_dos.color_id', '=', 'text_colors.id')
+            ->leftJoin('to_do_sources', 'to_dos.source_id', '=', 'to_do_sources.id')
+            ->leftJoin('actions', 'to_dos.action_id', '=', 'actions.id')
+            ->when($selectedStatus, function ($query) use ($selectedStatus) {
+                $query->where('to_dos.status_id', $selectedStatus);
+            })
+            ->when($selectedSource, function ($query) use ($selectedSource) {
+                $query->where('to_dos.source_id', $selectedSource);
+            })
+            ->when($selectedTask, function ($query) use ($selectedTask) {
+                $query->where('to_dos.task_id', $selectedTask);
+            })
+            ->when($selectedType, function ($query) use ($selectedType) {
+                $query->where('to_dos.type_id', $selectedType);
+            })
+            ->when($selectedUser, function ($query) use ($selectedUser) {
+                $query->where('to_dos.user_id', $selectedUser);
+            })
+            ->when($view_type === 'day', function ($query) use ($selectedDate) {
+                $query->whereDate('to_dos.todo_date', '=', ($selectedDate));
+            })
+            ->when($view_type === 'month', function ($query) use ($selectedMonth, $selectedYear) {
+                $query->whereMonth('to_dos.todo_date', '=', ($selectedMonth))->whereYear('to_dos.todo_date', '=', ($selectedYear));
+            })
+            ->when($view_type === 'range', function ($query) use ($selectedDateStart, $selectedDateEnd) {
+                $query->whereBetween('to_dos.todo_date', [$selectedDateStart, $selectedDateEnd]);
+            })
+            ->when((DB::table('model_has_roles') 
+                    //if super-admin or admin
+                    ->where('model_id', '=', $id)
+                    ->where('role_id', '!=', 2)
+                    ->exists()) ||
+                    (DB::table('model_has_roles')
+                        ->where('model_id', '=', $id)
+                        ->where('role_id', '!=', 1)
+                        ->exists()),
+                function ($query) use ($final) {
+                    $query->whereIn('to_dos.user_id', $final); // for view under supervisor and the subordinates
+                }
+            )
+            ->orderBy($sort_field, $sort_direction)
+            ->search(trim($search_term))
+            ->paginate($paginate);
+        
+        return ToDoResource::collection($todo);
     }
 
 
@@ -560,8 +215,7 @@ class ToDoController extends Controller
             //     $q->select('id', 'status_id', 'type_id');
             // }])
             ->where('to_dos.id', '=', $id)
-            ->get()
-            ;
+            ->get();
 
         return response()->json(['data' => $todo[0]]);
     }

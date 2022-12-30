@@ -461,7 +461,7 @@
                                         {{ index + 1 }}
                                     </td>
                                     <td
-                                        class="w-max text-center align-middle px-2 py-2"
+                                        class="w-max align-middle px-2 py-2 text-left"
                                     >
                                         {{ permission.name }}
                                     </td>
@@ -762,7 +762,7 @@
                                 <th>Description</th>
                             </thead>
                             <tbody>
-                                <tr v-for="(permission, index) in permissions">
+                                <tr v-for="(permission, index) in permissions" class="text-left">
                                     <td>{{ index + 1 }}</td>
                                     <td>{{ permission.name }}</td>
                                     <td>{{ permission.description }}</td>

@@ -111,7 +111,7 @@
                                         <button
                                             @click="
                                                 updateTarget(
-                                                    this.benchmark_action.id, this.benchmark_action.action_target
+                                                    benchmark_action.id, benchmark_action.action_target
                                                 )
                                             "
                                             class="text-white text-xs px-2 py-2 bg-yellow-400 hover:bg-amber-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg dark:bg-yellow-400 dark:hover:bg-amber-700 dark:focus:ring-amber-800"

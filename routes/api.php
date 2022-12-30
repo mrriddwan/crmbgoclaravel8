@@ -105,7 +105,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     Route::post('/admin/benchmarks/create', [UserCategoryBenchmarkController::class, 'create'])->name('category_benchmark:create');
     Route::delete('/admin/benchmarks/delete/{benchmark}', [UserCategoryBenchmarkController::class, 'delete'])->name('category_benchmark:delete');
     Route::get('/admin/benchmarks/category/{benchmark}', [UserCategoryBenchmarkController::class, 'info'])->name('category_benchmark:info');
-    Route::put('/admin/benchmarks/target/update/{benchmark}', [UserCategoryBenchmarkController::class, 'update_target'])->name('category_benchmark:update_target');
+    Route::put('/admin/benchmarks/target/update/{benchmark}', [UserCategoryBenchmarkController::class, 'update'])->name('category_benchmark:update');
 
     Route::get('/admin/supervisors/index', [SupervisorController::class, 'index'])->name('supervisor:index');
     Route::get('/admin/supervisors/users/{supervisor}', [SupervisorController::class, 'info'])->name('supervisor:info');
@@ -211,8 +211,6 @@ Route::get('/incharges/info/{incharge}', [ContactInchargeController::class, 'inf
 
 /*To Do API*/
 Route::get('/todos/index', [ToDoController::class, 'index'])->name('todo:index');
-Route::get('/todos/index/monthrange', [ToDoController::class, 'monthrange'])->name('todo:monthrange');
-Route::get('/todos/index/daterange', [ToDoController::class, 'daterange'])->name('todo:daterange');
 Route::post('/todos/insert/{todo}', [ToDoController::class, 'insert'])->name('todo:insert');
 Route::post('/todos/store', [ToDoController::class, 'store'])->name('todo:store');
 Route::get('/todos/show/{todo}', [ToDoController::class, 'show'])->name('todo:show');
