@@ -1,7 +1,7 @@
 <template>
     <div class="w-max container" id="index-container">
         <h1
-            class="items-center text-center text-5xl text-white font-extrabold bg-blue-900 px-2 rounded-md"
+            class="items-center text-center text-5xl text-white font-extrabold bg-blue-900 px-2 py-2 rounded-md"
         >
             Contact List
         </h1>
@@ -111,7 +111,7 @@
         <div class="">
             <div class="grid grid-cols-3 items-center">
                 <div class="grid grid-cols-2 items-left m-2">
-                    <label for="paginate" class="">Per Page</label>
+                    <label for="paginate" class="my-auto">Entry per page</label>
                     <input v-model.lazy="paginate" class="form-control" />
                     <!-- <select v-model="paginate" class="form-control">
                         <option value="10">10</option>
@@ -873,14 +873,12 @@ export default {
         this.selectedUser = document
             .querySelector('meta[name="user-id"]')
             .getAttribute("content");
-        // this.selectedUser = 3;
 
         this.getUsers();
         this.getIndustries();
         this.getTypes();
         this.getCategories();
         this.getContacts();
-        // this.check_if_subordinate(3)
     },
     data() {
         return {

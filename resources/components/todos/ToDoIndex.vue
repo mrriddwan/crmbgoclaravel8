@@ -33,6 +33,12 @@
                             >
                                 Search
                             </button>
+                            <label
+                                v-if="new_search"
+                                class="text-xs uppercase text-red-600 mx-2"
+                                ><ExclamationTriangleIcon
+                                    class="h-8 w-8 inline"
+                            /></label>
                         </div>
                     </div>
                     <div class="px-1 py-1 col-span-2">
@@ -962,6 +968,7 @@ import {
     ArrowDownIcon,
     ArrowUpIcon,
     QuestionMarkCircleIcon,
+    ExclamationTriangleIcon,
 } from "@heroicons/vue/24/solid";
 
 export default {
@@ -981,6 +988,7 @@ export default {
         ArrowDownIcon,
         ArrowUpIcon,
         QuestionMarkCircleIcon,
+        ExclamationTriangleIcon,
     },
 
     created() {},
@@ -1022,6 +1030,7 @@ export default {
             paginate: 100,
             view_type: "day",
             moment: moment,
+            new_search: false,
 
             search: "",
             todo: "",
@@ -1158,10 +1167,12 @@ export default {
 
         search_start_date: function (value) {
             this.selectedDateStart = this.moment(value).format("YYYY-MM-DD");
+            this.new_search = true;
         },
 
         search_end_date: function (value) {
             this.selectedDateEnd = this.moment(value).format("YYYY-MM-DD");
+            this.new_search = true;
         },
     },
 
@@ -1216,6 +1227,7 @@ export default {
                 )
                 .then((res) => {
                     this.buffering = false;
+                    this.new_search = false;
                     this.todos = res.data;
                 })
                 .catch((error) => {
