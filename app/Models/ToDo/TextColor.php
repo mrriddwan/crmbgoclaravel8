@@ -9,6 +9,10 @@ class TextColor extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'color_code'
+    ];
+
     public function todo(){
         return $this->belongsTo(ToDo::class);
     }

@@ -5,7 +5,7 @@
         </div>
 
         <div
-            class="items-center text-center text-white bg-blue-900 px-2 py-1 rounded-md"
+            class="items-center text-center text-white bg-blue-900 px-20 py-1 rounded-md"
         >
             <h1 class="px-10 py-1 bg-black-50 font-extrabold font-mono">
                 Edit To Do
@@ -15,34 +15,66 @@
         <div class="row mt-3 px-24">
             <div class="col-md-12">
                 <form @submit.prevent="editToDo" class="w-full">
-                    <div>
-                        <label
-                            for="large-toggle"
-                            class="inline-flex relative items-center cursor-pointer"
-                        >
-                            <input
-                                type="checkbox"
-                                true-value="1"
-                                false-value="2"
-                                id="large-toggle"
-                                class="sr-only peer"
-                                v-model="todo.priority_id"
-                            />
-                            <div
-                                class="w-14 h-7 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[4px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"
-                            ></div>
-                            <span
-                                class="ml-3 text-md font-extrabold uppercase text-black"
-                                >Urgent</span
+                    <div class="grid grid-cols-2">
+                        <div class="my-auto">
+                            <label
+                                for="large-toggle"
+                                class="inline-flex relative items-center cursor-pointer"
                             >
-                        </label>
+                                <input
+                                    type="checkbox"
+                                    true-value="1"
+                                    false-value="2"
+                                    id="large-toggle"
+                                    class="sr-only peer"
+                                    v-model="todo.priority_id"
+                                />
+                                <div
+                                    class="w-14 h-7 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[4px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"
+                                ></div>
+                                <span
+                                    class="ml-3 text-md font-extrabold uppercase text-black"
+                                    >Urgent</span
+                                >
+                            </label>
+                        </div>
+                        <div class="my-auto flex">
+                            <select
+                                v-model="todo.color_id"
+                                class="block w-max rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                            >
+                                <option disabled value="">Select color</option>
+                                <option
+                                    v-for="colour in colors"
+                                    :key="colour.id"
+                                    :value="colour.id"
+                                    :style="{ color: colour.color_code }"
+                                >
+                                    {{ colour.color_code }}
+                                </option>
+                                <!-- <option
+                                    v-for="colour in colors"
+                                    :key="colour.id"
+                                    :value="colour.id"
+                                    style="color: #ff0000"
+                                >
+                                    <span>{{
+                                        colour.color_code
+                                    }}</span>
+                                </option> -->
+                            </select>
+                            <span
+                                class="ml-3 text-md font-extrabold uppercase text-black my-auto"
+                                >Text Color</span
+                            >
+                        </div>
                     </div>
                     <div class="form-group">
                         <label>User</label>
                         <select
                             class="block mt-1 w-max rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                             v-model="todo.user_id"
-                            @change="getUsers"
+                            @change="getUser"
                         >
                             <option disabled value="">Please select one</option>
                             <option
@@ -201,12 +233,14 @@ export default {
                 contact_id: "",
                 task_id: "",
                 todo_remark: "",
+                color_id: "",
             },
             tasks: [],
             contacts: [],
             statuses: [],
             types: [],
             users: [],
+            colors: [],
         };
     },
 
@@ -217,6 +251,7 @@ export default {
         this.getStatus();
         this.getUser();
         this.getType();
+        this.getColors();
     },
 
     methods: {
@@ -286,6 +321,17 @@ export default {
                 .get("/api/users/users_list")
                 .then((res) => {
                     this.users = res.data.data;
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        },
+
+        async getColors() {
+            await axios
+                .get("/api/text_colors/index")
+                .then((res) => {
+                    this.colors = res.data.data;
                 })
                 .catch((error) => {
                     console.log(error);

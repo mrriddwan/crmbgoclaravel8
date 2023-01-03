@@ -79,6 +79,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     Route::post('/admin/create/forecast/product', [AdminController::class, 'createForecastProduct'])->name('forecastProduct:create');
     Route::put('/admin/update/forecast/product/{product}', [AdminController::class, 'updateForecastProduct'])->name('forecastProduct:update');
 
+    Route::post('/admin/create/text_color', [AdminController::class, 'createTextColor'])->name('textColor:create');
+    Route::put('/admin/update/text_color/{textColor}', [AdminController::class, 'updateTextColor'])->name('textColor:update');
+
     Route::delete('/admin/delete/contact/category/{category}', [AdminController::class, 'deleteContactCategory'])->name('contactCategory:delete');
     Route::delete('/admin/delete/contact/status/{status}', [AdminController::class, 'deleteContactStatus'])->name('contactStatus:delete');
     Route::delete('/admin/delete/contact/type/{type}', [AdminController::class, 'deleteContactType'])->name('contactType:delete');
@@ -87,6 +90,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     Route::delete('/admin/delete/todo/action/{action}', [AdminController::class, 'deleteToDoAction'])->name('todoAction:delete');
     Route::delete('/admin/delete/forecast/type/{type}', [AdminController::class, 'deleteForecastType'])->name('forecastType:delete');
     Route::delete('/admin/delete/forecast/product/{product}', [AdminController::class, 'deleteForecastProduct'])->name('forecastProduct:delete');
+    Route::delete('/admin/delete/text_color/{textColor}', [AdminController::class, 'deleteTextColor'])->name('textColor:delete');
 
     Route::get('/admin/users/info/{user}', [AdminController::class, 'user_info'])->name('user:info');
     Route::post('admin/users/create', [AdminController::class, 'user_create'])->name('user:create');
@@ -232,6 +236,8 @@ Route::get('/actions/performance', [ActionController::class, 'performance'])->na
 Route::get('/actions/info/{action}', [ActionController::class, 'info'])->name('action:info');
 
 Route::get('/sources/index', [ToDoSourceController::class, 'index'])->name('source:index');
+Route::get('/text_colors/index', [ToDoController::class, 'colors'])->name('source:colors');
+Route::get('/text_colors/info/{color}', [ToDoController::class, 'color_info'])->name('source:colors');
 
 /*Follow Up API*/
 Route::get('/followups/index', [FollowUpController::class, 'index'])->name('followup:index');

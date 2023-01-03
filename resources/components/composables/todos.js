@@ -8,6 +8,7 @@ export default function toDoComposables () {
     const todos = ref([])
     const todo = ref([])
     const tasks = ref([])
+    const colors = ref([])
 
     const getToDos = async () => {
         let response = await axios.get('/api/todos/index')
@@ -22,6 +23,11 @@ export default function toDoComposables () {
     const getTasks = async () => {
         let response = await axios.get(`/api/tasks/index`)
         tasks.value = response.data.data;
+    }
+
+    const getColors = async () => {
+        let response = await axios .get("/api/text_colors/index");
+        colors.value = response.data.data;    
     }
 
     const storeToDo = async (data) => {
@@ -79,7 +85,8 @@ export default function toDoComposables () {
         todo,
         getTasks,
         tasks,
-        
+        colors,
+        getColors,
         storeToDo,
         // insertToDo,
 

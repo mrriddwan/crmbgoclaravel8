@@ -28,27 +28,49 @@
         <div class="row mt-3">
             <div class="col-md-6">
                 <form @submit.prevent="createToDo">
-                    <div>
-                        <label
-                            for="large-toggle"
-                            class="inline-flex relative items-center cursor-pointer"
-                        >
-                            <input
-                                type="checkbox"
-                                true-value="1"
-                                false-value="2"
-                                id="large-toggle"
-                                class="sr-only peer"
-                                v-model="form.priority_id"
-                            />
-                            <div
-                                class="w-14 h-7 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[4px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"
-                            ></div>
-                            <span
-                                class="ml-3 text-md font-extrabold uppercase text-black"
-                                >Urgent</span
+                    <div class="grid grid-cols-2 gap-10">
+                        <div class="my-auto">
+                            <label
+                                for="large-toggle"
+                                class="inline-flex relative items-center cursor-pointer"
                             >
-                        </label>
+                                <input
+                                    type="checkbox"
+                                    true-value="1"
+                                    false-value="2"
+                                    id="large-toggle"
+                                    class="sr-only peer"
+                                    v-model="form.priority_id"
+                                />
+                                <div
+                                    class="w-14 h-7 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[4px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"
+                                ></div>
+                                <span
+                                    class="ml-3 text-md font-extrabold uppercase text-black"
+                                    >Urgent</span
+                                >
+                            </label>
+                        </div>
+                        <div class="my-auto flex w-max">
+                            <select
+                                v-model="form.color_id"
+                                class="block w-max rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                            >
+                                <option disabled value="">Select color</option>
+                                <option
+                                    v-for="colour in colors"
+                                    :key="colour.id"
+                                    :value="colour.id"
+                                    :style="{ color: colour.color_code }"
+                                >
+                                    {{ colour.color_code }}
+                                </option>
+                            </select>
+                            <span
+                                class="ml-3 text-md font-extrabold uppercase text-black my-auto w-max"
+                                >Text Color</span
+                            >
+                        </div>
                     </div>
                     <div class="form-group">
                         <label
@@ -192,7 +214,10 @@
 
                     <div class="form-group">
                         <label>Remark</label>
-                        <div v-if="form.todo_remark.length >= 800" class="text-red-600 inline text-xs uppercase">
+                        <div
+                            v-if="form.todo_remark.length >= 800"
+                            class="text-red-600 inline text-xs uppercase"
+                        >
                             Exceeded limit
                         </div>
                         <textarea
@@ -247,7 +272,7 @@ export default {
         };
 
         const form = reactive({
-            priority_id: "",
+            priority_id: 2,
             user_id: "",
             contact_id: "",
             type_id: "",
@@ -273,7 +298,7 @@ export default {
             types,
         } = contactComposables();
 
-        const { getTasks, tasks, storeToDo, errors } = toDoComposables();
+        const { getTasks, tasks, storeToDo, errors, getColors, colors } = toDoComposables();
 
         onMounted(getUsers);
         onMounted(getStatuses);
@@ -281,6 +306,7 @@ export default {
         onMounted(getContacts);
         onMounted(getTasks);
         onMounted(getCategories);
+        onMounted(getColors);
 
         const createToDo = async () => {
             await storeToDo({ ...form });
@@ -299,6 +325,7 @@ export default {
             priority_id,
             format,
             date,
+            colors
         };
     },
 

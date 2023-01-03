@@ -1,27 +1,41 @@
 <template>
-    <div class="container">
+    <div class="container pb-40">
         <div
-            class="px-2 py-1 rounded-md flex w-full justify-center items-center row"
+            class="px-96 py-2 rounded-md flex w-max text-center justify-center items-center row bg-blue-900 mx-5"
         >
             <h1
-                class="text-center text-white px-8 uppercase w-max font-mono font-extrabold bg-blue-900"
+                class="text-center text-white px-8 w-full uppercase font-mono font-extrabold"
             >
                 Admin Panel
             </h1>
         </div>
+        <!-- <button class="collapsible" @click="openTab">Open Collapsible</button>
+        <div class="content">
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
+                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+                enim ad minim veniam, quis nostrud exercitation ullamco laboris
+                nisi ut aliquip ex ea commodo consequat.
+            </p>
+        </div> -->
         <div>
             <div class="my-4">
-                <div
-                    class="bg-blue-200 px-2 py-1 rounded-md flex w-full justify-center items-center row"
+                <button
+                    @click="revealContent('contact')"
+                    class="bg-blue-200 px-2 py-1 rounded-md flex w-full justify-center items-center row hover:bg-blue-500"
                 >
                     <h2
                         class="text-center text-gray-800 px-8 uppercase w-max font-mono font-extrabold"
                     >
                         Contact
                     </h2>
-                </div>
+                </button>
                 <div
-                    class="grid grid-cols-1 gap-2 text-center align-items-center"
+                    :class="
+                        !display_contact
+                            ? 'hidden truncate max-h-0'
+                            : 'grid grid-cols-1 gap-2 text-center align-items-center h-max:transition h-max:ease-in-out h-max:delay-300'
+                    "
                 >
                     <div
                         class="mt-2 grid grid-cols-1 bg-slate-300 px-2 py-1 rounded-lg w-full justify-center items-center row"
@@ -61,7 +75,7 @@
                                     v-model="editContactCategory"
                                 >
                                     <option disabled value="">
-                                        Please select one
+                                        Select to edit
                                     </option>
                                     <option
                                         v-for="contact_category in contact_categories"
@@ -98,17 +112,14 @@
                             </div>
 
                             <!--Delete Contact Product-->
-                            <div
-                                class="grid grid-rows-2 grid-cols-1 mx-3"
-                                v-if="is('super-admin')"
-                            >
+                            <div class="grid grid-rows-2 grid-cols-1 mx-3">
                                 <div class="form-group items-center">
                                     <select
                                         class="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                                         v-model="admin.contact_category"
                                     >
                                         <option disabled value="">
-                                            Please select one
+                                            Select to edit
                                         </option>
                                         <option
                                             v-for="contact_category in contact_categories"
@@ -170,7 +181,7 @@
                                     v-model="editContactStatus"
                                 >
                                     <option disabled value="">
-                                        Please select one
+                                        Select to edit
                                     </option>
                                     <option
                                         v-for="contact_status in contact_statuses"
@@ -203,17 +214,14 @@
                                 </div>
                             </div>
                             <!-- Delete Contact Status -->
-                            <div
-                                class="grid grid-rows-2 grid-cols-1 mx-3"
-                                v-if="is('super-admin')"
-                            >
+                            <div class="grid grid-rows-2 grid-cols-1 mx-3">
                                 <div class="form-group items-center">
                                     <select
                                         class="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                                         v-model="admin.contact_status"
                                     >
                                         <option disabled value="">
-                                            Please select one
+                                            Select to edit
                                         </option>
                                         <option
                                             v-for="contact_status in contact_statuses"
@@ -276,7 +284,7 @@
                                     v-model="editContactType"
                                 >
                                     <option disabled value="">
-                                        Please select one
+                                        Select to edit
                                     </option>
                                     <option
                                         v-for="contact_type in contact_types"
@@ -310,17 +318,14 @@
                                 </div>
                             </div>
                             <!-- Delete Contact Type -->
-                            <div
-                                class="grid grid-rows-2 grid-cols-1 mx-3"
-                                v-if="is('super-admin')"
-                            >
+                            <div class="grid grid-rows-2 grid-cols-1 mx-3">
                                 <div class="form-group items-center">
                                     <select
                                         class="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                                         v-model="admin.contact_type"
                                     >
                                         <option disabled value="">
-                                            Please select one
+                                            Select to edit
                                         </option>
                                         <option
                                             v-for="contact_type in contact_types"
@@ -381,7 +386,7 @@
                                     v-model="editContactIndustry"
                                 >
                                     <option disabled value="">
-                                        Please select one
+                                        Select to edit
                                     </option>
                                     <option
                                         v-for="contact_industry in contact_industries"
@@ -416,17 +421,14 @@
                                 </div>
                             </div>
                             <!-- Delete Contact Category -->
-                            <div
-                                class="grid grid-rows-2 grid-cols-1 mx-3"
-                                v-if="is('super-admin')"
-                            >
+                            <div class="grid grid-rows-2 grid-cols-1 mx-3">
                                 <div class="form-group items-center">
                                     <select
                                         class="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                                         v-model="admin.contact_industry"
                                     >
                                         <option disabled value="">
-                                            Please select one
+                                            Select to edit
                                         </option>
                                         <option
                                             v-for="contact_industry in contact_industries"
@@ -459,18 +461,23 @@
             </div>
 
             <div class="my-4">
-                <div
-                    class="bg-purple-200 px-2 py-1 rounded-md flex w-full justify-center items-center row"
+                <button
+                    @click="revealContent('todo')"
+                    class="bg-purple-200 px-2 py-1 rounded-md flex w-full justify-center items-center row hover:bg-purple-400"
                 >
                     <h2
                         class="text-center text-gray-800 px-8 uppercase w-max font-mono font-extrabold"
                     >
                         To Do
                     </h2>
-                </div>
+                </button>
 
                 <div
-                    class="grid grid-cols-1 gap-2 text-center align-items-center"
+                    :class="
+                        !display_todo
+                            ? 'hidden truncate max-h-0'
+                            : 'grid grid-cols-1 gap-2 text-center align-items-center h-max:transition h-max:ease-in-out h-max:delay-300'
+                    "
                 >
                     <div
                         class="grid grid-cols-1 mt-2 bg-slate-300 px-2 py-1 rounded-lg w-full justify-center items-center row"
@@ -506,7 +513,7 @@
                                     v-model="editTodoTask"
                                 >
                                     <option disabled value="">
-                                        Please select one
+                                        Select to edit
                                     </option>
                                     <option
                                         v-for="todo_task in todo_tasks"
@@ -539,17 +546,14 @@
                                 </div>
                             </div>
                             <!-- Delete To Do Task -->
-                            <div
-                                class="grid grid-rows-2 grid-cols-1 mx-3"
-                                v-if="is('super-admin')"
-                            >
+                            <div class="grid grid-rows-2 grid-cols-1 mx-3">
                                 <div class="form-group items-center">
                                     <select
                                         class="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                                         v-model="admin.todo_task"
                                     >
                                         <option disabled value="">
-                                            Please select one
+                                            Select to edit
                                         </option>
                                         <option
                                             v-for="todo_task in todo_tasks"
@@ -610,7 +614,7 @@
                                     v-model="editTodoAction"
                                 >
                                     <option disabled value="">
-                                        Please select one
+                                        Select to edit
                                     </option>
                                     <option
                                         v-for="todo_action in todo_actions"
@@ -643,17 +647,14 @@
                                 </div>
                             </div>
                             <!-- Delete To Do Action -->
-                            <div
-                                class="grid grid-rows-2 grid-cols-1 mx-3"
-                                v-if="is('super-admin')"
-                            >
+                            <div class="grid grid-rows-2 grid-cols-1 mx-3">
                                 <div class="form-group items-center">
                                     <select
                                         class="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                                         v-model="admin.todo_action"
                                     >
                                         <option disabled value="">
-                                            Please select one
+                                            Select to edit
                                         </option>
                                         <option
                                             v-for="todo_action in todo_actions"
@@ -676,6 +677,136 @@
                             </div>
                         </div>
                     </div>
+
+                    <div
+                        class="mt-2 grid grid-cols-1 bg-slate-300 px-2 py-1 rounded-md w-full justify-center items-center row"
+                    >
+                        <div colspan="2">
+                            <h3 class="uppercase font-bold font-mono">
+                                Text Color
+                            </h3>
+                        </div>
+
+                        <div class="grid grid-cols-4">
+                            <!-- Create Text Color -->
+                            <div class="grid grid-rows-2 grid-cols-1">
+                                <div class="form-group rounded-md">
+                                    <input
+                                        type="color"
+                                        class="hover:cursor-pointer block h-10 mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                        v-model="form.todo_color"
+                                    />
+                                    <div>
+                                        <span
+                                            :style="{ color: form.todo_color }"
+                                            >Code: {{ form.todo_color }}</span
+                                        >
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <button
+                                        @click="createItem(form.todo_color)"
+                                        type="submit"
+                                        class="inline-flex mt-2 items-center px-4 py-2 bg-green-400 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
+                                    >
+                                        Add
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Select Text Color -->
+                            <div class="form-group items-center mx-1">
+                                <select
+                                    class="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                    v-model="editColor"
+                                >
+                                    <option disabled value="">
+                                        Select to edit
+                                    </option>
+                                    <option
+                                        v-for="color in colors"
+                                        :key="color.id"
+                                        :value="color.id"
+                                        :style="{ color: color.color_code }"
+                                    >
+                                        {{ color.color_code }}
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="grid grid-rows-2 grid-cols-1">
+                                <div class="form-group rounded-md">
+                                    <input
+                                        type="color"
+                                        class="hover:cursor-pointer block h-10 mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                        v-model="todo_textcolor.color_code"
+                                        :style="{
+                                            color: todo_textcolor.color_code,
+                                        }"
+                                    />
+                                    <div>
+                                        <span
+                                            :style="{
+                                                color: todo_textcolor.color_code,
+                                            }"
+                                            >Code:
+                                            {{
+                                                todo_textcolor.color_code
+                                            }}</span
+                                        >
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <button
+                                        @click="
+                                            updateItem(
+                                                todo_textcolor.color_code
+                                            )
+                                        "
+                                        type="submit"
+                                        class="inline-flex mt-2 items-center px-4 py-2 bg-blue-400 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
+                                    >
+                                        Update
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Delete Text Color -->
+                            <div class="grid grid-rows-2 grid-cols-1 mx-3">
+                                <div class="form-group items-center">
+                                    <select
+                                        class="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                        v-model="admin.todo_textcolor"
+                                        @change="getColors"
+                                    >
+                                        <option disabled value="">
+                                            Select to delete
+                                        </option>
+                                        <option
+                                            v-for="color in colors"
+                                            :key="color.id"
+                                            :value="color.id"
+                                            :style="{
+                                                color: color.color_code,
+                                            }"
+                                        >
+                                            {{ color.color_code }}
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="items-center">
+                                    <button
+                                        @click="deleteItem(admin.todo_textcolor)"
+                                        type="submit"
+                                        class="inline-flex mt-2 items-center px-4 py-2 bg-red-400 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
+                                    >
+                                        Delete
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- <div>
@@ -684,18 +815,23 @@
             </div>
 
             <div class="my-4">
-                <div
-                    class="bg-cyan-200 px-2 py-1 rounded-md flex w-full justify-center items-center row"
+                <button
+                    @click="revealContent('forecast')"
+                    class="bg-cyan-200 px-2 py-1 rounded-md flex w-full justify-center items-center row hover:bg-cyan-400"
                 >
                     <h2
                         class="text-center text-gray-800 px-8 uppercase w-max font-mono font-extrabold"
                     >
                         Forecast
                     </h2>
-                </div>
+                </button>
 
                 <div
-                    class="grid grid-cols-1 gap-2 text-center align-items-center"
+                    :class="
+                        !display_forecast
+                            ? 'hidden truncate max-h-0'
+                            : 'grid grid-cols-1 gap-2 text-center align-items-center h-max:transition h-max:ease-in-out h-max:delay-300'
+                    "
                 >
                     <div
                         class="mt-2 grid grid-cols-1 bg-slate-300 px-2 py-1 rounded-lg w-full justify-center items-center row"
@@ -736,7 +872,7 @@
                                     v-model="editForecastProduct"
                                 >
                                     <option disabled value="">
-                                        Please select one
+                                        Select to edit
                                     </option>
                                     <option
                                         v-for="forecast_product in forecast_products"
@@ -771,17 +907,14 @@
                                 </div>
                             </div>
                             <!-- Delete Forecast Product -->
-                            <div
-                                class="grid grid-rows-2 grid-cols-1 mx-3"
-                                v-if="is('super-admin')"
-                            >
+                            <div class="grid grid-rows-2 grid-cols-1 mx-3">
                                 <div class="form-group items-center">
                                     <select
                                         class="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                                         v-model="admin.forecast_product"
                                     >
                                         <option disabled value="">
-                                            Please select one
+                                            Select to edit
                                         </option>
                                         <option
                                             v-for="forecast_product in forecast_products"
@@ -843,7 +976,7 @@
                                     v-model="editForecastType"
                                 >
                                     <option disabled value="">
-                                        Please select one
+                                        Select to edit
                                     </option>
                                     <option
                                         v-for="forecast_type in forecast_types"
@@ -874,17 +1007,14 @@
                                     </button>
                                 </div>
                             </div>
-                            <div
-                                class="grid grid-rows-2 grid-cols-1 mx-3"
-                                v-if="is('super-admin')"
-                            >
+                            <div class="grid grid-rows-2 grid-cols-1 mx-3">
                                 <div class="form-group items-center">
                                     <select
                                         class="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                                         v-model="admin.forecast_type"
                                     >
                                         <option disabled value="">
-                                            Please select one
+                                            Select to edit
                                         </option>
                                         <option
                                             v-for="forecast_type in forecast_types"
@@ -921,6 +1051,9 @@
 import GoBack from "../utils/GoBack.vue";
 import axios from "axios";
 
+var coll = document.getElementsByClassName("collapsible");
+var i;
+
 export default {
     data() {
         return {
@@ -931,9 +1064,14 @@ export default {
                 contact_industry: "",
                 todo_task: "",
                 todo_action: "",
+                todo_color: "",
                 forecast_product: "",
                 forecast_type: "",
             },
+
+            display_contact: false,
+            display_todo: true,
+            display_forecast: false,
 
             editContactCategory: "",
             editContactStatus: "",
@@ -941,6 +1079,7 @@ export default {
             editContactIndustry: "",
             editTodoTask: "",
             editTodoAction: "",
+            editColor: "",
             editForecastProduct: "",
             editForecastType: "",
 
@@ -968,6 +1107,10 @@ export default {
                 id: "",
                 name: "",
             },
+            todo_textcolor: {
+                id: "",
+                color_code: "",
+            },
             forecast_product: {
                 id: "",
                 name: "",
@@ -984,6 +1127,7 @@ export default {
                 contact_industry: "",
                 todo_task: "",
                 todo_action: "",
+                todo_textcolor: "",
                 forecast_product: "",
                 forecast_type: "",
             },
@@ -997,6 +1141,7 @@ export default {
 
             todo_tasks: [],
             todo_actions: [],
+            colors: [],
 
             forecast_products: [],
             forecast_types: [],
@@ -1028,6 +1173,9 @@ export default {
         editForecastType() {
             this.getForecastTypeInfo();
         },
+        editColor(){
+            this.getTextColorInfo();
+        },
     },
 
     created() {
@@ -1039,12 +1187,37 @@ export default {
 
         this.getToDoTasks();
         this.getToDoActions();
+        this.getColors();
 
         this.getForecastProducts();
         this.getForecastTypes();
     },
 
     methods: {
+        openTab() {
+            for (i = 0; i < coll.length; i++) {
+                coll[i].addEventListener("click", function () {
+                    this.classList.toggle("active");
+                    var content = this.nextElementSibling;
+                    if (content.style.maxHeight) {
+                        content.style.maxHeight = null;
+                    } else {
+                        content.style.maxHeight = content.scrollHeight + "px";
+                    }
+                });
+            }
+        },
+
+        revealContent(display) {
+            if (display === "contact") {
+                this.display_contact = !this.display_contact;
+            } else if (display === "todo") {
+                this.display_todo = !this.display_todo;
+            } else {
+                this.display_forecast = !this.display_forecast;
+            }
+        },
+
         async getContactIndustries() {
             await axios
                 .get("/api/contacts/industry/index")
@@ -1133,6 +1306,17 @@ export default {
                 });
         },
 
+        async getColors() {
+            await axios
+                .get("/api/text_colors/index")
+                .then((res) => {
+                    this.colors = res.data.data;
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        },
+
         async createItem(text) {
             if (!window.confirm("Confirm add item?")) {
                 return;
@@ -1208,6 +1392,16 @@ export default {
                                 this.getForecastProducts();
                                 alert("Added new forecast product.");
                             });
+                    } else if (text === this.form.todo_color) {
+                        await axios
+                            .post("/api/admin/create/text_color", {
+                                color_code: this.form.todo_color,
+                            })
+                            .then((res) => {
+                                this.form.todo_color = "";
+                                this.getColors();
+                                alert("Added new text color.");
+                            });
                     } else {
                         await axios
                             .post("/api/admin/create/forecast/type", {
@@ -1238,106 +1432,146 @@ export default {
                 try {
                     if (text === this.contact_category.name) {
                         await axios
-                            .put("/api/admin/update/contact/category/" + this.editContactCategory,
-                            {
-                                name: this.contact_category.name,
-                            })
+                            .put(
+                                "/api/admin/update/contact/category/" +
+                                    this.editContactCategory,
+                                {
+                                    name: this.contact_category.name,
+                                }
+                            )
                             .then((res) => {
                                 this.contact_category.name = "";
                                 this.getContactCategories();
                                 this.editContactCategory = "";
-                                
+
                                 alert("Contact product updated.");
                             });
                     } else if (text === this.contact_status.name) {
                         await axios
-                            .put("/api/admin/update/contact/status/" + this.editContactStatus, 
-                            {
-                                name: this.contact_status.name,
-                            })
+                            .put(
+                                "/api/admin/update/contact/status/" +
+                                    this.editContactStatus,
+                                {
+                                    name: this.contact_status.name,
+                                }
+                            )
                             .then((res) => {
                                 this.contact_status.name = "";
                                 this.getContactStatuses();
                                 this.editContactStatus = "";
-                                
+
                                 alert("Contact status updated.");
                             });
                     } else if (text === this.contact_type.name) {
                         await axios
-                            .put("/api/admin/update/contact/type/" + this.editContactType, 
-                            {
-                                name: this.contact_type.name,
-                            })
+                            .put(
+                                "/api/admin/update/contact/type/" +
+                                    this.editContactType,
+                                {
+                                    name: this.contact_type.name,
+                                }
+                            )
                             .then((res) => {
                                 this.contact_type.name = "";
                                 this.getContactTypes();
                                 this.editContactType = "";
-                                
+
                                 alert("Contact type updated.");
                             });
                     } else if (text === this.contact_industry.name) {
                         await axios
-                            .put("/api/admin/update/contact/industry/" + this.editContactIndustry, 
-                            {
-                                name: this.contact_industry.name,
-                            })
+                            .put(
+                                "/api/admin/update/contact/industry/" +
+                                    this.editContactIndustry,
+                                {
+                                    name: this.contact_industry.name,
+                                }
+                            )
                             .then((res) => {
                                 this.contact_industry.name = "";
                                 this.getContactIndustries();
                                 this.editContactIndustry = "";
-                                
+
                                 alert("Contact industry updated.");
                             });
                     } else if (text === this.todo_task.name) {
                         await axios
-                            .put("/api/admin/update/todo/task/" + this.editTodoTask, 
-                            {
-                                name: this.todo_task.name,
-                            })
+                            .put(
+                                "/api/admin/update/todo/task/" +
+                                    this.editTodoTask,
+                                {
+                                    name: this.todo_task.name,
+                                }
+                            )
                             .then((res) => {
                                 this.todo_task.name = "";
                                 this.getToDoTasks();
                                 this.editTodoTask = "";
-                                
+
                                 alert("Todo task updated.");
                             });
                     } else if (text === this.todo_action.name) {
                         await axios
-                            .put("/api/admin/update/todo/action/" + this.editTodoAction, 
-                            {
-                                name: this.todo_action.name,
-                            })
+                            .put(
+                                "/api/admin/update/todo/action/" +
+                                    this.editTodoAction,
+                                {
+                                    name: this.todo_action.name,
+                                }
+                            )
                             .then((res) => {
                                 this.todo_action.name = "";
                                 this.getToDoActions();
                                 this.editTodoAction = "";
-                                
+
                                 alert("Todo action updated.");
                             });
                     } else if (text === this.forecast_product.name) {
                         await axios
-                            .put("/api/admin/update/forecast/product/" + this.editForecastProduct, 
-                            {
-                                name: this.forecast_product.name,
-                            })
+                            .put(
+                                "/api/admin/update/forecast/product/" +
+                                    this.editForecastProduct,
+                                {
+                                    name: this.forecast_product.name,
+                                }
+                            )
                             .then((res) => {
                                 this.forecast_product.name = "";
                                 this.getForecastProducts();
                                 this.editForecastProduct = "";
-                                
+
+                                alert("Forecast product updated.");
+                            });
+                    } else if (text === this.todo_textcolor.color_code) {
+                        await axios
+                            .put(
+                                "/api/admin/update/text_color/" +
+                                    this.editColor,
+                                {
+                                    color_code: this.todo_textcolor.color_code,
+                                }
+                            )
+                            .then((res) => {
+                                this.todo_textcolor.color_code = "";
+                                this.getColors();
+                                this.editColor = "";
+
                                 alert("Forecast product updated.");
                             });
                     } else {
                         await axios
-                            .put("/api/admin/update/forecast/type/" + this.editForecastType, 
-                            {
-                                name: this.forecast_type.name,
-                            })
+                            .put(
+                                "/api/admin/update/forecast/type/" +
+                                    this.editForecastType,
+                                {
+                                    name: this.forecast_type.name,
+                                }
+                            )
                             .then((res) => {
                                 this.forecast_type.name = "";
                                 this.getForecastTypes();
                                 this.editForecastType = "";
-                                
+
                                 alert("Forecast type updated.");
                             });
                     }
@@ -1412,6 +1646,14 @@ export default {
                     this.admin.forecast_product = "";
                     alert("Forecast Product deleted.");
                     this.getForecastProducts();
+                } else if (id === this.admin.todo_textcolor) {
+                    axios.delete(
+                        "/api/admin/delete/text_color/" +
+                            this.admin.todo_textcolor
+                    );
+                    this.admin.todo_textcolor = "";
+                    alert("Text Color deleted.");
+                    this.getColors();
                 } else {
                     axios.delete(
                         "/api/admin/delete/forecast/type/" +
@@ -1495,6 +1737,18 @@ export default {
                     console.log(error);
                 });
         },
+
+        async getTextColorInfo() {
+            await axios
+                .get("/api/text_colors/info/" + this.editColor)
+                .then((res) => {
+                    this.todo_textcolor = res.data.data;
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        },
+
         async getForecastProductInfo() {
             await axios
                 .get("/api/forecasts/product/info/" + this.editForecastProduct)
@@ -1520,3 +1774,30 @@ export default {
     components: { GoBack },
 };
 </script>
+
+<style>
+.collapsible {
+    background-color: #777;
+    color: white;
+    cursor: pointer;
+    padding: 18px;
+    width: 100%;
+    border: none;
+    text-align: left;
+    outline: none;
+    font-size: 15px;
+}
+
+.active,
+.collapsible:hover {
+    background-color: #555;
+}
+
+.content {
+    padding: 0 18px;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.2s ease-out;
+    background-color: #f1f1f1;
+}
+</style>

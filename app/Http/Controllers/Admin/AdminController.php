@@ -17,6 +17,7 @@ use App\Models\Forecast\ForecastProduct;
 use App\Models\Forecast\ForecastType;
 use App\Models\Project\Project;
 use App\Models\ToDo\Task;
+use App\Models\ToDo\TextColor;
 use App\Models\ToDo\ToDo;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -39,7 +40,7 @@ class AdminController extends Controller
         return response()->json([
             'data' => $contact_category,
             'status' => true,
-            'message' => 'Successfully store contact',
+            'message' => 'Successfully create contact category',
         ]);
     }
 
@@ -53,7 +54,7 @@ class AdminController extends Controller
         return response()->json([
             'data' => $contact_status,
             'status' => true,
-            'message' => 'Successfully store contact',
+            'message' => 'Successfully create contact status',
         ]);
     }
 
@@ -67,7 +68,7 @@ class AdminController extends Controller
         return response()->json([
             'data' => $contact_type,
             'status' => true,
-            'message' => 'Successfully store contact',
+            'message' => 'Successfully create contact type',
         ]);
     }
 
@@ -81,7 +82,7 @@ class AdminController extends Controller
         return response()->json([
             'data' => $contact_industry,
             'status' => true,
-            'message' => 'Successfully store contact',
+            'message' => 'Successfully create contact industry',
         ]);
     }
 
@@ -95,7 +96,7 @@ class AdminController extends Controller
         return response()->json([
             'data' => $todo_task,
             'status' => true,
-            'message' => 'Successfully store contact',
+            'message' => 'Successfully todo task',
         ]);
     }
 
@@ -109,7 +110,21 @@ class AdminController extends Controller
         return response()->json([
             'data' => $todo_action,
             'status' => true,
-            'message' => 'Successfully store contact',
+            'message' => 'Successfully create todo action',
+        ]);
+    }
+
+    public function createTextColor(Request $request)
+    {
+
+        $text_color = TextColor::create([
+            'color_code' => $request->color_code,
+        ]);
+
+        return response()->json([
+            'data' => $text_color,
+            'status' => true,
+            'message' => 'Successfully create text color',
         ]);
     }
 
@@ -261,6 +276,26 @@ class AdminController extends Controller
         ]);
     }
 
+    public function updateTextColor(Request $request, TextColor $textColor)
+    {
+
+        $request->validate([
+            'color_code' => ['required', 'string'],
+        ], [
+            'color_code.required' => 'Select a color',
+        ]);
+
+        $textColor->update([
+            'color_code' => $request->color_code,
+        ]);
+
+        return response()->json([
+            'data' => $textColor,
+            'status' => true,
+            'message' => 'Successfully update text color.',
+        ]);
+    }
+
     public function updateForecastProduct(Request $request, ForecastProduct $product)
     {
 
@@ -335,6 +370,12 @@ class AdminController extends Controller
     {
         $action->delete();
         return response()->json('To do action deleted.');
+    }
+
+    public function deleteTextColor(TextColor $textColor)
+    {
+        $textColor->delete();
+        return response()->json('Text color deleted.');
     }
 
     public function deleteForecastType(ForecastType $type)

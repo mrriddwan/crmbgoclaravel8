@@ -1,6 +1,7 @@
 import { ref } from 'vue'
 import axios from "axios";
 import { useRouter } from 'vue-router';
+import { colors } from 'laravel-mix/src/Log';
 
 export default function contactComposables () {
     const contacts = ref([])

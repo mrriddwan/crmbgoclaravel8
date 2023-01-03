@@ -750,7 +750,12 @@
                     <tr
                         v-for="(todo, index) in todos.data"
                         :key="todo.id"
-                        :class="isChecked(todo.id) ? 'table-primary' : ''"
+                        :class="
+                            isChecked(todo.id)
+                                ? 'table-primary font-semibold'
+                                : 'font-semibold'
+                        "
+                        :style="{ color: todo.color_name }"
                     >
                         <td
                             v-if="
@@ -821,7 +826,7 @@
                                     </div>
                                     <div class="inline-block">
                                         <button
-                                            class="bg-blue-300 py-1 px-1 ml-2 text-xs rounded-md inline-block"
+                                            class="bg-blue-300 py-1 px-1 ml-2 text-xs text-black rounded-md inline-block"
                                             @click="toggleResult()"
                                         >
                                             <PencilIcon class="h-3 w-3" />

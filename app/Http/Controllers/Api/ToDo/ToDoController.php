@@ -9,6 +9,7 @@ use App\Http\Requests\ToDo\ToDoContactRequest;
 use App\Http\Requests\ToDo\ToDoInternalRequest;
 use App\Http\Resources\ToDo\ToDoResource;
 use App\Models\Admin\SvSbPivot;
+use App\Models\ToDo\TextColor;
 use App\Models\ToDo\ToDo;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -207,10 +208,12 @@ class ToDoController extends Controller
             'to_dos.*',
             'contact_statuses.id as contact_status_id',
             'contact_types.id as contact_type_id',
+            'text_colors.color_code as color_code'
         )
             ->join('contacts', 'to_dos.contact_id', '=', 'contacts.id')
             ->join('contact_statuses', 'contacts.status_id', '=', 'contact_statuses.id')
             ->join('contact_types', 'contacts.type_id', '=', 'contact_types.id')
+            ->join('text_colors', 'to_dos.color_id', '=', 'text_colors.id')
             // ->with(['contact' => function ($q) {
             //     $q->select('id', 'status_id', 'type_id');
             // }])
@@ -218,6 +221,18 @@ class ToDoController extends Controller
             ->get();
 
         return response()->json(['data' => $todo[0]]);
+    }
+
+    public function colors()
+    {
+        $text_color = TextColor::all();
+        return response()->json(['data' => $text_color]);
+    }
+
+    public function color_info($color)
+    {
+        $text_color = TextColor::find($color);
+        return response()->json(["data" => $text_color]);
     }
 
     public function new(ToDo $todo)
