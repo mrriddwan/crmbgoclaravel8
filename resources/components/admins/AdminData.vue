@@ -221,7 +221,7 @@
                                         v-model="admin.contact_status"
                                     >
                                         <option disabled value="">
-                                            Select to edit
+                                            Select to delete
                                         </option>
                                         <option
                                             v-for="contact_status in contact_statuses"
@@ -325,7 +325,7 @@
                                         v-model="admin.contact_type"
                                     >
                                         <option disabled value="">
-                                            Select to edit
+                                            Select to delete
                                         </option>
                                         <option
                                             v-for="contact_type in contact_types"
@@ -428,7 +428,7 @@
                                         v-model="admin.contact_industry"
                                     >
                                         <option disabled value="">
-                                            Select to edit
+                                            Select to delete
                                         </option>
                                         <option
                                             v-for="contact_industry in contact_industries"
@@ -553,7 +553,7 @@
                                         v-model="admin.todo_task"
                                     >
                                         <option disabled value="">
-                                            Select to edit
+                                            Select to delete
                                         </option>
                                         <option
                                             v-for="todo_task in todo_tasks"
@@ -654,7 +654,7 @@
                                         v-model="admin.todo_action"
                                     >
                                         <option disabled value="">
-                                            Select to edit
+                                            Select to delete
                                         </option>
                                         <option
                                             v-for="todo_action in todo_actions"
@@ -914,7 +914,7 @@
                                         v-model="admin.forecast_product"
                                     >
                                         <option disabled value="">
-                                            Select to edit
+                                            Select to delete
                                         </option>
                                         <option
                                             v-for="forecast_product in forecast_products"
@@ -1014,7 +1014,7 @@
                                         v-model="admin.forecast_type"
                                     >
                                         <option disabled value="">
-                                            Select to edit
+                                            Select to delete
                                         </option>
                                         <option
                                             v-for="forecast_type in forecast_types"
@@ -1037,11 +1037,105 @@
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <!-- <div>
-                <h3>Text Color</h3>
-            </div> -->
+                    <div
+                        class="mt-2 grid grid-cols-1 bg-slate-300 px-2 py-1 rounded-md w-full justify-center items-center row"
+                    >
+                        <div colspan="2">
+                            <h3 class="uppercase font-bold font-mono">
+                                Forecast Result
+                            </h3>
+                        </div>
+
+                        <div class="grid grid-cols-4">
+                            <!-- Create Forecast Result -->
+                            <div class="grid grid-rows-2 grid-cols-1">
+                                <div class="form-group">
+                                    <input
+                                        type="text"
+                                        class="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                        v-model="form.forecast_result"
+                                    />
+                                </div>
+                                <div>
+                                    <button
+                                        @click="createItem(form.forecast_result)"
+                                        type="submit"
+                                        class="inline-flex mt-2 items-center px-4 py-2 bg-green-400 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
+                                    >
+                                        Add
+                                    </button>
+                                </div>
+                            </div>
+                            <!-- Select Forecast Result -->
+                            <div class="form-group items-center mx-1">
+                                <select
+                                    class="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                    v-model="editForecastResult"
+                                >
+                                    <option disabled value="">
+                                        Select to edit
+                                    </option>
+                                    <option
+                                        v-for="result in results"
+                                        :key="result.id"
+                                        :value="result.id"
+                                    >
+                                        {{ result.name }}
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="items-center mx-1">
+                                <div>
+                                    <div class="form-group">
+                                        <div class="form-group">
+                                            <input
+                                                v-model="forecast_result.name"
+                                                type="text"
+                                                class="block mt-1 w-full text-center rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                            />
+                                        </div>
+                                    </div>
+                                    <button
+                                        @click="updateItem(forecast_result.name)"
+                                        type="submit"
+                                        class="inline-flex mt-2 items-center px-4 py-2 bg-blue-400 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
+                                    >
+                                        Update
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="grid grid-rows-2 grid-cols-1 mx-3">
+                                <div class="form-group items-center">
+                                    <select
+                                        class="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                        v-model="admin.forecast_result"
+                                    >
+                                        <option disabled value="">
+                                            Select to delete
+                                        </option>
+                                        <option
+                                            v-for="result in results"
+                                            :key="result.id"
+                                            :value="result.id"
+                                        >
+                                            {{ result.name }}
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="items-center">
+                                    <button
+                                        @click="deleteItem(admin.forecast_result)"
+                                        type="submit"
+                                        class="inline-flex mt-2 items-center px-4 py-2 bg-red-400 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
+                                    >
+                                        Delete
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -1067,10 +1161,11 @@ export default {
                 todo_color: "",
                 forecast_product: "",
                 forecast_type: "",
+                forecast_result: "",
             },
 
             display_contact: false,
-            display_todo: true,
+            display_todo: false,
             display_forecast: false,
 
             editContactCategory: "",
@@ -1082,6 +1177,7 @@ export default {
             editColor: "",
             editForecastProduct: "",
             editForecastType: "",
+            editForecastResult: "",
 
             contact_category: {
                 id: "",
@@ -1119,6 +1215,10 @@ export default {
                 id: "",
                 name: "",
             },
+            forecast_result: {
+                id: "",
+                name: "",
+            },
 
             admin: {
                 contact_category: "",
@@ -1130,6 +1230,7 @@ export default {
                 todo_textcolor: "",
                 forecast_product: "",
                 forecast_type: "",
+                forecast_result: "",
             },
 
             userID: "",
@@ -1145,6 +1246,7 @@ export default {
 
             forecast_products: [],
             forecast_types: [],
+            results: [],
         };
     },
 
@@ -1176,6 +1278,9 @@ export default {
         editColor(){
             this.getTextColorInfo();
         },
+        editForecastResult(){
+            this.getForecastResultInfo();
+        }
     },
 
     created() {
@@ -1191,6 +1296,7 @@ export default {
 
         this.getForecastProducts();
         this.getForecastTypes();
+        this.getResults();
     },
 
     methods: {
@@ -1317,6 +1423,17 @@ export default {
                 });
         },
 
+        async getResults() {
+            await axios
+                .get("/api/forecasts/result/list")
+                .then((res) => {
+                    this.results = res.data.data;
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        },
+
         async createItem(text) {
             if (!window.confirm("Confirm add item?")) {
                 return;
@@ -1401,6 +1518,16 @@ export default {
                                 this.form.todo_color = "";
                                 this.getColors();
                                 alert("Added new text color.");
+                            });
+                    } else if (text === this.form.forecast_result) {
+                        await axios
+                            .post("/api/admin/create/forecast/result", {
+                                name: this.form.forecast_result,
+                            })
+                            .then((res) => {
+                                this.form.forecast_result = "";
+                                this.getResults();
+                                alert("Added new forecast result.");
                             });
                     } else {
                         await axios
@@ -1558,6 +1685,22 @@ export default {
 
                                 alert("Forecast product updated.");
                             });
+                    } else if (text === this.forecast_result.name) {
+                        await axios
+                            .put(
+                                "/api/admin/update/forecast/result/" +
+                                    this.editForecastResult,
+                                {
+                                    name: this.forecast_result.name,
+                                }
+                            )
+                            .then((res) => {
+                                this.forecast_result.name = "";
+                                this.getResults();
+                                this.editForecastResult = "";
+
+                                alert("Forecast result updated.");
+                            });
                     } else {
                         await axios
                             .put(
@@ -1652,8 +1795,16 @@ export default {
                             this.admin.todo_textcolor
                     );
                     this.admin.todo_textcolor = "";
-                    alert("Text Color deleted.");
+                    alert("Text color deleted.");
                     this.getColors();
+                } else if (id === this.admin.forecast_result) {
+                    axios.delete(
+                        "/api/admin/delete/forecast/result/" +
+                            this.admin.forecast_result
+                    );
+                    this.admin.forecast_result = "";
+                    alert("Forecast result deleted.");
+                    this.getResults();
                 } else {
                     axios.delete(
                         "/api/admin/delete/forecast/type/" +
@@ -1737,7 +1888,6 @@ export default {
                     console.log(error);
                 });
         },
-
         async getTextColorInfo() {
             await axios
                 .get("/api/text_colors/info/" + this.editColor)
@@ -1748,7 +1898,6 @@ export default {
                     console.log(error);
                 });
         },
-
         async getForecastProductInfo() {
             await axios
                 .get("/api/forecasts/product/info/" + this.editForecastProduct)
@@ -1764,6 +1913,16 @@ export default {
                 .get("/api/forecasts/type/info/" + this.editForecastType)
                 .then((res) => {
                     this.forecast_type = res.data.data[0];
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        },
+        async getForecastResultInfo() {
+            await axios
+                .get("/api/forecasts/result/info/" + this.editForecastResult)
+                .then((res) => {
+                    this.forecast_result = res.data.data[0];
                 })
                 .catch((error) => {
                     console.log(error);

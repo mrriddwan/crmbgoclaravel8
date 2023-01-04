@@ -1,5 +1,5 @@
 <template>
-    <div class="container">
+    <div class="container pt-1 pb-96 ">
         <div
             class="px-20 py-1 rounded-md flex w-max justify-center items-center row"
         >
@@ -102,7 +102,23 @@
                             <span v-else>Announcement</span>
                         </td>
                         <td class="px-3 py-3">{{ annc_reminder.message }}</td>
-                        <td class="px-3 py-3">Admin</td>
+                        <td
+                            class="px-3 py-3"
+                        >
+                            <div
+                                class="text-center"
+                                v-for="user in users"
+                                :key="user.id"
+                            >
+                                <div
+                                    class="my-1"
+                                    v-if="user.id === annc_reminder.from_user.id"
+                                >
+                                    {{ user.name }}
+                                </div>
+                                <div v-else></div>
+                            </div>
+                        </td>
                         <td
                             class="px-3 py-3"
                             v-if="annc_reminder.message_type_id !== 1"

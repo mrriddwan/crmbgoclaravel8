@@ -12,6 +12,7 @@ import vSelect from "vue-select";
 // window.$ = window.jQuery = require('jquery')
 
 import Contact_Index from "../components/contacts/ContactIndex.vue";
+import ProjectIndex from "../components/projects/ProjectIndex.vue";
 import moment from "moment";
 
 //bootstrap
@@ -27,7 +28,9 @@ const app = createApp({});
 
 app.component("Pagination", LaravelVuePagination);
 app.component('VueDatePicker', Datepicker);
-app.component("contact-index", Contact_Index);
+// app.component("contact-index", Contact_Index);
+// app.component("project_index", ProjectIndex);
+
 app.component("downloadExcel", JsonExcel);
 app.component("v-select", vSelect);
 // app.component("vue-pdf-embed", VuePdfEmbed);

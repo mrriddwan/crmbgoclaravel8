@@ -88,14 +88,14 @@ const routes = [
         //No route
         path: "",
         name: "no_route",
-        component: ContactIndex,
+        component: AnnouncementIndex,
     },
 
     {
         //No route
         path: "/",
         name: "home",
-        component: ContactIndex,
+        component: AnnouncementIndex,
     },
 
     {

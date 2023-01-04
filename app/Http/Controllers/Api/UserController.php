@@ -380,10 +380,11 @@ class UserController extends Controller
     public function user_home()
     {
         $id = Auth::id();
+        // $id = 1;
 
         $user = User::where('id', $id)->with(['roles' => function ($q) {
             $q->select('id', 'name');
-        }, 'reminder'])->select('id', 'name')->get();
+        }, 'reminder_to', 'reminder_from'])->select('id', 'name')->get();
 
         $announcement = Announcement::where('message_type_id', 1)->with('from_user')->get();
 

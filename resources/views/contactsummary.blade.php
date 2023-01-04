@@ -1,4 +1,6 @@
-@section('title', 'Contact Summary')
+@section('title')
+    Contact Summary
+@endsection
 
 <x-app-layout>
     <div class="py-2">

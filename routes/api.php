@@ -79,6 +79,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     Route::post('/admin/create/forecast/product', [AdminController::class, 'createForecastProduct'])->name('forecastProduct:create');
     Route::put('/admin/update/forecast/product/{product}', [AdminController::class, 'updateForecastProduct'])->name('forecastProduct:update');
 
+    Route::post('/admin/create/forecast/result', [AdminController::class, 'createForecastResult'])->name('forecastResult:create');
+    Route::put('/admin/update/forecast/result/{result}', [AdminController::class, 'updateForecastResult'])->name('forecastResult:update');
+
     Route::post('/admin/create/text_color', [AdminController::class, 'createTextColor'])->name('textColor:create');
     Route::put('/admin/update/text_color/{textColor}', [AdminController::class, 'updateTextColor'])->name('textColor:update');
 
@@ -90,6 +93,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     Route::delete('/admin/delete/todo/action/{action}', [AdminController::class, 'deleteToDoAction'])->name('todoAction:delete');
     Route::delete('/admin/delete/forecast/type/{type}', [AdminController::class, 'deleteForecastType'])->name('forecastType:delete');
     Route::delete('/admin/delete/forecast/product/{product}', [AdminController::class, 'deleteForecastProduct'])->name('forecastProduct:delete');
+    Route::delete('/admin/delete/forecast/result/{result}', [AdminController::class, 'deleteForecastResult'])->name('forecastResult:delete');
     Route::delete('/admin/delete/text_color/{textColor}', [AdminController::class, 'deleteTextColor'])->name('textColor:delete');
 
     Route::get('/admin/users/info/{user}', [AdminController::class, 'user_info'])->name('user:info');
@@ -271,7 +275,8 @@ Route::get('/forecasts/type/index', [ForecastTypeController::class, 'index'])->n
 Route::get('/forecasts/type/info/{type}', [ForecastTypeController::class, 'info'])->name('forecasttype:info');
 
 Route::get('/forecasts/result/index', [ForecastResultController::class, 'index'])->name('forecastresult:index');
-
+Route::get('/forecasts/result/list', [ForecastResultController::class, 'list'])->name('forecastresult:list');
+Route::get('/forecasts/result/info/{result}', [ForecastResultController::class, 'info'])->name('forecastresult:info');
 /*Projects API*/
 Route::get('/projects/index', [ProjectController::class, 'index'])->name('project:index');
 Route::post('/projects/store', [ProjectController::class, 'store'])->name('project:store');

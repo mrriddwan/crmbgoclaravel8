@@ -75,9 +75,14 @@ class User extends Authenticatable
         return $this->belongsTo(Billboard::class);
     }
 
-    public function reminder()
+    public function reminder_to()
     {
         return $this->hasMany(Announcement::class, 'to_user_id');
+    }
+
+    public function reminder_from()
+    {
+        return $this->hasMany(Announcement::class, 'from_user_id');
     }
 
     // public function announcement()

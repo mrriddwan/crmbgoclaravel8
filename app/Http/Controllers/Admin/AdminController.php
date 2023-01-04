@@ -14,6 +14,7 @@ use App\Models\Contact\ContactType;
 use App\Models\FollowUp\Action;
 use App\Models\Forecast\Forecast;
 use App\Models\Forecast\ForecastProduct;
+use App\Models\Forecast\ForecastResult;
 use App\Models\Forecast\ForecastType;
 use App\Models\Project\Project;
 use App\Models\ToDo\Task;
@@ -138,7 +139,7 @@ class AdminController extends Controller
         return response()->json([
             'data' => $forecast_type,
             'status' => true,
-            'message' => 'Successfully store contact',
+            'message' => 'Successfully store new forecast type',
         ]);
     }
 
@@ -152,7 +153,21 @@ class AdminController extends Controller
         return response()->json([
             'data' => $forecast_product,
             'status' => true,
-            'message' => 'Successfully store contact',
+            'message' => 'Successfully store new forecast product',
+        ]);
+    }
+
+    public function createForecastResult(Request $request)
+    {
+
+        $forecast_result = ForecastResult::create([
+            'name' => $request->name,
+        ]);
+
+        return response()->json([
+            'data' => $forecast_result,
+            'status' => true,
+            'message' => 'Successfully store new forecast result',
         ]);
     }
 
@@ -336,6 +351,26 @@ class AdminController extends Controller
         ]);
     }
 
+    public function updateForecastResult(Request $request, ForecastResult $result)
+    {
+
+        $request->validate([
+            'name' => ['required', 'string'],
+        ], [
+            'name.required' => 'The forecast result is required',
+        ]);
+
+        $result->update([
+            'name' => $request->name,
+        ]);
+
+        return response()->json([
+            'data' => $result,
+            'status' => true,
+            'message' => 'Successfully update forecast result.',
+        ]);
+    }
+
     public function deleteContactCategory(ContactCategory $category)
     {
         $category->delete();
@@ -388,6 +423,12 @@ class AdminController extends Controller
     {
         $product->delete();
         return response()->json('Forecast product deleted.');
+    }
+
+    public function deleteForecastResult(ForecastResult $result)
+    {
+        $result->delete();
+        return response()->json('Forecast result deleted.');
     }
 
     public function user_info($id)

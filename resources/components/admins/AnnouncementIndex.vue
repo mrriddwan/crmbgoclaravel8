@@ -13,8 +13,12 @@
                 class="text-center"
             >
                 <div class="flex text-center justify-left my-2">
-                    <UserIcon class="h-12 w-12 mr-2" />
-                    <h3 class="my-auto bg-emerald-300 text-slate-700 px-5 py-2 rounded-lg">{{ user_info.name }}</h3>
+                    <UserIcon class="h-8 w-8 mr-2" />
+                    <h5
+                        class="my-auto bg-emerald-300 text-slate-700 px-5 py-2 rounded-lg"
+                    >
+                        {{ user_info.name }}
+                    </h5>
                 </div>
 
                 <div
@@ -22,12 +26,16 @@
                     v-for="role in user_info.roles"
                     :key="role.id"
                 >
-                    <IdentificationIcon class="h-12 w-12 mr-2" />
-                    <h3 class="my-auto bg-purple-300 text-slate-700 px-5 py-2 rounded-lg">{{ role.name }}</h3>
+                    <IdentificationIcon class="h-8 w-8 mr-2" />
+                    <h5
+                        class="my-auto bg-purple-300 text-slate-700 px-5 py-2 rounded-lg"
+                    >
+                        {{ role.name }}
+                    </h5>
                 </div>
             </div>
 
-            <div class="text-center mx-auto mt-10 align-middle">
+            <div class="text-center mx-auto mt-3 align-middle">
                 <table>
                     <thead class="bg-slate-400 text-white h-10 uppercase">
                         <tr>
@@ -60,14 +68,16 @@
                             </td>
                         </tr>
                         <tr v-else class="text-center mt-2 bg-slate-200 border">
-                            <td colspan="3" class="py-3 font-bold font-sans">No announcement</td>
+                            <td colspan="3" class="py-3 font-bold font-sans">
+                                No announcement
+                            </td>
                         </tr>
                     </tbody>
                 </table>
             </div>
 
             <div
-                class="text-center mx-auto mt-10 w-max"
+                class="text-center mx-auto mt-3 w-max"
                 v-for="user_info in user"
                 :key="user_info.id"
             >
@@ -83,20 +93,28 @@
                                 </div>
                             </th>
                             <th class="px-3">From</th>
+                            <th class="px-3">To</th>
                         </tr>
                     </thead>
-                    <tbody class="text-left">
+                    <tbody
+                        class="text-left bg-blue-200"
+                        v-if="
+                            user_info['reminder_from'].length ||
+                            user_info['reminder_to'].length
+                        "
+                    >
                         <tr
-                            v-if="user_info['reminder'].length"
-                            v-for="reminder in user_info['reminder']"
+                            v-for="reminder in user_info['reminder_from']"
                             :key="reminder.id"
-                            class="py-3 mt-2"
+                            class="py-1 mt-2 border"
                         >
-                            <td class="px-3 py-3">
+                            <td class="px-2 py-2 border">
                                 {{ showToday(reminder.created_at) }}
                             </td>
-                            <td class="px-3 py-3">{{ reminder.message }}</td>
-                            <td>
+                            <td class="px-2 py-2 border">
+                                {{ reminder.message }}
+                            </td>
+                            <td class="border text-center">
                                 <div
                                     class="w-max"
                                     v-for="user in users"
@@ -110,10 +128,66 @@
                                     <span v-else></span>
                                 </div>
                             </td>
+                            <td class="border">
+                                <div
+                                    class="w-max justify-center"
+                                    v-for="user in users"
+                                    :key="user.id"
+                                >
+                                    <span
+                                        v-if="user.id === reminder.to_user_id"
+                                    >
+                                        {{ user.name }}</span
+                                    >
+                                    <span v-else></span>
+                                </div>
+                            </td>
                         </tr>
-                        <tr v-else class="text-center mt-2 bg-slate-200 border">
-                            <td colspan="3" class="py-3 font-bold font-sans">No reminder</td>
+                        <tr
+                            v-for="reminder in user_info['reminder_to']"
+                            :key="reminder.id"
+                            class="py-1 mt-2 border"
+                        >
+                            <td class="px-2 py-2 border">
+                                {{ showToday(reminder.created_at) }}
+                            </td>
+                            <td class="px-2 py-2 border">
+                                {{ reminder.message }}
+                            </td>
+                            <td class="border text-center">
+                                <div
+                                    class="w-max"
+                                    v-for="user in users"
+                                    :key="user.id"
+                                >
+                                    <span
+                                        v-if="user.id === reminder.from_user_id"
+                                    >
+                                        {{ user.name }}</span
+                                    >
+                                    <span v-else></span>
+                                </div>
+                            </td>
+                            <td class="border">
+                                <div
+                                    class="w-max justify-center"
+                                    v-for="user in users"
+                                    :key="user.id"
+                                >
+                                    <span
+                                        v-if="user.id === reminder.to_user_id"
+                                    >
+                                        {{ user.name }}</span
+                                    >
+                                    <span v-else></span>
+                                </div>
+                            </td>
                         </tr>
+                    </tbody>
+                    <tbody v-else class="text-center mt-2 bg-slate-200 border">
+                        <td colspan="4" class="py-3 font-bold font-sans">
+                            No reminder
+                        </td>
                     </tbody>
                 </table>
             </div>
