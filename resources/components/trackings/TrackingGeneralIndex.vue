@@ -5133,65 +5133,65 @@ export default {
                 "End Date": "general_enddate",
                 "Artwork Chase": {
                     callback: (value) => {
-                        return value.art_chase_done === 1
+                        return value.art_chase_date ? (value.art_chase_done === 1
                             ? `(${this.getDayMonth(value.art_chase_date)})`
-                            : `${this.getDayMonth(value.art_chase_date)}`;
+                            : `${this.getDayMonth(value.art_chase_date)}`) : "";
                     },
                 },
                 "Artwork Received": {
                     callback: (value) => {
-                        return value.art_received_done === 1
+                        return value.art_received_done ? (value.art_received_done === 1
                             ? `(${this.getDayMonth(value.art_received_date)})`
-                            : `${this.getDayMonth(value.art_received_date)}`;
+                            : `${this.getDayMonth(value.art_received_date)}`) : "";
                     },
                 },
                 "Artwork To Do": {
                     callback: (value) => {
-                        return value.art_todo_done === 1
+                        return value.art_todo_done ?  (value.art_todo_done === 1
                             ? `(${this.getDayMonth(value.art_todo_date)})`
-                            : `${this.getDayMonth(value.art_todo_date)}`;
+                            : `${this.getDayMonth(value.art_todo_date)}`) : "";
                     },
                 },
                 "C&S Sent": {
                     callback: (value) => {
-                        return value.cns_sent_done === 1
+                        return value.cns_sent_done ? (value.cns_sent_done === 1
                             ? `(${this.getDayMonth(value.cns_sent_date)})`
-                            : `${this.getDayMonth(value.cns_sent_date)}`;
+                            : `${this.getDayMonth(value.cns_sent_date)}`) : "";
                     },
                 },
                 "C&S Record": {
                     callback: (value) => {
-                        return value.cns_record_done === 1
+                        return value.cns_record_done ? (value.cns_record_done === 1
                             ? `(${this.getDayMonth(value.cns_record_date)})`
-                            : `${this.getDayMonth(value.cns_record_date)}`;
+                            : `${this.getDayMonth(value.cns_record_date)}`) : "";
                     },
                 },
                 "Schedule Date": {
                     callback: (value) => {
-                        return value.schedule_done === 1
+                        return value.schedule_done ? (value.schedule_done === 1
                             ? `(${this.getDayMonth(value.schedule_date)})`
-                            : `${this.getDayMonth(value.schedule_date)}`;
+                            : `${this.getDayMonth(value.schedule_date)}`) : "";
                     },
                 },
                 Report: {
                     callback: (value) => {
-                        return value.report_done === 1
+                        return value.report_done ?  (value.report_done === 1
                             ? `(${this.getDayMonth(value.report_date)})`
-                            : `${this.getDayMonth(value.report_date)}`;
+                            : `${this.getDayMonth(value.report_date)}`) : "";
                     },
                 },
                 "Client Posting": {
                     callback: (value) => {
-                        return value.client_posting_done === 1
+                        return value.client_posting_done ? (value.client_posting_done === 1
                             ? `(${this.getDayMonth(value.client_posting_date)})`
-                            : `${this.getDayMonth(value.client_posting_date)}`;
+                            : `${this.getDayMonth(value.client_posting_date)}`) : "";
                     },
                 },
                 "Live Date": {
                     callback: (value) => {
-                        return value.actual_live_done === 1
+                        return value.actual_live_done ? (value.actual_live_done === 1
                             ? `(${this.getDayMonth(value.actual_live_date)})`
-                            : `${this.getDayMonth(value.actual_live_date)}`;
+                            : `${this.getDayMonth(value.actual_live_date)}`) : "";
                     },
                 },
                 Remark: "wip_remark",

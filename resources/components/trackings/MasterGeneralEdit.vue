@@ -67,21 +67,6 @@
                                 :filterable="false"
                             ></v-select>
                         </div>
-                        <!-- <select
-                            class=" overflow-y block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                            v-model="tracking.company_id"
-                            @change="getContacts"
-                        >
-                            <option value="">Select company</option>
-                            <option
-                                class=""
-                                v-for="contact in contacts"
-                                :key="contact.id"
-                                :value="contact.id"
-                            >
-                                {{ contact.name }}
-                            </option>
-                        </select> -->
                     </div>
 
                     <div class="form-group grid grid-cols-2">
@@ -123,6 +108,19 @@
                             >
                                 {{ division.name }}
                             </option>
+                        </select>
+                    </div>
+                    <div class="form-group grid grid-cols-2">
+                        <label class="font-bold"
+                            >Status
+                            <p class="inline text-red-600 text-lg">*</p></label
+                        >
+                        <select
+                            class="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                            v-model="tracking.progress"
+                        >
+                            <option value="Pending">Pending</option>
+                            <option value="Completed">Completed</option>
                         </select>
                     </div>
 
@@ -518,6 +516,7 @@ export default {
                             progress: this.tracking.progress,
                             user_id: this.tracking.user_id,
                             company_id: this.tracking.company_id,
+                            division_id: this.tracking.division_id,
                             contact_category_id:
                                 this.tracking.contact_category_id,
                             category_description:
