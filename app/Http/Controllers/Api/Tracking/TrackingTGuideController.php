@@ -22,6 +22,7 @@ class TrackingTGuideController extends Controller
         $selectedUser = request('selectedUser');
         $selectedCategory = request('selectedCategory');
         $selectedResult = request('selectedResult');
+        $selectedYear = request('selectedYear');
         $view_type = request('view_type');
 
 

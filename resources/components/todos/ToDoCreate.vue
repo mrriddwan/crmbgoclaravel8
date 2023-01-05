@@ -150,23 +150,18 @@
                             <p class="inline text-red-600 text-lg">*</p></label
                         >
                         <div class="h-max-10">
-                            <select
-                                class="overflow-y block mt-1 w-max rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                                v-model="form.contact_id"
-                                @change="getContacts"
-                            >
-                                <option disabled value="">
-                                    Please select one
-                                </option>
-                                <option
-                                    class=""
-                                    v-for="contact in contacts"
-                                    :key="contact.id"
-                                    :value="contact.id"
-                                >
-                                    {{ contact.name }}
-                                </option>
-                            </select>
+                            <div class="h-max-10">
+                                <v-select
+                                    label="name"
+                                    :options="contacts"
+                                    class="form_company"
+                                    :reduce="(name) => name.id"
+                                    v-model="form.contact_id"
+                                    placeholder="Search & select company"
+                                    @search="findContacts"
+                                    :filterable="false"
+                                ></v-select>
+                            </div>
                         </div>
                     </div>
 
@@ -298,7 +293,8 @@ export default {
             types,
         } = contactComposables();
 
-        const { getTasks, tasks, storeToDo, errors, getColors, colors } = toDoComposables();
+        const { getTasks, tasks, storeToDo, errors, getColors, colors } =
+            toDoComposables();
 
         onMounted(getUsers);
         onMounted(getStatuses);
@@ -311,6 +307,9 @@ export default {
         const createToDo = async () => {
             await storeToDo({ ...form });
         };
+
+        // const fetchResults = debounce(async () => {
+        //     await axios.post('')
 
         return {
             form,
@@ -325,13 +324,29 @@ export default {
             priority_id,
             format,
             date,
-            colors
+            colors,
         };
     },
 
     components: {
         GoBack,
         VueDatePicker,
+    },
+
+    methods: {
+        findContacts(search, loading) {
+            if (search.length) {
+                loading(true);
+                this.searchContact(loading, search, this);
+            }
+        },
+
+        searchContact: _.debounce((loading, search, vm) => {
+            axios.get("/api/contacts/list?" + "q=" + search).then((res) => {
+                vm.contacts = res.data.data;
+                loading(false);
+            });
+        }, 350),
     },
 };
 </script>

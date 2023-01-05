@@ -956,7 +956,7 @@ export default {
 
         getResults() {
             axios
-                .get("/api/forecasts/result/index")
+                .get("/api/forecasts/result/list")
                 .then((res) => {
                     this.results = res.data;
                 })

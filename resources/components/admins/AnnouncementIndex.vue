@@ -67,7 +67,7 @@
                                 {{ announcement_info.from_user.name }}
                             </td>
                         </tr>
-                        <tr v-else class="text-center mt-2 bg-slate-200 border">
+                        <tr v-else class="text-center mt-2 bg-slate-200 ">
                             <td colspan="3" class="py-3 font-bold font-sans">
                                 No announcement
                             </td>
@@ -97,7 +97,7 @@
                         </tr>
                     </thead>
                     <tbody
-                        class="text-left bg-blue-200"
+                        class="text-left bg-slate-400 text-white"
                         v-if="
                             user_info['reminder_from'].length ||
                             user_info['reminder_to'].length
@@ -106,21 +106,22 @@
                         <tr
                             v-for="reminder in user_info['reminder_from']"
                             :key="reminder.id"
-                            class="py-1 mt-2 border"
+                            class="py-1 mt-2 "
                         >
-                            <td class="px-2 py-2 border">
+                            <td class="px-2 py-2">
                                 {{ showToday(reminder.created_at) }}
                             </td>
-                            <td class="px-2 py-2 border">
+                            <td class="px-2 py-2">
                                 {{ reminder.message }}
                             </td>
-                            <td class="border text-center">
+                            <td class=" text-center">
                                 <div
                                     class="w-max"
                                     v-for="user in users"
                                     :key="user.id"
                                 >
                                     <span
+                                        class="mx-2"
                                         v-if="user.id === reminder.from_user_id"
                                     >
                                         {{ user.name }}</span
@@ -128,13 +129,14 @@
                                     <span v-else></span>
                                 </div>
                             </td>
-                            <td class="border">
+                            <td class="">
                                 <div
                                     class="w-max justify-center"
                                     v-for="user in users"
                                     :key="user.id"
                                 >
                                     <span
+                                        class="mx-2"
                                         v-if="user.id === reminder.to_user_id"
                                     >
                                         {{ user.name }}</span
@@ -146,15 +148,15 @@
                         <tr
                             v-for="reminder in user_info['reminder_to']"
                             :key="reminder.id"
-                            class="py-1 mt-2 border"
+                            class="py-1 mt-2"
                         >
-                            <td class="px-2 py-2 border">
+                            <td class="px-2 py-2">
                                 {{ showToday(reminder.created_at) }}
                             </td>
-                            <td class="px-2 py-2 border">
+                            <td class="px-2 py-2">
                                 {{ reminder.message }}
                             </td>
-                            <td class="border text-center">
+                            <td class="text-center">
                                 <div
                                     class="w-max"
                                     v-for="user in users"
@@ -168,7 +170,7 @@
                                     <span v-else></span>
                                 </div>
                             </td>
-                            <td class="border">
+                            <td class="">
                                 <div
                                     class="w-max justify-center"
                                     v-for="user in users"
@@ -184,7 +186,7 @@
                             </td>
                         </tr>
                     </tbody>
-                    <tbody v-else class="text-center mt-2 bg-slate-200 border">
+                    <tbody v-else class="text-center mt-2 bg-slate-200 ">
                         <td colspan="4" class="py-3 font-bold font-sans">
                             No reminder
                         </td>

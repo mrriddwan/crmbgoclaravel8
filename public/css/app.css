@@ -901,9 +901,6 @@ select {
 .mb-2 {
   margin-bottom: 0.5rem;
 }
-.mt-10 {
-  margin-top: 2.5rem;
-}
 .mt-5 {
   margin-top: 1.25rem;
 }
@@ -969,9 +966,6 @@ select {
 .h-full {
   height: 100%;
 }
-.h-12 {
-  height: 3rem;
-}
 .h-3 {
   height: 0.75rem;
 }
@@ -983,6 +977,9 @@ select {
 }
 .h-9 {
   height: 2.25rem;
+}
+.h-12 {
+  height: 3rem;
 }
 .h-7 {
   height: 1.75rem;
@@ -1051,9 +1048,6 @@ select {
 }
 .w-10 {
   width: 2.5rem;
-}
-.w-12 {
-  width: 3rem;
 }
 .w-3 {
   width: 0.75rem;
@@ -1599,10 +1593,6 @@ select {
   --tw-bg-opacity: 1;
   background-color: rgb(165 180 252 / var(--tw-bg-opacity));
 }
-.bg-cyan-600 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(8 145 178 / var(--tw-bg-opacity));
-}
 .bg-\[url\(\'\/storage\/images\/bluedale_bg\.jpg\'\)\] {
   background-image: url('/storage/images/bluedale_bg.jpg');
 }
@@ -1777,6 +1767,9 @@ select {
 .pr-0 {
   padding-right: 0px;
 }
+.pb-96 {
+  padding-bottom: 24rem;
+}
 .pb-20 {
   padding-bottom: 5rem;
 }
@@ -1788,9 +1781,6 @@ select {
 }
 .pb-60 {
   padding-bottom: 15rem;
-}
-.pb-96 {
-  padding-bottom: 24rem;
 }
 .text-left {
   text-align: left;

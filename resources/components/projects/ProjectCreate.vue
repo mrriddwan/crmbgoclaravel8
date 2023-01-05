@@ -1,7 +1,5 @@
 <template>
-    <div
-        class="container w-max-10 align-center mx-auto px-5 pb-60 h-full"
-    >
+    <div class="container w-max-10 align-center mx-auto px-5 pb-60 h-full">
         <div>
             <GoBack />
         </div>

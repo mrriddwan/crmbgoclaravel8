@@ -71,10 +71,14 @@
             </div>
         </div>
 
-        <div class="grid grid-cols-8 gap-3">
-            <div class="grid grid-cols-2 items-center text-right">
-                <label for="paginate" class="mr-2 text-sm">Per page</label>
-                <input v-model.lazy="paginate" class="form-control w-max" />
+        <div class="grid grid-cols-11 gap-2">
+            <div class="grid grid-cols-2 items-center text-right col-span-2">
+                <label for="paginate" class="mr-2">Per page</label>
+                <input v-model.lazy="paginate" class="form-control w-max text-xs" />
+            </div>
+            <div class="grid grid-cols-2 items-center text-right col-span-2">
+                <label for="paginate" class="mr-2 text-sm">Year</label>
+                <input v-model.lazy="selectedYear" class="form-control w-max" />
             </div>
             <div class="grid grid-cols-2 col-span-2 items-center text-right">
                 <label for="view_type" class="mr-2">View</label>
@@ -8152,7 +8156,6 @@
                 </table>
             </div>
         </div>
-        <!-- </div> -->
     </div>
 </template>
 
@@ -8174,26 +8177,6 @@ import {
     ArrowDownIcon,
     QuestionMarkCircleIcon,
 } from "@heroicons/vue/24/solid";
-
-const test_json = [
-    {
-        id: 4,
-        tracking_tguide_id: 2,
-        wip_package_name: "Article",
-        wip_package_date: "2022-01-15",
-        wip_package_done: 2,
-    },
-
-    {
-        id: 5,
-        tracking_tguide_id: 2,
-        wip_package_name: "FB Ads and Video",
-        wip_package_date: "2022-01-29",
-        wip_package_done: 2,
-    },
-];
-
-const month_year_test = "2022-01";
 
 export default {
     components: {
@@ -8222,8 +8205,6 @@ export default {
         this.getTrackingTravelGuides();
         this.getUsers();
         this.getCategories();
-
-        this.checkMonth(test_json, month_year_test);
     },
     data() {
         return {
@@ -9335,6 +9316,11 @@ export default {
             this.tracking_travel_guides = [];
             this.getTrackingTravelGuides();
         },
+
+        selectedYear(){
+            this.tracking_travel_guides = [];
+            this.getTrackingTravelGuides();
+        }
     },
 
     methods: {
@@ -9364,7 +9350,9 @@ export default {
                         "&view_type=" +
                         this.view_type +
                         "&selectedUser=" +
-                        this.selectedUser
+                        this.selectedUser +
+                        "&selectedYear=" +
+                        this.selectedYear
                     // +
                     // "&selectedCategory=" +
                     // this.selectedCategory +
