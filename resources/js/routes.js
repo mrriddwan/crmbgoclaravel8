@@ -64,6 +64,12 @@ import MasterTravelGuideEdit from "../components/trackings/MasterTravelGuideEdit
 /**Tracking Travel Guide Imports */
 import TutorialContacts from "../components/tutorials/TutorialContacts.vue";
 import TutorialToDoFollowUps from "../components/tutorials/TutorialToDoFollowUps.vue";
+import TutorialForecast from "../components/tutorials/TutorialForecast.vue";
+import TutorialProject from "../components/tutorials/TutorialProject.vue";
+import TutorialPerformance from "../components/tutorials/TutorialPerformance.vue";
+import TutorialBBoardTBoard from "../components/tutorials/TutorialBBoardTBoard.vue";
+import TutorialTracking from "../components/tutorials/TutorialTracking.vue";
+import TutorialAdmin from "../components/tutorials/TutorialAdmin.vue";
 
 /**Tracking Travel Guide Imports */
 import AnnouncementIndex from "../components/admins/AnnouncementIndex.vue";
@@ -405,7 +411,7 @@ const routes = [
     },
 
      /*                                                  
-        System Guide Routes 
+        System Tutorial Routes 
     */
 
     {
@@ -419,6 +425,48 @@ const routes = [
         path: "/tutorial/todo_followup",
         name: "tutorial_todo_followup",
         component: TutorialToDoFollowUps,
+    },
+
+    {
+        //Tutorial Forecast
+        path: "/tutorial/forecast",
+        name: "tutorial_forecast",
+        component: TutorialForecast,
+    },
+
+    {
+        //Tutorial Forecast
+        path: "/tutorial/project",
+        name: "tutorial_project",
+        component: TutorialProject,
+    },
+
+    {
+        //Tutorial Forecast
+        path: "/tutorial/performance",
+        name: "tutorial_performance",
+        component: TutorialPerformance,
+    },
+
+    {
+        //Tutorial Forecast
+        path: "/tutorial/billboard_tempboard",
+        name: "tutorial_billboard_tempboard",
+        component: TutorialBBoardTBoard,
+    },
+
+    {
+        //Tutorial Forecast
+        path: "/tutorial/tracking",
+        name: "tutorial_tracking",
+        component: TutorialTracking,
+    },
+
+    {
+        //Tutorial Forecast
+        path: "/tutorial/admin",
+        name: "tutorial_admin",
+        component: TutorialAdmin,
     },
 
          /*                                                  

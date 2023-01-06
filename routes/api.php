@@ -153,6 +153,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     Route::delete('/admin/announcement_reminder/delete/{announcement}', [AdminController::class, 'message_delete'])->name('admin:message_delete');
     Route::get('/admin/announcement_reminder/{announcement_id}', [AdminController::class, 'announcement_reminder_info'])->name('admin:announcement_reminder');
     Route::put('/admin/announcement_reminder/update/{announcement}', [AdminController::class, 'message_update'])->name('admin:message_update');
+
+    Route::get('/admin/tutorial/download', [AdminController::class, 'download_tutorial'])->name('admin:download_tutorial');
 // });
 
 

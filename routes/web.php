@@ -174,6 +174,30 @@ Route::get('/tutorial/todo_followup', function () {
     return view('tutorial_todo_followup');
 })->middleware(['auth'])->name('tutorial-todo_followup');
 
+Route::get('/tutorial/forecast', function () {
+    // return view('tutorial_todo_followup');
+})->middleware(['auth'])->name('tutorial-forecast');
+
+Route::get('/tutorial/project', function () {
+    // return view('tutorial_todo_followup');
+})->middleware(['auth'])->name('tutorial-project');
+
+Route::get('/tutorial/performance', function () {
+    // return view('tutorial_todo_followup');
+})->middleware(['auth'])->name('tutorial-performance');
+
+Route::get('/tutorial/billboard_tempboard', function () {
+    // return view('tutorial_todo_followup');
+})->middleware(['auth'])->name('tutorial-billboard_tempboard');
+
+Route::get('/tutorial/tracking', function () {
+    // return view('tutorial_todo_followup');
+})->middleware(['auth'])->name('tutorial-tracking');
+
+Route::get('/tutorial/admin', function () {
+    // return view('tutorial_admin');
+})->middleware(['auth'])->name('tutorial-admin');
+
 /**Announcement Routes 
  * 
  */

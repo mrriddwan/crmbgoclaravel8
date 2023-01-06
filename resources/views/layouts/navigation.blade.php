@@ -226,6 +226,42 @@
                                     :active="request()->routeIs('tutorial-todo_followup')">
                                     {{ __('To Do & Follow Up') }}
                                 </x-nav-link>
+
+                                <br>
+                                <x-nav-link class="w-full text-xs hover:bg-blue-300 hover:font-bold" :href="route('tutorial-forecast')"
+                                    :active="request()->routeIs('tutorial-forecast')">
+                                    {{ __('Forecast') }}
+                                </x-nav-link>
+
+                                <br>
+                                <x-nav-link class="w-full text-xs hover:bg-blue-300 hover:font-bold" :href="route('tutorial-project')"
+                                    :active="request()->routeIs('tutorial-project')">
+                                    {{ __('Project') }}
+                                </x-nav-link>
+
+                                <br>
+                                <x-nav-link class="w-full text-xs hover:bg-blue-300 hover:font-bold" :href="route('tutorial-performance')"
+                                    :active="request()->routeIs('tutorial-performance')">
+                                    {{ __('Performance') }}
+                                </x-nav-link>
+
+                                <br>
+                                <x-nav-link class="w-full text-xs hover:bg-blue-300 hover:font-bold" :href="route('tutorial-billboard_tempboard')"
+                                    :active="request()->routeIs('tutorial-billboard_tempboard')">
+                                    {{ __('BB / TP') }}
+                                </x-nav-link>
+
+                                <br>
+                                <x-nav-link class="w-full text-xs hover:bg-blue-300 hover:font-bold" :href="route('tutorial-tracking')"
+                                    :active="request()->routeIs('tutorial-tracking')">
+                                    {{ __('Tracking') }}
+                                </x-nav-link>
+
+                                <br>
+                                <x-nav-link class="w-full text-xs hover:bg-blue-300 hover:font-bold" :href="route('tutorial-admin')"
+                                    :active="request()->routeIs('tutorial-admin')">
+                                    {{ __('Admin') }}
+                                </x-nav-link>
                             </x-slot>
                         </x-dropdown>
                     </div>
