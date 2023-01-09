@@ -26,6 +26,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rules;
 
@@ -1013,10 +1014,10 @@ class AdminController extends Controller
         return response()->json('Announcement/reminder updated.');
     }
 
-    public function download_tutorial()
+    public function download_tutorial($source)
     {
-        $file_name = 'admin_data';
-        return Storage::download('8_admin_data.pdf', $file_name);
+        $file_name = public_path(`$source`);
+        return Response::download($file_name);
         // storage/tutorials/
     }
 }

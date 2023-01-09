@@ -55,9 +55,11 @@ class TrackingTGuideController extends Controller
                 ->when($selectedUser, function ($query) use ($selectedUser) {
                     $query->where('tracking_travel_guides.user_id', $selectedUser);
                 })
-                // ->when($selectedResult, function ($query) use ($selectedResult) {
-                //     $query->where('tracking_generals.progress', $selectedResult);
-                // })
+                ->when($selectedYear, function ($query) use ($selectedYear) {
+                    $query->whereHas('wip_travel_guide', function ($q) use ($selectedYear) {
+                        $q->whereYear('wip_package_date', $selectedYear);
+                    });
+                })
                 ->orderBy($sort_field, $sort_direction)
                 ->search(trim($search_term))
                 ->paginate($paginate);
@@ -105,6 +107,11 @@ class TrackingTGuideController extends Controller
                     ])
                     ->when($selectedUser, function ($query) use ($selectedUser) {
                         $query->where('tracking_travel_guides.user_id', $selectedUser);
+                    })
+                    ->when($selectedYear, function ($query) use ($selectedYear) {
+                        $query->whereHas('wip_travel_guide', function ($q) use ($selectedYear) {
+                            $q->whereYear('wip_package_date', $selectedYear);
+                        });
                     })
                     ->orderBy($sort_field, $sort_direction)
                     ->search(trim($search_term))

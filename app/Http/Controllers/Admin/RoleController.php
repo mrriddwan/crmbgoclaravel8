@@ -11,7 +11,7 @@ class RoleController extends Controller
 {
     public function index()
     {
-        $role = Role::all()->whereNotIn('id', [1,2]);
+        $role = Role::all()->whereNotIn('id', [1]);
 
         return response()->json([
             'status' => true,

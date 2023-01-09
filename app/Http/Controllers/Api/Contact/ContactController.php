@@ -418,8 +418,8 @@ class ContactController extends Controller
                 ->orderBy($sort_field, $sort_direction)
                 ->search(trim($search_term))
 
-                ->paginate(5000);
-            // ->get();
+                // ->paginate(5000);
+            ->get();
 
 
             // group smua todo by month
@@ -434,7 +434,8 @@ class ContactController extends Controller
 
                     return $company;
                 })
-                ->toArray();
+                ;
+                // ->toArray();
 
             return $contact;
         // } else {

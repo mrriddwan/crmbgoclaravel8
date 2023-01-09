@@ -256,12 +256,14 @@
                                     :active="request()->routeIs('tutorial-tracking')">
                                     {{ __('Tracking') }}
                                 </x-nav-link>
+                                @can('view tutorial admin')
+                                    <br>
 
-                                <br>
-                                <x-nav-link class="w-full text-xs hover:bg-blue-300 hover:font-bold" :href="route('tutorial-admin')"
-                                    :active="request()->routeIs('tutorial-admin')">
-                                    {{ __('Admin') }}
-                                </x-nav-link>
+                                    <x-nav-link class="w-full text-xs hover:bg-blue-300 hover:font-bold" :href="route('tutorial-admin')"
+                                        :active="request()->routeIs('tutorial-admin')">
+                                        {{ __('Admin') }}
+                                    </x-nav-link>
+                                @endcan
                             </x-slot>
                         </x-dropdown>
                     </div>
@@ -290,10 +292,10 @@
 
                                 <x-slot name="content" class="">
                                     @can('view admin announcement')
-                                    <x-nav-link class="w-full text-xs  hover:bg-blue-300 hover:font-bold"
-                                        :href="route('announcement-edit')" :active="request()->routeIs('announcement-edit')">
-                                        {{ __('Announcement') }}
-                                    </x-nav-link>
+                                        <x-nav-link class="w-full text-xs  hover:bg-blue-300 hover:font-bold"
+                                            :href="route('announcement-edit')" :active="request()->routeIs('announcement-edit')">
+                                            {{ __('Announcement') }}
+                                        </x-nav-link>
                                     @endcan
                                     @can('view admin data')
                                         <x-nav-link class="w-full text-xs  hover:bg-blue-300 hover:font-bold"

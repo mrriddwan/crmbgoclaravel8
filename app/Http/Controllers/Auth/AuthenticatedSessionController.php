@@ -4,9 +4,11 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\RateLimiter;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -34,6 +36,23 @@ class AuthenticatedSessionController extends Controller
 
         return redirect('/announcement/index');
     }
+
+    // public function store(Request $request, User $user)
+    // {
+    //     if (User::where('email',$request->email)->where('password',$request->password)->exists()) {
+    //         // dd(true);
+    //         // RateLimiter::clear($this->throttleKey());
+    //         $user = User::where('email',$request->email)->where('password',$request->password)->first();
+    //         Auth::login($user);
+    //         return redirect('/announcement/index');
+            
+    //     } else {
+    //         // RateLimiter::hit($this->throttleKey());
+    //         return false;
+    //         // dd(false);
+    //     }
+
+    // }
 
     /**
      * Destroy an authenticated session.

@@ -17,18 +17,18 @@
                     <option value="export_import">Export/Import</option>
                 </select>
             </div>
-            <div class="mx-3">
+            <!-- <div class="mx-3">
                 <button class="my-auto px-2 py-2 bg-green-500 rounded-md">
                     Download PDF
                 </button>
-            </div>
+            </div> -->
 
             <!-- download="file.xlsx" -->
-            <!-- <div>
+            <div>
                 <a
                     class="px-2 py-2 align-bottom text-center bg-blue-400 border-black border-2 rounded-md text-xs"
                     type="button"
-                    href="/api/admin/tutorial/download"
+                    :href="'/api/admin/tutorial/download' + url"
                 >
                     <button class="h-1">
                         <p
@@ -38,7 +38,7 @@
                         </p>
                     </button>
                 </a>
-            </div> -->
+            </div>
         </div>
 
         <div>
@@ -90,33 +90,40 @@ export default {
     },
 
     mounted() {
-        this.source = this.source_data;
+        this.source = this.source_data.display;
     },
     data() {
         return {
             source_announcement: "/storage/tutorials/10_admin_announcement.pdf",
-            source_data: "/storage/tutorials/8_admin_data.pdf",
+            source_data: {
+                display: "/storage/tutorials/8_admin_data.pdf",
+                url: "\\storage\\tutorials\\8_admin_data.pdf",
+            },
             source_manage: "/storage/tutorials/9_admin_user_manage.pdf",
             source_access: "/storage/tutorials/12_admin_access.pdf",
             source_export_import:
                 "/storage/tutorials/11_admin_export_import.pdf",
 
             source: "",
+            url: "",
 
             view_tutorial: "data",
         };
     },
     watch: {
         view_tutorial: function (value) {
-            value === "data"
-                ? (this.source = this.source_data)
-                : value === "announcement"
-                ? (this.source = this.source_announcement)
-                : value === "manage"
-                ? (this.source = this.source_manage)
-                : value === "access"
-                ? (this.source = this.source_access)
-                : (this.source = this.source_export_import);
+            if (value === "data") {
+                this.source = this.source_data.display;
+                this.url = this.source_data.url;
+            } else if (value === "announcement") {
+                this.source = this.source_announcement;
+            } else if (value === "manage") {
+                this.source = this.source_manage;
+            } else if (value === "access") {
+                this.source = this.source_access;
+            } else {
+                this.source = this.source_export_import;
+            }
         },
     },
 

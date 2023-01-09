@@ -287,7 +287,7 @@ export default {
         // this.getContacts();
     },
 
-    methods: {
+    methods: { 
         findContacts(search, loading) {
             if (search.length) {
                 loading(true);
