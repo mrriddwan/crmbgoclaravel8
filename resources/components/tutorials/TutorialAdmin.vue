@@ -25,19 +25,19 @@
 
             <!-- download="file.xlsx" -->
             <div>
-                <a
+                <!-- <a
                     class="px-2 py-2 align-bottom text-center bg-blue-400 border-black border-2 rounded-md text-xs"
                     type="button"
-                    :href="'/api/admin/tutorial/download' + url"
+                    href="/api/admin/tutorial/download"
                 >
-                    <button class="h-1">
-                        <p
-                            class="inline-block text-black uppercase font-extrabold"
-                        >
-                            Download
-                        </p>
-                    </button>
-                </a>
+                    <button class="mx-2">Download PDF</button>
+                </a> -->
+                <!-- <button
+                    class="mx-2 px-2 py-2 text-center bg-blue-400 border-black border-2 rounded-md text-xs"
+                    @click="downloadFile"
+                >
+                    Download PDF
+                </button> -->
             </div>
         </div>
 
@@ -91,6 +91,7 @@ export default {
 
     mounted() {
         this.source = this.source_data.display;
+        this.url = this.source_data.url;
     },
     data() {
         return {
@@ -127,6 +128,31 @@ export default {
         },
     },
 
-    methods: {},
+    methods: {
+        async downloadFile() {
+            await axios
+                // .get("/api/admin/tutorial/download", {
+                //     url: this.url,
+                // })
+                .get("/api/admin/tutorial/download")
+                .then((res) => {
+                    // this.permissions = res.data.data;
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        },
+
+        // async getPermissions() {
+        //     await axios
+        //         .get("/api/admin/permissions/index")
+        //         .then((res) => {
+        //             this.permissions = res.data.data;
+        //         })
+        //         .catch((error) => {
+        //             console.log(error);
+        //         });
+        // },
+    },
 };
 </script>

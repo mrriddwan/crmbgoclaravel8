@@ -1014,9 +1014,13 @@ class AdminController extends Controller
         return response()->json('Announcement/reminder updated.');
     }
 
-    public function download_tutorial($source)
+    public function download_tutorial(Request $request)
     {
-        $file_name = public_path(`$source`);
+        // $filepath = $request->url;
+        // $file_name = public_path(`$filepath`);
+        // "\\storage\\tutorials\\8_admin_data.pdf" public\storage\tutorials\8_admin_data.pdf
+        
+        $file_name = public_path('/storage/tutorials/8_admin_data.pdf');
         return Response::download($file_name);
         // storage/tutorials/
     }
