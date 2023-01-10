@@ -154,7 +154,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     Route::get('/admin/announcement_reminder/{announcement_id}', [AdminController::class, 'announcement_reminder_info'])->name('admin:announcement_reminder');
     Route::put('/admin/announcement_reminder/update/{announcement}', [AdminController::class, 'message_update'])->name('admin:message_update');
 
-    Route::get('/admin/tutorial/download/{}', [AdminController::class, 'download_tutorial'])->name('admin:download_tutorial');
+    Route::get('/admin/tutorial/download/{tutorial_no}', [AdminController::class, 'download_tutorial'])->name('admin:download_tutorial');
 // });
 
 
@@ -210,6 +210,7 @@ Route::get('/users/action', [UserController::class, 'action'])->name('user:actio
 Route::get('/users/performance', [UserController::class, 'performance'])->name('user:performance');
 Route::post('/users/check_subordinate', [UserController::class, 'check_subordinate'])->name('user:check_subordinate');
 Route::get('/users/home', [UserController::class, 'user_home'])->name('user:home');
+Route::get('/users/get_subordinates', [UserController::class, 'get_subordinates'])->name('user:get_subordinates');
 
 /*Incharge API*/
 Route::post('/incharges/store', [ContactInchargeController::class, 'store'])->name('incharge:store');

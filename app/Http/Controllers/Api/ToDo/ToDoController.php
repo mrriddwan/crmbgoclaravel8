@@ -47,15 +47,6 @@ class ToDoController extends Controller
         $sv_sb = "";
         $final = [$id];
 
-        if (SvSbPivot::where('supervisor_id', '=', $id)->exists()) {
-            $sv_sb = SvSbPivot::select('subordinate_id')
-                ->where('supervisor_id', '=', $id)
-                ->pluck('subordinate_id');
-        } else {
-            $sv_sb = ["null"];
-        }
-        array_push($final, ...$sv_sb);
-
         if ((DB::table('model_has_roles')
                 //if not super-admin or admin
                 ->where('model_id', '=', $id)
@@ -122,6 +113,15 @@ class ToDoController extends Controller
 
             return ToDoResource::collection($todo);
         } else {
+            if (SvSbPivot::where('supervisor_id', '=', $id)->exists()) {
+                $sv_sb = SvSbPivot::select('subordinate_id')
+                    ->where('supervisor_id', '=', $id)
+                    ->pluck('subordinate_id');
+            } else {
+                $sv_sb = ["null"];
+            }
+            array_push($final, ...$sv_sb);
+
             $todo = ToDo::select([
                 'to_dos.*',
                 'contacts.id as contact_id',
@@ -174,6 +174,8 @@ class ToDoController extends Controller
                 ->orderBy($sort_field, $sort_direction)
                 ->search(trim($search_term))
                 ->paginate($paginate);
+
+            return ToDoResource::collection($todo);
         }
     }
 

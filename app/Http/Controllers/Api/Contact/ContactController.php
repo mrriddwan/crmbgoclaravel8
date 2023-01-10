@@ -9,6 +9,7 @@ use App\Http\Resources\Contact\ContactResource;
 use App\Imports\ContactImport;
 use App\Models\Admin\SvSbPivot;
 use App\Models\Contact\Contact;
+use App\Models\ToDo\ToDo;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -163,7 +164,7 @@ class ContactController extends Controller
         return response()->json('Contact deleted.');
     }
 
-    
+
 
     public function remark(Contact $contact)
     {
@@ -195,54 +196,30 @@ class ContactController extends Controller
 
         return response()->json([
             'status' => true,
-            'message' => 'Successfully fetch data Contact ',
+            'message' => 'Successfully fetch data Contact history',
             'data' => $data,
         ]);
     }
 
 
-    public function history(Contact $contact)
+    public function history($contact)
     {
-        // $contact = Contact::with(['category', 'type', 'status','user','industry', 
-        //     'todo' => function ($q) {
-        //         $q->select(
-        //             'id',
-        //             'contact_id',
-        //             'todo_date',
-        //             'todo_deadline',
-        //             'todo_remark',
-        //             'user_id',
-        //             'task_id',
-        //             'action_id'
-        //         )
-        //             ->orderBy('todo_date', 'desc');
-        //     },
-        // ])->where('id', $contact->id)->paginate(100);
+        $contact = Contact::where('id', $contact)
+            ->select('id', 'name')
+            ->get()
+            ->toArray();
 
-        // $data = $contact
-        // // ->toArray()
-        // ;
-
-        // return response()->json([
-        //     'status' => true,
-        //     'message' => 'Successfully fetch Contact History ',
-        //     'data' => $data,
-        // ]);
-        $contact = Contact::with([
-            'category', 'type', 'status', 'incharge', 'user',
-            'todo' => function ($q) {
-                $q->orderBy('todo_date', 'desc');
-            }, 'industry', 'forecast'
-        ])
-            ->where('id', $contact->id)
-            ->paginate(100);
-
-        $data = $contact;
+        $todo = Todo::where('contact_id', $contact)
+            ->with('task', 'user', 'action')
+            ->orderBy('todo_date', 'desc')
+            ->paginate(100)
+            ->toArray();
 
         return response()->json([
             'status' => true,
             'message' => 'Successfully fetch Contact history ',
-            'data' => $data,
+            'data' => $contact,
+            'data2' => $todo,
         ]);
     }
 
@@ -367,77 +344,77 @@ class ContactController extends Controller
         //         ->where('role_id', '=', 1)
         //         ->exists())
         // ) {
-            $contact = Contact::with(
-                [
-                    'summary_todo' => function ($q) {
-                        $q->select(['id', 'todo_date', 'contact_id', 'action_id'])
-                            ->orderBy('todo_date', 'desc');
-                    },
+        $contact = Contact::with(
+            [
+                'summary_todo' => function ($q) {
+                    $q->select(['id', 'todo_date', 'contact_id', 'action_id'])
+                        ->orderBy('todo_date', 'desc');
+                },
 
-                    'summary_todo.action' => function ($q) {
-                        $q->select('id', 'name');
-                    },
+                'summary_todo.action' => function ($q) {
+                    $q->select('id', 'name');
+                },
 
-                ],
-            )
-                ->leftJoin('contact_statuses', 'contacts.status_id', '=', 'contact_statuses.id')
-                ->leftJoin('contact_types', 'contacts.type_id', '=', 'contact_types.id')
-                ->leftJoin('contact_categories', 'contacts.category_id', '=', 'contact_categories.id')
-                ->leftJoin('contact_industries', 'contacts.industry_id', '=', 'contact_industries.id')
-                ->leftJoin('users', 'contacts.user_id', '=', 'users.id')
-                ->select([
-                    'contacts.id',
-                    'contacts.name',
-                    'contact_statuses.name as status_name',
-                    'contact_types.name as type_name',
-                    'users.name as user_name',
-                    'contact_categories.name as category_name',
-                    'contact_industries.name as industry_name',
+            ],
+        )
+            ->leftJoin('contact_statuses', 'contacts.status_id', '=', 'contact_statuses.id')
+            ->leftJoin('contact_types', 'contacts.type_id', '=', 'contact_types.id')
+            ->leftJoin('contact_categories', 'contacts.category_id', '=', 'contact_categories.id')
+            ->leftJoin('contact_industries', 'contacts.industry_id', '=', 'contact_industries.id')
+            ->leftJoin('users', 'contacts.user_id', '=', 'users.id')
+            ->select([
+                'contacts.id',
+                'contacts.name',
+                'contact_statuses.name as status_name',
+                'contact_types.name as type_name',
+                'users.name as user_name',
+                'contact_categories.name as category_name',
+                'contact_industries.name as industry_name',
 
-                ])
-                ->when($selectedStatus, function ($query) use ($selectedStatus) {
-                    $query->where('contacts.status_id', $selectedStatus);
-                })
-                ->when($selectedType, function ($query) use ($selectedType) {
-                    $query->where('contacts.type_id', $selectedType);
-                })
-                ->when($selectedUser, function ($query) use ($selectedUser) {
-                    $query->where('contacts.user_id', $selectedUser);
-                })
-                ->when($selectedCategory, function ($query) use ($selectedCategory) {
-                    $query->where('contacts.category_id', $selectedCategory);
-                })
-                ->when($selectedIndustry, function ($query) use ($selectedIndustry) {
-                    $query->where('contacts.industry_id', $selectedIndustry);
-                })
-                // ->when($selectedYear, function ($query) use ($selectedYear) {
-                //     $query->whereHas('summary_todo', function ($q) use ($selectedYear) {
-                //         $q->whereYear('todo_date', $selectedYear);
-                //     });
-                // })
-                ->orderBy($sort_field, $sort_direction)
-                ->search(trim($search_term))
+            ])
+            ->when($selectedStatus, function ($query) use ($selectedStatus) {
+                $query->where('contacts.status_id', $selectedStatus);
+            })
+            ->when($selectedType, function ($query) use ($selectedType) {
+                $query->where('contacts.type_id', $selectedType);
+            })
+            ->when($selectedUser, function ($query) use ($selectedUser) {
+                $query->where('contacts.user_id', $selectedUser);
+            })
+            ->when($selectedCategory, function ($query) use ($selectedCategory) {
+                $query->where('contacts.category_id', $selectedCategory);
+            })
+            ->when($selectedIndustry, function ($query) use ($selectedIndustry) {
+                $query->where('contacts.industry_id', $selectedIndustry);
+            })
+            // ->when($selectedYear, function ($query) use ($selectedYear) {
+            //     $query->whereHas('summary_todo', function ($q) use ($selectedYear) {
+            //         $q->whereYear('todo_date', $selectedYear);
+            //     });
+            // })
+            ->orderBy($sort_field, $sort_direction)
+            ->search(trim($search_term))
 
-                // ->paginate(5000);
-            ->get();
+            ->paginate(5000);
+        // ->get();
 
 
-            // group smua todo by month
-            $contact
-                ->transform(function ($company) {
-                    $company->setRelation(
-                        'summary_todo',
-                        $company->summary_todo->groupBy(
-                            fn ($summary) => \Carbon\Carbon::create($summary->todo_date)->format('MY')
-                        )
-                    );
+        // group smua todo by month
+        $contact
+            ->transform(function ($company) {
+                $company->setRelation(
+                    'summary_todo',
+                    $company->summary_todo->groupBy(
+                        fn ($summary) => \Carbon\Carbon::create($summary->todo_date)->format('MY')
+                    )
+                );
 
-                    return $company;
-                })
-                ;
-                // ->toArray();
+                return $company;
+            })
+            // ;
+            ->toArray();
 
-            return $contact;
+        return $contact;
         // } else {
         //     $sv_sb = "";
         //     $final = [$id];
@@ -562,14 +539,13 @@ class ContactController extends Controller
             'status' => true,
             'message' => 'Successfully import Contact ',
         ]);
-
     }
 
     public function contact_check_result()
     {
         $search_term = request('q', '');
 
-        if(Contact::where('name', $search_term)->exists()){
+        if (Contact::where('name', $search_term)->exists()) {
             return response()->json([
                 'data' => false,
                 'message' => 'Contact exists in database',

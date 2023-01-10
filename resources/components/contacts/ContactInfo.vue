@@ -99,7 +99,7 @@
                             <PlusIcon
                                 class="h-8 w-8 bg-green-400 py-1 px-1 rounded-md"
                             />
-                            <p class="text-center">PIC</p>
+                            <p class="text-center my-auto">PIC</p>
                         </div>
                         <PencilSquareIcon
                             class="h-8 w-8 bg-yellow-400 py-1 px-1 rounded-md"
@@ -202,14 +202,14 @@
                 >
                     Forecast
                 </h5>
-                <div class="text-right inline-block mb-2">
+                <div class="w-max my-auto">
                     <router-link
                         :to="`/forecast/${info.id}/create`"
-                        class="ml-1 px-2 py-2 items-center border-2 text-xs text-right rounded-lg w-max text-lime-600 border-slate-300"
+                        class="mr-2 mb-2 px-2 py-1 items-center border text-xs text-right rounded-lg w-max text-white bg-emerald-600 flex hover:bg-emerald-800"
                     >
-                        <PlusIcon class="h-3 w-3 inline" />
-                        <DocumentChartBarIcon class="h-6 w-6 inline" />
-                    </router-link>
+                        <PlusIcon class="h-5 w-5 my-auto" />
+                        <DocumentChartBarIcon class="h-5 w-5 my-auto"
+                    /></router-link>
                 </div>
             </div>
             <div

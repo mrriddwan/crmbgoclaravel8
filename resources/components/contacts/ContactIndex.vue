@@ -17,15 +17,19 @@
             </div>
 
             <div
-                class="py-2 ml-3 inline-block"
+                class="ml-3 inline-block"
                 v-if="can('view contact summary') || is('super-admin')"
             >
                 <router-link
                     to="/contact/summary"
-                    class="inline-block items-center px-2 py-1 bg-slate-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
+                    class="inline-block items-center px-2 py-2 bg-slate-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
                     >Contact Summary</router-link
                 >
             </div>
+
+            <!-- <div class="ml-3 inline-block">
+                <p>{{ subordinate_ids }}</p>
+            </div> -->
 
             <div>
                 <div class="mx-2">
@@ -108,16 +112,11 @@
             </div>
         </div>
 
-        <div class="">
+        <div class="w-full">
             <div class="grid grid-cols-3 items-center">
                 <div class="grid grid-cols-2 items-left m-2">
                     <label for="paginate" class="my-auto">Entry per page</label>
                     <input v-model.lazy="paginate" class="form-control" />
-                    <!-- <select v-model="paginate" class="form-control">
-                        <option value="10">10</option>
-                        <option value="50">50</option>
-                        <option value="100">100</option>
-                    </select> -->
                 </div>
 
                 <div>
@@ -235,7 +234,7 @@
                                         /></span>
                                     </a>
                                 </div>
-                                <div class="text-sm text-center h-6">
+                                <div class="text-sm text-center h-6 w-20">
                                     <select
                                         v-model="selectedUser"
                                         class="form-control form-control-sm text-xs"
@@ -427,13 +426,13 @@
                                 </div>
                             </th>
                             <th class="py-3">
-                                <div class="text-sm text-center h-6">
+                                <div class="text-sm text-center h-6 w-56">
                                     <a
                                         href="#"
                                         @click.prevent="change_sort('name')"
                                         class="text-white"
                                     >
-                                        Name
+                                        Company
                                         <span
                                             v-if="
                                                 (!(sort_direction == 'asc') ||
@@ -634,6 +633,11 @@
                                 "
                             >
                                 <input
+                                    v-if="
+                                        is('admin | super-admin') ||
+                                        check_if_subordinate(contact.user.id) ||
+                                        check_id(contact.user.id)
+                                    "
                                     type="checkbox"
                                     :value="contact.id"
                                     v-model="checked"
@@ -657,37 +661,7 @@
                             <td
                                 v-if="
                                     check_id(contact.user.id) ||
-                                    is('supervisor | admin | super-admin')
-                                "
-                                class="items-left text-xs text-left h-6 w-24"
-                            >
-                                <div>
-                                    <router-link
-                                        :to="`/contact/${contact.id}/info`"
-                                        custom
-                                        v-slot="{ navigate, href }"
-                                    >
-                                        <a
-                                            :href="href"
-                                            @click.stop="navigate"
-                                            >{{ contact.name }}</a
-                                        >
-                                    </router-link>
-                                </div>
-
-                                <div class="mt-5">
-                                    <router-link
-                                        :to="`/forecast/${contact.id}/create`"
-                                        class="ml-1px-2 py-1 items-center border text-xs text-right rounded-lg w-max text-lime-600"
-                                    >
-                                        <PlusIcon class="h-3 w-3 inline" />
-                                        <DocumentChartBarIcon
-                                            class="h-4 w-4 inline"
-                                    /></router-link>
-                                </div>
-                            </td>
-                            <td
-                                v-else-if="
+                                    is('admin | super-admin') ||
                                     check_if_subordinate(contact.user.id)
                                 "
                                 class="items-left text-xs text-left h-6 w-24"
@@ -705,36 +679,13 @@
                                         >
                                     </router-link>
                                 </div>
-
-                                <div class="mt-5">
-                                    <router-link
-                                        :to="`/forecast/${contact.id}/create`"
-                                        class="ml-1px-2 py-1 items-center border text-xs text-right rounded-lg w-max text-lime-600"
-                                    >
-                                        <PlusIcon class="h-3 w-3 inline" />
-                                        <DocumentChartBarIcon
-                                            class="h-4 w-4 inline"
-                                    /></router-link>
-                                </div>
                             </td>
+
                             <td
                                 v-else
-                                class="items-left text-xs text-center h-6 w-24"
+                                class="items-left text-xs text-left h-6 w-24"
                             >
                                 {{ contact.name }}
-                                <div
-                                    class="mt-5"
-                                    v-if="check_id(contact.user.id)"
-                                >
-                                    <router-link
-                                        :to="`/forecast/${contact.id}/create`"
-                                        class="ml-1px-2 py-1 items-center border text-xs text-right rounded-lg w-max text-lime-600"
-                                    >
-                                        <PlusIcon class="h-3 w-3 inline" />
-                                        <DocumentChartBarIcon
-                                            class="h-4 w-4 inline"
-                                    /></router-link>
-                                </div>
                             </td>
                             <td class="text-xs text-left">
                                 {{ contact.category.name }}
@@ -742,7 +693,6 @@
                             <td class="text-xs text-left">
                                 {{ contact.address }}
                             </td>
-                            <!-- <td class="text-xs text-left">{{ check_if_subordinate(contact.user.id)['id'] }}</td> -->
                             <td class="text-xs text-left">
                                 {{ contact.remark }}
                                 <button
@@ -755,18 +705,21 @@
                                 </button>
                             </td>
                             <td
-                                class="text-xs"
+                                class="text-xs flex"
                                 v-if="
                                     check_id(contact.user.id) ||
-                                    is('supervisor | admin | super-admin')
+                                    is('admin | super-admin') ||
+                                    check_if_subordinate(contact.user.id)
                                 "
                             >
                                 <div
                                     v-if="
-                                        can('insert todo') || is('super-admin')
+                                        can('insert todo') ||
+                                        is('super-admin | admin')
                                     "
+                                    class="w-max my-auto"
                                 >
-                                    <div>
+                                    <div class="flex">
                                         <router-link
                                             :to="{
                                                 name: 'todo_insert',
@@ -774,17 +727,23 @@
                                             }"
                                             class="mr-2 mb-2 inline-flex items-center px-2 py-1 bg-green-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
                                         >
-                                            <PlusIcon class="h-5 w-5 mr-1" /> To
-                                            Do</router-link
+                                            <PlusIcon
+                                                class="h-3 w-3 mr-1 my-auto"
+                                            />
+                                            <p
+                                                class="uppercase my-auto text-xs"
+                                            >
+                                                Todo
+                                            </p></router-link
                                         >
                                     </div>
                                 </div>
-
-                                <br />
                                 <div
                                     v-if="
-                                        can('edit contact') || is('super-admin')
+                                        can('edit contact') ||
+                                        is('super-admin | admin')
                                     "
+                                    class="w-max my-auto"
                                 >
                                     <div>
                                         <router-link
@@ -802,8 +761,9 @@
                                 <div
                                     v-if="
                                         can('delete contact') ||
-                                        is('super-admin')
+                                        is('super-admin | admin')
                                     "
+                                    class="w-max my-auto"
                                 >
                                     <div>
                                         <button
@@ -813,6 +773,23 @@
                                             <TrashIcon class="h-3 w-3" />
                                         </button>
                                     </div>
+                                </div>
+
+                                <div
+                                    v-if="
+                                        is('super-admin | admin') ||
+                                        can('insert forecast')
+                                    "
+                                    class="w-max my-auto"
+                                >
+                                    <router-link
+                                        :to="`/forecast/${contact.id}/create`"
+                                        class="mr-2 mb-2 px-2 py-1 items-center border text-xs text-right rounded-lg w-max text-white bg-emerald-600 flex"
+                                    >
+                                        <PlusIcon class="h-3 w-3 my-auto" />
+                                        <DocumentChartBarIcon
+                                            class="h-4 w-4 my-auto"
+                                    /></router-link>
                                 </div>
                             </td>
                             <td class="text-xs" v-else></td>
@@ -873,6 +850,7 @@ export default {
         this.selectedUser = document
             .querySelector('meta[name="user-id"]')
             .getAttribute("content");
+        this.getSubordinateIDs();
 
         this.getUsers();
         this.getIndustries();
@@ -899,6 +877,7 @@ export default {
             buffering: false,
 
             is_subordinate: false,
+            subordinate_ids: [],
 
             search: "",
             selectedUser: "",
@@ -981,23 +960,46 @@ export default {
             }
         },
 
-        async check_if_subordinate(contact_user_id) {
-            await axios
-                .post("/api/users/check_subordinate", {
-                    contact_user_id: contact_user_id,
-                })
-                .then((response) => {
-                    let result = response.data.data;
-                    if (result.id !== 1) {
-                        console.log("this is NOT UNDER the user")
-                        return false;
-                    } else {
-                        console.log("this is UNDER the user")
-                        return true;
-                    }
-                });
+        // async check_if_subordinate(contact_user_id) {
+        //     await axios
+        //         .post("/api/users/check_subordinate", {
+        //             contact_user_id: contact_user_id,
+        //         })
+        //         .then((response) => {
+        //             let result = response.data.data;
+        //             if (result.id !== 1) {
+        //                 console.log("this is NOT UNDER the user");
+        //                 return false;
+        //             } else {
+        //                 console.log("this is UNDER the user");
+        //                 return true;
+        //             }
+        //         });
 
-            // console.log("result: ", result);
+        //     // console.log("result: ", result);
+        // },
+
+        check_if_subordinate(contact_user_id) {
+            let count = 0;
+            //if the contact's user_id matches one of the id in the subordinate id array, return true
+            this.subordinate_ids.forEach((id) => {
+                if (id === contact_user_id) {
+                    count++;
+                }
+            });
+
+            return count > 0 ? true : false;
+        },
+
+        async getSubordinateIDs() {
+            await axios
+                .get("/api/users/get_subordinates")
+                .then((res) => {
+                    this.subordinate_ids = res.data.data;
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
         },
 
         async getContacts(page = 1) {

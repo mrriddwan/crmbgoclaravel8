@@ -394,4 +394,35 @@ class UserController extends Controller
             'message' => 'User home page info received',
         ]);
     }
+
+    public function get_subordinates()
+    {
+        // sv_sb = "";
+        // $final = [$id];
+
+        // $sv_sb = SvSbPivot::select('subordinate_id')
+        //     ->where('supervisor_id', '=', $id)
+        //     ->pluck('subordinate_id');
+
+
+        // array_push($final, ...$sv_sb);
+
+        $id = Auth::id();
+        // $id = 3;
+        $sub_array = [$id];
+        $sv_sb = "";
+
+        $sv_sb = SvSbPivot::select('subordinate_id')
+            ->where('supervisor_id', '=', $id)
+            ->pluck('subordinate_id');
+
+
+        array_push($sub_array, ...$sv_sb);
+
+        return response()->json([
+            'data' => $sub_array,
+            'status' => true,
+            'message' => "User's and subordinates' id retrieved",
+        ]);
+    }
 }

@@ -46,7 +46,7 @@
                             >
                                 <UserPlusIcon class="inline h-6 w-6" />
                                 <p class="inline uppercase font-bold h-1">
-                                    User
+                                    Create User
                                 </p>
                             </span>
                         </div>
@@ -166,20 +166,18 @@
                             >
                                 <PencilSquareIcon class="inline h-6 w-6" />
                                 <p class="inline uppercase font-bold h-1">
-                                    User
+                                    Edit User
                                 </p>
                             </span>
                         </div>
-
-                        <div class="text-md text-center mt-3">Select User</div>
-                        <div class="text-md text-center">
+                        <div class="text-md text-center mt-2">
                             <div class="form-group">
                                 <select
                                     class="text-center w-fullrounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                                     @change="getUsers"
                                     v-model="selectedUser"
                                 >
-                                    <option disabled value="">
+                                    <option value="">
                                         Select user to edit
                                     </option>
 
@@ -1050,22 +1048,36 @@
                     </h2>
                 </div>
 
-                <div class="container items-center text-center">
+                <div class="container items-center text-center mt-3">
                     <table class="w-full">
-                        <thead>
-                            <th>User Name</th>
-                            <th>User Password</th>
-                            <th>User Level</th>
-                            <th>User Email</th>
+                        <thead class="bg-slate-200 border uppercase">
+                            <th class="px-1 py-1 border-black">
+                                User Name
+                            </th>
+                            <th class="px-1 py-1 border-black">
+                                User Password
+                            </th>
+                            <th class="px-1 py-1 border-black">
+                                User Level
+                            </th>
+                            <th class="px-1 py-1 border-black">
+                                User Email
+                            </th>
                         </thead>
                         <tbody>
-                            <tr v-for="user in users">
-                                <td>{{ user.name }}</td>
-                                <td>{{ user.password }}</td>
-                                <td>
+                            <tr v-for="user in users" class="text-left">
+                                <td class="px-1 py-1 border">
+                                    {{ user.name }}
+                                </td>
+                                <td class="px-1 py-1 border">
+                                    {{ user.password }}
+                                </td>
+                                <td class="px-1 py-1 border">
                                     <!-- {{ user.roles[0].name }} -->
                                 </td>
-                                <td>{{ user.email }}</td>
+                                <td class="px-1 py-1 border">
+                                    {{ user.email }}
+                                </td>
                             </tr>
                         </tbody>
                     </table>
@@ -1180,7 +1192,6 @@ export default {
         this.getUserCategoryList();
         this.getBenchmarks();
         this.getSupervisors();
-        // this.selectedUserPerformance = 3;
         this.selectedUserPerformance = document
             .querySelector('meta[name="user-id"]')
             .getAttribute("content");

@@ -6,24 +6,19 @@
             Tutorial: Billboard & Tempboard
         </h1>
 
-        <div class="flex">
-            <!-- <div
-                class="py-2 px-2"
-                v-if="can('export project') || is('admin | super-admin')"
+        <div class="flex my-2">
+            <a
+                class="align-bottom py-2 px-2 text-center bg-green-400 text-slate-700 border-black border-2 rounded-md text-xs flex"
+                type="button"
+                :href="'/api/admin/tutorial/download/' + 6"
             >
-                <download-excel
-                    :data="projects.data"
-                    :fields="project_fields"
-                    worksheet="ProjectSummary"
-                    name="Project Summary.xls"
-                    class="btn btn-success btn-sm"
+                <ArrowDownTrayIcon class="w-5 h-5" />
+                <p
+                    class="ml-2 uppercase font-mono font-semibold my-auto text-lg"
                 >
-                    <ArrowTopRightOnSquareIcon
-                        class="h-5 w-5 mr-1 inline-block"
-                    />
-                    Export
-                </download-excel>
-            </div> -->
+                    PDF
+                </p>
+            </a>
         </div>
 
         <div>
@@ -40,33 +35,12 @@ import moment from "moment";
 import VuePdfEmbed from "vue-pdf-embed";
 
 import {
-    PencilSquareIcon,
-    PencilIcon,
-    TrashIcon,
-    PlusIcon,
-    UserPlusIcon,
-    DocumentChartBarIcon,
-    ArrowTopRightOnSquareIcon,
-    ArrowsUpDownIcon,
-    ArrowUpIcon,
-    ArrowDownIcon,
-    QuestionMarkCircleIcon,
+    ArrowDownTrayIcon,
 } from "@heroicons/vue/24/solid";
 
 export default {
     components: {
-        Pagination: LaravelVuePagination,
-        PencilSquareIcon,
-        TrashIcon,
-        PlusIcon,
-        UserPlusIcon,
-        DocumentChartBarIcon,
-        PencilIcon,
-        ArrowTopRightOnSquareIcon,
-        ArrowsUpDownIcon,
-        ArrowUpIcon,
-        ArrowDownIcon,
-        QuestionMarkCircleIcon,
+        ArrowDownTrayIcon,
         VuePdfEmbed,
     },
 

@@ -17,37 +17,24 @@
                     <option value="export_import">Export/Import</option>
                 </select>
             </div>
-            <!-- <div class="mx-3">
-                <button class="my-auto px-2 py-2 bg-green-500 rounded-md">
-                    Download PDF
-                </button>
-            </div> -->
-
-            <!-- download="file.xlsx" -->
-            <div>
-                <!-- <a
-                    class="px-2 py-2 align-bottom text-center bg-blue-400 border-black border-2 rounded-md text-xs"
+            <div class="flex mx-2">
+                <a
+                    class="align-bottom py-2 px-2 text-center bg-green-400 text-slate-700 border-black border-2 rounded-md text-xs flex"
                     type="button"
-                    href="/api/admin/tutorial/download"
+                    :href="'/api/admin/tutorial/download/' + url"
                 >
-                    <button class="mx-2">Download PDF</button>
-                </a> -->
-                <!-- <button
-                    class="mx-2 px-2 py-2 text-center bg-blue-400 border-black border-2 rounded-md text-xs"
-                    @click="downloadFile"
-                >
-                    Download PDF
-                </button> -->
+                    <ArrowDownTrayIcon class="w-5 h-5 my-auto" />
+                    <p
+                        class="ml-2 uppercase font-mono font-semibold my-auto text-lg"
+                    >
+                        PDF
+                    </p>
+                </a>
             </div>
         </div>
 
         <div>
-            <!-- <h1>File</h1> -->
             <vue-pdf-embed :source="source" class="mx-auto" />
-            <!-- <vue-pdf-embed v-if="view_tutorial === 'data'" :source="source_data" class="mx-auto" />
-            <vue-pdf-embed v-if="view_tutorial === 'manage'" :source="source_manage" class="mx-auto" />
-            <vue-pdf-embed v-if="view_tutorial === 'access'" :source="source_access" class="mx-auto" />
-            <vue-pdf-embed v-if="view_tutorial === 'export_import'" :source="source_export_import" class="mx-auto" /> -->
         </div>
     </div>
 </template>
@@ -59,47 +46,23 @@ import moment from "moment";
 import VuePdfEmbed from "vue-pdf-embed";
 
 import {
-    PencilSquareIcon,
-    PencilIcon,
-    TrashIcon,
-    PlusIcon,
-    UserPlusIcon,
-    DocumentChartBarIcon,
-    ArrowTopRightOnSquareIcon,
-    ArrowsUpDownIcon,
-    ArrowUpIcon,
-    ArrowDownIcon,
-    QuestionMarkCircleIcon,
+    ArrowDownTrayIcon
 } from "@heroicons/vue/24/solid";
 
 export default {
     components: {
-        Pagination: LaravelVuePagination,
-        PencilSquareIcon,
-        TrashIcon,
-        PlusIcon,
-        UserPlusIcon,
-        DocumentChartBarIcon,
-        PencilIcon,
-        ArrowTopRightOnSquareIcon,
-        ArrowsUpDownIcon,
-        ArrowUpIcon,
-        ArrowDownIcon,
-        QuestionMarkCircleIcon,
+        ArrowDownTrayIcon,
         VuePdfEmbed,
     },
 
     mounted() {
-        this.source = this.source_data.display;
-        this.url = this.source_data.url;
+        this.source = this.source_data;
+        this.url = 8;
     },
     data() {
         return {
             source_announcement: "/storage/tutorials/10_admin_announcement.pdf",
-            source_data: {
-                display: "/storage/tutorials/8_admin_data.pdf",
-                url: "\\storage\\tutorials\\8_admin_data.pdf",
-            },
+            source_data: "/storage/tutorials/8_admin_data.pdf",
             source_manage: "/storage/tutorials/9_admin_user_manage.pdf",
             source_access: "/storage/tutorials/12_admin_access.pdf",
             source_export_import:
@@ -114,45 +77,26 @@ export default {
     watch: {
         view_tutorial: function (value) {
             if (value === "data") {
-                this.source = this.source_data.display;
-                this.url = this.source_data.url;
+                this.source = this.source_data;
+                this.url = 8;
             } else if (value === "announcement") {
                 this.source = this.source_announcement;
+                this.url = 10;
             } else if (value === "manage") {
                 this.source = this.source_manage;
+                this.url = 9;
             } else if (value === "access") {
                 this.source = this.source_access;
+                this.url = 12;
             } else {
                 this.source = this.source_export_import;
+                this.url = 11;
             }
         },
     },
 
     methods: {
-        async downloadFile() {
-            await axios
-                // .get("/api/admin/tutorial/download", {
-                //     url: this.url,
-                // })
-                .get("/api/admin/tutorial/download")
-                .then((res) => {
-                    // this.permissions = res.data.data;
-                })
-                .catch((error) => {
-                    console.log(error);
-                });
-        },
 
-        // async getPermissions() {
-        //     await axios
-        //         .get("/api/admin/permissions/index")
-        //         .then((res) => {
-        //             this.permissions = res.data.data;
-        //         })
-        //         .catch((error) => {
-        //             console.log(error);
-        //         });
-        // },
     },
 };
 </script>

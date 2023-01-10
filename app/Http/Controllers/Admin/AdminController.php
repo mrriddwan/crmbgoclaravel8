@@ -437,7 +437,6 @@ class AdminController extends Controller
     {
         $user = User::select('id', 'name', 'email')->find($id);
         return response()->json(["data" => $user]);
-        // return UserResource::collection(User::where('id',$id));
     }
 
     public function user_create(Request $request)
@@ -457,7 +456,7 @@ class AdminController extends Controller
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
-            'password' => Hash::make($request->password),
+            'password' => $request->password,
             'email_password' => 'Unset yet'
         ]);
 
@@ -515,7 +514,7 @@ class AdminController extends Controller
             ]);
 
             $user->update([
-                'password' => Hash::make($request->password),
+                'password' => $request->password,
             ]);
         }
 
@@ -922,7 +921,7 @@ class AdminController extends Controller
 
     public function message_create(Request $request)
     {
-        if($request->message_type_id === 2){
+        if ($request->message_type_id === 2) {
             $request->validate([
                 'message' => ['required', 'string'],
                 'from_user_id' => ['required', 'integer'],
@@ -945,7 +944,7 @@ class AdminController extends Controller
                 'message_type_id.required' => 'The message type is required',
             ]);
         }
-        
+
         $receiver_user_id = $request->to_user_id;
 
         if (!$receiver_user_id) {
@@ -1004,23 +1003,68 @@ class AdminController extends Controller
             'message_type_id.required' => 'The message type is required',
             'to_user_id.required' => 'The receiver user is required',
         ]);
-        
+
         $announcement->update([
-                'message' => $request->message,
-                'from_user_id' => $request->from_user_id,
-                'message_type_id' => $request->message_type_id,
-                'to_user_id' => $request->to_user_id ?? null,
+            'message' => $request->message,
+            'from_user_id' => $request->from_user_id,
+            'message_type_id' => $request->message_type_id,
+            'to_user_id' => $request->to_user_id ?? null,
         ]);
         return response()->json('Announcement/reminder updated.');
     }
 
-    public function download_tutorial(Request $request)
+    public function download_tutorial($tutorial_no)
     {
         // $filepath = $request->url;
         // $file_name = public_path(`$filepath`);
         // "\\storage\\tutorials\\8_admin_data.pdf" public\storage\tutorials\8_admin_data.pdf
-        
-        $file_name = public_path('/storage/tutorials/8_admin_data.pdf');
+
+        $path = '/storage/tutorials/';
+
+        switch ($tutorial_no) {
+            case 1:
+                $path = $path . "1_create_contact.pdf";
+                break;
+            case 2:
+                $path = $path . "2_create_todo_followup.pdf";
+                break;
+            case 3:
+                $path = $path . "3_import_format_contact.pdf";
+                break;
+            case 4:
+                $path = $path . "4_project.pdf";
+                break;
+            case 5:
+                $path = $path . "5_performance.pdf";
+                break;
+            case 6:
+                $path = $path . "6_billboard_tempboard.pdf";
+                break;
+            case 7:
+                $path = $path . "7_tracking_general_travelguide.pdf";
+                break;
+            case 8:
+                $path = $path . "8_admin_data.pdf";
+                break;
+            case 9:
+                $path = $path . "9_admin_user_manage.pdf";
+                break;
+            case 10:
+                $path = $path . "10_admin_announcement.pdf";
+                break;
+            case 11:
+                $path = $path . "11_admin_export_import.pdf";
+                break;
+            case 12:
+                $path = $path . "12_admin_access.pdf";
+                break;
+            case 13:
+                $path = $path . "13_forecast.pdf";
+                break;
+        }
+
+
+        $file_name = public_path($path);
         return Response::download($file_name);
         // storage/tutorials/
     }

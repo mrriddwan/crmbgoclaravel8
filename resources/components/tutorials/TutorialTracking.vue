@@ -7,23 +7,21 @@
         </h1>
 
         <div class="flex">
-            <!-- <div
-                class="py-2 px-2"
-                v-if="can('export project') || is('admin | super-admin')"
-            >
-                <download-excel
-                    :data="projects.data"
-                    :fields="project_fields"
-                    worksheet="ProjectSummary"
-                    name="Project Summary.xls"
-                    class="btn btn-success btn-sm"
+            <div>
+                <a
+                    class="px-2 py-2 align-bottom text-center bg-blue-400 border-black border-2 rounded-md text-xs"
+                    type="button"
+                    href="/api/admin/tutorial/download"
                 >
-                    <ArrowTopRightOnSquareIcon
-                        class="h-5 w-5 mr-1 inline-block"
-                    />
-                    Export
-                </download-excel>
-            </div> -->
+                    <button class="mx-2">Download PDF</button>
+                </a>
+                <!-- <button
+                    class="mx-2 px-2 py-2 text-center bg-blue-400 border-black border-2 rounded-md text-xs"
+                    @click="downloadFile"
+                >
+                    Download PDF
+                </button> -->
+            </div>
         </div>
 
         <div>
