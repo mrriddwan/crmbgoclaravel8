@@ -352,7 +352,6 @@ export default {
         this.selectedUser = document
             .querySelector('meta[name="user-id"]')
             .getAttribute("content");
-        // this.selectedUser = 3;
     },
 
     mounted() {

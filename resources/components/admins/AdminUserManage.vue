@@ -1073,7 +1073,7 @@
                                     {{ user.password }}
                                 </td>
                                 <td class="px-1 py-1 border">
-                                    <!-- {{ user.roles[0].name }} -->
+                                    {{ user.roles[0].name }}
                                 </td>
                                 <td class="px-1 py-1 border">
                                     {{ user.email }}

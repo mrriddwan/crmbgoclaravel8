@@ -1,0 +1,526 @@
+{
+    "data": [
+        {
+            "id": 3,
+            "name": "supervisor",
+            "description": null,
+            "guard_name": "web",
+            "created_at": "2022-12-27T03:59:24.000000Z",
+            "updated_at": "2022-12-27T03:59:24.000000Z",
+            "pivot": {
+                "model_id": 3,
+                "role_id": 3,
+                "model_type": "App\\Models\\User"
+            },
+            "permissions": [
+                {
+                    "id": 1,
+                    "name": "create contact",
+                    "description": null,
+                    "guard_name": "web",
+                    "created_at": "2022-12-27T03:59:23.000000Z",
+                    "updated_at": "2022-12-27T03:59:23.000000Z",
+                    "pivot": {
+                        "role_id": 3,
+                        "permission_id": 1
+                    }
+                },
+                {
+                    "id": 2,
+                    "name": "edit contact",
+                    "description": null,
+                    "guard_name": "web",
+                    "created_at": "2022-12-27T03:59:23.000000Z",
+                    "updated_at": "2022-12-27T03:59:23.000000Z",
+                    "pivot": {
+                        "role_id": 3,
+                        "permission_id": 2
+                    }
+                },
+                {
+                    "id": 3,
+                    "name": "delete contact",
+                    "description": null,
+                    "guard_name": "web",
+                    "created_at": "2022-12-27T03:59:23.000000Z",
+                    "updated_at": "2022-12-27T03:59:23.000000Z",
+                    "pivot": {
+                        "role_id": 3,
+                        "permission_id": 3
+                    }
+                },
+                {
+                    "id": 4,
+                    "name": "create todo",
+                    "description": null,
+                    "guard_name": "web",
+                    "created_at": "2022-12-27T03:59:23.000000Z",
+                    "updated_at": "2022-12-27T03:59:23.000000Z",
+                    "pivot": {
+                        "role_id": 3,
+                        "permission_id": 4
+                    }
+                },
+                {
+                    "id": 5,
+                    "name": "insert todo",
+                    "description": null,
+                    "guard_name": "web",
+                    "created_at": "2022-12-27T03:59:23.000000Z",
+                    "updated_at": "2022-12-27T03:59:23.000000Z",
+                    "pivot": {
+                        "role_id": 3,
+                        "permission_id": 5
+                    }
+                },
+                {
+                    "id": 6,
+                    "name": "edit todo",
+                    "description": null,
+                    "guard_name": "web",
+                    "created_at": "2022-12-27T03:59:23.000000Z",
+                    "updated_at": "2022-12-27T03:59:23.000000Z",
+                    "pivot": {
+                        "role_id": 3,
+                        "permission_id": 6
+                    }
+                },
+                {
+                    "id": 7,
+                    "name": "delete todo",
+                    "description": null,
+                    "guard_name": "web",
+                    "created_at": "2022-12-27T03:59:23.000000Z",
+                    "updated_at": "2022-12-27T03:59:23.000000Z",
+                    "pivot": {
+                        "role_id": 3,
+                        "permission_id": 7
+                    }
+                },
+                {
+                    "id": 8,
+                    "name": "create followup",
+                    "description": null,
+                    "guard_name": "web",
+                    "created_at": "2022-12-27T03:59:23.000000Z",
+                    "updated_at": "2022-12-27T03:59:23.000000Z",
+                    "pivot": {
+                        "role_id": 3,
+                        "permission_id": 8
+                    }
+                },
+                {
+                    "id": 9,
+                    "name": "edit followup",
+                    "description": null,
+                    "guard_name": "web",
+                    "created_at": "2022-12-27T03:59:23.000000Z",
+                    "updated_at": "2022-12-27T03:59:23.000000Z",
+                    "pivot": {
+                        "role_id": 3,
+                        "permission_id": 9
+                    }
+                },
+                {
+                    "id": 10,
+                    "name": "delete followup",
+                    "description": null,
+                    "guard_name": "web",
+                    "created_at": "2022-12-27T03:59:23.000000Z",
+                    "updated_at": "2022-12-27T03:59:23.000000Z",
+                    "pivot": {
+                        "role_id": 3,
+                        "permission_id": 10
+                    }
+                },
+                {
+                    "id": 11,
+                    "name": "create forecast",
+                    "description": null,
+                    "guard_name": "web",
+                    "created_at": "2022-12-27T03:59:23.000000Z",
+                    "updated_at": "2022-12-27T03:59:23.000000Z",
+                    "pivot": {
+                        "role_id": 3,
+                        "permission_id": 11
+                    }
+                },
+                {
+                    "id": 12,
+                    "name": "edit forecast",
+                    "description": null,
+                    "guard_name": "web",
+                    "created_at": "2022-12-27T03:59:23.000000Z",
+                    "updated_at": "2022-12-27T03:59:23.000000Z",
+                    "pivot": {
+                        "role_id": 3,
+                        "permission_id": 12
+                    }
+                },
+                {
+                    "id": 13,
+                    "name": "delete forecast",
+                    "description": null,
+                    "guard_name": "web",
+                    "created_at": "2022-12-27T03:59:23.000000Z",
+                    "updated_at": "2022-12-27T03:59:23.000000Z",
+                    "pivot": {
+                        "role_id": 3,
+                        "permission_id": 13
+                    }
+                },
+                {
+                    "id": 14,
+                    "name": "create project",
+                    "description": null,
+                    "guard_name": "web",
+                    "created_at": "2022-12-27T03:59:23.000000Z",
+                    "updated_at": "2022-12-27T03:59:23.000000Z",
+                    "pivot": {
+                        "role_id": 3,
+                        "permission_id": 14
+                    }
+                },
+                {
+                    "id": 15,
+                    "name": "edit project",
+                    "description": null,
+                    "guard_name": "web",
+                    "created_at": "2022-12-27T03:59:23.000000Z",
+                    "updated_at": "2022-12-27T03:59:23.000000Z",
+                    "pivot": {
+                        "role_id": 3,
+                        "permission_id": 15
+                    }
+                },
+                {
+                    "id": 16,
+                    "name": "delete project",
+                    "description": null,
+                    "guard_name": "web",
+                    "created_at": "2022-12-27T03:59:23.000000Z",
+                    "updated_at": "2022-12-27T03:59:23.000000Z",
+                    "pivot": {
+                        "role_id": 3,
+                        "permission_id": 16
+                    }
+                },
+                {
+                    "id": 17,
+                    "name": "create billboard",
+                    "description": null,
+                    "guard_name": "web",
+                    "created_at": "2022-12-27T03:59:23.000000Z",
+                    "updated_at": "2022-12-27T03:59:23.000000Z",
+                    "pivot": {
+                        "role_id": 3,
+                        "permission_id": 17
+                    }
+                },
+                {
+                    "id": 18,
+                    "name": "edit billboard",
+                    "description": null,
+                    "guard_name": "web",
+                    "created_at": "2022-12-27T03:59:23.000000Z",
+                    "updated_at": "2022-12-27T03:59:23.000000Z",
+                    "pivot": {
+                        "role_id": 3,
+                        "permission_id": 18
+                    }
+                },
+                {
+                    "id": 19,
+                    "name": "delete billboard",
+                    "description": null,
+                    "guard_name": "web",
+                    "created_at": "2022-12-27T03:59:23.000000Z",
+                    "updated_at": "2022-12-27T03:59:23.000000Z",
+                    "pivot": {
+                        "role_id": 3,
+                        "permission_id": 19
+                    }
+                },
+                {
+                    "id": 20,
+                    "name": "create tempboard",
+                    "description": null,
+                    "guard_name": "web",
+                    "created_at": "2022-12-27T03:59:23.000000Z",
+                    "updated_at": "2022-12-27T03:59:23.000000Z",
+                    "pivot": {
+                        "role_id": 3,
+                        "permission_id": 20
+                    }
+                },
+                {
+                    "id": 21,
+                    "name": "edit tempboard",
+                    "description": null,
+                    "guard_name": "web",
+                    "created_at": "2022-12-27T03:59:23.000000Z",
+                    "updated_at": "2022-12-27T03:59:23.000000Z",
+                    "pivot": {
+                        "role_id": 3,
+                        "permission_id": 21
+                    }
+                },
+                {
+                    "id": 22,
+                    "name": "delete tempboard",
+                    "description": null,
+                    "guard_name": "web",
+                    "created_at": "2022-12-27T03:59:23.000000Z",
+                    "updated_at": "2022-12-27T03:59:23.000000Z",
+                    "pivot": {
+                        "role_id": 3,
+                        "permission_id": 22
+                    }
+                },
+                {
+                    "id": 24,
+                    "name": "view contact",
+                    "description": null,
+                    "guard_name": "web",
+                    "created_at": "2022-12-27T03:59:23.000000Z",
+                    "updated_at": "2022-12-27T03:59:23.000000Z",
+                    "pivot": {
+                        "role_id": 3,
+                        "permission_id": 24
+                    }
+                },
+                {
+                    "id": 25,
+                    "name": "view todo",
+                    "description": null,
+                    "guard_name": "web",
+                    "created_at": "2022-12-27T03:59:23.000000Z",
+                    "updated_at": "2022-12-27T03:59:23.000000Z",
+                    "pivot": {
+                        "role_id": 3,
+                        "permission_id": 25
+                    }
+                },
+                {
+                    "id": 26,
+                    "name": "view followup",
+                    "description": null,
+                    "guard_name": "web",
+                    "created_at": "2022-12-27T03:59:23.000000Z",
+                    "updated_at": "2022-12-27T03:59:23.000000Z",
+                    "pivot": {
+                        "role_id": 3,
+                        "permission_id": 26
+                    }
+                },
+                {
+                    "id": 27,
+                    "name": "view forecast",
+                    "description": null,
+                    "guard_name": "web",
+                    "created_at": "2022-12-27T03:59:23.000000Z",
+                    "updated_at": "2022-12-27T03:59:23.000000Z",
+                    "pivot": {
+                        "role_id": 3,
+                        "permission_id": 27
+                    }
+                },
+                {
+                    "id": 28,
+                    "name": "view project",
+                    "description": null,
+                    "guard_name": "web",
+                    "created_at": "2022-12-27T03:59:23.000000Z",
+                    "updated_at": "2022-12-27T03:59:23.000000Z",
+                    "pivot": {
+                        "role_id": 3,
+                        "permission_id": 28
+                    }
+                },
+                {
+                    "id": 29,
+                    "name": "view performance",
+                    "description": null,
+                    "guard_name": "web",
+                    "created_at": "2022-12-27T03:59:23.000000Z",
+                    "updated_at": "2022-12-27T03:59:23.000000Z",
+                    "pivot": {
+                        "role_id": 3,
+                        "permission_id": 29
+                    }
+                },
+                {
+                    "id": 30,
+                    "name": "view contact summary",
+                    "description": null,
+                    "guard_name": "web",
+                    "created_at": "2022-12-27T03:59:23.000000Z",
+                    "updated_at": "2022-12-27T03:59:23.000000Z",
+                    "pivot": {
+                        "role_id": 3,
+                        "permission_id": 30
+                    }
+                },
+                {
+                    "id": 31,
+                    "name": "view forecast summary",
+                    "description": null,
+                    "guard_name": "web",
+                    "created_at": "2022-12-27T03:59:23.000000Z",
+                    "updated_at": "2022-12-27T03:59:23.000000Z",
+                    "pivot": {
+                        "role_id": 3,
+                        "permission_id": 31
+                    }
+                },
+                {
+                    "id": 32,
+                    "name": "view billboard\/tempboard",
+                    "description": null,
+                    "guard_name": "web",
+                    "created_at": "2022-12-27T03:59:23.000000Z",
+                    "updated_at": "2022-12-27T03:59:23.000000Z",
+                    "pivot": {
+                        "role_id": 3,
+                        "permission_id": 32
+                    }
+                },
+                {
+                    "id": 33,
+                    "name": "export contact",
+                    "description": "export selected records from contact index",
+                    "guard_name": "web",
+                    "created_at": "2022-12-27T03:59:23.000000Z",
+                    "updated_at": "2022-12-27T03:59:23.000000Z",
+                    "pivot": {
+                        "role_id": 3,
+                        "permission_id": 33
+                    }
+                },
+                {
+                    "id": 35,
+                    "name": "export contact summary",
+                    "description": "export all records displayed from contact summary",
+                    "guard_name": "web",
+                    "created_at": "2022-12-27T03:59:23.000000Z",
+                    "updated_at": "2022-12-27T03:59:23.000000Z",
+                    "pivot": {
+                        "role_id": 3,
+                        "permission_id": 35
+                    }
+                },
+                {
+                    "id": 36,
+                    "name": "export todo",
+                    "description": "export selected records from todo index",
+                    "guard_name": "web",
+                    "created_at": "2022-12-27T03:59:23.000000Z",
+                    "updated_at": "2022-12-27T03:59:23.000000Z",
+                    "pivot": {
+                        "role_id": 3,
+                        "permission_id": 36
+                    }
+                },
+                {
+                    "id": 40,
+                    "name": "export forecast",
+                    "description": "export selected records from forecast index",
+                    "guard_name": "web",
+                    "created_at": "2022-12-27T03:59:23.000000Z",
+                    "updated_at": "2022-12-27T03:59:23.000000Z",
+                    "pivot": {
+                        "role_id": 3,
+                        "permission_id": 40
+                    }
+                },
+                {
+                    "id": 41,
+                    "name": "export forecast summary",
+                    "description": "export selected records displayed from forecast summary",
+                    "guard_name": "web",
+                    "created_at": "2022-12-27T03:59:23.000000Z",
+                    "updated_at": "2022-12-27T03:59:23.000000Z",
+                    "pivot": {
+                        "role_id": 3,
+                        "permission_id": 41
+                    }
+                },
+                {
+                    "id": 43,
+                    "name": "export project",
+                    "description": "export selected records from project index",
+                    "guard_name": "web",
+                    "created_at": "2022-12-27T03:59:23.000000Z",
+                    "updated_at": "2022-12-27T03:59:23.000000Z",
+                    "pivot": {
+                        "role_id": 3,
+                        "permission_id": 43
+                    }
+                },
+                {
+                    "id": 45,
+                    "name": "export performance",
+                    "description": "export selected records from based on filter performance index",
+                    "guard_name": "web",
+                    "created_at": "2022-12-27T03:59:23.000000Z",
+                    "updated_at": "2022-12-27T03:59:23.000000Z",
+                    "pivot": {
+                        "role_id": 3,
+                        "permission_id": 45
+                    }
+                },
+                {
+                    "id": 46,
+                    "name": "export billboard",
+                    "description": "export selected records from billboard index",
+                    "guard_name": "web",
+                    "created_at": "2022-12-27T03:59:23.000000Z",
+                    "updated_at": "2022-12-27T03:59:23.000000Z",
+                    "pivot": {
+                        "role_id": 3,
+                        "permission_id": 46
+                    }
+                },
+                {
+                    "id": 48,
+                    "name": "export tempboard",
+                    "description": "export selected records from tempboard index",
+                    "guard_name": "web",
+                    "created_at": "2022-12-27T03:59:24.000000Z",
+                    "updated_at": "2022-12-27T03:59:24.000000Z",
+                    "pivot": {
+                        "role_id": 3,
+                        "permission_id": 48
+                    }
+                },
+                {
+                    "id": 50,
+                    "name": "insert forecast",
+                    "description": "can insert forecast for respective company",
+                    "guard_name": "web",
+                    "created_at": "2023-01-10T07:43:22.000000Z",
+                    "updated_at": "2023-01-10T07:43:22.000000Z",
+                    "pivot": {
+                        "role_id": 3,
+                        "permission_id": 50
+                    }
+                }
+            ]
+        }
+    ],
+    "data2" : [
+        {
+            "id": 29,
+            "name": "view performance",
+            "description": null,
+            "guard_name": "web",
+            "created_at": "2022-12-27T03:59:23.000000Z",
+            "updated_at": "2022-12-27T03:59:23.000000Z",
+            "pivot": {
+                "model_id": 9,
+                "permission_id": 29,
+                "model_type": "App\\Models\\User"
+            }
+        }
+    ]
+}

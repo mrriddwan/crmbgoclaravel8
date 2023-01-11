@@ -2,29 +2,29 @@
     <div class="mx-auto max-w-screen-lg">
         <GoBack />
 
-        <div v-for="info in contact" :key="info.id">
+        <div>
             <div
                 class="mb-4 tracking-tight leading-none text-gray-900 md:text-4xl lg:text-5xl text-center"
             >
                 <span
                     class="bg-yellow-400 px-10 py-3 rounded-md uppercase text-4xl font-extrabold"
-                    >{{ info.name }}</span
+                    >{{ contact.name }}</span
                 >
             </div>
+            <div class="mt-1">
+                <Pagination
+                    :data="todo"
+                    :limit="2"
+                    @pagination-change-page="getContactHistory"
+                    :size="'small'"
+                    :align="'right'"
+                    class="pagination"
+                />
+            </div>
             <div
-                v-if="info.todo.length !== 0"
+                v-if="todo.length !== 0"
                 class="overflow-x-auto relative shadow-md sm:rounded-lg"
             >
-                <!-- <div class="mt-1">
-                    <Pagination
-                        :data="info.todo"
-                        :limit="2"
-                        @pagination-change-page="getContact"
-                        :size="'small'"
-                        :align="'right'"
-                        class="pagination"
-                    />
-                </div> -->
                 <table
                     class="border-2 mb-4 text-xs text-left text-gray-500 dark:text-gray-400"
                 >
@@ -42,28 +42,28 @@
                     </thead>
                     <tbody>
                         <tr
-                            v-for="history in info.todo"
+                            v-for="history in todo.data"
                             :key="history.id"
                             class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 text-gray-900 font-bold"
                         >
-                            <td class="py-4 px-3 w-24">
+                            <td class="py-2 px-3 w-24">
                                 {{ showToday(history.todo_date) }}
                             </td>
-                            <td class="py-4 px-3">{{ history.user.name }}</td>
-                            <td class="py-4 px-3">
+                            <td class="py-2 px-3 w-32">{{ history.user.name }}</td>
+                            <td class="py-2 px-3">
                                 <span v-if="history.task">
                                     {{ history.task.name }}
                                 </span>
                                 <span v-else> Task not available </span>
                             </td>
-                            <td class="py-4 px-3">
+                            <td class="py-2 px-3">
                                 <span v-if="history.action">
                                     {{ history.action.name }}
                                 </span>
                                 <span v-else> No action yet </span>
                             </td>
-                            <td class="py-4 px-3">{{ history.todo_remark }}</td>
-                            <td class="py-4 px-3">
+                            <td class="py-2 px-3">{{ history.todo_remark }}</td>
+                            <td class="py-2 px-3">
                                 <router-link
                                     :to="{
                                         name: 'todo_index',
@@ -111,18 +111,40 @@ export default {
         return {
             info: "",
             contact: [],
+            todo: [],
             moment: moment,
         };
     },
 
     mounted() {
-        this.getContact();
+        this.getContactHistory();
+        this.showContact();
     },
 
     methods: {
-        getContact() {
+        getContactHistory(page = 1) {
+            if (typeof page === "undefined") {
+                page = 1;
+            }
             axios
-                .get("/api/contacts/info/" + this.$route.params.id)
+                .get(
+                    "/api/contacts/history/" +
+                        this.$route.params.id +
+                        "?page=" +
+                        page
+                )
+                .then((res) => {
+                    // this.contact = res.data.data;
+                    this.todo = res.data;
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        },
+
+        showContact() {
+            axios
+                .get("/api/contacts/show/" + this.$route.params.id)
                 .then((res) => {
                     this.contact = res.data.data;
                 })

@@ -204,23 +204,14 @@ class ContactController extends Controller
 
     public function history($contact)
     {
-        $contact = Contact::where('id', $contact)
-            ->select('id', 'name')
-            ->get()
-            ->toArray();
-
         $todo = Todo::where('contact_id', $contact)
             ->with('task', 'user', 'action')
             ->orderBy('todo_date', 'desc')
-            ->paginate(100)
-            ->toArray();
+            ->paginate(20)
+            ->toArray()
+            ;
 
-        return response()->json([
-            'status' => true,
-            'message' => 'Successfully fetch Contact history ',
-            'data' => $contact,
-            'data2' => $todo,
-        ]);
+        return $todo;
     }
 
     public function summary_action()

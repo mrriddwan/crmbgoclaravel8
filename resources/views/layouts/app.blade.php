@@ -50,6 +50,8 @@
         <!-- Page Content -->
         @if (Auth::check())
             <meta name="user-id" content="{{ Auth::user()->id }}" />
+            <meta name="user-roles" content="{{ Auth::user()->roles }}" />
+            <meta name="user-permissions" content="{{ Auth::user()->permissions }}" />
         @endif
         <main>
             {{ $slot }}

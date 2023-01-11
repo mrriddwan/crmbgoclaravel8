@@ -133,6 +133,12 @@ Route::get('/forecast/summary', function () {
     ;
 // });
 
+// Route::group(['middleware' => ['permission:view project']], function () {
+//     Route::get('/project/index',function(){
+//         return "I can only access this if I view project";
+//     })->name('project');
+// });
+
 
 /**Performance Routes 
  * 

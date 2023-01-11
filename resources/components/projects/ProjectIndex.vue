@@ -1,5 +1,8 @@
 <template>
-    <div class="container">
+    <div
+        class="container"
+        v-if="can('view project') || is('admin | super-admin')"
+    >
         <h1
             class="items-center text-center text-6xl text-white font-extrabold bg-orange-500 px-2 rounded-md"
         >
@@ -483,6 +486,11 @@
             />
         </div>
     </div>
+    <div
+        v-else
+    >
+        <ForbiddenPage />
+    </div>
 </template>
 
 <script>
@@ -490,7 +498,10 @@ import LaravelVuePagination from "laravel-vue-pagination";
 import axios from "axios";
 import moment from "moment";
 import ProjectRemarkModalVue from "./ProjectRemarkModal.vue";
+import ForbiddenPage from "../utils/NoAuthorizationPage.vue"
 import {
+    ExclamationTriangleIcon,
+    StopIcon,
     PencilSquareIcon,
     PencilIcon,
     TrashIcon,
@@ -507,6 +518,7 @@ import {
 export default {
     components: {
         ProjectRemarkModalVue,
+        ForbiddenPage,
         Pagination: LaravelVuePagination,
         PencilSquareIcon,
         TrashIcon,
@@ -519,6 +531,8 @@ export default {
         ArrowUpIcon,
         ArrowDownIcon,
         QuestionMarkCircleIcon,
+        StopIcon,
+        ExclamationTriangleIcon,
     },
 
     mounted() {

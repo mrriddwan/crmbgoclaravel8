@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 // import TestQueryString from "../components/utils/TestQueryString.vue";
+import NoAuthorizationPage from "../components/utils/NoAuthorizationPage.vue";
 
 /**Admin Imports */
 import AdminData from "../components/admins/AdminData.vue";
@@ -75,6 +76,22 @@ import TutorialAdmin from "../components/tutorials/TutorialAdmin.vue";
 import AnnouncementIndex from "../components/admins/AnnouncementIndex.vue";
 import AnnouncementEdit from "../components/admins/AnnouncementEdit.vue";
 
+const id = Number(
+    document.querySelector('meta[name="user-id"]').getAttribute("content")
+);
+
+function checkUserID(login_id) {
+    return login_id === 1 ? true : false;
+}
+
+function guardMyRoute(to, from, next) {
+    if (checkUserID(id)) {
+        next(); // allow to enter route
+    } else {
+        next("/not_authorized");
+    }
+}
+
 const routes = [
     /*                      
         test Routes                      
@@ -102,6 +119,13 @@ const routes = [
         path: "/",
         name: "home",
         component: AnnouncementIndex,
+    },
+
+    {
+        //403 Page
+        path: "/not_authorized",
+        name: "not_authorized_page",
+        component: NoAuthorizationPage,
     },
 
     {
@@ -291,6 +315,7 @@ const routes = [
         path: "/billboard/index",
         name: "billboard_index",
         component: BillboardIndex,
+        beforeEnter: guardMyRoute,
     },
 
     {
@@ -387,7 +412,7 @@ const routes = [
         component: WIPGeneralEdit,
     },
 
-     /*                                                  
+    /*                                                  
         Tracking (Travel Guide) Routes 
     */
 
@@ -410,7 +435,7 @@ const routes = [
         component: MasterTravelGuideEdit,
     },
 
-     /*                                                  
+    /*                                                  
         System Tutorial Routes 
     */
 
@@ -469,22 +494,22 @@ const routes = [
         component: TutorialAdmin,
     },
 
-         /*                                                  
+    /*                                                  
         Announcement Routes 
     */
 
-        {
-            //Announcement Page
-            path: "/announcement/index",
-            name: "announcement_index",
-            component: AnnouncementIndex,
-        },
-        {
-            //Announcement Edit Page
-            path: "/announcement/edit",
-            name: "announcement_edit",
-            component: AnnouncementEdit,
-        },
+    {
+        //Announcement Page
+        path: "/announcement/index",
+        name: "announcement_index",
+        component: AnnouncementIndex,
+    },
+    {
+        //Announcement Edit Page
+        path: "/announcement/edit",
+        name: "announcement_edit",
+        component: AnnouncementEdit,
+    },
 ];
 
 export default createRouter({
