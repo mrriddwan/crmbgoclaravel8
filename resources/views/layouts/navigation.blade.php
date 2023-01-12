@@ -216,50 +216,50 @@
                             </x-slot>
 
                             <x-slot name="content" class="w-full">
-                                <x-nav-link class="w-20 text-xs hover:bg-blue-300 hover:font-bold" :href="route('tutorial-contact')"
+                                <x-nav-link class="w-32 text-xs hover:bg-blue-300 hover:font-bold" :href="route('tutorial-contact')"
                                     :active="request()->routeIs('tutorial-contact')">
                                     {{ __('Contact') }}
                                 </x-nav-link>
 
                                 <br>
-                                <x-nav-link class="w-max text-xs hover:bg-blue-300 hover:font-bold" :href="route('tutorial-todo_followup')"
+                                <x-nav-link class="w-32 text-xs hover:bg-blue-300 hover:font-bold" :href="route('tutorial-todo_followup')"
                                     :active="request()->routeIs('tutorial-todo_followup')">
                                     {{ __('To Do & Follow Up') }}
                                 </x-nav-link>
 
                                 <br>
-                                <x-nav-link class="w-20 text-xs hover:bg-blue-300 hover:font-bold" :href="route('tutorial-forecast')"
+                                <x-nav-link class="w-32 text-xs hover:bg-blue-300 hover:font-bold" :href="route('tutorial-forecast')"
                                     :active="request()->routeIs('tutorial-forecast')">
                                     {{ __('Forecast') }}
                                 </x-nav-link>
 
                                 <br>
-                                <x-nav-link class="w-20 text-xs hover:bg-blue-300 hover:font-bold" :href="route('tutorial-project')"
+                                <x-nav-link class="w-32 text-xs hover:bg-blue-300 hover:font-bold" :href="route('tutorial-project')"
                                     :active="request()->routeIs('tutorial-project')">
                                     {{ __('Project') }}
                                 </x-nav-link>
 
                                 <br>
-                                <x-nav-link class="w-20 text-xs hover:bg-blue-300 hover:font-bold" :href="route('tutorial-performance')"
+                                <x-nav-link class="w-32 text-xs hover:bg-blue-300 hover:font-bold" :href="route('tutorial-performance')"
                                     :active="request()->routeIs('tutorial-performance')">
                                     {{ __('Performance') }}
                                 </x-nav-link>
 
                                 <br>
-                                <x-nav-link class="w-20 text-xs hover:bg-blue-300 hover:font-bold" :href="route('tutorial-billboard_tempboard')"
+                                <x-nav-link class="w-32 text-xs hover:bg-blue-300 hover:font-bold" :href="route('tutorial-billboard_tempboard')"
                                     :active="request()->routeIs('tutorial-billboard_tempboard')">
                                     {{ __('BB / TP') }}
                                 </x-nav-link>
 
                                 <br>
-                                <x-nav-link class="w-20 text-xs hover:bg-blue-300 hover:font-bold" :href="route('tutorial-tracking')"
+                                <x-nav-link class="w-32 text-xs hover:bg-blue-300 hover:font-bold" :href="route('tutorial-tracking')"
                                     :active="request()->routeIs('tutorial-tracking')">
                                     {{ __('Tracking') }}
                                 </x-nav-link>
                                 @can('view tutorial admin')
                                     <br>
 
-                                    <x-nav-link class="w-20 text-xs hover:bg-blue-300 hover:font-bold" :href="route('tutorial-admin')"
+                                    <x-nav-link class="w-32 text-xs hover:bg-blue-300 hover:font-bold" :href="route('tutorial-admin')"
                                         :active="request()->routeIs('tutorial-admin')">
                                         {{ __('Admin') }}
                                     </x-nav-link>
@@ -290,36 +290,37 @@
                                     </button>
                                 </x-slot>
 
-                                <x-slot name="content" class="">
+                                <x-slot name="content" class="w-32">
                                     @can('view admin announcement')
-                                        <x-nav-link class="w-20 text-xs  hover:bg-blue-300 hover:font-bold"
+                                        <x-nav-link class="w-32 text-xs  hover:bg-blue-300 hover:font-bold"
                                             :href="route('announcement-edit')" :active="request()->routeIs('announcement-edit')">
                                             {{ __('Announcement') }}
                                         </x-nav-link>
                                     @endcan
+                                    <br>
                                     @can('view admin data')
-                                        <x-nav-link class="w-20 text-xs  hover:bg-blue-300 hover:font-bold"
+                                        <x-nav-link class="w-32 text-xs  hover:bg-blue-300 hover:font-bold"
                                             :href="route('admin-data')" :active="request()->routeIs('admin-data')">
                                             {{ __('Data') }}
                                         </x-nav-link>
                                     @endcan
                                     <br>
                                     @can('view admin user manage')
-                                        <x-nav-link class="w-20 text-xs  hover:bg-blue-300 hover:font-bold"
+                                        <x-nav-link class="w-32 text-xs  hover:bg-blue-300 hover:font-bold"
                                             :href="route('admin-management')" :active="request()->routeIs('admin-management')">
                                             {{ __('User Management') }}
                                         </x-nav-link>
                                     @endcan
                                     <br>
                                     @can('view admin user access')
-                                        <x-nav-link class="w-20 text-xs  hover:bg-blue-300 hover:font-bold"
+                                        <x-nav-link class="w-32 text-xs  hover:bg-blue-300 hover:font-bold"
                                             :href="route('admin-access')" :active="request()->routeIs('admin-access')">
                                             {{ __('User Access') }}
                                         </x-nav-link>
                                     @endcan
                                     <br>
                                     @can('view admin export import')
-                                        <x-nav-link class="w-20 text-xs  hover:bg-blue-300 hover:font-bold"
+                                        <x-nav-link class="w-32 text-xs  hover:bg-blue-300 hover:font-bold"
                                             :href="route('admin-export')" :active="request()->routeIs('admin-export')">
                                             {{ __('Export/Import') }}
                                         </x-nav-link>

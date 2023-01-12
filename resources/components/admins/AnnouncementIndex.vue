@@ -1,6 +1,6 @@
 <template>
     <div class="w-full overflow-auto">
-        <div class="px-10 pb-20 rounded-md items-center mx-auto">
+        <div class="w-max px-10 pb-20 rounded-md items-center mx-auto">
             <div class="bg-blue-900 w-full">
                 <h1
                     class="text-center text-white uppercase font-mono font-extrabold rounded-md"

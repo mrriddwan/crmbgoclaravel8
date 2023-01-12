@@ -1,5 +1,5 @@
 <template>
-    <div class="container">
+    <div class="w-full mx-auto">
         <h1
             class="items-center text-center text-4xl text-white font-extrabold font-mono uppercase bg-blue-900 px-2 rounded-md"
         >
@@ -533,7 +533,7 @@
                                             index === 0 &&
                                             !summary_info['action']
                                         "
-                                        class="w-max bg-red-300 px-1 py-1 rounded-md text-xs"
+                                        class="w-max bg-red-300 px-1 py-1 rounded-md text-xs mx-auto"
                                     >
                                         {{
                                             showToday(summary_info["todo_date"])
@@ -544,7 +544,7 @@
                                             index === 0 &&
                                             summary_info['action']
                                         "
-                                        class="w-max bg-green-300 px-1 py-1 rounded-md text-xs"
+                                        class="w-max bg-green-300 px-1 py-1 rounded-md text-xs mx-auto"
                                     >
                                         {{
                                             showToday(summary_info["todo_date"])
@@ -570,7 +570,7 @@
                                             index === 0 &&
                                             !summary_info['action']
                                         "
-                                        class="w-max bg-red-300 px-1 py-1 rounded-md text-xs"
+                                        class="w-max bg-red-300 px-1 py-1 rounded-md text-xs mx-auto"
                                     >
                                         {{
                                             showToday(summary_info["todo_date"])
@@ -582,7 +582,7 @@
                                             index === 0 &&
                                             summary_info['action']
                                         "
-                                        class="w-max bg-green-300 px-1 py-1 rounded-md text-xs"
+                                        class="w-max bg-green-300 px-1 py-1 rounded-md text-xs mx-auto"
                                     >
                                         {{
                                             showToday(summary_info["todo_date"])
@@ -608,7 +608,7 @@
                                             index === 0 &&
                                             !summary_info['action']
                                         "
-                                        class="w-max bg-red-300 px-1 py-1 rounded-md text-xs"
+                                        class="w-max bg-red-300 px-1 py-1 rounded-md text-xs mx-auto"
                                     >
                                         {{
                                             showToday(summary_info["todo_date"])
@@ -620,7 +620,7 @@
                                             index === 0 &&
                                             summary_info['action']
                                         "
-                                        class="w-max bg-green-300 px-1 py-1 rounded-md text-xs"
+                                        class="w-max bg-green-300 px-1 py-1 rounded-md text-xs mx-auto"
                                     >
                                         {{
                                             showToday(summary_info["todo_date"])
@@ -646,7 +646,7 @@
                                             index === 0 &&
                                             !summary_info['action']
                                         "
-                                        class="w-max bg-red-300 px-1 py-1 rounded-md text-xs"
+                                        class="w-max bg-red-300 px-1 py-1 rounded-md text-xs mx-auto"
                                     >
                                         {{
                                             showToday(summary_info["todo_date"])
@@ -658,7 +658,7 @@
                                             index === 0 &&
                                             summary_info['action']
                                         "
-                                        class="w-max bg-green-300 px-1 py-1 rounded-md text-xs"
+                                        class="w-max bg-green-300 px-1 py-1 rounded-md text-xs mx-auto"
                                     >
                                         {{
                                             showToday(summary_info["todo_date"])
@@ -684,7 +684,7 @@
                                             index === 0 &&
                                             !summary_info['action']
                                         "
-                                        class="w-max bg-red-300 px-1 py-1 rounded-md text-xs"
+                                        class="w-max bg-red-300 px-1 py-1 rounded-md text-xs mx-auto"
                                     >
                                         {{
                                             showToday(summary_info["todo_date"])
@@ -696,7 +696,7 @@
                                             index === 0 &&
                                             summary_info['action']
                                         "
-                                        class="w-max bg-green-300 px-1 py-1 rounded-md text-xs"
+                                        class="w-max bg-green-300 px-1 py-1 rounded-md text-xs mx-auto"
                                     >
                                         {{
                                             showToday(summary_info["todo_date"])
@@ -722,7 +722,7 @@
                                             index === 0 &&
                                             !summary_info['action']
                                         "
-                                        class="w-max bg-red-300 px-1 py-1 rounded-md text-xs"
+                                        class="w-max bg-red-300 px-1 py-1 rounded-md text-xs mx-auto"
                                     >
                                         {{
                                             showToday(summary_info["todo_date"])
@@ -734,7 +734,7 @@
                                             index === 0 &&
                                             summary_info['action']
                                         "
-                                        class="w-max bg-green-300 px-1 py-1 rounded-md text-xs"
+                                        class="w-max bg-green-300 px-1 py-1 rounded-md text-xs mx-auto"
                                     >
                                         {{
                                             showToday(summary_info["todo_date"])
@@ -760,7 +760,7 @@
                                             index === 0 &&
                                             !summary_info['action']
                                         "
-                                        class="w-max bg-red-300 px-1 py-1 rounded-md text-xs"
+                                        class="w-max bg-red-300 px-1 py-1 rounded-md text-xs mx-auto"
                                     >
                                         {{
                                             showToday(summary_info["todo_date"])
@@ -772,7 +772,7 @@
                                             index === 0 &&
                                             summary_info['action']
                                         "
-                                        class="w-max bg-green-300 px-1 py-1 rounded-md text-xs"
+                                        class="w-max bg-green-300 px-1 py-1 rounded-md text-xs mx-auto"
                                     >
                                         {{
                                             showToday(summary_info["todo_date"])
@@ -798,7 +798,7 @@
                                             index === 0 &&
                                             !summary_info['action']
                                         "
-                                        class="w-max bg-red-300 px-1 py-1 rounded-md text-xs"
+                                        class="w-max bg-red-300 px-1 py-1 rounded-md text-xs mx-auto"
                                     >
                                         {{
                                             showToday(summary_info["todo_date"])
@@ -809,7 +809,7 @@
                                             index === 0 &&
                                             summary_info['action']
                                         "
-                                        class="w-max bg-green-300 px-1 py-1 rounded-md text-xs"
+                                        class="w-max bg-green-300 px-1 py-1 rounded-md text-xs mx-auto"
                                     >
                                         {{
                                             showToday(summary_info["todo_date"])
@@ -835,7 +835,7 @@
                                             index === 0 &&
                                             !summary_info['action']
                                         "
-                                        class="w-max bg-red-300 px-1 py-1 rounded-md text-xs"
+                                        class="w-max bg-red-300 px-1 py-1 rounded-md text-xs mx-auto"
                                     >
                                         {{
                                             showToday(summary_info["todo_date"])
@@ -846,7 +846,7 @@
                                             index === 0 &&
                                             summary_info['action']
                                         "
-                                        class="w-max bg-green-300 px-1 py-1 rounded-md text-xs"
+                                        class="w-max bg-green-300 px-1 py-1 rounded-md text-xs mx-auto"
                                     >
                                         {{
                                             showToday(summary_info["todo_date"])
@@ -872,7 +872,7 @@
                                             index === 0 &&
                                             !summary_info['action']
                                         "
-                                        class="w-max bg-red-300 px-1 py-1 rounded-md text-xs"
+                                        class="w-max bg-red-300 px-1 py-1 rounded-md text-xs mx-auto"
                                     >
                                         {{
                                             showToday(summary_info["todo_date"])
@@ -883,7 +883,7 @@
                                             index === 0 &&
                                             summary_info['action']
                                         "
-                                        class="w-max bg-green-300 px-1 py-1 rounded-md text-xs"
+                                        class="w-max bg-green-300 px-1 py-1 rounded-md text-xs mx-auto"
                                     >
                                         {{
                                             showToday(summary_info["todo_date"])
@@ -909,7 +909,7 @@
                                             index === 0 &&
                                             !summary_info['action']
                                         "
-                                        class="w-max bg-red-300 px-1 py-1 rounded-md text-xs"
+                                        class="w-max bg-red-300 px-1 py-1 rounded-md text-xs mx-auto"
                                     >
                                         {{
                                             showToday(summary_info["todo_date"])
@@ -920,7 +920,7 @@
                                             index === 0 &&
                                             summary_info['action']
                                         "
-                                        class="w-max bg-green-300 px-1 py-1 rounded-md text-xs"
+                                        class="w-max bg-green-300 px-1 py-1 rounded-md text-xs mx-auto"
                                     >
                                         {{
                                             showToday(summary_info["todo_date"])
@@ -946,7 +946,7 @@
                                             index === 0 &&
                                             !summary_info['action']
                                         "
-                                        class="w-max bg-red-300 px-1 py-1 rounded-md text-xs"
+                                        class="w-max bg-red-300 px-1 py-1 rounded-md text-xs mx-auto"
                                     >
                                         {{
                                             showToday(summary_info["todo_date"])
@@ -957,7 +957,7 @@
                                             index === 0 &&
                                             summary_info['action']
                                         "
-                                        class="w-max bg-green-300 px-1 py-1 rounded-md text-xs"
+                                        class="w-max bg-green-300 px-1 py-1 rounded-md text-xs mx-auto"
                                     >
                                         {{
                                             showToday(summary_info["todo_date"])
