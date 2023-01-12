@@ -1,7 +1,6 @@
 <template>
     <div
-        class="container"
-        v-if="can('view project') || is('admin | super-admin')"
+        class="w-full min-h-screen"
     >
         <h1
             class="items-center text-center text-6xl text-white font-extrabold bg-orange-500 px-2 rounded-md"
@@ -485,11 +484,6 @@
                 :project_id="project_remark"
             />
         </div>
-    </div>
-    <div
-        v-else
-    >
-        <ForbiddenPage />
     </div>
 </template>
 

@@ -1,5 +1,5 @@
 <template>
-    <div class="container w-max-10 align-center mx-auto h-max px-2 py-2">
+    <div class="w-full min-h-screen">
         <div
             class="items-center text-center text-white bg-blue-900 px-2 py-1 rounded-md"
         >

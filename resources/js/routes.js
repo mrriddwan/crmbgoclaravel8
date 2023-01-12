@@ -76,20 +76,41 @@ import TutorialAdmin from "../components/tutorials/TutorialAdmin.vue";
 import AnnouncementIndex from "../components/admins/AnnouncementIndex.vue";
 import AnnouncementEdit from "../components/admins/AnnouncementEdit.vue";
 
-const id = Number(
-    document.querySelector('meta[name="user-id"]').getAttribute("content")
+const role_permissions = JSON.parse(
+    document.querySelector('meta[name="user_roles"]').getAttribute("content")
 );
 
-function checkUserID(login_id) {
-    return login_id === 1 ? true : false;
+const direct_permissions = JSON.parse(
+    document
+        .querySelector('meta[name="user_permissions"]')
+        .getAttribute("content")
+);
+
+function check() {
+    // direct_permissions.forEach((user_direct_permission) => {
+    //     console.log(user_direct_permission.name);
+    // });
+    console.log(role_permissions[0].name);
 }
 
-function guardMyRoute(to, from, next) {
-    if (checkUserID(id)) {
-        next(); // allow to enter route
-    } else {
-        next("/not_authorized");
+function checkUserPermission(permission_required) {
+    if(role_permissions[0].name === "super-admin" || role_permissions[0].name === "admin"){
+        return true;
     }
+
+    let count = 0;
+    
+    role_permissions[0]["permissions"].forEach((user_permission) => {
+        if (user_permission.name === permission_required) {
+            return count++;
+        }
+    });
+    direct_permissions.forEach((user_direct_permission) => {
+        if (user_direct_permission.name === permission_required) {
+            return count++;
+        }
+    });
+    return count > 0 ? true : false;
 }
 
 const routes = [
@@ -133,6 +154,11 @@ const routes = [
         path: "/contact/index",
         name: "contact_index",
         component: ContactIndex,
+        beforeEnter: (to, from, next) => {
+            checkUserPermission("view contact")
+                ? next()
+                : next("/not_authorized");
+        },
     },
 
     {
@@ -140,6 +166,11 @@ const routes = [
         path: "/contact/summary",
         name: "contact_summary",
         component: ContactSummary,
+        beforeEnter: (to, from, next) => {
+            checkUserPermission("view contact summary")
+                ? next()
+                : next("/not_authorized");
+        },
     },
 
     {
@@ -147,6 +178,11 @@ const routes = [
         path: "/contact/create",
         name: "contacts_create",
         component: ContactCreate,
+        beforeEnter: (to, from, next) => {
+            checkUserPermission("create contact")
+                ? next()
+                : next("/not_authorized");
+        },
     },
 
     {
@@ -154,6 +190,11 @@ const routes = [
         path: "/contact/:id/edit",
         name: "contacts_edit",
         component: ContactEdit,
+        beforeEnter: (to, from, next) => {
+            checkUserPermission("edit contact")
+                ? next()
+                : next("/not_authorized");
+        },
     },
 
     {
@@ -193,6 +234,11 @@ const routes = [
         path: "/todo/index",
         name: "todo_index",
         component: ToDoIndex,
+        beforeEnter: (to, from, next) => {
+            checkUserPermission("view todo")
+                ? next()
+                : next("/not_authorized");
+        },
         // props: route => ({ selectedDate: route.query.q })
     },
 
@@ -202,6 +248,11 @@ const routes = [
         name: "todo_insert",
         component: ToDoInsert,
         props: true,
+        beforeEnter: (to, from, next) => {
+            checkUserPermission("insert todo")
+                ? next()
+                : next("/not_authorized");
+        },
     },
 
     {
@@ -209,6 +260,11 @@ const routes = [
         path: "/todo/create",
         name: "todo_create",
         component: ToDoCreate,
+        beforeEnter: (to, from, next) => {
+            checkUserPermission("create todo")
+                ? next()
+                : next("/not_authorized");
+        },
     },
 
     {
@@ -217,6 +273,11 @@ const routes = [
         name: "todo_edit",
         component: ToDoEdit,
         props: true,
+        beforeEnter: (to, from, next) => {
+            checkUserPermission("edit todo")
+                ? next()
+                : next("/not_authorized");
+        },
     },
 
     /*                                                  
@@ -228,6 +289,11 @@ const routes = [
         path: "/followup/index",
         name: "followup_index",
         component: FollowUpIndex,
+        beforeEnter: (to, from, next) => {
+            checkUserPermission("view followup")
+                ? next()
+                : next("/not_authorized");
+        },
     },
 
     {
@@ -236,6 +302,11 @@ const routes = [
         name: "followup_create",
         component: FollowUpCreate,
         props: true,
+        beforeEnter: (to, from, next) => {
+            checkUserPermission("create followup")
+                ? next()
+                : next("/not_authorized");
+        },
     },
     /*                                                  
             Forecast Routes 
@@ -246,6 +317,11 @@ const routes = [
         path: "/forecast/index",
         name: "forecast_index",
         component: ForecastIndex,
+        beforeEnter: (to, from, next) => {
+            checkUserPermission("view forecast")
+                ? next()
+                : next("/not_authorized");
+        },
     },
 
     {
@@ -254,6 +330,11 @@ const routes = [
         name: "forecast_create",
         component: ForecastCreate,
         props: true,
+        beforeEnter: (to, from, next) => {
+            checkUserPermission("create forecast")
+                ? next()
+                : next("/not_authorized");
+        },
     },
 
     {
@@ -261,6 +342,11 @@ const routes = [
         path: "/forecast/:id/edit",
         name: "forecast_edit",
         component: ForecastEdit,
+        beforeEnter: (to, from, next) => {
+            checkUserPermission("edit forecast")
+                ? next()
+                : next("/not_authorized");
+        },
     },
 
     {
@@ -268,6 +354,11 @@ const routes = [
         path: "/forecast/summary",
         name: "forecast_summary",
         component: ForecastSummary,
+        beforeEnter: (to, from, next) => {
+            checkUserPermission("view forecast summary")
+                ? next()
+                : next("/not_authorized");
+        },
     },
 
     /*                                                  
@@ -279,6 +370,11 @@ const routes = [
         path: "/project/index",
         name: "project_index",
         component: ProjectIndex,
+        beforeEnter: (to, from, next) => {
+            checkUserPermission("view project")
+                ? next()
+                : next("/not_authorized");
+        },
     },
 
     {
@@ -286,6 +382,11 @@ const routes = [
         path: "/project/create",
         name: "project_create",
         component: ProjectCreate,
+        beforeEnter: (to, from, next) => {
+            checkUserPermission("create project")
+                ? next()
+                : next("/not_authorized");
+        },
     },
 
     {
@@ -293,6 +394,11 @@ const routes = [
         path: "/project/:id/edit",
         name: "project_edit",
         component: ProjectEdit,
+        beforeEnter: (to, from, next) => {
+            checkUserPermission("edit project")
+                ? next()
+                : next("/not_authorized");
+        },
     },
 
     /*                                                  
@@ -304,6 +410,11 @@ const routes = [
         path: "/performance/index",
         name: "performance_index",
         component: PerformanceIndex,
+        beforeEnter: (to, from, next) => {
+            checkUserPermission("view performance")
+                ? next()
+                : next("/not_authorized");
+        },
     },
 
     /*                                                  
@@ -315,7 +426,11 @@ const routes = [
         path: "/billboard/index",
         name: "billboard_index",
         component: BillboardIndex,
-        beforeEnter: guardMyRoute,
+        beforeEnter: (to, from, next) => {
+            checkUserPermission("view billboard/tempboard")
+                ? next()
+                : next("/not_authorized");
+        },
     },
 
     {
@@ -323,6 +438,11 @@ const routes = [
         path: "/billboard/create",
         name: "billboard_create",
         component: BillboardCreate,
+        beforeEnter: (to, from, next) => {
+            checkUserPermission("create billboard")
+                ? next()
+                : next("/not_authorized");
+        },
     },
 
     {
@@ -337,6 +457,11 @@ const routes = [
         path: "/tempboard/index",
         name: "tempboard_index",
         component: TempboardIndex,
+        beforeEnter: (to, from, next) => {
+            checkUserPermission("view billboard/tempboard")
+                ? next()
+                : next("/not_authorized");
+        },
     },
 
     {
@@ -344,6 +469,11 @@ const routes = [
         path: "/tempboard/create",
         name: "tempboard_create",
         component: TempboardCreate,
+        beforeEnter: (to, from, next) => {
+            checkUserPermission("create tempboard")
+                ? next()
+                : next("/not_authorized");
+        },
     },
 
     {
@@ -351,6 +481,11 @@ const routes = [
         path: "/tempboard/:id/edit",
         name: "tempboard_edit",
         component: TempboardEdit,
+        beforeEnter: (to, from, next) => {
+            checkUserPermission("edit tempboard")
+                ? next()
+                : next("/not_authorized");
+        },
     },
 
     /*                                                  
@@ -362,18 +497,33 @@ const routes = [
         path: "/admin/data",
         name: "admin_data",
         component: AdminData,
+        beforeEnter: (to, from, next) => {
+            checkUserPermission("view admin data")
+                ? next()
+                : next("/not_authorized");
+        },
     },
     {
         //Admin Management
         path: "/admin/user/management",
         name: "admin_userManagement",
         component: AdminUserManage,
+        beforeEnter: (to, from, next) => {
+            checkUserPermission("view admin user manage")
+                ? next()
+                : next("/not_authorized");
+        },
     },
     {
         //Admin Access
         path: "/admin/user/access",
         name: "admin_userAccess",
         component: AdminUserAccess,
+        beforeEnter: (to, from, next) => {
+            checkUserPermission("view admin user access")
+                ? next()
+                : next("/not_authorized");
+        },
     },
 
     {
@@ -381,6 +531,11 @@ const routes = [
         path: "/admin/export",
         name: "admin_export",
         component: AdminExport,
+        beforeEnter: (to, from, next) => {
+            checkUserPermission("view admin export import")
+                ? next()
+                : next("/not_authorized");
+        },
     },
 
     /*                                                  
@@ -392,24 +547,44 @@ const routes = [
         path: "/tracking/general/index",
         name: "tracking_general",
         component: TrackingGeneralIndex,
+        beforeEnter: (to, from, next) => {
+            checkUserPermission("view tracking general")
+                ? next()
+                : next("/not_authorized");
+        },
     },
     {
         //Tracking General Create
         path: "/tracking/general/create",
         name: "tracking_general_create",
         component: MasterGeneralCreate,
+        beforeEnter: (to, from, next) => {
+            checkUserPermission("create tracking general")
+                ? next()
+                : next("/not_authorized");
+        },
     },
     {
         //Tracking General Edit
         path: "/tracking/general/:id/edit",
         name: "tracking_general_edit",
         component: MasterGeneralEdit,
+        beforeEnter: (to, from, next) => {
+            checkUserPermission("edit master general")
+                ? next()
+                : next("/not_authorized");
+        },
     },
     {
         //WIP General Edit
         path: "/tracking/wip/:id/edit",
         name: "tracking_wip_edit",
         component: WIPGeneralEdit,
+        beforeEnter: (to, from, next) => {
+            checkUserPermission("edit wip general")
+                ? next()
+                : next("/not_authorized");
+        },
     },
 
     /*                                                  
@@ -421,18 +596,33 @@ const routes = [
         path: "/tracking/travel_guide/index",
         name: "tracking_travel_guide",
         component: TrackingTravelGuideIndex,
+        beforeEnter: (to, from, next) => {
+            checkUserPermission("view tracking tguide")
+                ? next()
+                : next("/not_authorized");
+        },
     },
     {
         //Tracking Travel Guide Create
         path: "/tracking/travel_guide/create",
         name: "tracking_travel_guide_create",
         component: MasterTravelGuideCreate,
+        beforeEnter: (to, from, next) => {
+            checkUserPermission("create tracking travelguide")
+                ? next()
+                : next("/not_authorized");
+        },
     },
     {
         //Tracking Travel Guide Create
         path: "/tracking/travel_guide/:id/edit",
         name: "tracking_travel_guide_edit",
         component: MasterTravelGuideEdit,
+        beforeEnter: (to, from, next) => {
+            checkUserPermission("edit master travelguide")
+                ? next()
+                : next("/not_authorized");
+        },
     },
 
     /*                                                  
@@ -492,6 +682,11 @@ const routes = [
         path: "/tutorial/admin",
         name: "tutorial_admin",
         component: TutorialAdmin,
+        beforeEnter: (to, from, next) => {
+            checkUserPermission("view tutorial admin")
+                ? next()
+                : next("/not_authorized");
+        },
     },
 
     /*                                                  
@@ -503,16 +698,24 @@ const routes = [
         path: "/announcement/index",
         name: "announcement_index",
         component: AnnouncementIndex,
+        beforeEnter: check,
     },
     {
         //Announcement Edit Page
         path: "/announcement/edit",
         name: "announcement_edit",
         component: AnnouncementEdit,
+        beforeEnter: (to, from, next) => {
+            checkUserPermission("view admin announcement")
+                ? next()
+                : next("/not_authorized");
+        },
     },
 ];
 
-export default createRouter({
+const router = createRouter({
     history: createWebHistory(),
     routes,
 });
+
+export default router;

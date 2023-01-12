@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="w-full min-h-screen">
         <div
             class="container w-max align-center"
             v-for="info in contact_infos"

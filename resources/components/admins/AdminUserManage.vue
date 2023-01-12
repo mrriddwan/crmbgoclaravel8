@@ -1,7 +1,7 @@
 <template>
-    <div class="container">
+    <div class="w-full min-h-screen">
         <div
-            class="px-2 py-1 rounded-md flex w-full justify-center items-center row"
+            class="px-2 py-1 rounded-md flex w-full justify-center items-center row mx-auto"
         >
             <h1
                 class="text-center text-white px-8 uppercase w-max font-mono font-extrabold bg-blue-900"
@@ -9,10 +9,10 @@
                 User Management
             </h1>
         </div>
-        <div>
-            <div class="my-4">
+        <div class="mx-auto">
+            <div class="my-4 mx-auto">
                 <div
-                    class="bg-blue-200 px-2 py-1 rounded-md flex w-full justify-center items-center row"
+                    class="bg-blue-200 px-2 py-1 rounded-md flex w-full justify-center items-center row mx-auto"
                 >
                     <h2
                         class="text-center text-gray-800 px-8 uppercase w-max font-mono font-extrabold"
@@ -303,9 +303,9 @@
             </div>
 
             <!-- Supervisor section-->
-            <div class="my-4">
+            <div class="my-4 mx-auto">
                 <div
-                    class="bg-purple-200 px-2 py-1 rounded-md flex w-full justify-center items-center row"
+                    class="bg-purple-200 px-2 py-1 rounded-md flex w-full justify-center items-center row mx-auto"
                 >
                     <h2
                         class="text-center text-gray-800 px-8 uppercase w-max font-mono font-extrabold"
@@ -549,9 +549,9 @@
             />
 
             <!-- User Performance-->
-            <div class="my-4">
+            <div class="my-4 mx-auto">
                 <div
-                    class="bg-emerald-200 px-2 py-1 rounded-md flex w-full justify-center items-center row"
+                    class="bg-emerald-200 px-2 py-1 rounded-md flex w-full justify-center items-center row mx-auto"
                 >
                     <h2
                         class="text-center text-gray-800 px-8 uppercase w-max font-mono font-extrabold"
@@ -661,9 +661,9 @@
             </div>
 
             <!-- User Category-->
-            <div class="my-4">
+            <div class="my-4 mx-auto">
                 <div
-                    class="bg-orange-200 px-2 py-1 rounded-md flex w-full justify-center items-center row"
+                    class="bg-orange-200 px-2 py-1 rounded-md flex w-full justify-center items-center row mx-auto"
                 >
                     <h2
                         class="text-center text-gray-800 px-8 uppercase w-max font-mono font-extrabold"
@@ -939,7 +939,7 @@
                 />
 
                 <!-- Category benchmark-->
-                <div class="grid grid-cols-1">
+                <div class="grid grid-cols-1 mx-auto">
                     <div
                         class="container h-max align-middle my-3 text-lg uppercase font-mono text-center"
                     >
@@ -951,7 +951,7 @@
                         </span>
                     </div>
 
-                    <div class="grid grid-cols-4 gap-5 mx-2 text-xs">
+                    <div class="grid grid-cols-4 gap-5 text-xs mx-auto">
                         <table
                             v-for="user_category in benchmarks"
                             :key="user_category.id"
@@ -1037,9 +1037,9 @@
             />
 
             <!-- User List-->
-            <div class="my-4">
+            <div class="my-4 mx-auto">
                 <div
-                    class="bg-cyan-200 px-2 py-1 rounded-md flex w-full justify-center items-center row"
+                    class="bg-cyan-200 px-2 py-1 rounded-md flex w-full justify-center items-center row mx-auto"
                 >
                     <h2
                         class="text-center text-gray-800 px-8 uppercase w-max font-mono font-extrabold"
@@ -1051,18 +1051,12 @@
                 <div class="container items-center text-center mt-3">
                     <table class="w-full">
                         <thead class="bg-slate-200 border uppercase">
-                            <th class="px-1 py-1 border-black">
-                                User Name
-                            </th>
+                            <th class="px-1 py-1 border-black">User Name</th>
                             <th class="px-1 py-1 border-black">
                                 User Password
                             </th>
-                            <th class="px-1 py-1 border-black">
-                                User Level
-                            </th>
-                            <th class="px-1 py-1 border-black">
-                                User Email
-                            </th>
+                            <th class="px-1 py-1 border-black">User Level</th>
+                            <th class="px-1 py-1 border-black">User Email</th>
                         </thead>
                         <tbody>
                             <tr v-for="user in users" class="text-left">
@@ -1073,7 +1067,7 @@
                                     {{ user.password }}
                                 </td>
                                 <td class="px-1 py-1 border">
-                                    {{ user.roles[0].name }}
+                                    <!-- {{ user.roles[0].name }} -->
                                 </td>
                                 <td class="px-1 py-1 border">
                                     {{ user.email }}

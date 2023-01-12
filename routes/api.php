@@ -289,12 +289,6 @@ Route::group(['middleware' => ['can:view project']], function () {
     Route::delete('/projects/delete/{project}', [ProjectController::class, 'delete'])->name('project:delete');
     Route::get('/projects/remark/{project}', [ProjectController::class, 'remark'])->name('project:remark');
 });
-// Route::get('/projects/index', [ProjectController::class, 'index'])->name('project:index');
-// Route::post('/projects/store', [ProjectController::class, 'store'])->name('project:store');
-// Route::get('/projects/show/{project}', [ProjectController::class, 'show'])->name('project:show');
-// Route::put('/projects/update/{project}', [ProjectController::class, 'update'])->name('project:update');
-// Route::delete('/projects/delete/{project}', [ProjectController::class, 'delete'])->name('project:delete');
-// Route::get('/projects/remark/{project}', [ProjectController::class, 'remark'])->name('project:remark');
 
 /*Billboard/Tempboard API*/
 Route::get('/billboards/index', [BillboardController::class, 'index'])->name('billboard:index');

@@ -1,9 +1,9 @@
 <template>
-    <div class="container pt-1 pb-96 ">
+    <div class="w-full min-h-screen">
         <div
-            class="px-20 py-1 rounded-md flex w-max justify-center items-center row"
+            class="py-1 rounded-md w-full justify-center items-center"
         >
-            <div class="text-center bg-blue-900 px-20">
+            <div class="text-center bg-blue-900 mx-auto">
                 <h1
                     class="text-center text-white uppercase w-max font-mono font-extrabold flex mx-auto"
                 >
@@ -87,7 +87,7 @@
                         <th class="px-3">Action</th>
                     </tr>
                 </thead>
-                <tbody class="text-left text-xs">
+                <tbody class="text-left text-sm">
                     <tr
                         v-for="annc_reminder in announcements_reminders"
                         :key="annc_reminder.id"

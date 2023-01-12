@@ -1,6 +1,6 @@
 <template>
     <div
-        class="container w-max-10 align-center mx-auto h-max px-5 pt-3 pb-60"
+        class="w-full min-h-screen px-5 pt-3 pb-60"
     >
         <div>
             <GoBack />

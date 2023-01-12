@@ -1,5 +1,5 @@
 <template>
-    <div class="container w-max align-center">
+    <div class="w-full min-h-screen">
         <div class="max-h-10 my-2">
             <GoBack class="" />
         </div>

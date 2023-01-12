@@ -1,11 +1,13 @@
 <template>
-    <div class="container">
-        <div class="px-20 pb-20 rounded-md w-max items-center">
-            <h1
-                class="text-center text-white uppercase font-mono font-extrabold bg-blue-900 rounded-md"
-            >
-                Welcome
-            </h1>
+    <div class="w-full overflow-auto">
+        <div class="px-10 pb-20 rounded-md items-center mx-auto">
+            <div class="bg-blue-900 w-full">
+                <h1
+                    class="text-center text-white uppercase font-mono font-extrabold rounded-md"
+                >
+                    Welcome
+                </h1>
+            </div>
 
             <div
                 v-for="user_info in user"
@@ -50,7 +52,9 @@
                             <th class="px-3">From</th>
                         </tr>
                     </thead>
-                    <tbody class="text-left">
+                    <tbody
+                        class="text-left bg-slate-200 text-slate-800 font-sans"
+                    >
                         <tr
                             v-if="announcement.length"
                             v-for="announcement_info in announcement"
@@ -67,7 +71,7 @@
                                 {{ announcement_info.from_user.name }}
                             </td>
                         </tr>
-                        <tr v-else class="text-center mt-2 bg-slate-200 ">
+                        <tr v-else class="text-center mt-2 bg-slate-200">
                             <td colspan="3" class="py-3 font-bold font-sans">
                                 No announcement
                             </td>
@@ -77,7 +81,7 @@
             </div>
 
             <div
-                class="text-center mx-auto mt-3 w-max"
+                class="text-center mt-3 w-max"
                 v-for="user_info in user"
                 :key="user_info.id"
             >
@@ -97,7 +101,7 @@
                         </tr>
                     </thead>
                     <tbody
-                        class="text-left bg-slate-400 text-white"
+                        class="text-left bg-slate-400 text-white font-sans"
                         v-if="
                             user_info['reminder_from'].length ||
                             user_info['reminder_to'].length
@@ -106,7 +110,7 @@
                         <tr
                             v-for="reminder in user_info['reminder_from']"
                             :key="reminder.id"
-                            class="py-1 mt-2 "
+                            class="py-1 mt-2"
                         >
                             <td class="px-2 py-2">
                                 {{ showToday(reminder.created_at) }}
@@ -114,7 +118,7 @@
                             <td class="px-2 py-2">
                                 {{ reminder.message }}
                             </td>
-                            <td class=" text-center">
+                            <td class="text-center">
                                 <div
                                     class="w-max"
                                     v-for="user in users"
@@ -186,7 +190,7 @@
                             </td>
                         </tr>
                     </tbody>
-                    <tbody v-else class="text-center mt-2 bg-slate-200 ">
+                    <tbody v-else class="text-center mt-2 bg-slate-200">
                         <td colspan="4" class="py-3 font-bold font-sans">
                             No reminder
                         </td>

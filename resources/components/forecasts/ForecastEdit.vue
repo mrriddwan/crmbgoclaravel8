@@ -1,5 +1,5 @@
 <template>
-    <div class="container w-max align-center">
+    <div class="w-full min-h-screen">
         <div v-if="errors">
             <div v-for="(v, k) in errors" :key="k">
                 <p

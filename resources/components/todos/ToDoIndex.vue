@@ -1,5 +1,5 @@
 <template>
-    <div class="container">
+    <div class="w-full min-h-screen">
         <h1
             class="items-center text-center text-5 xl text-white font-extrabold bg-blue-900 rounded-md"
         >

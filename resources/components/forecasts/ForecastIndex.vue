@@ -1,5 +1,5 @@
 <template>
-    <div class="container">
+    <div class="w-full min-h-screen">
         <h1
             class="items-center text-center text-5xl text-white font-extrabold bg-yellow-400 px-2 rounded-md"
         >
@@ -98,7 +98,7 @@
             </div>
         </div>
 
-        <div class="grid grid-cols-3 gap-3">
+        <div class="grid grid-cols-3 gap-5 sm:flex">
             <div class="grid grid-cols-2 items-center align-middle w-max">
                 <label for="paginate" class="px-2 inline-block">Per page</label>
                 <input v-model.lazy="paginate" class="form-control" />
@@ -196,8 +196,8 @@
                                 </div>
                                 <div class="text-sm text-center h-6"></div>
                             </th>
-                            <th class="py-3 w-max">
-                                <div class="text-sm text-center h-6 w-max">
+                            <th class="py-3">
+                                <div class="text-sm text-center h-6">
                                     <a
                                         href="#"
                                         @click.prevent="
@@ -238,7 +238,7 @@
                                 <div class="text-sm text-center h-6"></div>
                             </th>
                             <th class="py-3">
-                                <div class="text-sm text-center h-6">
+                                <div class="text-sm text-center h-6 w-full">
                                     <a
                                         href="#"
                                         @click.prevent="
@@ -277,7 +277,7 @@
                                     </a>
                                 </div>
                                 <div
-                                    class="items-center text-xs text-center h-6 w-24"
+                                    class="items-center text-xs text-center h-6 w-full"
                                     v-if="
                                         is('supervisor | admin | super-admin')
                                     "
@@ -300,7 +300,7 @@
                                     </select>
                                 </div>
                             </th>
-                            <th class="py-3 w-max">
+                            <th class="py-3">
                                 <div class="text-sm text-center h-max">
                                     <a
                                         href="#"
@@ -339,7 +339,7 @@
                                         /></span>
                                     </a>
                                 </div>
-                                <div class="text-center h-6 w-20">
+                                <div class="text-center h-6 w-full">
                                     <select
                                         v-model="selectedProduct"
                                         class="form-control form-control-sm text-xs"
@@ -602,23 +602,45 @@
                                 {{ showToday(forecast.forecast_updatedate) }}
                             </td>
                             <td class="text-xs grid-cols-2 w-max text-left">
-                                <router-link
-                                    :to="`/contact/${forecast.contact.id}/info`"
-                                    custom
-                                    v-slot="{ navigate, href }"
+                                <div class="">
+                                    <router-link
+                                        :to="`/contact/${forecast.contact.id}/info`"
+                                        custom
+                                        v-slot="{ navigate, href }"
+                                    >
+                                        <a
+                                            :href="href"
+                                            @click.stop="navigate"
+                                            >{{ forecast.contact.name }}</a
+                                        >
+                                    </router-link>
+                                </div>
+                                <div
+                                    v-if="
+                                        is('super-admin | admin') ||
+                                        can('insert forecast')
+                                    "
+                                    class="w-max mt-2 align-bottom"
                                 >
-                                    <a :href="href" @click.stop="navigate">{{
-                                        forecast.contact.name
-                                    }}</a>
-                                </router-link>
-                                <router-link
-                                    :to="`/forecast/${forecast.contact.id}/create`"
-                                    class="ml-1 px-2 py-1 items-center border text-xs text-right rounded-lg w-max text-lime-600"
-                                >
-                                    <PlusIcon class="h-3 w-3 inline" />
-                                    <DocumentChartBarIcon
-                                        class="h-4 w-4 inline"
-                                /></router-link>
+                                    <router-link
+                                        :to="`/forecast/${forecast.contact.id}/create`"
+                                        class="mr-2 mb-2 px-2 py-1 items-center border text-xs text-right rounded-lg w-max text-white bg-emerald-600 flex"
+                                    >
+                                        <PlusIcon class="h-3 w-3 my-auto" />
+                                        <DocumentChartBarIcon
+                                            class="h-4 w-4 my-auto"
+                                    /></router-link>
+                                </div>
+                                <!-- <div>
+                                    <router-link
+                                        :to="`/forecast/${forecast.contact.id}/create`"
+                                        class="m-2 px-2 py-1 items-center border text-xs text-right rounded-lg w-max text-lime-600"
+                                    >
+                                        <PlusIcon class="h-3 w-3 inline" />
+                                        <DocumentChartBarIcon
+                                            class="h-4 w-4 inline"
+                                    /></router-link>
+                                </div> -->
                             </td>
                             <td class="text-xs text-left">
                                 {{ forecast.user.name }}

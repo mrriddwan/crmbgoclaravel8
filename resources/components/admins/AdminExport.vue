@@ -1,5 +1,5 @@
 <template>
-    <div class="container min-w-96 min-h-96" id="index-container">
+    <div class="w-full min-h-screen" id="index-container">
         <h1
             class="items-center text-center text-5xl text-white font-extrabold px-80 rounded-md font-mono uppercase bg-blue-900"
         >

@@ -1,5 +1,5 @@
 <template>
-    <div class="container w-max mx-auto h-max px-3 py-3">
+    <div class="w-full min-h-screen">
         <div v-if="errors">
             <div v-for="(v, k) in errors" :key="k">
                 <p

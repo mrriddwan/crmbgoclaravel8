@@ -1,5 +1,5 @@
 <template>
-    <div class="container w-max-10 align-center mx-auto px-5 pb-60 h-full" v-if="can('create project') || is('admin | super-admin')"
+    <div class="container w-max-10 align-center mx-auto px-5 pb-60 h-full"
     >
         <div>
             <GoBack />
@@ -124,11 +124,6 @@
                 </form>
             </div>
         </div>
-    </div>
-    <div
-        v-else
-    >
-        <ForbiddenPage />
     </div>
 </template>
 

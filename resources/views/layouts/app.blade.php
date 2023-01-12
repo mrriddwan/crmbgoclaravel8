@@ -35,9 +35,7 @@
 </head>
 
 <body class="font-sans antialiased">
-    {{-- <div class="min-h-screen bg-blue-900" id="app"> --}}
-    {{-- <div class="min-h-screen bg-cover bg-center bg-[url('/storage/images/bluedale_crm_bg.jpg')]" id="app" > --}}
-    <div class="min-h-screen" id="app">
+    <div class="min-h-screen bg-blue-800 w-full" id="app">
         @include('layouts.navigation')
 
         <!-- Page Heading -->
@@ -50,8 +48,8 @@
         <!-- Page Content -->
         @if (Auth::check())
             <meta name="user-id" content="{{ Auth::user()->id }}" />
-            <meta name="user-roles" content="{{ Auth::user()->roles }}" />
-            <meta name="user-permissions" content="{{ Auth::user()->permissions }}" />
+            <meta name="user_roles" content="{{ Auth::user()->roles }}" />
+            <meta name="user_permissions" content="{{ Auth::user()->permissions }}" />
         @endif
         <main>
             {{ $slot }}

@@ -1,333 +1,365 @@
 <template>
-    <h1
-        class="items-center text-center text-6xl text-white font-extrabold bg-orange-500 rounded-md"
-    >
-        Performance
-    </h1>
+    <div class="w-full min-h-screen">
+        <h1
+            class="items-center text-center text-6xl text-white font-extrabold bg-orange-500 rounded-md"
+        >
+            Performance
+        </h1>
 
-    <div class="text-sm">
-        <div class="m-1 inline-block items-center px-1 py-1">
-            <p>view by</p>
-            <select v-model="viewType" class="form-control text-center">
-                <option value="week">Week</option>
-                <option value="month">Month</option>
-                <option value="year">Year</option>
-            </select>
+        <div class="text-sm">
+            <div class="m-1 inline-block items-center px-1 py-1">
+                <p>view by</p>
+                <select v-model="viewType" class="form-control text-center">
+                    <option value="week">Week</option>
+                    <option value="month">Month</option>
+                    <option value="year">Year</option>
+                </select>
+            </div>
+            <div class="m-1 inline-block items-center px-1 py-1">
+                <span v-show="viewType === `month`">
+                    <p>select month/year</p>
+                    <input
+                        v-model.lazy="currentMonth"
+                        class="border-gray-300"
+                        type="month"
+                    />
+                </span>
+            </div>
+
+            <div
+                class="m-1 inline-block items-center px-1 py-1"
+                v-if="is('supervisor | admin | super-admin')"
+            >
+                <p>Select user</p>
+                <select v-model="selectedUser" class="form-control">
+                    <option value="">Select User</option>
+                    <option
+                        v-for="user in users"
+                        :key="user.id"
+                        :value="user.id"
+                    >
+                        {{ user.name }}
+                    </option>
+                </select>
+            </div>
+
+            <div
+                class="inline-block"
+                v-if="can('export performance') || is('admin | super-admin')"
+            >
+                <button
+                    class="bg-green-500 px-2 py-2 rounded-lg text-xs"
+                    @click="exportExcel('xls')"
+                >
+                    <ArrowTopRightOnSquareIcon
+                        class="h-5 w-5 mr-1 inline-block"
+                    />Export
+                </button>
+            </div>
         </div>
-        <div class="m-1 inline-block items-center px-1 py-1">
-            <span v-show="viewType === `month`">
-                <p>select month/year</p>
-                <input
-                    v-model.lazy="currentMonth"
-                    class="border-gray-300"
-                    type="month"
-                />
+
+        <div class="py-2 text-center bg-slate-500 flex justify-between">
+            <div class="text-left">
+                <button
+                    class="text-xl text-left px-2 py-2"
+                    id="decrementDate"
+                    @click="decrementDate"
+                >
+                    <ChevronDoubleLeftIcon
+                        class="h-6 w-6 bg-blue-300 rounded-lg"
+                    />
+                </button>
+            </div>
+
+            <span v-show="viewType === `week`">
+                <div class="mt-1">
+                    <h3
+                        class="uppercase text-white font-extrabold inline-block"
+                    >
+                        {{ showToday(datesInWeek[0]) }}
+                    </h3>
+                    <h3 class="text-white font-extrabold inline-block mx-5">
+                        to
+                    </h3>
+                    <h3
+                        class="uppercase text-white font-extrabold inline-block"
+                    >
+                        {{ showToday(datesInWeek[6]) }}
+                    </h3>
+                </div>
             </span>
-        </div>
 
-        <div
-            class="m-1 inline-block items-center px-1 py-1"
-            v-if="is('supervisor | admin | super-admin')"
-        >
-            <p>Select user</p>
-            <select v-model="selectedUser" class="form-control">
-                <option value="">Select User</option>
-                <option v-for="user in users" :key="user.id" :value="user.id">
-                    {{ user.name }}
-                </option>
-            </select>
-        </div>
+            <span v-show="viewType === `month`">
+                <div class="">
+                    <h3 class="uppercase text-white font-extrabold">
+                        {{ showMonth(selectedMonthYear) }}
+                    </h3>
+                </div>
+            </span>
 
-        <div
-            class="inline-block"
-            v-if="can('export performance') || is('admin | super-admin')"
-        >
-            <button
-                class="bg-green-500 px-2 py-2 rounded-lg text-xs"
-                @click="exportExcel('xls')"
-            >
-                <ArrowTopRightOnSquareIcon
-                    class="h-5 w-5 mr-1 inline-block"
-                />Export
-            </button>
-        </div>
-    </div>
+            <span v-show="viewType === `year`">
+                <div class="">
+                    <h3 class="uppercase text-white font-extrabold">
+                        {{ selectedYear }}
+                    </h3>
+                </div>
+            </span>
 
-    <div class="py-2 text-center bg-slate-500 flex justify-between">
-        <div class="text-left">
-            <button
-                class="text-xl text-left px-2 py-2"
-                id="decrementDate"
-                @click="decrementDate"
-            >
-                <ChevronDoubleLeftIcon class="h-6 w-6 bg-blue-300 rounded-lg" />
-            </button>
-        </div>
-
-        <span v-show="viewType === `week`">
-            <div class="mt-1">
-                <h3 class="uppercase text-white font-extrabold inline-block">
-                    {{ showToday(datesInWeek[0]) }}
-                </h3>
-                <h3 class="text-white font-extrabold inline-block mx-5">to</h3>
-                <h3 class="uppercase text-white font-extrabold inline-block">
-                    {{ showToday(datesInWeek[6]) }}
-                </h3>
+            <div class="text-right">
+                <button
+                    class="text-5xl text-right px-2 py-2"
+                    id="incrementDate"
+                    @click="incrementDate"
+                >
+                    <ChevronDoubleRightIcon
+                        class="h-6 w-6 bg-blue-300 rounded-lg"
+                    />
+                </button>
             </div>
-        </span>
-
-        <span v-show="viewType === `month`">
-            <div class="">
-                <h3 class="uppercase text-white font-extrabold">
-                    {{ showMonth(selectedMonthYear) }}
-                </h3>
-            </div>
-        </span>
-
-        <span v-show="viewType === `year`">
-            <div class="">
-                <h3 class="uppercase text-white font-extrabold">
-                    {{ selectedYear }}
-                </h3>
-            </div>
-        </span>
-
-        <div class="text-right">
-            <button
-                class="text-5xl text-right px-2 py-2"
-                id="incrementDate"
-                @click="incrementDate"
-            >
-                <ChevronDoubleRightIcon
-                    class="h-6 w-6 bg-blue-300 rounded-lg"
-                />
-            </button>
         </div>
-    </div>
 
-    <!-- <div> -->
+        <!-- <div> -->
 
-    <table
-        class="table table-hover table-bordered"
-        id="example"
-        ref="performance_table"
-    >
-        <thead v-if="viewType !== 'year'" class="bg-blue-900">
-            <tr>
-                <th
-                    v-if="viewType === 'week'"
-                    class="text-sm text-center text-amber-400"
-                >
-                    Date - Day
-                </th>
-                <th
-                    v-if="viewType === 'month'"
-                    class="text-sm text-center text-amber-400"
-                >
-                    Week
-                </th>
-
-                <th
-                    class="text-sm text-center"
-                    v-for="action in actions"
-                    :key="action.id"
-                >
-                    <span class="text-amber-400 break-normal">
-                        {{ action.name }}
-                    </span>
-                </th>
-            </tr>
-            <tr class="bg-slate-400" v-if="viewType === 'week'">
-                <th class="text-sm text-center text-white">Target</th>
-                <th
-                    class="text-sm text-center"
-                    v-for="(action, index) in actions"
-                    :key="action.id"
-                    
-                >
-                    <span
-                        v-for="target in targets"
-                        :key="target.id"
-                        class="text-white break-normal font-bold"
-                    >
-                        <span v-if="target.action_name !== action.name"> </span>
-                        <span v-else>
-                            {{ target.action_target }}
-                        </span>
-                    </span>
-                </th>
-            </tr>
-            <tr class="bg-slate-400" v-else>
-                <th class="text-sm text-center text-white">Target</th>
-                <th
-                    class="text-sm text-center"
-                    v-for="(action, index) in actions"
-                    :key="action.id"
-                    
-                >
-                    <span
-                        v-for="target in targets"
-                        :key="target.id"
-                        class="text-white break-normal font-bold"
-                    >
-                        <span v-if="target.action_name !== action.name"> </span>
-                        <span v-else>
-                            {{ target.action_target * 5 }}
-                        </span>
-                    </span>
-                </th>
-            </tr>
-        </thead>
-        <thead v-else class="bg-blue-900">
-            <tr>
-                <th class="text-sm text-center text-amber-400">Month</th>
-                <th class="text-sm text-center text-amber-400">Week</th>
-                <th
-                    class="text-sm text-center text-amber-400"
-                    v-for="action in actions"
-                    :key="action.id"
-                >
-                    <span class="break-normal">
-                        {{ action.name }}
-                    </span>
-                </th>
-            </tr>
-            <tr class="bg-slate-400">
-                <th v-if="viewType !== 'year'" class="text-sm text-center text-white">Target</th>
-                <th class="text-sm text-center text-white" colspan="2">Target</th>
-                <th
-                    class="text-sm text-center"
-                    v-for="(action, index) in actions"
-                    :key="action.id"
-                >
-                    <span
-                        v-for="target in targets"
-                        :key="target.id"
-                        class="text-white break-normal font-bold"
-                    >
-                        <span v-if="target.action_name !== action.name"> </span>
-                        <span v-else>
-                            {{ target.action_target * 5 }}
-                        </span>
-                    </span>
-                </th>
-            </tr>
-        </thead>
-
-        <tbody
-            v-if="viewType === 'week'"
-            v-for="(date, day) in datesInWeek"
-            :key="date.id"
+        <table
+            class="table table-hover table-bordered"
+            id="example"
+            ref="performance_table"
         >
-            <!-- <tr>{{ getWeek(date)}}</tr> -->
-            <tr class="text-center">
-                <td>{{ showToday(date) + " - " + getWeekday(day) }}</td>
-                <td v-for="(action, index) in actions" :key="action.id">
-                    <span v-if="user_performance[`${date}`]">
-                        <span
-                            v-if="
-                                !user_performance[`${date}`][`${action.name}`]
-                            "
-                        >
-                            0
-                        </span>
-                        <span v-else class="font-bold">
-                            {{ user_performance[`${date}`][`${action.name}`] }}
-                        </span>
-                    </span>
-                    <span v-else> 0 </span>
-                </td>
-            </tr>
-        </tbody>
+            <thead v-if="viewType !== 'year'" class="bg-blue-900">
+                <tr>
+                    <th
+                        v-if="viewType === 'week'"
+                        class="text-sm text-center text-amber-400"
+                    >
+                        Date - Day
+                    </th>
+                    <th
+                        v-if="viewType === 'month'"
+                        class="text-sm text-center text-amber-400"
+                    >
+                        Week
+                    </th>
 
-        <tbody
-            v-if="viewType === 'month'"
-            v-for="date in this.weeksInMonth"
-            class="text-center"
-        >
-            <tr class="text-center">
-                <td>
-                    <span>
-                        {{ moment(date.startDate).format("DD-MM-YY") }}
-                    </span>
-                    <span class="mx-2"> to </span>
-                    <span>
-                        {{ moment(date.endDate).format("DD-MM-YY") }}
-                        <br />
-                    </span>
-                </td>
-                <td v-for="(action, index) in actions" :key="action.id">
-                    <span
-                        v-if="
-                            user_performance[`${this.getWeek(date.startDate)}`]
-                        "
+                    <th
+                        class="text-sm text-center"
+                        v-for="action in actions"
+                        :key="action.id"
+                    >
+                        <span class="text-amber-400 break-normal">
+                            {{ action.name }}
+                        </span>
+                    </th>
+                </tr>
+                <tr class="bg-slate-400" v-if="viewType === 'week'">
+                    <th class="text-sm text-center text-white">Target</th>
+                    <th
+                        class="text-sm text-center"
+                        v-for="(action, index) in actions"
+                        :key="action.id"
                     >
                         <span
-                            v-if="
-                                !user_performance[
-                                    `${this.getWeek(date.startDate)}`
-                                ][`${action.name}`]
-                            "
+                            v-for="target in targets"
+                            :key="target.id"
+                            class="text-white break-normal font-bold"
                         >
-                            0
+                            <span v-if="target.action_name !== action.name">
+                            </span>
+                            <span v-else>
+                                {{ target.action_target }}
+                            </span>
                         </span>
-                        <span v-else class="font-bold">
-                            {{
+                    </th>
+                </tr>
+                <tr class="bg-slate-400" v-else>
+                    <th class="text-sm text-center text-white">Target</th>
+                    <th
+                        class="text-sm text-center"
+                        v-for="(action, index) in actions"
+                        :key="action.id"
+                    >
+                        <span
+                            v-for="target in targets"
+                            :key="target.id"
+                            class="text-white break-normal font-bold"
+                        >
+                            <span v-if="target.action_name !== action.name">
+                            </span>
+                            <span v-else>
+                                {{ target.action_target * 5 }}
+                            </span>
+                        </span>
+                    </th>
+                </tr>
+            </thead>
+            <thead v-else class="bg-blue-900">
+                <tr>
+                    <th class="text-sm text-center text-amber-400">Month</th>
+                    <th class="text-sm text-center text-amber-400">Week</th>
+                    <th
+                        class="text-sm text-center text-amber-400"
+                        v-for="action in actions"
+                        :key="action.id"
+                    >
+                        <span class="break-normal">
+                            {{ action.name }}
+                        </span>
+                    </th>
+                </tr>
+                <tr class="bg-slate-400">
+                    <th
+                        v-if="viewType !== 'year'"
+                        class="text-sm text-center text-white"
+                    >
+                        Target
+                    </th>
+                    <th class="text-sm text-center text-white" colspan="2">
+                        Target
+                    </th>
+                    <th
+                        class="text-sm text-center"
+                        v-for="(action, index) in actions"
+                        :key="action.id"
+                    >
+                        <span
+                            v-for="target in targets"
+                            :key="target.id"
+                            class="text-white break-normal font-bold"
+                        >
+                            <span v-if="target.action_name !== action.name">
+                            </span>
+                            <span v-else>
+                                {{ target.action_target * 5 }}
+                            </span>
+                        </span>
+                    </th>
+                </tr>
+            </thead>
+
+            <tbody
+                v-if="viewType === 'week'"
+                v-for="(date, day) in datesInWeek"
+                :key="date.id"
+            >
+                <!-- <tr>{{ getWeek(date)}}</tr> -->
+                <tr>
+                    <td class="text-left">{{ showToday(date) + " - " + getWeekday(day) }}</td>
+                    <td  class="text-center" v-for="(action, index) in actions" :key="action.id">
+                        <span v-if="user_performance[`${date}`]">
+                            <span
+                                v-if="
+                                    !user_performance[`${date}`][
+                                        `${action.name}`
+                                    ]
+                                "
+                            >
+                                0
+                            </span>
+                            <span v-else class="font-bold">
+                                {{
+                                    user_performance[`${date}`][
+                                        `${action.name}`
+                                    ]
+                                }}
+                            </span>
+                        </span>
+                        <span v-else> 0 </span>
+                    </td>
+                </tr>
+            </tbody>
+
+            <tbody
+                v-if="viewType === 'month'"
+                v-for="date in this.weeksInMonth"
+                class="text-center"
+            >
+                <tr>
+                    <td class="text-left">
+                        <span>
+                            {{ moment(date.startDate).format("DD-MM-YY") }}
+                        </span>
+                        <span class="mx-2"> to </span>
+                        <span>
+                            {{ moment(date.endDate).format("DD-MM-YY") }}
+                            <br />
+                        </span>
+                    </td>
+                    <td  class="text-center" v-for="(action, index) in actions" :key="action.id">
+                        <span
+                            v-if="
                                 user_performance[
                                     `${this.getWeek(date.startDate)}`
-                                ][`${action.name}`]
-                            }}
-                        </span>
-                    </span>
-                    <span v-else> 0 </span>
-                </td>
-            </tr>
-        </tbody>
-
-        <tbody
-            v-if="viewType === 'year'"
-            v-for="weeks in dates_in_one_year"
-            class="text-center"
-        >
-            <tr>
-                <td>
-                    {{ months[moment(weeks.start_date).add(2, "d").month()] }}
-                </td>
-                <td class="flex">
-                    {{ showToday(weeks.start_date) }}
-                    <p class="mx-2">to</p>
-                    {{ showToday(weeks.end_date) }}
-                </td>
-                <td v-for="(action, index) in actions" :key="action.id">
-                    <span
-                        v-if="
-                            user_performance[
-                                `${this.getWeek(weeks.start_date)}`
-                            ]
-                        "
-                    >
-                        <span
-                            v-if="
-                                !user_performance[
-                                    `${this.getWeek(weeks.start_date)}`
-                                ][`${action.name}`]
+                                ]
                             "
                         >
-                            0
+                            <span
+                                v-if="
+                                    !user_performance[
+                                        `${this.getWeek(date.startDate)}`
+                                    ][`${action.name}`]
+                                "
+                            >
+                                0
+                            </span>
+                            <span v-else class="font-bold">
+                                {{
+                                    user_performance[
+                                        `${this.getWeek(date.startDate)}`
+                                    ][`${action.name}`]
+                                }}
+                            </span>
                         </span>
-                        <span v-else class="font-bold">
-                            {{
+                        <span v-else> 0 </span>
+                    </td>
+                </tr>
+            </tbody>
+
+            <tbody
+                v-if="viewType === 'year'"
+                v-for="weeks in dates_in_one_year"
+                class="text-center"
+            >
+                <tr>
+                    <td>
+                        {{
+                            months[moment(weeks.start_date).add(2, "d").month()]
+                        }}
+                    </td>
+                    <td class="flex">
+                        {{ showToday(weeks.start_date) }}
+                        <p class="mx-2">to</p>
+                        {{ showToday(weeks.end_date) }}
+                    </td>
+                    <td v-for="(action, index) in actions" :key="action.id">
+                        <span
+                            v-if="
                                 user_performance[
                                     `${this.getWeek(weeks.start_date)}`
-                                ][`${action.name}`]
-                            }}
+                                ]
+                            "
+                        >
+                            <span
+                                v-if="
+                                    !user_performance[
+                                        `${this.getWeek(weeks.start_date)}`
+                                    ][`${action.name}`]
+                                "
+                            >
+                                0
+                            </span>
+                            <span v-else class="font-bold">
+                                {{
+                                    user_performance[
+                                        `${this.getWeek(weeks.start_date)}`
+                                    ][`${action.name}`]
+                                }}
+                            </span>
                         </span>
-                    </span>
-                    <span v-else> 0 </span>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+                        <span v-else> 0 </span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </template>
 
 <script>

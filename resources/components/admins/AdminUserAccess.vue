@@ -1,7 +1,7 @@
 <template>
-    <div class="container">
+    <div class="w-full min-h-screen">
         <div
-            class="px-2 py-1 rounded-md flex w-full justify-center items-center row"
+            class="px-2 py-1 rounded-md flex w-full justify-center items-center row mx-auto"
         >
             <h1
                 class="text-center text-white px-8 uppercase w-max font-mono font-extrabold bg-blue-900"
@@ -13,7 +13,7 @@
             <!-- User Role Permission List-->
             <div class="my-4">
                 <div
-                    class="bg-cyan-200 px-2 py-1 rounded-md flex w-full justify-center items-center row"
+                    class="bg-cyan-200 px-2 py-1 rounded-md flex w-full justify-center items-center row mx-auto"
                 >
                     <h2
                         class="text-center text-gray-800 px-8 uppercase w-max font-mono font-extrabold"
@@ -159,7 +159,7 @@
             <!-- Roles section-->
             <div class="my-4">
                 <div
-                    class="bg-purple-200 px-2 py-1 rounded-md flex w-full justify-center items-center row"
+                    class="bg-purple-200 px-2 py-1 rounded-md flex w-full justify-center items-center row mx-auto"
                 >
                     <h2
                         class="text-center text-gray-800 px-8 uppercase w-max font-mono font-extrabold"
@@ -496,7 +496,7 @@
 
                 <!-- Permissions section-->
                 <div
-                    class="bg-blue-200 px-2 py-1 rounded-md flex w-full justify-center items-center row my-3"
+                    class="bg-blue-200 px-2 py-1 rounded-md flex w-full justify-center items-center row mx-auto my-3"
                 >
                     <h2
                         class="text-center text-gray-800 px-8 uppercase w-max font-mono font-extrabold"

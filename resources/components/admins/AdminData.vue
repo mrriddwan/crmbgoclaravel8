@@ -1,7 +1,7 @@
 <template>
-    <div class="container pb-40">
+    <div class="w-full min-h-screen">
         <div
-            class="px-96 py-2 rounded-md flex w-max text-center justify-center items-center row bg-blue-900 mx-5"
+            class="py-2 rounded-md flex w-full text-center justify-center items-center row mx-auto bg-blue-900"
         >
             <h1
                 class="text-center text-white px-8 w-full uppercase font-mono font-extrabold"
@@ -22,7 +22,7 @@
             <div class="my-4">
                 <button
                     @click="revealContent('contact')"
-                    class="bg-blue-200 px-2 py-1 rounded-md flex w-full justify-center items-center row hover:bg-blue-500"
+                    class="bg-blue-200 px-2 py-1 rounded-md flex w-full justify-center items-center row mx-auto hover:bg-blue-500"
                 >
                     <h2
                         class="text-center text-gray-800 px-8 uppercase w-max font-mono font-extrabold"
@@ -38,7 +38,7 @@
                     "
                 >
                     <div
-                        class="mt-2 grid grid-cols-1 bg-slate-300 px-2 py-1 rounded-lg w-full justify-center items-center row"
+                        class="mt-2 grid grid-cols-1 bg-slate-300 px-2 py-1 rounded-lg w-full justify-center items-center row mx-auto"
                     >
                         <div colspan="2">
                             <h3 class="uppercase font-bold font-mono">
@@ -146,7 +146,7 @@
                     </div>
 
                     <div
-                        class="mt-2 grid grid-cols-1 bg-slate-300 px-2 py-1 rounded-md w-full justify-center items-center row"
+                        class="mt-2 grid grid-cols-1 bg-slate-300 px-2 py-1 rounded-md w-full justify-center items-center row mx-auto"
                     >
                         <div colspan="2">
                             <h3 class="uppercase font-bold font-mono">
@@ -248,7 +248,7 @@
                     </div>
 
                     <div
-                        class="grid grid-cols-1 bg-slate-300 px-2 py-1 rounded-md w-full justify-center items-center row"
+                        class="grid grid-cols-1 bg-slate-300 px-2 py-1 rounded-md w-full justify-center items-center row mx-auto"
                     >
                         <div colspan="2">
                             <h3 class="uppercase font-bold font-mono">
@@ -349,7 +349,7 @@
                         </div>
                     </div>
                     <div
-                        class="grid grid-cols-1 bg-slate-300 px-2 py-1 rounded-lg w-full justify-center items-center row"
+                        class="grid grid-cols-1 bg-slate-300 px-2 py-1 rounded-lg w-full justify-center items-center row mx-auto"
                     >
                         <div colspan="2">
                             <h3 class="uppercase font-bold font-mono">
@@ -463,7 +463,7 @@
             <div class="my-4">
                 <button
                     @click="revealContent('todo')"
-                    class="bg-purple-200 px-2 py-1 rounded-md flex w-full justify-center items-center row hover:bg-purple-400"
+                    class="bg-purple-200 px-2 py-1 rounded-md flex w-full justify-center items-center row mx-auto hover:bg-purple-400"
                 >
                     <h2
                         class="text-center text-gray-800 px-8 uppercase w-max font-mono font-extrabold"
@@ -480,7 +480,7 @@
                     "
                 >
                     <div
-                        class="grid grid-cols-1 mt-2 bg-slate-300 px-2 py-1 rounded-lg w-full justify-center items-center row"
+                        class="grid grid-cols-1 mt-2 bg-slate-300 px-2 py-1 rounded-lg w-full justify-center items-center row mx-auto"
                     >
                         <div colspan="2">
                             <h3 class="uppercase font-bold font-mono">Task</h3>
@@ -578,7 +578,7 @@
                     </div>
 
                     <div
-                        class="mt-2 grid grid-cols-1 bg-slate-300 px-2 py-1 rounded-md w-full justify-center items-center row"
+                        class="mt-2 grid grid-cols-1 bg-slate-300 px-2 py-1 rounded-md w-full justify-center items-center row mx-auto"
                     >
                         <div colspan="2">
                             <h3 class="uppercase font-bold font-mono">
@@ -679,7 +679,7 @@
                     </div>
 
                     <div
-                        class="mt-2 grid grid-cols-1 bg-slate-300 px-2 py-1 rounded-md w-full justify-center items-center row"
+                        class="mt-2 grid grid-cols-1 bg-slate-300 px-2 py-1 rounded-md w-full justify-center items-center row mx-auto"
                     >
                         <div colspan="2">
                             <h3 class="uppercase font-bold font-mono">
@@ -817,7 +817,7 @@
             <div class="my-4">
                 <button
                     @click="revealContent('forecast')"
-                    class="bg-cyan-200 px-2 py-1 rounded-md flex w-full justify-center items-center row hover:bg-cyan-400"
+                    class="bg-cyan-200 px-2 py-1 rounded-md flex w-full justify-center items-center row mx-auto hover:bg-cyan-400"
                 >
                     <h2
                         class="text-center text-gray-800 px-8 uppercase w-max font-mono font-extrabold"
@@ -834,7 +834,7 @@
                     "
                 >
                     <div
-                        class="mt-2 grid grid-cols-1 bg-slate-300 px-2 py-1 rounded-lg w-full justify-center items-center row"
+                        class="mt-2 grid grid-cols-1 bg-slate-300 px-2 py-1 rounded-lg w-full justify-center items-center row mx-auto"
                     >
                         <div colspan="2">
                             <h3 class="uppercase font-bold font-mono">
@@ -941,7 +941,7 @@
                     </div>
 
                     <div
-                        class="mt-2 grid grid-cols-1 bg-slate-300 px-2 py-1 rounded-md w-full justify-center items-center row"
+                        class="mt-2 grid grid-cols-1 bg-slate-300 px-2 py-1 rounded-md w-full justify-center items-center row mx-auto"
                     >
                         <div colspan="2">
                             <h3 class="uppercase font-bold font-mono">
@@ -1039,7 +1039,7 @@
                     </div>
 
                     <div
-                        class="mt-2 grid grid-cols-1 bg-slate-300 px-2 py-1 rounded-md w-full justify-center items-center row"
+                        class="mt-2 grid grid-cols-1 bg-slate-300 px-2 py-1 rounded-md w-full justify-center items-center row mx-auto"
                     >
                         <div colspan="2">
                             <h3 class="uppercase font-bold font-mono">

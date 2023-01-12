@@ -1,5 +1,5 @@
 <template>
-    <div class="container w-full align-center mx-auto h-max px-3 py-1">
+    <div class="w-full min-h-screen px-3 py-1">
         <div>
             <GoBack />
         </div>
