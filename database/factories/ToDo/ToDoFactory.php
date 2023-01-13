@@ -25,8 +25,8 @@ class ToDoFactory extends Factory
     public function definition()
     {
         // $end = $faker->dateTimeBetween($start, $start->format('Y-m-d H:i:s').' +2 days');
-        $todo_date = $this->faker->dateTimeThisYear('+3 months');
-        $todo_deadline = $this->faker->dateTimeBetween($todo_date->format('Y-m-d'),$todo_date->format('Y-m-d') . '+12 months');
+        $todo_date = $this->faker->dateTimeBetween('-8 months', '+8 months');
+        $todo_deadline = $this->faker->dateTimeBetween($todo_date->format('Y-m-d'),$todo_date->format('Y-m-d') . '+6 months');
         // $todo_deadline = $this->faker->dateTimeBetween($todo_date->format('Y-m-d H:i:s'),$todo_date->format('Y-m-d H:i:s') . '+12 months');
 
         // $end_date = $this->faker->dateTimeBetween(

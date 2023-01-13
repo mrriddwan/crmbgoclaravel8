@@ -40,14 +40,14 @@ class SV_SB_Seeder extends Seeder
             [
                 'id' => 4,
                 'supervisor_id' => 3,
-                'subordinate_id' => 4,
+                'subordinate_id' => 8,
                 'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
                 'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
             ],
             [
                 'id' => 5,
                 'supervisor_id' => 4,
-                'subordinate_id' => 3,
+                'subordinate_id' => 10,
                 'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
                 'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
             ],

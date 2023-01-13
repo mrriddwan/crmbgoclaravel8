@@ -23,7 +23,7 @@ class DatabaseSeeder extends Seeder
             UserCategoryBenchmarkSeeder::class,
             UserSeeder::class,
             SupervisorSeeder::class,
-            SV_SB_Seeder::class,
+            // SV_SB_Seeder::class,
             RolesAndPermissionSeeder::class,
             Contact_TypeSeeder::class,
             Contact_StatusSeeder::class,

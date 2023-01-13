@@ -1,5 +1,5 @@
 <template>
-    <div class="mx-auto max-w-screen-lg">
+    <div class="mx-auto max-w-screen-lg min-h-screen">
         <GoBack />
 
         <div>
@@ -11,7 +11,7 @@
                     >{{ contact.name }}</span
                 >
             </div>
-            <div class="mt-1">
+            <div class="my-2">
                 <Pagination
                     :data="todo"
                     :limit="2"
@@ -22,22 +22,22 @@
                 />
             </div>
             <div
-                v-if="todo.length !== 0"
-                class="overflow-x-auto relative shadow-md sm:rounded-lg"
+                v-if="todo.data"
+                class="overflow-x-auto relative sm:rounded-lg mx-auto"
             >
                 <table
-                    class="border-2 mb-4 text-xs text-left text-gray-500 dark:text-gray-400"
+                    class="border-2 mb-4 text-xs text-left text-gray-500 dark:text-gray-400 mx-auto"
                 >
                     <thead
                         class="text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
                     >
                         <tr class="text-center">
-                            <th scope="col" class="py-3 px-3">Date</th>
-                            <th scope="col" class="py-3 px-3">CS</th>
-                            <th scope="col" class="py-3 px-3">Task</th>
-                            <th scope="col" class="py-3 px-3">Action</th>
-                            <th scope="col" class="py-3 px-3">Remark</th>
-                            <th scope="col" class="py-3 px-3"></th>
+                            <th scope="col" class="py-3 px-3 min-w-16">Date</th>
+                            <th scope="col" class="py-3 px-3 min-w-16">CS</th>
+                            <th scope="col" class="py-3 px-3 min-w-16">Task</th>
+                            <th scope="col" class="py-3 px-3 min-w-16">Action</th>
+                            <th scope="col" class="py-3 px-3 min-w-16">Remark</th>
+                            <th scope="col" class="py-3 px-3 min-w-16"></th>
                         </tr>
                     </thead>
                     <tbody>

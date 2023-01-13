@@ -301,7 +301,7 @@
                                 </div>
                             </th>
                             <th class="py-3">
-                                <div class="text-sm text-center h-max">
+                                <div class="text-sm text-center h-6 w-full">
                                     <a
                                         href="#"
                                         @click.prevent="
@@ -309,7 +309,7 @@
                                         "
                                         class="text-white inline-flex"
                                     >
-                                        Forecast<br />Product
+                                        Forecast Product
                                         <span
                                             v-if="
                                                 (!(sort_direction == 'asc') ||
@@ -339,10 +339,12 @@
                                         /></span>
                                     </a>
                                 </div>
-                                <div class="text-center h-6 w-full">
+                                <div
+                                    class="items-center text-xs text-center h-6 w-full"
+                                >
                                     <select
                                         v-model="selectedProduct"
-                                        class="form-control form-control-sm text-xs"
+                                        class="form-control form-control-sm text-xs w-max"
                                     >
                                         <option class="text-xs" value="">
                                             All
@@ -615,37 +617,11 @@
                                         >
                                     </router-link>
                                 </div>
-                                <div
-                                    v-if="
-                                        is('super-admin | admin') ||
-                                        can('insert forecast')
-                                    "
-                                    class="w-max mt-2 align-bottom"
-                                >
-                                    <router-link
-                                        :to="`/forecast/${forecast.contact.id}/create`"
-                                        class="mr-2 mb-2 px-2 py-1 items-center border text-xs text-right rounded-lg w-max text-white bg-emerald-600 flex"
-                                    >
-                                        <PlusIcon class="h-3 w-3 my-auto" />
-                                        <DocumentChartBarIcon
-                                            class="h-4 w-4 my-auto"
-                                    /></router-link>
-                                </div>
-                                <!-- <div>
-                                    <router-link
-                                        :to="`/forecast/${forecast.contact.id}/create`"
-                                        class="m-2 px-2 py-1 items-center border text-xs text-right rounded-lg w-max text-lime-600"
-                                    >
-                                        <PlusIcon class="h-3 w-3 inline" />
-                                        <DocumentChartBarIcon
-                                            class="h-4 w-4 inline"
-                                    /></router-link>
-                                </div> -->
                             </td>
                             <td class="text-xs text-left">
                                 {{ forecast.user.name }}
                             </td>
-                            <td class="text-xs w-max text-left">
+                            <td class="text-xs text-left">
                                 {{ forecast.product.name }}
                             </td>
                             <td class="text-xs text-left">
@@ -659,81 +635,84 @@
                                 {{ forecast.forecast_type.name }}
                             </td>
                             <td class="text-center align-top">
-                                <span v-if="forecast.result">
-                                    <span
-                                        v-if="forecast.result.id === 1"
-                                        class="w-max inline-block align-middle text-sm font-extrabold uppercase text-white bg-green-600 rounded-md py-1 px-2 text-center"
-                                    >
-                                        {{ forecast.result.name }}
-                                    </span>
-                                    <span
-                                        v-if="forecast.result.id === 2"
-                                        class="w-max inline-block align-middle text-sm font-extrabold uppercase text-white bg-red-600 rounded-md py-1 px-2 text-center"
-                                    >
-                                        {{ forecast.result.name }}
-                                    </span>
-                                    <span
-                                        v-if="forecast.result_id === 3"
-                                        class="w-max inline-block align-middle text-sm font-extrabold uppercase text-white bg-yellow-600 rounded-md py-1 px-2 text-center"
-                                    >
-                                        {{ forecast.result.name }}
-                                    </span>
+                                <div class="flex">
+                                    <div v-if="forecast.result">
+                                        <span
+                                            v-if="forecast.result.id === 1"
+                                            class="w-max inline-block align-middle text-sm font-extrabold uppercase text-white bg-green-600 rounded-md py-1 px-2 text-center"
+                                        >
+                                            {{ forecast.result.name }}
+                                        </span>
+                                        <span
+                                            v-if="forecast.result.id === 2"
+                                            class="w-max inline-block align-middle text-sm font-extrabold uppercase text-white bg-red-600 rounded-md py-1 px-2 text-center"
+                                        >
+                                            {{ forecast.result.name }}
+                                        </span>
+                                        <span
+                                            v-if="forecast.result_id === 3"
+                                            class="w-max inline-block align-middle text-sm font-extrabold uppercase text-white bg-yellow-600 rounded-md py-1 px-2 text-center"
+                                        >
+                                            {{ forecast.result.name }}
+                                        </span>
+                                    </div>
+
                                     <div
                                         v-if="
                                             can('edit forecast') ||
-                                            is(
+                                            (is(
                                                 'supervisor | admin | super-admin'
-                                            )
+                                            ) &&
+                                                forecast.result)
                                         "
                                     >
                                         <button
+                                            v-if="!changeResult"
                                             class="bg-blue-300 py-1 px-1 ml-2 text-xs rounded-md inline-block"
                                             @click="toggleResult()"
                                         >
                                             <PencilIcon class="h-3 w-3" />
                                         </button>
-                                    </div>
-
-                                    <!-- <button
-                                    class="bg-blue-300 py-1 px-1 ml-2 text-xs rounded-md inline-block"
-                                    @click="hideEditResult(forecast.id)"
-                                >
-                                    Hide
-                                </button> -->
-                                    <span v-show="changeResult">
-                                        <select
-                                            id="change-result-{{forecast.id}}"
-                                            class="form-control form-control-sm mt-2"
-                                            @change="
-                                                resultSelected(
-                                                    this.forecast_result
-                                                        .result_id,
-                                                    forecast.id,
-                                                    forecast.contact.id
-                                                )
-                                            "
-                                            v-model="forecast_result.result_id"
+                                        <button
+                                            v-if="changeResult"
+                                            class="bg-red-300 py-1 px-1 ml-2 text-xs rounded-md inline-block"
+                                            @click="toggleResult()"
                                         >
-                                            <option disabled value="">
-                                                Select Result
-                                            </option>
-                                            <option value="">
-                                                Unconfirmed
-                                            </option>
-                                            <option
-                                                v-for="result in results.data"
-                                                :key="result.id"
-                                                :value="result.id"
-                                            >
-                                                {{ result.name }}
-                                            </option>
-                                        </select>
-                                    </span>
-                                </span>
-                                <span v-show="!forecast.result">
+                                            <XMarkIcon class="h-3 w-3" />
+                                        </button>
+                                    </div>
+                                </div>
+                                <div v-if="changeResult && forecast.result">
+                                    <select
+                                        id="change-result-{{forecast.id}}"
+                                        class="form-control form-control-sm mt-2"
+                                        @change="
+                                            resultSelected(
+                                                this.forecast_result.result_id,
+                                                forecast.id,
+                                                forecast.contact.id
+                                            )
+                                        "
+                                        v-model="forecast_result.result_id"
+                                    >
+                                        <option disabled value="">
+                                            Select Result
+                                        </option>
+                                        <option value="">Unconfirmed</option>
+                                        <option
+                                            v-for="result in results.data"
+                                            :key="result.id"
+                                            :value="result.id"
+                                        >
+                                            {{ result.name }}
+                                        </option>
+                                    </select>
+                                </div>
+
+                                <div v-show="!forecast.result">
                                     <select
                                         id="result-select"
-                                        class="form-control form-control-sm mt-2"
+                                        class="form-control form-control-sm"
                                         @change="
                                             resultSelected(
                                                 this.forecast_result.result_id,
@@ -752,32 +731,51 @@
                                             {{ result.name }}
                                         </option>
                                     </select>
-                                </span>
+                                </div>
                             </td>
-                            <td class="text-xs">
-                                <router-link
-                                    :to="{
-                                        name: 'forecast_edit',
-                                        params: {
-                                            id: forecast.id,
-                                        },
-                                    }"
-                                    class="mr-2 mb-2 inline-flex items-center px-2 py-1 bg-yellow-400 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
-                                >
-                                    <PencilSquareIcon class="h-3 w-3"
-                                /></router-link>
+                            <td class="text-xs flex">
+                                <div class="mx-auto">
+                                    <router-link
+                                        :to="{
+                                            name: 'forecast_edit',
+                                            params: {
+                                                id: forecast.id,
+                                            },
+                                        }"
+                                        class="inline-flex items-center px-2 py-1 bg-yellow-400 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
+                                    >
+                                        <PencilSquareIcon class="h-4 w-4"
+                                    /></router-link>
+                                </div>
+
                                 <div
+                                    class="mx-auto"
                                     v-if="
                                         can('delete forecast') ||
                                         is('supervisor | admin | super-admin')
                                     "
                                 >
                                     <button
-                                        class="mr-2 mb-2 inline-flex items-center px-2 py-1 bg-red-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
+                                        class="inline-flex items-center px-2 py-1 bg-red-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
                                         @click="deleteForecast(forecast.id)"
                                     >
-                                        <TrashIcon class="h-3 w-3" />
+                                        <TrashIcon class="h-4 w-4" />
                                     </button>
+                                </div>
+                                <div
+                                    v-if="
+                                        is('super-admin | admin') ||
+                                        can('insert forecast')
+                                    "
+                                    class="mx-auto"
+                                >
+                                    <router-link
+                                        :to="`/forecast/${forecast.contact.id}/create`"
+                                        class="px-2 py-1 items-center border text-xs text-right rounded-lg w-max text-white bg-emerald-600 flex hover:bg-emerald-800"
+                                    >
+                                        <PlusIcon class="h-3 w-3" />
+                                        <DocumentChartBarIcon class="h-4 w-4"
+                                    /></router-link>
                                 </div>
                             </td>
                         </tr>
@@ -803,6 +801,7 @@ import {
     ArrowsUpDownIcon,
     ArrowUpIcon,
     ArrowDownIcon,
+    XMarkIcon,
 } from "@heroicons/vue/24/solid";
 
 export default {
@@ -818,6 +817,7 @@ export default {
         ArrowsUpDownIcon,
         ArrowUpIcon,
         ArrowDownIcon,
+        XMarkIcon,
     },
 
     mounted() {
